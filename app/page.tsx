@@ -16,8 +16,8 @@ export default function Home() {
       <WhyCodm />
       <ServicesSection />
       <TrustedBy />
-	  <Testimonials />
-	  <LatestBlogs />	
+      <Testimonials />
+      <LatestBlogs />
     </>
   );
 }
