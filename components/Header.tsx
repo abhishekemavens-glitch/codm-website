@@ -1,69 +1,203 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
+type HeaderData = {
+  mainLogo: string;
+  services: string;
+  industries: string;
+  caseStudies: string;
+  about: string;
+  insights: string;
+  buttonText: string;
+  buttonUrl: string;
+};
+
+const WORDPRESS_GRAPHQL_URL =
+  "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+function parseLink(value: string) {
+  if (!value) {
+    return {
+      label: "",
+      url: "#",
+    };
+  }
+
+  const separatorIndex = value.indexOf("|");
+
+  if (separatorIndex === -1) {
+    return {
+      label: value.trim(),
+      url: "#",
+    };
+  }
+
+  return {
+    label: value.substring(0, separatorIndex).trim(),
+    url: value.substring(separatorIndex + 1).trim(),
+  };
+}
+
 export default function Header() {
+  const [header, setHeader] = useState<HeaderData | null>(null);
+
+  useEffect(() => {
+    async function loadHeader() {
+      try {
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query Header {
+                codmHeaders {
+                  nodes {
+                    id
+                    title
+                    mainLogo
+                    services
+                    industries
+                    caseStudies
+                    about
+                    insights
+                    buttonText
+                    buttonUrl
+                  }
+                }
+              }
+            `,
+          }),
+        });
+
+        const result = await response.json();
+
+        console.log("HEADER DATA:", result);
+
+        if (result.errors) {
+          console.error("Header GraphQL Error:", result.errors);
+          return;
+        }
+
+        const data = result?.data?.codmHeaders?.nodes?.[0];
+
+        if (data) {
+          setHeader(data);
+        }
+      } catch (error) {
+        console.error("Failed to load Header:", error);
+      }
+    }
+
+    loadHeader();
+  }, []);
+
+  /*
+   * Don't render the header until WordPress data is available.
+   */
+  if (!header) {
+    return null;
+  }
+
+  const services = parseLink(header.services);
+  const industries = parseLink(header.industries);
+  const caseStudies = parseLink(header.caseStudies);
+  const about = parseLink(header.about);
+  const insights = parseLink(header.insights);
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-[78px] max-w-[1400px] items-center justify-between px-6 lg:px-10">
-        
+
         {/* LOGO */}
+
         <a
           href="/"
-          className="text-2xl font-bold tracking-[-0.07em]"
+          className="flex items-center"
+          aria-label="CODM"
         >
-          codm<span className="text-[var(--accent)]">.</span>
+          {header.mainLogo && (
+            <img
+              src={header.mainLogo}
+              alt="CODM"
+              className="codm-header-logo"
+            />
+          )}
         </a>
 
+
         {/* NAVIGATION */}
+
         <nav className="hidden items-center gap-8 text-sm font-medium lg:flex">
-          <a
-            href="/services"
-            className="transition-opacity hover:opacity-50"
-          >
-            Services
-          </a>
 
-          <a
-            href="/industries"
-            className="transition-opacity hover:opacity-50"
-          >
-            Industries
-          </a>
+          {services.label && (
+            <a
+              href={services.url}
+              className="transition-opacity hover:opacity-50"
+            >
+              {services.label}
+            </a>
+          )}
 
-          <a
-            href="/case-studies"
-            className="transition-opacity hover:opacity-50"
-          >
-            Case Studies
-          </a>
+          {industries.label && (
+            <a
+              href={industries.url}
+              className="transition-opacity hover:opacity-50"
+            >
+              {industries.label}
+            </a>
+          )}
 
-          <a
-            href="/about"
-            className="transition-opacity hover:opacity-50"
-          >
-            About
-          </a>
+          {caseStudies.label && (
+            <a
+              href={caseStudies.url}
+              className="transition-opacity hover:opacity-50"
+            >
+              {caseStudies.label}
+            </a>
+          )}
 
-          <a
-            href="/blog"
-            className="transition-opacity hover:opacity-50"
-          >
-            Insights
-          </a>
+          {about.label && (
+            <a
+              href={about.url}
+              className="transition-opacity hover:opacity-50"
+            >
+              {about.label}
+            </a>
+          )}
+
+          {insights.label && (
+            <a
+              href={insights.url}
+              className="transition-opacity hover:opacity-50"
+            >
+              {insights.label}
+            </a>
+          )}
+
         </nav>
 
+
         {/* RIGHT */}
+
         <div className="flex items-center gap-3">
+
           <ThemeToggle />
 
-         <a
-  href="/contact"
-  className="hidden h-[44px] items-center whitespace-nowrap rounded-full bg-[var(--foreground)] px-6 text-sm font-semibold text-[var(--background)] transition-transform hover:scale-105 sm:flex"
->
-  Get in touch
-</a>
+          {header.buttonText && (
+            <a
+              href={header.buttonUrl || "#"}
+              className="hidden h-[44px] items-center whitespace-nowrap rounded-full bg-[var(--foreground)] px-6 text-sm font-semibold text-[var(--background)] transition-transform hover:scale-105 sm:flex"
+            >
+              {header.buttonText}
+            </a>
+          )}
+
         </div>
+
       </div>
     </header>
   );
