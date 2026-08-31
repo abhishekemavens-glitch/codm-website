@@ -882,3 +882,9 @@ button {
   }
 }
 
+
+.codm-footer-logo {
+  width: 150px;
+  height: auto;
+  display: block;
+}
