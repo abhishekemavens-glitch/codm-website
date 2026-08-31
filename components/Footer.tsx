@@ -68,6 +68,7 @@ export default function Footer() {
                   nodes {
                     id
                     title
+                    mainLogo
                     description
                     linkedin
                     twitter
