@@ -894,3 +894,64 @@ button {
   max-height: 50px;
   object-fit: contain;
 }
+
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.codm-header-logo {
+  display: block;
+  width: 105px;
+  height: auto;
+  max-height: 45px;
+  object-fit: contain;
+}
+
+
+/* Header navigation */
+
+header nav a {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+
+/* Header CTA */
+
+header nav + div a {
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+  .codm-header-logo {
+    width: 100px;
+  }
+
+}
+
+
+@media (max-width: 640px) {
+
+  .codm-header-logo {
+    width: 90px;
+  }
+
+}
