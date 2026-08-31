@@ -881,3 +881,16 @@ button {
   }
 }
 
+
+
+/* =========================================================
+   HEADER LOGO
+   ========================================================= */
+
+.codm-header-logo {
+  display: block;
+  width: 115px;
+  height: auto;
+  max-height: 50px;
+  object-fit: contain;
+}
