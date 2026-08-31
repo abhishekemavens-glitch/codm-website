@@ -462,3 +462,423 @@ button {
     font-size: 15px;
   }
 }
+
+/* =========================================================
+   CODM FOOTER
+   ========================================================= */
+
+.codm-footer {
+  position: relative;
+  width: 100%;
+  background:
+    radial-gradient(
+      circle at 85% 50%,
+      rgba(80, 72, 160, 0.12),
+      transparent 42%
+    ),
+    #080a10;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIN FOOTER
+   ========================================================= */
+
+.codm-footer-main {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 70px 40px 55px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 1.35fr)
+    repeat(3, minmax(160px, 1fr))
+    minmax(150px, 0.9fr);
+
+  gap: 55px;
+}
+
+
+/* =========================================================
+   BRAND COLUMN
+   ========================================================= */
+
+.codm-footer-brand {
+  min-width: 0;
+}
+
+.codm-footer-logo {
+  display: inline-flex;
+  align-items: center;
+
+  color: #ffffff;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -3px;
+
+  margin-bottom: 30px;
+}
+
+.codm-footer-logo-accent {
+  color: #7665ff;
+}
+
+
+.codm-footer-social {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+
+.codm-footer-social a {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+
+  color: #ffffff;
+  font-size: 18px;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.codm-footer-social a:hover {
+  border-color: #8273ff;
+  background: rgba(114, 92, 255, 0.14);
+  transform: translateY(-2px);
+}
+
+
+.codm-footer-description {
+  max-width: 350px;
+
+  margin: 0 0 34px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   LEFT LOGOS
+   ========================================================= */
+
+.codm-footer-left-logos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+
+.codm-footer-left-logo {
+  max-width: 125px;
+  max-height: 45px;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  opacity: 0.85;
+
+  filter: brightness(1.05);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.codm-footer-left-logo:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.codm-footer-column {
+  min-width: 0;
+}
+
+
+.codm-footer-column-title {
+  margin: 0 0 28px;
+
+  color: #ffffff;
+
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+
+.codm-footer-links {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+.codm-footer-links li {
+  margin: 0;
+  padding: 0;
+}
+
+
+.codm-footer-links a {
+  display: inline-block;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 15px;
+  line-height: 1.45;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.codm-footer-links a:hover {
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   AI / CUSTOM DEVELOPMENT DROPDOWN LOOK
+   ========================================================= */
+
+.codm-footer-subheading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 26px;
+  margin-bottom: 18px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+.codm-footer-subheading span {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   TRUST / CERTIFICATION AREA
+   ========================================================= */
+
+.codm-footer-certifications {
+  width: min(1240px, 100%);
+
+  margin: 0 auto;
+
+  padding:
+    25px 40px
+    10px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.codm-footer-certification-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+}
+
+
+.codm-footer-certification-logo {
+  width: auto;
+  max-width: 82px;
+  height: 65px;
+
+  object-fit: contain;
+
+  opacity: 0.95;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.codm-footer-certification-logo:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.codm-footer-bottom {
+  width: min(1240px, 100%);
+
+  margin: 0 auto;
+
+  padding:
+    35px 40px
+    22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.04);
+
+  color: rgba(255, 255, 255, 0.55);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+.codm-footer-bottom p {
+  margin: 0;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .codm-footer-main {
+    grid-template-columns:
+      1.3fr
+      repeat(2, 1fr);
+
+    gap: 45px;
+  }
+
+  .codm-footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .codm-footer-description {
+    max-width: 520px;
+  }
+
+  .codm-footer-certifications {
+    justify-content: flex-start;
+  }
+
+  .codm-footer-certification-list {
+    justify-content: flex-start;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .codm-footer-main {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    padding:
+      55px 22px
+      35px;
+
+    gap: 40px;
+  }
+
+
+  .codm-footer-brand {
+    grid-column: auto;
+  }
+
+
+  .codm-footer-logo {
+    font-size: 42px;
+  }
+
+
+  .codm-footer-description {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+
+  .codm-footer-column-title {
+    margin-bottom: 20px;
+  }
+
+
+  .codm-footer-links {
+    gap: 14px;
+  }
+
+
+  .codm-footer-certifications {
+    padding:
+      25px 22px
+      10px;
+
+    justify-content: flex-start;
+  }
+
+
+  .codm-footer-certification-list {
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+
+  .codm-footer-certification-logo {
+    max-width: 70px;
+    height: 55px;
+  }
+
+
+  .codm-footer-bottom {
+    padding:
+      25px 22px
+      20px;
+  }
+}
+
