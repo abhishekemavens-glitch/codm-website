@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 type FooterData = {
+  mainLogo: string;
   description: string;
   linkedin: string;
   twitter: string;
