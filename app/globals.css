@@ -955,3 +955,54 @@ header nav + div a {
   }
 
 }
+
+
+/* =========================================================
+   HEADER LOGO
+   ========================================================= */
+
+.codm-header-logo {
+  display: block;
+  width: 105px;
+  height: auto;
+  max-height: 50px;
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   HEADER NAVIGATION
+   ========================================================= */
+
+header nav a {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   HEADER CTA
+   ========================================================= */
+
+header .codm-header-logo {
+  transition: opacity 0.25s ease;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .codm-header-logo {
+    width: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .codm-header-logo {
+    width: 90px;
+  }
+}
