@@ -7,6 +7,8 @@ import TrustedBy from "../components/TrustedBy";
 import Testimonials from "../components/Testimonials";
 import LatestBlogs from "../components/LatestBlogs";
 import ContactCTA from "../components/ContactCTA";
+import Footer from "../components/Footer";
+
 
 export default function Home() {
   return (
@@ -20,6 +22,7 @@ export default function Home() {
       <Testimonials />
       <LatestBlogs />
       <ContactCTA />
+      <Footer />
     </>
   );
 }
