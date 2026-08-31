@@ -145,11 +145,13 @@ export default function Footer() {
         <div className="codm-footer-brand">
 
           <div className="codm-footer-logo">
-            cod
-            <span className="codm-footer-logo-accent">
-              m
-            </span>
-            .
+           {footer.mainLogo && (
+  <img
+    src={footer.mainLogo}
+    alt="CODM"
+    className="codm-footer-logo"
+  />
+)}
           </div>
 
           <div className="codm-footer-social">
