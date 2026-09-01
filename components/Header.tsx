@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 
 type HeaderData = {
   mainLogo: string;
-  mainLogoLight: string;
-  mainLogoDark: string;
   services: string;
   industries: string;
   caseStudies: string;
@@ -44,8 +41,6 @@ function parseLink(value: string) {
 }
 
 export default function Header() {
-  const { theme } = useTheme();
-
   const [header, setHeader] = useState<HeaderData | null>(null);
 
   useEffect(() => {
@@ -64,8 +59,6 @@ export default function Header() {
                     id
                     title
                     mainLogo
-                    mainLogoLight
-                    mainLogoDark
                     services
                     industries
                     caseStudies
@@ -91,24 +84,17 @@ export default function Header() {
         console.log("HEADER DATA:", result);
 
         if (result.errors) {
-          console.error(
-            "Header GraphQL Error:",
-            result.errors
-          );
+          console.error("Header GraphQL Error:", result.errors);
           return;
         }
 
-        const data =
-          result?.data?.codmHeaders?.nodes?.[0];
+        const data = result?.data?.codmHeaders?.nodes?.[0];
 
         if (data) {
           setHeader(data);
         }
       } catch (error) {
-        console.error(
-          "Failed to load Header:",
-          error
-        );
+        console.error("Failed to load Header:", error);
       }
     }
 
@@ -125,39 +111,26 @@ export default function Header() {
   const about = parseLink(header.about);
   const insights = parseLink(header.insights);
 
-  /*
-   * Use the correct WordPress logo for the active theme.
-   * Fall back to the existing mainLogo if one is missing.
-   */
-  const logo =
-    theme === "dark"
-      ? header.mainLogoDark || header.mainLogo
-      : header.mainLogoLight || header.mainLogo;
-
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-xl">
-
       <div className="mx-auto flex h-[78px] max-w-[1400px] items-center justify-between px-6 lg:px-10">
 
         {/* LOGO */}
-
         <a
           href="/"
           className="flex items-center"
           aria-label="CODM"
         >
-          {logo && (
+          {header.mainLogo && (
             <img
-              src={logo}
+              src={header.mainLogo}
               alt="CODM"
               className="codm-header-logo"
             />
           )}
         </a>
 
-
         {/* NAVIGATION */}
-
         <nav className="hidden items-center gap-8 text-sm font-medium lg:flex">
 
           {services.label && (
@@ -207,9 +180,7 @@ export default function Header() {
 
         </nav>
 
-
         {/* RIGHT */}
-
         <div className="flex items-center gap-3">
 
           <ThemeToggle />
@@ -226,7 +197,6 @@ export default function Header() {
         </div>
 
       </div>
-
     </header>
   );
 }
