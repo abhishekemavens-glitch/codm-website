@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* =========================================================
-   GLOBAL THEME VARIABLES
-   ========================================================= */
-
 :root {
   --background: #f7f7f5;
   --surface: #ffffff;
@@ -25,11 +21,6 @@
   --accent: #806cff;
   --accent-secondary: #a394ff;
 }
-
-
-/* =========================================================
-   GLOBAL
-   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -59,7 +50,7 @@ button {
 
 ::selection {
   background: var(--accent);
-  color: #ffffff;
+  color: white;
 }
 
 
@@ -89,118 +80,99 @@ button {
 
 .latest-blogs {
   width: 100%;
-  padding: 78px 7% 82px;
+  padding: 90px 7%;
   background: #edf3f9;
   color: #101424;
-
   transition:
     background-color 0.35s ease,
     color 0.35s ease;
 }
 
 .latest-blogs-header {
-  max-width: 760px;
-  margin: 0 auto 38px;
   text-align: center;
+  max-width: 850px;
+  margin: 0 auto 44px;
 }
 
 .latest-blogs .section-label {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-
-  margin-bottom: 20px;
-
-  color: #6e778b;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1.4px;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #687084;
   text-transform: uppercase;
 }
 
 .latest-blogs .section-label span {
-  width: 42px;
+  width: 48px;
   height: 1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #8a7cff
-    );
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #8b7cff
+  );
 }
 
 .latest-blogs .section-label span:last-child {
-  background:
-    linear-gradient(
-      90deg,
-      #8a7cff,
-      transparent
-    );
+  background: linear-gradient(
+    90deg,
+    #8b7cff,
+    transparent
+  );
 }
 
 .latest-blogs-header h2 {
   margin: 0;
-
-  color: #111525;
-
-  font-size: clamp(34px, 4vw, 52px);
+  font-size: clamp(38px, 4.5vw, 56px);
   line-height: 1.05;
   font-weight: 400;
-  letter-spacing: -2px;
+  letter-spacing: -2.5px;
+  color: #111525;
 }
 
 .latest-blogs-header h2 strong {
   font-weight: 400;
-
-  background:
-    linear-gradient(
-      90deg,
-      #7668ff,
-      #7562ea
-    );
-
+  background: linear-gradient(
+    90deg,
+    #7a6cff,
+    #6958e8
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .latest-blogs-header p {
-  max-width: 620px;
-  margin: 16px auto 0;
-
-  color: #7c8699;
-
-  font-size: 14px;
+  margin: 18px 0 0;
+  color: #737d91;
+  font-size: 16px;
   line-height: 1.5;
 }
 
 .latest-blogs-grid {
-  width: min(1180px, 100%);
+  width: min(1240px, 100%);
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 
 .latest-blogs .blog-card {
-  min-width: 0;
+  background: #f8fbff;
+  border: 1px solid rgba(92, 102, 130, 0.14);
+  border-radius: 12px;
+
+  padding: 18px 18px 22px;
+  min-height: 0;
 
   display: flex;
   flex-direction: column;
 
-  padding: 16px;
-
-  background: #f8fbff;
-
-  border: 1px solid rgba(99, 113, 142, 0.12);
-  border-radius: 10px;
-
-  box-shadow:
-    0 8px 24px
-    rgba(42, 57, 89, 0.045);
+  box-shadow: 0 8px 24px rgba(42, 57, 89, 0.04);
 
   transition:
     transform 0.3s ease,
@@ -210,56 +182,41 @@ button {
 
 .latest-blogs .blog-card:hover {
   transform: translateY(-4px);
-
-  border-color:
-    rgba(114, 92, 255, 0.24);
-
-  box-shadow:
-    0 14px 32px
-    rgba(42, 57, 89, 0.08);
+  border-color: rgba(114, 92, 255, 0.26);
+  box-shadow: 0 14px 32px rgba(42, 57, 89, 0.08);
 }
 
 .latest-blogs .blog-categories {
   display: flex;
   flex-wrap: wrap;
-
-  gap: 6px;
+  gap: 7px;
+  min-height: auto;
   margin-bottom: 12px;
 }
 
 .latest-blogs .blog-categories span {
-  display: inline-flex;
-  align-items: center;
+  border: 1px solid #d6dbe5;
+  background: #ffffff;
+  color: #737c8e;
 
   padding: 5px 8px;
-
-  background: #ffffff;
-
-  border: 1px solid #dce1e9;
-  border-radius: 3px;
-
-  color: #7a8394;
-
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1;
+  border-radius: 3px;
 }
 
 .latest-blogs .blog-image {
   width: 100%;
-  height: 158px;
-
-  margin-bottom: 14px;
-
+  height: 165px;
   overflow: hidden;
   border-radius: 7px;
+  margin-bottom: 16px;
 }
 
 .latest-blogs .blog-image img {
-  display: block;
-
   width: 100%;
   height: 100%;
-
+  display: block;
   object-fit: cover;
 
   transition: transform 0.4s ease;
@@ -271,27 +228,24 @@ button {
 
 .latest-blogs .blog-card h3 {
   margin: 0;
-
-  color: #252c3d;
-
-  font-size: 15px;
+  color: #202637;
+  font-size: 16px;
   line-height: 1.4;
   font-weight: 500;
 }
 
 .latest-blogs .blog-card a {
+  margin-top: 18px;
+  padding-top: 0;
+
+  text-decoration: none;
+  color: #6f68c9;
+
+  font-size: 13px;
+
   display: flex;
   align-items: center;
-  gap: 6px;
-
-  margin-top: 16px;
-
-  color: #7168d0;
-
-  font-size: 12px;
-  text-decoration: none;
-
-  transition: color 0.2s ease;
+  gap: 7px;
 }
 
 .latest-blogs .blog-card a:hover {
@@ -299,13 +253,13 @@ button {
 }
 
 .latest-blogs .blog-card a span {
-  font-size: 17px;
+  font-size: 18px;
 }
 
 
-/* =========================================================
-   LATEST BLOGS — DARK
-   ========================================================= */
+/* ---------------------------------------------------------
+   DARK MODE
+   --------------------------------------------------------- */
 
 [data-theme="dark"] .latest-blogs {
   background: #070918;
@@ -322,16 +276,13 @@ button {
 
 [data-theme="dark"] .latest-blogs .blog-card {
   background: #15182c;
-
-  border-color:
-    rgba(130, 130, 180, 0.08);
-
+  border-color: rgba(130, 130, 180, 0.08);
   box-shadow: none;
 }
 
 [data-theme="dark"] .latest-blogs .blog-categories span {
-  background: transparent;
   border-color: #424762;
+  background: transparent;
   color: #9da5bb;
 }
 
@@ -340,17 +291,17 @@ button {
 }
 
 [data-theme="dark"] .latest-blogs .blog-card a {
-  color: #8a80dd;
+  color: #727a91;
 }
 
 
 /* =========================================================
-   LATEST BLOGS — RESPONSIVE
+   LATEST BLOGS RESPONSIVE
    ========================================================= */
 
 @media (max-width: 900px) {
   .latest-blogs {
-    padding: 70px 5%;
+    padding: 75px 5%;
   }
 
   .latest-blogs-grid {
@@ -361,24 +312,20 @@ button {
 
 @media (max-width: 600px) {
   .latest-blogs {
-    padding: 58px 20px 64px;
-  }
-
-  .latest-blogs-header {
-    margin-bottom: 30px;
+    padding: 60px 20px;
   }
 
   .latest-blogs-header h2 {
-    font-size: 37px;
-    letter-spacing: -1.5px;
+    font-size: 38px;
+    letter-spacing: -1.8px;
   }
 
   .latest-blogs-header p {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .latest-blogs .blog-card {
-    padding: 14px;
+    padding: 16px;
   }
 
   .latest-blogs .blog-image {
@@ -393,9 +340,8 @@ button {
 
 .contact-cta {
   position: relative;
-
   width: 100%;
-  min-height: 410px;
+  min-height: 420px;
 
   overflow: hidden;
 
@@ -405,17 +351,17 @@ button {
 
   background:
     radial-gradient(
-      circle at 50% -20%,
-      rgba(126, 104, 255, 0.18),
-      transparent 48%
+      circle at 50% 0%,
+      rgba(138, 119, 255, 0.17),
+      transparent 42%
     ),
     linear-gradient(
       180deg,
-      #eaf1f7 0%,
-      #e3edf6 100%
+      #e8f0f7 0%,
+      #e4edf6 100%
     );
 
-  color: #11182b;
+  color: #101424;
 
   transition:
     background 0.35s ease,
@@ -433,13 +379,13 @@ button {
       0deg,
       transparent 0,
       transparent 71px,
-      rgba(85, 104, 137, 0.035) 72px
+      rgba(72, 91, 125, 0.035) 72px
     ),
     repeating-linear-gradient(
       90deg,
       transparent 0,
       transparent 71px,
-      rgba(85, 104, 137, 0.035) 72px
+      rgba(72, 91, 125, 0.035) 72px
     );
 
   pointer-events: none;
@@ -448,25 +394,25 @@ button {
 .contact-cta-glow {
   position: absolute;
 
-  top: -180px;
+  top: -170px;
   left: 50%;
 
-  width: 720px;
-  height: 350px;
-
   transform: translateX(-50%);
+
+  width: 760px;
+  height: 360px;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       ellipse,
-      rgba(122, 98, 255, 0.23) 0%,
-      rgba(122, 98, 255, 0.09) 42%,
-      transparent 74%
+      rgba(119, 91, 255, 0.25) 0%,
+      rgba(119, 91, 255, 0.10) 40%,
+      transparent 72%
     );
 
-  filter: blur(25px);
+  filter: blur(24px);
 
   pointer-events: none;
 }
@@ -476,9 +422,9 @@ button {
   z-index: 1;
 
   width: 100%;
-  max-width: 900px;
+  max-width: 950px;
 
-  padding: 78px 30px;
+  padding: 85px 30px;
 
   text-align: center;
 }
@@ -489,39 +435,37 @@ button {
   justify-content: center;
 
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .contact-cta-label span {
-  width: 44px;
+  width: 48px;
   height: 1px;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #8b7cff
-    );
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #8a7cff
+  );
 }
 
 .contact-cta-label span:last-child {
-  background:
-    linear-gradient(
-      90deg,
-      #8b7cff,
-      transparent
-    );
+  background: linear-gradient(
+    90deg,
+    #8a7cff,
+    transparent
+  );
 }
 
 .contact-cta-label p {
   margin: 0;
 
-  color: #6e788b;
+  color: #687287;
 
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
@@ -530,7 +474,7 @@ button {
 
   color: #11182b;
 
-  font-size: clamp(45px, 5.2vw, 68px);
+  font-size: clamp(46px, 5.3vw, 70px);
   line-height: 1;
   font-weight: 400;
 
@@ -540,13 +484,12 @@ button {
 .contact-cta h2 strong {
   font-weight: 400;
 
-  background:
-    linear-gradient(
-      90deg,
-      #7365ff 0%,
-      #7669ef 45%,
-      #6477ed 100%
-    );
+  background: linear-gradient(
+    90deg,
+    #6f63ff 0%,
+    #7668f3 45%,
+    #6579ee 100%
+  );
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -554,13 +497,13 @@ button {
 }
 
 .contact-cta-description {
-  max-width: 700px;
+  margin: 25px auto 0;
 
-  margin: 24px auto 0;
+  max-width: 720px;
 
-  color: #7a8598;
+  color: #7a8496;
 
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
@@ -571,29 +514,27 @@ button {
 
   gap: 8px;
 
-  margin-top: 28px;
+  margin-top: 30px;
 
-  padding: 12px 22px;
+  padding: 13px 22px;
 
   border-radius: 999px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #8475ff,
-      #7564ed
-    );
+  background: linear-gradient(
+    135deg,
+    #8475ff,
+    #7665ef
+  );
 
   color: #ffffff;
 
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 
   text-decoration: none;
 
   box-shadow:
-    0 8px 22px
-    rgba(111, 87, 255, 0.21);
+    0 8px 24px rgba(111, 87, 255, 0.22);
 
   transition:
     transform 0.25s ease,
@@ -604,19 +545,18 @@ button {
   transform: translateY(-2px);
 
   box-shadow:
-    0 12px 28px
-    rgba(111, 87, 255, 0.30);
+    0 12px 30px rgba(111, 87, 255, 0.30);
 }
 
 .contact-cta-button span {
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1;
 }
 
 
-/* =========================================================
-   CONTACT CTA — DARK
-   ========================================================= */
+/* ---------------------------------------------------------
+   DARK MODE
+   --------------------------------------------------------- */
 
 [data-theme="dark"] .contact-cta {
   background:
@@ -654,49 +594,49 @@ button {
 
 
 /* =========================================================
-   CONTACT CTA — RESPONSIVE
+   CONTACT CTA RESPONSIVE
    ========================================================= */
 
 @media (max-width: 900px) {
-  .contact-cta {
-    min-height: 390px;
-  }
-
-  .contact-cta-content {
-    padding: 70px 25px;
-  }
-
-  .contact-cta h2 {
-    letter-spacing: -2.5px;
-  }
-}
-
-@media (max-width: 600px) {
   .contact-cta {
     min-height: 400px;
   }
 
   .contact-cta-content {
-    padding: 62px 20px;
-  }
-
-  .contact-cta-label span {
-    width: 32px;
-  }
-
-  .contact-cta-label p {
-    font-size: 9px;
+    padding: 75px 25px;
   }
 
   .contact-cta h2 {
-    font-size: 40px;
+    letter-spacing: -2.5px;
+  }
+
+  .contact-cta-description {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-cta {
+    min-height: 420px;
+  }
+
+  .contact-cta-content {
+    padding: 65px 20px;
+  }
+
+  .contact-cta-label span {
+    width: 35px;
+  }
+
+  .contact-cta h2 {
+    font-size: 42px;
     line-height: 1.02;
     letter-spacing: -2px;
   }
 
   .contact-cta-description {
-    margin-top: 20px;
-    font-size: 13px;
+    margin-top: 22px;
+    font-size: 14px;
   }
 
   .contact-cta-description br {
@@ -704,37 +644,20 @@ button {
   }
 
   .contact-cta-button {
-    margin-top: 26px;
-    padding: 11px 20px;
-    font-size: 12px;
+    margin-top: 28px;
+    padding: 12px 20px;
+    font-size: 13px;
   }
 }
 
 
 /* =========================================================
-   FOOTER
+   FOOTER MAIN
    ========================================================= */
-
-.codm-footer {
-  position: relative;
-  width: 100%;
-
-  background:
-    radial-gradient(
-      circle at 85% 50%,
-      rgba(80, 72, 160, 0.12),
-      transparent 42%
-    ),
-    #080a10;
-
-  color: #ffffff;
-  overflow: hidden;
-}
 
 .codm-footer-main {
   width: min(1240px, 100%);
   margin: 0 auto;
-
   padding: 70px 40px 55px;
 
   display: grid;
@@ -747,6 +670,11 @@ button {
   gap: 55px;
 }
 
+
+/* =========================================================
+   FOOTER BRAND
+   ========================================================= */
+
 .codm-footer-brand {
   min-width: 0;
 }
@@ -754,27 +682,27 @@ button {
 .codm-footer-logo {
   display: flex;
   align-items: center;
-
   width: 150px;
   height: auto;
-
   margin-bottom: 30px;
 }
 
 .codm-footer-main-logo {
   display: block;
-
   width: 150px;
   height: auto;
   max-width: 100%;
-
   object-fit: contain;
 }
+
+
+/* =========================================================
+   FOOTER SOCIAL
+   ========================================================= */
 
 .codm-footer-social {
   display: flex;
   align-items: center;
-
   gap: 12px;
   margin-bottom: 32px;
 }
@@ -802,26 +730,31 @@ button {
 .codm-footer-social a:hover {
   border-color: #8273ff;
   background: rgba(114, 92, 255, 0.14);
-
   transform: translateY(-2px);
 }
 
+
+/* =========================================================
+   FOOTER DESCRIPTION
+   ========================================================= */
+
 .codm-footer-description {
   max-width: 350px;
-
   margin: 0 0 34px;
-
   color: rgba(255, 255, 255, 0.82);
-
   font-size: 18px;
   line-height: 1.65;
 }
+
+
+/* =========================================================
+   FOOTER LEFT LOGOS
+   ========================================================= */
 
 .codm-footer-left-logos {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
   gap: 18px;
 }
 
@@ -847,15 +780,18 @@ button {
   transform: translateY(-2px);
 }
 
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
 .codm-footer-column {
   min-width: 0;
 }
 
 .codm-footer-column-title {
   margin: 0 0 28px;
-
   color: #ffffff;
-
   font-size: 16px;
   line-height: 1.3;
   font-weight: 600;
@@ -863,7 +799,6 @@ button {
 
 .codm-footer-links {
   list-style: none;
-
   padding: 0;
   margin: 0;
 
@@ -896,6 +831,11 @@ button {
   transform: translateX(2px);
 }
 
+
+/* =========================================================
+   AI / CUSTOM DEVELOPMENT DROPDOWN
+   ========================================================= */
+
 .codm-footer-subheading {
   display: flex;
   align-items: center;
@@ -915,11 +855,18 @@ button {
   font-size: 14px;
 }
 
+
+/* =========================================================
+   FOOTER CERTIFICATIONS
+   ========================================================= */
+
 .codm-footer-certifications {
   width: min(1240px, 100%);
   margin: 0 auto;
 
-  padding: 25px 40px 10px;
+  padding:
+    25px 40px
+    10px;
 
   display: flex;
   justify-content: flex-end;
@@ -930,9 +877,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   flex-wrap: wrap;
-
   gap: 20px;
 }
 
@@ -942,7 +887,6 @@ button {
   height: 65px;
 
   object-fit: contain;
-
   opacity: 0.95;
 
   transition:
@@ -955,11 +899,18 @@ button {
   transform: translateY(-3px);
 }
 
+
+/* =========================================================
+   FOOTER COPYRIGHT
+   ========================================================= */
+
 .codm-footer-bottom {
   width: min(1240px, 100%);
   margin: 0 auto;
 
-  padding: 35px 40px 22px;
+  padding:
+    35px 40px
+    22px;
 
   display: flex;
   align-items: center;
@@ -980,10 +931,11 @@ button {
 
 
 /* =========================================================
-   FOOTER RESPONSIVE
+   FOOTER TABLET
    ========================================================= */
 
 @media (max-width: 1100px) {
+
   .codm-footer-main {
     grid-template-columns:
       1.3fr
@@ -1009,12 +961,20 @@ button {
   }
 }
 
+
+/* =========================================================
+   FOOTER MOBILE
+   ========================================================= */
+
 @media (max-width: 700px) {
+
   .codm-footer-main {
     display: grid;
     grid-template-columns: 1fr;
 
-    padding: 55px 22px 35px;
+    padding:
+      55px 22px
+      35px;
 
     gap: 40px;
   }
@@ -1046,7 +1006,9 @@ button {
   }
 
   .codm-footer-certifications {
-    padding: 25px 22px 10px;
+    padding:
+      25px 22px
+      10px;
 
     justify-content: flex-start;
   }
@@ -1062,20 +1024,35 @@ button {
   }
 
   .codm-footer-bottom {
-    padding: 25px 22px 20px;
+    padding:
+      25px 22px
+      20px;
   }
 }
 
 
 /* =========================================================
-   HEADER
+   CODM HEADER
    ========================================================= */
+
+/*
+ * Your Header.tsx currently uses:
+ *
+ * h-[78px]
+ *
+ * so we keep the desktop header at 78px.
+ */
 
 header {
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
 }
+
+
+/* =========================================================
+   HEADER LOGO
+   ========================================================= */
 
 .codm-header-logo {
   display: block;
@@ -1097,6 +1074,11 @@ header {
   opacity: 0.92;
 }
 
+
+/* =========================================================
+   HEADER NAVIGATION
+   ========================================================= */
+
 header nav a {
   color: var(--foreground);
 
@@ -1104,6 +1086,7 @@ header nav a {
   font-weight: 500;
 
   line-height: 1;
+
   white-space: nowrap;
 
   transition:
@@ -1114,6 +1097,11 @@ header nav a {
 header nav a:hover {
   opacity: 0.55;
 }
+
+
+/* =========================================================
+   HEADER CTA
+   ========================================================= */
 
 header > div > div:last-child > a {
   transition:
@@ -1126,7 +1114,13 @@ header > div > div:last-child > a:hover {
   transform: translateY(-1px) scale(1.02);
 }
 
+
+/* =========================================================
+   HEADER TABLET
+   ========================================================= */
+
 @media (max-width: 1024px) {
+
   .codm-header-logo {
     width: 100px;
     max-width: 100px;
@@ -1139,9 +1133,16 @@ header > div > div:last-child > a:hover {
   header nav a {
     font-size: 12px;
   }
+
 }
 
+
+/* =========================================================
+   HEADER MOBILE
+   ========================================================= */
+
 @media (max-width: 767px) {
+
   .codm-header-logo {
     width: 92px;
     max-width: 92px;
@@ -1150,32 +1151,35 @@ header > div > div:last-child > a:hover {
   header nav {
     display: none;
   }
-}
 
-@media (max-width: 480px) {
-  .codm-header-logo {
-    width: 88px;
-    max-width: 88px;
-  }
 }
 
 
 /* =========================================================
-   TESTIMONIALS
+   HEADER SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .codm-header-logo {
+    width: 88px;
+    max-width: 88px;
+  }
+
+}
+
+
+/* =========================================================
+   CODM TESTIMONIALS
    ========================================================= */
 
 .codm-testimonials {
   position: relative;
-
   width: 100%;
-
   padding: 88px 20px 78px;
-
   background: var(--background);
   color: var(--foreground);
-
   overflow: hidden;
-
   transition:
     background-color 0.35s ease,
     color 0.35s ease;
@@ -1195,7 +1199,6 @@ header > div > div:last-child > a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -1204,36 +1207,29 @@ header > div > div:last-child > a:hover {
 .codm-testimonials-eyebrow > span:last-child {
   width: 42px;
   height: 1px;
-
   display: block;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(114, 92, 255, 0.45)
-    );
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(114, 92, 255, 0.45)
+  );
 }
 
 .codm-testimonials-eyebrow > span:last-child {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(114, 92, 255, 0.45),
-      transparent
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(114, 92, 255, 0.45),
+    transparent
+  );
 }
 
 .codm-testimonials-eyebrow-text {
   width: auto !important;
   height: auto !important;
-
   color: #7b8394;
-
   font-size: 10px;
   line-height: 1;
   font-weight: 500;
-
   letter-spacing: 1.4px;
   text-transform: uppercase;
 }
@@ -1249,25 +1245,21 @@ header > div > div:last-child > a:hover {
 
 .codm-testimonials-heading-wrap h2 {
   margin: 0;
-
   color: #111525;
-
   font-size: clamp(38px, 4vw, 54px);
   line-height: 1.04;
   font-weight: 400;
-
   letter-spacing: -2.4px;
 }
 
 .codm-testimonials-heading-wrap h2 span {
   display: block;
 
-  background:
-    linear-gradient(
-      90deg,
-      #7568ff,
-      #7562ea
-    );
+  background: linear-gradient(
+    90deg,
+    #7568ff,
+    #7562ea
+  );
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1283,7 +1275,6 @@ header > div > div:last-child > a:hover {
   position: relative;
 
   width: 100%;
-
   margin-top: 38px;
 
   overflow: hidden;
@@ -1300,8 +1291,7 @@ header > div > div:last-child > a:hover {
     );
 
   box-shadow:
-    0 14px 40px
-    rgba(40, 53, 84, 0.06);
+    0 14px 40px rgba(40, 53, 84, 0.06);
 
   transition:
     background 0.35s ease,
@@ -1424,7 +1414,6 @@ header > div > div:last-child > a:hover {
 
   width: 100%;
   height: 100%;
-
   min-height: 300px;
 
   color: #7d8698;
@@ -1451,7 +1440,7 @@ header > div > div:last-child > a:hover {
 
 
 /* =========================================================
-   TESTIMONIAL QUOTES
+   QUOTES
    ========================================================= */
 
 .codm-testimonial-opening-quote,
@@ -1464,7 +1453,6 @@ header > div > div:last-child > a:hover {
     rgba(114, 92, 255, 0.13);
 
   line-height: 1;
-
   pointer-events: none;
 }
 
@@ -1558,6 +1546,7 @@ header > div > div:last-child > a:hover {
   border-radius: 50%;
 
   background: #ffffff;
+
   color: #343b4d;
 
   font-size: 13px;
@@ -1573,7 +1562,9 @@ header > div > div:last-child > a:hover {
 
 .codm-testimonial-nav-button:hover {
   background: #7567ef;
+
   border-color: #7567ef;
+
   color: #ffffff;
 
   transform: translateY(-1px);
@@ -1587,7 +1578,6 @@ header > div > div:last-child > a:hover {
 .codm-testimonial-dots {
   display: flex;
   align-items: center;
-
   gap: 6px;
 }
 
@@ -1619,7 +1609,7 @@ header > div > div:last-child > a:hover {
 
 
 /* =========================================================
-   TESTIMONIAL DARK
+   TESTIMONIAL DARK MODE
    ========================================================= */
 
 [data-theme="dark"] .codm-testimonials-heading-wrap h2 {
@@ -1663,10 +1653,11 @@ header > div > div:last-child > a:hover {
 
 
 /* =========================================================
-   TESTIMONIAL RESPONSIVE
+   TESTIMONIAL TABLET
    ========================================================= */
 
 @media (max-width: 800px) {
+
   .codm-testimonials {
     padding: 72px 18px;
   }
@@ -1688,11 +1679,19 @@ header > div > div:last-child > a:hover {
     min-height: 300px;
     padding: 42px 30px 40px;
   }
+
 }
 
+
+/* =========================================================
+   TESTIMONIAL MOBILE
+   ========================================================= */
+
 @media (max-width: 600px) {
+
   .codm-testimonials {
-    padding: 62px 16px 66px;
+    padding:
+      62px 16px 66px;
   }
 
   .codm-testimonials-heading-wrap h2 {
@@ -1710,18 +1709,21 @@ header > div > div:last-child > a:hover {
   }
 
   .codm-testimonial-content {
-    padding: 38px 22px 34px;
+    padding:
+      38px 22px 34px;
   }
 
   .codm-testimonial-opening-quote {
     left: 20px;
     top: 8px;
+
     font-size: 58px;
   }
 
   .codm-testimonial-closing-quote {
     right: 18px;
     bottom: -7px;
+
     font-size: 68px;
   }
 
@@ -1729,25 +1731,696 @@ header > div > div:last-child > a:hover {
     font-size: 13px;
     line-height: 1.65;
   }
+
 }
 
 
 /* =========================================================
-   HEADER LOGO — SAFE FALLBACK
+   LATEST BLOGS
    ========================================================= */
 
-.codm-header-logo {
-  display: block;
-  width: 105px;
-  height: auto;
-  max-width: 105px;
-  max-height: 50px;
-  object-fit: contain;
+.latest-blogs {
+  width: 100%;
+
+  padding: 78px 7% 82px;
+
+  background: #edf3f9;
+
+  color: #101424;
+
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
-@media (max-width: 767px) {
-  .codm-header-logo {
-    width: 92px;
-    max-width: 92px;
+.latest-blogs-header {
+  max-width: 760px;
+
+  margin: 0 auto 38px;
+
+  text-align: center;
+}
+
+.latest-blogs .section-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+
+  color: #6e778b;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+.latest-blogs .section-label span {
+  width: 42px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #8a7cff
+    );
+}
+
+.latest-blogs .section-label span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #8a7cff,
+      transparent
+    );
+}
+
+.latest-blogs-header h2 {
+  margin: 0;
+
+  color: #111525;
+
+  font-size:
+    clamp(34px, 4vw, 52px);
+
+  line-height: 1.05;
+
+  font-weight: 400;
+
+  letter-spacing: -2px;
+}
+
+.latest-blogs-header h2 strong {
+  font-weight: 400;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7668ff,
+      #7562ea
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.latest-blogs-header p {
+  max-width: 620px;
+
+  margin: 16px auto 0;
+
+  color: #7c8699;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.latest-blogs-grid {
+  width: min(1180px, 100%);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.latest-blogs .blog-card {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 16px;
+
+  background: #f8fbff;
+
+  border:
+    1px solid
+    rgba(99, 113, 142, 0.12);
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 8px 24px
+    rgba(42, 57, 89, 0.045);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.latest-blogs .blog-card:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(114, 92, 255, 0.24);
+
+  box-shadow:
+    0 14px 32px
+    rgba(42, 57, 89, 0.08);
+}
+
+.latest-blogs .blog-categories {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-bottom: 12px;
+}
+
+.latest-blogs .blog-categories span {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 8px;
+
+  background: #ffffff;
+
+  border:
+    1px solid #dce1e9;
+
+  border-radius: 3px;
+
+  color: #7a8394;
+
+  font-size: 10px;
+
+  line-height: 1;
+}
+
+.latest-blogs .blog-image {
+  width: 100%;
+  height: 158px;
+
+  margin-bottom: 14px;
+
+  overflow: hidden;
+
+  border-radius: 7px;
+}
+
+.latest-blogs .blog-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.4s ease;
+}
+
+.latest-blogs .blog-card:hover
+.blog-image img {
+  transform: scale(1.04);
+}
+
+.latest-blogs .blog-card h3 {
+  margin: 0;
+
+  color: #252c3d;
+
+  font-size: 15px;
+
+  line-height: 1.4;
+
+  font-weight: 500;
+}
+
+.latest-blogs .blog-card a {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 16px;
+
+  color: #7168d0;
+
+  font-size: 12px;
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.latest-blogs .blog-card a:hover {
+  color: #5748d8;
+}
+
+.latest-blogs .blog-card a span {
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   LATEST BLOGS — DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] .latest-blogs {
+  background: #070918;
+  color: #ffffff;
+}
+
+[data-theme="dark"]
+.latest-blogs-header h2 {
+  color: #f5f6fb;
+}
+
+[data-theme="dark"]
+.latest-blogs-header p {
+  color: #a7adbf;
+}
+
+[data-theme="dark"]
+.latest-blogs .blog-card {
+  background: #15182c;
+
+  border-color:
+    rgba(130, 130, 180, 0.08);
+
+  box-shadow: none;
+}
+
+[data-theme="dark"]
+.latest-blogs .blog-categories span {
+  background: transparent;
+
+  border-color: #424762;
+
+  color: #9da5bb;
+}
+
+[data-theme="dark"]
+.latest-blogs .blog-card h3 {
+  color: #d5d8e4;
+}
+
+[data-theme="dark"]
+.latest-blogs .blog-card a {
+  color: #8a80dd;
+}
+
+
+/* =========================================================
+   LATEST BLOGS RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .latest-blogs {
+    padding: 70px 5%;
   }
+
+  .latest-blogs-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .latest-blogs {
+    padding: 58px 20px 64px;
+  }
+
+  .latest-blogs-header {
+    margin-bottom: 30px;
+  }
+
+  .latest-blogs-header h2 {
+    font-size: 37px;
+    letter-spacing: -1.5px;
+  }
+
+  .latest-blogs-header p {
+    font-size: 14px;
+  }
+
+  .latest-blogs .blog-card {
+    padding: 14px;
+  }
+
+  .latest-blogs .blog-image {
+    height: 190px;
+  }
+
+}
+
+
+/* =========================================================
+   CONTACT CTA
+   ========================================================= */
+
+.contact-cta {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 410px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(126, 104, 255, 0.18),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      #eaf1f7 0%,
+      #e3edf6 100%
+    );
+
+  color: #11182b;
+
+  transition:
+    background 0.35s ease,
+    color 0.35s ease;
+}
+
+.contact-cta::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 71px,
+      rgba(85, 104, 137, 0.035) 72px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 71px,
+      rgba(85, 104, 137, 0.035) 72px
+    );
+
+  pointer-events: none;
+}
+
+.contact-cta-glow {
+  position: absolute;
+
+  top: -180px;
+  left: 50%;
+
+  width: 720px;
+  height: 350px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(122, 98, 255, 0.23) 0%,
+      rgba(122, 98, 255, 0.09) 42%,
+      transparent 74%
+    );
+
+  filter: blur(25px);
+
+  pointer-events: none;
+}
+
+.contact-cta-content {
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  padding: 78px 30px;
+
+  text-align: center;
+}
+
+.contact-cta-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.contact-cta-label span {
+  width: 44px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #8b7cff
+    );
+}
+
+.contact-cta-label span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #8b7cff,
+      transparent
+    );
+}
+
+.contact-cta-label p {
+  margin: 0;
+
+  color: #6e788b;
+
+  font-size: 10px;
+
+  font-weight: 500;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.contact-cta h2 {
+  margin: 0;
+
+  color: #11182b;
+
+  font-size:
+    clamp(45px, 5.2vw, 68px);
+
+  line-height: 1;
+
+  font-weight: 400;
+
+  letter-spacing: -3px;
+}
+
+.contact-cta h2 strong {
+  font-weight: 400;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7365ff 0%,
+      #7669ef 45%,
+      #6477ed 100%
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-cta-description {
+  max-width: 700px;
+
+  margin: 24px auto 0;
+
+  color: #7a8598;
+
+  font-size: 14px;
+
+  line-height: 1.55;
+}
+
+.contact-cta-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 28px;
+
+  padding: 12px 22px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8475ff,
+      #7564ed
+    );
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 22px
+    rgba(111, 87, 255, 0.21);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.contact-cta-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px
+    rgba(111, 87, 255, 0.30);
+}
+
+.contact-cta-button span {
+  font-size: 17px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   CONTACT CTA — DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] .contact-cta {
+  background:
+    linear-gradient(
+      rgba(8, 10, 27, 0.92),
+      rgba(5, 7, 20, 0.98)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 71px,
+      rgba(255, 255, 255, 0.055) 72px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 71px,
+      rgba(255, 255, 255, 0.055) 72px
+    );
+
+  color: #ffffff;
+}
+
+[data-theme="dark"] .contact-cta-label p {
+  color: #c7c9dc;
+}
+
+[data-theme="dark"] .contact-cta h2 {
+  color: #f5f5fa;
+}
+
+[data-theme="dark"] .contact-cta-description {
+  color: #aab0c4;
+}
+
+
+/* =========================================================
+   CONTACT CTA RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .contact-cta {
+    min-height: 390px;
+  }
+
+  .contact-cta-content {
+    padding: 70px 25px;
+  }
+
+  .contact-cta h2 {
+    letter-spacing: -2.5px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .contact-cta {
+    min-height: 400px;
+  }
+
+  .contact-cta-content {
+    padding: 62px 20px;
+  }
+
+  .contact-cta-label span {
+    width: 32px;
+  }
+
+  .contact-cta-label p {
+    font-size: 9px;
+  }
+
+  .contact-cta h2 {
+    font-size: 40px;
+    line-height: 1.02;
+    letter-spacing: -2px;
+  }
+
+  .contact-cta-description {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+
+  .contact-cta-description br {
+    display: none;
+  }
+
+  .contact-cta-button {
+    margin-top: 26px;
+    padding: 11px 20px;
+    font-size: 12px;
+  }
+
 }
