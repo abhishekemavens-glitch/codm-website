@@ -652,6 +652,25 @@ button {
 
 
 /* =========================================================
+   FOOTER ROOT
+   ========================================================= */
+
+.codm-footer {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #080a10;
+  color: #ffffff;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+[data-theme="dark"] .codm-footer {
+  background: #080a10;
+  color: #ffffff;
+}
+
+
+/* =========================================================
    FOOTER MAIN
    ========================================================= */
 
