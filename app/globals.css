@@ -1006,3 +1006,24 @@ header .codm-header-logo {
     width: 90px;
   }
 }
+
+
+.codm-header-logo {
+  display: block;
+  width: 105px;
+  height: auto;
+  max-height: 50px;
+  object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .codm-header-logo {
+    width: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .codm-header-logo {
+    width: 90px;
+  }
+}
