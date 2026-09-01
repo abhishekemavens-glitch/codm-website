@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 
 type HeaderData = {
   mainLogo: string;
+  mainLogoLight: string;
+  mainLogoDark: string;
   services: string;
   industries: string;
   caseStudies: string;
@@ -41,6 +44,8 @@ function parseLink(value: string) {
 }
 
 export default function Header() {
+  const { theme } = useTheme();
+
   const [header, setHeader] = useState<HeaderData | null>(null);
 
   useEffect(() => {
@@ -59,6 +64,8 @@ export default function Header() {
                     id
                     title
                     mainLogo
+                    mainLogoLight
+                    mainLogoDark
                     services
                     industries
                     caseStudies
@@ -118,6 +125,15 @@ export default function Header() {
   const about = parseLink(header.about);
   const insights = parseLink(header.insights);
 
+  /*
+   * Use the correct WordPress logo for the active theme.
+   * Fall back to the existing mainLogo if one is missing.
+   */
+  const logo =
+    theme === "dark"
+      ? header.mainLogoDark || header.mainLogo
+      : header.mainLogoLight || header.mainLogo;
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-xl">
 
@@ -130,9 +146,9 @@ export default function Header() {
           className="flex items-center"
           aria-label="CODM"
         >
-          {header.mainLogo && (
+          {logo && (
             <img
-              src={header.mainLogo}
+              src={logo}
               alt="CODM"
               className="codm-header-logo"
             />
