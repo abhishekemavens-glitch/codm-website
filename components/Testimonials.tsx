@@ -91,22 +91,18 @@ export default function Testimonials() {
     loadTestimonials();
   }, []);
 
-  /* =========================
+  /* =====================================================
      LOADING
-  ========================= */
+     ===================================================== */
 
   if (loading) {
     return (
       <section
         id="testimonials"
-        className="
-          bg-[var(--background)]
-          py-[90px]
-          md:py-[110px]
-        "
+        className="codm-testimonials"
       >
-        <div className="mx-auto max-w-[1100px] px-6 text-center">
-          <p className="text-sm text-[var(--muted)]">
+        <div className="codm-testimonials-container">
+          <p className="codm-testimonials-loading">
             Loading...
           </p>
         </div>
@@ -114,9 +110,9 @@ export default function Testimonials() {
     );
   }
 
-  /* =========================
+  /* =====================================================
      EMPTY
-  ========================= */
+     ===================================================== */
 
   if (!testimonials.length) {
     return null;
@@ -125,88 +121,43 @@ export default function Testimonials() {
   const testimonial =
     testimonials[activeIndex];
 
+  /* =====================================================
+     RENDER
+     ===================================================== */
+
   return (
     <section
       id="testimonials"
-      className="
-        relative
-        overflow-hidden
-        bg-[var(--background)]
-        py-[90px]
-        transition-colors
-        duration-500
-        md:py-[110px]
-      "
+      className="codm-testimonials"
     >
-      <div className="mx-auto max-w-[1100px] px-6">
+      <div className="codm-testimonials-container">
 
-        {/* =========================
+        {/* =================================================
             EYEBROW
-        ========================= */}
+            ================================================= */}
 
-        <div className="mb-6 flex items-center justify-center gap-3">
+        <div className="codm-testimonials-eyebrow">
 
-          <span
-            className="
-              h-px
-              w-12
-              bg-[var(--accent)]/40
-            "
-          />
+          <span />
 
-          <span
-            className="
-              text-[10px]
-              font-medium
-              uppercase
-              tracking-[0.14em]
-              text-[var(--muted)]
-            "
-          >
+          <span className="codm-testimonials-eyebrow-text">
             Testimonial
           </span>
 
-          <span
-            className="
-              h-px
-              w-12
-              bg-[var(--accent)]/40
-            "
-          />
+          <span />
 
         </div>
 
 
-        {/* =========================
+        {/* =================================================
             HEADING
-        ========================= */}
+            ================================================= */}
 
-        <div className="mx-auto max-w-[800px] text-center">
+        <div className="codm-testimonials-heading-wrap">
 
-          <h2
-            className="
-              text-[42px]
-              font-medium
-              leading-[1.02]
-              tracking-[-0.055em]
-              text-[var(--foreground)]
-              sm:text-[50px]
-              md:text-[58px]
-            "
-          >
+          <h2>
             Experiences Shared by
-
-            <span
-              className="
-                block
-                bg-gradient-to-r
-                from-[#d1ceff]
-                via-[#9b88ff]
-                to-[#705cff]
-                bg-clip-text
-                text-transparent
-              "
-            >
+            <span>
               Our Clients
             </span>
           </h2>
@@ -214,137 +165,59 @@ export default function Testimonials() {
         </div>
 
 
-        {/* =========================
+        {/* =================================================
             TESTIMONIAL CARD
-        ========================= */}
+            ================================================= */}
 
-        <div
-          className="
-            relative
-            mx-auto
-            mt-12
-            max-w-[1015px]
-            overflow-hidden
-            rounded-[26px]
-            border
-            border-[var(--border)]
-            bg-[#101126]
-          "
-        >
+        <article className="codm-testimonial-card">
 
-          {/* TOP RIGHT PURPLE GLOW */}
+          {/* Decorative glow */}
 
           <div
+            className="codm-testimonial-glow"
             aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              right-[-120px]
-              top-[-150px]
-              h-[430px]
-              w-[430px]
-              rounded-full
-              blur-[100px]
-            "
-            style={{
-              background:
-                "radial-gradient(circle, rgba(114,92,255,0.18), transparent 68%)",
-            }}
           />
 
-
-          {/* DIAGONAL DECORATION */}
+          {/* Decorative diagonal lines */}
 
           <div
+            className="codm-testimonial-line codm-testimonial-line-one"
             aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              right-[-120px]
-              top-[60px]
-              h-[500px]
-              w-[360px]
-              rotate-[35deg]
-              border-l
-              border-[var(--accent)]/[0.10]
-            "
           />
 
           <div
+            className="codm-testimonial-line codm-testimonial-line-two"
             aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              right-[-160px]
-              top-[40px]
-              h-[500px]
-              w-[360px]
-              rotate-[35deg]
-              border-l
-              border-[var(--accent)]/[0.07]
-            "
           />
 
 
-          {/* CONTENT GRID */}
+          {/* =================================================
+              IMAGE
+              ================================================= */}
 
-          <div
-            className="
-              relative
-              grid
-              min-h-[420px]
-              grid-cols-1
-              md:grid-cols-[350px_1fr]
-            "
-          >
+          <div className="codm-testimonial-layout">
 
-            {/* =========================
-                IMAGE
-            ========================= */}
+            <div className="codm-testimonial-image-wrap">
 
-            <div className="relative p-[10px]">
+              <div className="codm-testimonial-image">
 
-              <div
-                className="
-                  relative
-                  h-full
-                  min-h-[390px]
-                  overflow-hidden
-                  rounded-[22px]
-                  bg-[var(--surface-secondary)]
-                  md:min-h-[400px]
-                "
-              >
-
-                {testimonial.featuredImage?.node?.sourceUrl ? (
+                {testimonial.featuredImage?.node
+                  ?.sourceUrl ? (
                   <img
                     src={
-                      testimonial.featuredImage.node.sourceUrl
+                      testimonial
+                        .featuredImage
+                        .node.sourceUrl
                     }
                     alt={
-                      testimonial.featuredImage.node.altText ||
+                      testimonial
+                        .featuredImage
+                        .node.altText ||
                       testimonial.title
                     }
-                    className="
-                      absolute
-                      inset-0
-                      h-full
-                      w-full
-                      object-cover
-                    "
                   />
                 ) : (
-                  <div
-                    className="
-                      flex
-                      h-full
-                      min-h-[390px]
-                      items-center
-                      justify-center
-                      text-sm
-                      text-[var(--muted)]
-                    "
-                  >
+                  <div className="codm-testimonial-no-image">
                     No image
                   </div>
                 )}
@@ -354,101 +227,48 @@ export default function Testimonials() {
             </div>
 
 
-            {/* =========================
-                RIGHT CONTENT
-            ========================= */}
+            {/* =================================================
+                CONTENT
+                ================================================= */}
 
-            <div
-              className="
-                relative
-                flex
-                min-h-[400px]
-                flex-col
-                justify-center
-                px-8
-                py-12
-                md:px-10
-                md:py-10
-              "
-            >
+            <div className="codm-testimonial-content">
 
-              {/* OPENING QUOTE */}
+              {/* Opening quote */}
 
               <div
+                className="codm-testimonial-opening-quote"
                 aria-hidden="true"
-                className="
-                  absolute
-                  left-8
-                  top-5
-                  font-serif
-                  text-[92px]
-                  leading-none
-                  text-[var(--accent)]/[0.16]
-                  md:left-10
-                "
               >
                 “
               </div>
 
 
-              {/* TESTIMONIAL TEXT */}
+              {/* Testimonial */}
 
               <div
-                className="
-                  relative
-                  z-10
-                  mt-10
-                  max-w-[620px]
-                  text-[15px]
-                  leading-[1.7]
-                  text-[var(--muted)]
-                  md:text-[16px]
-                "
+                className="codm-testimonial-text"
                 dangerouslySetInnerHTML={{
                   __html: testimonial.content,
                 }}
               />
 
 
-              {/* CLIENT NAME */}
+              {/* Client */}
 
-              <div className="relative z-10 mt-7">
+              <div className="codm-testimonial-client">
 
-                <h3
-                  className="
-                    text-[17px]
-                    font-medium
-                    tracking-[-0.02em]
-                    text-[var(--foreground)]
-                  "
-                >
+                <h3>
                   {testimonial.title}
                 </h3>
 
               </div>
 
 
-              {/* COMPANY AREA
-                  Currently hidden until backend
-                  company fields are available.
-              */}
-
-              {/* =========================
-                  CLOSING QUOTE
-              ========================= */}
+              {/* Closing quote */}
 
               <div
+                className="codm-testimonial-closing-quote"
                 aria-hidden="true"
-                className="
-                  absolute
-                  bottom-[-18px]
-                  right-7
-                  font-serif
-                  text-[100px]
-                  leading-none
-                  text-[var(--accent)]/[0.15]
-                  md:right-8
-                "
               >
                 ”
               </div>
@@ -457,25 +277,15 @@ export default function Testimonials() {
 
           </div>
 
-        </div>
+        </article>
 
 
-        {/* =========================
+        {/* =================================================
             NAVIGATION
-        ========================= */}
+            ================================================= */}
 
         {testimonials.length > 1 && (
-          <div
-            className="
-              mt-7
-              flex
-              items-center
-              justify-center
-              gap-3
-            "
-          >
-
-            {/* PREVIOUS */}
+          <div className="codm-testimonial-navigation">
 
             <button
               type="button"
@@ -487,56 +297,50 @@ export default function Testimonials() {
                     : activeIndex - 1
                 );
               }}
-              className="
-                flex
-                h-[44px]
-                w-[44px]
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-[var(--border)]
-                bg-[var(--surface)]
-                text-[var(--foreground)]
-                transition-all
-                duration-300
-                hover:border-[var(--accent)]
-                hover:bg-[var(--accent)]
-                hover:text-white
-              "
+              className="codm-testimonial-nav-button"
             >
               ←
             </button>
 
 
-            {/* NEXT */}
+            <div className="codm-testimonial-dots">
+
+              {testimonials.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-label={`Go to testimonial ${
+                    index + 1
+                  }`}
+                  aria-current={
+                    index === activeIndex
+                  }
+                  onClick={() =>
+                    setActiveIndex(index)
+                  }
+                  className={`codm-testimonial-dot ${
+                    index === activeIndex
+                      ? "is-active"
+                      : ""
+                  }`}
+                />
+              ))}
+
+            </div>
+
 
             <button
               type="button"
               aria-label="Next testimonial"
               onClick={() => {
                 setActiveIndex(
-                  activeIndex === testimonials.length - 1
+                  activeIndex ===
+                    testimonials.length - 1
                     ? 0
                     : activeIndex + 1
                 );
               }}
-              className="
-                flex
-                h-[44px]
-                w-[44px]
-                items-center
-                justify-center
-                rounded-full
-                bg-[var(--accent)]
-                text-[20px]
-                text-white
-                shadow-[0_10px_30px_rgba(114,92,255,0.25)]
-                transition-all
-                duration-300
-                hover:scale-105
-                hover:opacity-90
-              "
+              className="codm-testimonial-nav-button"
             >
               →
             </button>
