@@ -608,17 +608,49 @@ header > div > div:last-child > a:hover {
    TYPOGRAPHY DEFAULTS
    ========================================================= */
 
+/* =========================================
+   GLOBAL FONT SYSTEM
+   ========================================= */
+
+body,
+p,
+li {
+  font-family: "Inter", sans-serif !important;
+}
+
+/* Navigation */
 nav,
 nav a,
 header nav,
-header nav a {
-  font-family: "Inter", sans-serif;
+header nav a,
+.codm-header-nav,
+.codm-header-nav a,
+.codm-header-nav-link {
+  font-family: "Inter", sans-serif !important;
 }
 
-p,
-li,
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+/* Buttons */
+button,
+.btn,
+a.button,
+.codm-header-cta,
+.codm-announcement-link {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+/* Don't force Inter onto every span */
 span {
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
 }
 
 /* =========================================================
