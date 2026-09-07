@@ -158,13 +158,13 @@ export default function Industries() {
 
             {/* Heading */}
 
-            <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.02] tracking-[-0.055em] text-[var(--foreground)]">
-              Engineering the systems that run
+            <h2 className="codm-industries-title">
+  Engineering the systems that run
 
-              <span className="codm-industries-gradient-heading block bg-gradient-to-r from-[#5967ff] via-[#7c68ff] to-[#a08cff] bg-clip-text text-transparent">
-                modern enterprises.
-              </span>
-            </h2>
+  <span className="codm-industries-title-gradient">
+    modern enterprises.
+  </span>
+</h2>
 
             {/* Description */}
 
