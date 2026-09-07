@@ -492,67 +492,33 @@ export default function Hero() {
             ========================================= */}
 
         {hero.featuredImage?.node?.sourceUrl && (
-          <div
-            className="
-              relative
-              mx-auto
-              mt-12
-              max-w-[1100px]
-            "
-          >
+  <div className="codm-hero-image-section">
 
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none
-                absolute
-                bottom-0
-                left-1/2
-                h-[220px]
-                w-[75%]
-                -translate-x-1/2
-                rounded-full
-                blur-[80px]
-              "
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(114,92,255,0.45), transparent 70%)",
-              }}
-            />
+    {/* Soft ambient glow */}
+    <div
+      aria-hidden="true"
+      className="codm-hero-image-glow"
+    />
 
-            <div
-              className="
-                relative
-                overflow-hidden
-                rounded-[22px]
-                border
-                border-[var(--border)]
-                bg-[var(--surface)]
-                p-3
-                shadow-[0_30px_100px_rgba(0,0,0,0.25)]
-                md:p-5
-              "
-            >
-              <img
-                src={
-                  hero.featuredImage.node
-                    .sourceUrl
-                }
-                alt={
-                  hero.featuredImage.node
-                    .altText ||
-                  hero.title
-                }
-                className="
-                  h-auto
-                  w-full
-                  object-contain
-                "
-              />
-            </div>
+    {/* Dashboard image */}
+    <div className="codm-hero-image-frame">
 
-          </div>
-        )}
+      <div className="codm-hero-image-inner">
+        <img
+          src={hero.featuredImage.node.sourceUrl}
+          alt={
+            hero.featuredImage.node.altText ||
+            hero.title ||
+            "CODM Software Dashboard"
+          }
+          className="codm-hero-dashboard-image"
+        />
+      </div>
+
+    </div>
+
+  </div>
+)}
 
       </div>
     </section>
