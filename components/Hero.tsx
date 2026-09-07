@@ -30,7 +30,7 @@ type HeroData = {
   } | null;
 };
 
-const WORDPRESS_GRAPHQL_URL =
+const response = await fetch("/api/wordpress", {
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 export default function Hero() {
