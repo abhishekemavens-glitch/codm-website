@@ -3419,14 +3419,8 @@ header > div > div:last-child > a:hover {
 
 .codm-header-nav {
   display: flex;
-
   align-items: center;
-
   gap: 31px;
-
-  margin-left: auto;
-  margin-right: 38px;
-
   height: 100%;
 }
 
