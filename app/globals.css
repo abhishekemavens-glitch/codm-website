@@ -2636,3 +2636,11 @@ html.dark .codm-announcement-link {
 #hero {
 	margin: 5% 0 0;
 }
+#hero .md\:text-\[64px\] {
+	font-size: 72px;
+	line-height: 74px;
+	font-weight: 500;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	letter-spacing: -2%;
+}
+
