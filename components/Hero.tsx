@@ -44,49 +44,52 @@ export default function Hero() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
-          method: "POST",
+        const response = await fetch(
+          WORDPRESS_GRAPHQL_URL,
+          {
+            method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+            headers: {
+              "Content-Type": "application/json",
+            },
 
-          body: JSON.stringify({
-            query: `
-              query GetHero {
-                heroes(first: 1) {
-                  nodes {
-                    id
-                    databaseId
-                    title
+            body: JSON.stringify({
+              query: `
+                query GetHero {
+                  heroes(first: 1) {
+                    nodes {
+                      id
+                      databaseId
+                      title
 
-                    mainHeading
-                    description
-                    highlight
+                      mainHeading
+                      description
+                      highlight
 
-                    button1Text
-                    button1Url
+                      button1Text
+                      button1Url
 
-                    button2Text
-                    button2Url
+                      button2Text
+                      button2Url
 
-                    logo1
-                    logo2
-                    logo3
-                    logo4
+                      logo1
+                      logo2
+                      logo3
+                      logo4
 
-                    featuredImage {
-                      node {
-                        sourceUrl
-                        altText
+                      featuredImage {
+                        node {
+                          sourceUrl
+                          altText
+                        }
                       }
                     }
                   }
                 }
-              }
-            `,
-          }),
-        });
+              `,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(
@@ -288,12 +291,12 @@ export default function Hero() {
 
         {/* =========================================
             LOGOS
-            LOGOS ARE BEFORE THE HEADING
             ========================================= */}
 
         {logos.length > 0 && (
           <div
             className="
+              codm-hero-logos
               mb-8
               flex
               flex-wrap
@@ -335,6 +338,7 @@ export default function Hero() {
 
         <h1
           className="
+            codm-hero-title
             mx-auto
             max-w-[950px]
             text-center
@@ -347,7 +351,7 @@ export default function Hero() {
           "
         >
 
-          {/* MAIN HEADING FROM WORDPRESS */}
+          {/* MAIN HEADING */}
 
           {mainHeading && (
             <span className="block">
@@ -355,7 +359,7 @@ export default function Hero() {
             </span>
           )}
 
-          {/* HIGHLIGHTED HEADING FROM WORDPRESS */}
+          {/* HIGHLIGHTED HEADING */}
 
           {highlight && (
             <span
@@ -373,12 +377,13 @@ export default function Hero() {
         </h1>
 
         {/* =========================================
-            HERO DESCRIPTION FROM WORDPRESS
+            HERO DESCRIPTION
             ========================================= */}
 
         {description && (
           <p
             className="
+              codm-hero-description
               mx-auto
               mt-5
               max-w-[900px]
@@ -388,7 +393,6 @@ export default function Hero() {
               font-normal
               leading-[28px]
               text-[#9AA3B8]
-              light:text-[#6B7388]
             "
           >
             {description}
@@ -404,6 +408,7 @@ export default function Hero() {
 
           <div
             className="
+              codm-hero-buttons
               mt-8
               flex
               flex-wrap
@@ -413,9 +418,7 @@ export default function Hero() {
             "
           >
 
-            {/* =========================================
-                PRIMARY BUTTON
-                ========================================= */}
+            {/* PRIMARY BUTTON */}
 
             {hero.button1Text && (
               <a
@@ -449,9 +452,7 @@ export default function Hero() {
               </a>
             )}
 
-            {/* =========================================
-                SECONDARY BUTTON
-                ========================================= */}
+            {/* SECONDARY BUTTON */}
 
             {hero.button2Text && (
               <a
