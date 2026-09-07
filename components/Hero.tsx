@@ -474,18 +474,17 @@ export default function Hero() {
                   "/contact"
                 }
                 className="
-                  rounded-full
-                  bg-[var(--accent)]
-                  px-6
-                  py-3
-                  text-sm
-                  font-medium
-                  text-white
-                  transition-all
-                  duration-300
-                  hover:scale-[1.03]
-                  hover:opacity-90
-                "
+  codm-hero-primary-button
+  rounded-full
+  px-6
+  py-3
+  text-sm
+  font-medium
+  text-white
+  transition-all
+  duration-300
+  hover:opacity-90
+"
               >
                 {hero.button1Text}
               </a>
