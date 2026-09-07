@@ -3194,23 +3194,36 @@ html.dark #hero .codm-hero-secondary-button:hover,
 }
 
 
-
 /* =========================================================
-   CODM HEADER — PREMIUM SMOOTH ANIMATION
-   Pure CSS — No Framer Motion Required
+   CODM HEADER — PREMIUM / ADCHITECTS-STYLE MOTION
+   Works with the CURRENT Header.tsx
+   No Framer Motion
+   No TSX changes required
    ========================================================= */
 
 
 /* =========================================================
-   HEADER INITIAL LOAD
+   MAIN HEADER
    ========================================================= */
 
 .codm-header {
-  opacity: 0;
-  animation: codmHeaderReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1)
-    0.05s forwards;
+  position: relative;
+  z-index: 1000;
 
-  will-change: opacity, transform;
+  width: 100%;
+
+  background: transparent;
+
+  transition:
+    background-color 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+  animation:
+    codmHeaderEntrance
+    1s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
 }
 
 
@@ -3219,8 +3232,14 @@ html.dark #hero .codm-hero-secondary-button:hover,
    ========================================================= */
 
 .codm-header-inner {
-  animation: codmHeaderInnerReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1)
-    0.1s both;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
@@ -3230,23 +3249,35 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 .codm-header-logo-link {
   opacity: 0;
-  animation: codmHeaderLogo 0.8s cubic-bezier(0.22, 1, 0.36, 1)
-    0.15s forwards;
 
-  will-change: opacity, transform;
-}
+  animation:
+    codmHeaderLogoIn
+    0.9s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    0.15s
+    forwards;
 
-
-/* Subtle premium logo hover */
-
-.codm-header-logo-link {
   transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.3s ease;
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease;
+
+  will-change: transform, opacity;
 }
+
 
 .codm-header-logo-link:hover {
-  transform: translateY(-1px) scale(1.015);
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   LOGO IMAGE
+   ========================================================= */
+
+.codm-header-logo-link img {
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease;
 }
 
 
@@ -3260,18 +3291,31 @@ html.dark #hero .codm-hero-secondary-button:hover,
 }
 
 
-/* Navigation links start hidden */
+/* =========================================================
+   NAV LINKS — STAGGERED ENTRANCE
+   ========================================================= */
 
 .codm-header-nav-link {
+  position: relative;
+
   opacity: 0;
-  animation: codmHeaderNavItem 0.65s cubic-bezier(0.22, 1, 0.36, 1)
+
+  animation:
+    codmHeaderNavIn
+    0.75s
+    cubic-bezier(0.16, 1, 0.3, 1)
     forwards;
 
-  will-change: opacity, transform;
+  transition:
+    color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change: transform, opacity;
 }
 
 
-/* Stagger navigation */
+/* Stagger */
 
 .codm-header-nav-link:nth-child(1) {
   animation-delay: 0.25s;
@@ -3295,49 +3339,48 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 
 /* =========================================================
-   NAVIGATION HOVER
+   NAV LINK HOVER
    ========================================================= */
 
-.codm-header-nav-link {
-  position: relative;
-  transition:
-    color 0.3s ease,
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-
-/* Small upward movement */
-
 .codm-header-nav-link:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 
-/* Premium underline */
+/* Elegant underline */
 
 .codm-header-nav-link::after {
   content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -7px;
 
-  width: 0;
+  position: absolute;
+
+  left: 50%;
+  bottom: -5px;
+
+  width: 100%;
   height: 1px;
 
   background: currentColor;
 
-  transform: translateX(-50%);
-  transition:
-    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.3s ease;
+  transform:
+    translateX(-50%)
+    scaleX(0);
 
-  opacity: 0;
+  transform-origin: right center;
+
+  opacity: 0.65;
+
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
 .codm-header-nav-link:hover::after {
-  width: 70%;
-  opacity: 0.7;
+  transform:
+    translateX(-50%)
+    scaleX(1);
+
+  transform-origin: left center;
 }
 
 
@@ -3346,11 +3389,19 @@ html.dark #hero .codm-hero-secondary-button:hover,
    ========================================================= */
 
 .codm-header-right {
-  opacity: 0;
-  animation: codmHeaderRight 0.75s cubic-bezier(0.22, 1, 0.36, 1)
-    0.35s forwards;
+  display: flex;
+  align-items: center;
 
-  will-change: opacity, transform;
+  opacity: 0;
+
+  animation:
+    codmHeaderRightIn
+    0.85s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    0.35s
+    forwards;
+
+  will-change: transform, opacity;
 }
 
 
@@ -3359,40 +3410,48 @@ html.dark #hero .codm-hero-secondary-button:hover,
    ========================================================= */
 
 .codm-theme-toggle {
-  opacity: 0;
-  animation: codmHeaderToggle 0.65s cubic-bezier(0.22, 1, 0.36, 1)
-    0.4s forwards;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-theme-toggle:hover {
+  transform: rotate(8deg) scale(1.04);
 }
 
 
 /* =========================================================
-   HEADER CTA
+   CTA
    ========================================================= */
 
 .codm-header-cta {
   position: relative;
+
   overflow: hidden;
 
   opacity: 0;
-  animation: codmHeaderCTA 0.75s cubic-bezier(0.22, 1, 0.36, 1)
-    0.45s forwards;
 
-  will-change: opacity, transform;
-}
+  animation:
+    codmHeaderCTAIn
+    0.85s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    0.48s
+    forwards;
 
-
-/* CTA hover */
-
-.codm-header-cta {
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease,
-    opacity 0.3s ease;
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+
+  will-change: transform, opacity;
 }
 
 
 .codm-header-cta:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 35px rgba(79, 70, 229, 0.25);
 }
 
 
@@ -3400,32 +3459,35 @@ html.dark #hero .codm-hero-secondary-button:hover,
    CTA LIGHT SWEEP
    ========================================================= */
 
-.codm-header-cta::after {
+.codm-header-cta::before {
   content: "";
 
   position: absolute;
+
   top: 0;
   left: -130%;
 
-  width: 70%;
+  width: 75%;
   height: 100%;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.18),
-    transparent
-  );
+  background:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.20) 50%,
+      transparent 100%
+    );
 
   transform: skewX(-20deg);
 
-  transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 
   pointer-events: none;
 }
 
 
-.codm-header-cta:hover::after {
+.codm-header-cta:hover::before {
   left: 140%;
 }
 
@@ -3438,12 +3500,12 @@ html.dark #hero .codm-hero-secondary-button:hover,
   display: inline-block;
 
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
 .codm-header-cta:hover .codm-header-cta-arrow {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 
@@ -3454,56 +3516,41 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-announcement-bar {
   opacity: 0;
 
-  animation: codmAnnouncementReveal 0.7s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    forwards;
-
-  will-change: opacity, transform;
+  animation:
+    codmAnnouncementIn
+    0.8s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
 }
 
 
 .codm-announcement-inner {
-  animation: codmAnnouncementInner 0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.1s both;
+  animation:
+    codmAnnouncementContentIn
+    0.8s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    0.1s
+    both;
 }
 
-
-/* Announcement text */
-
-.codm-announcement-text {
-  display: inline-block;
-
-  animation: codmAnnouncementText 0.7s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s both;
-}
-
-
-/* Announcement link */
 
 .codm-announcement-link {
-  display: inline-flex;
-  align-items: center;
-
   transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.3s ease;
 }
 
 
 .codm-announcement-link:hover {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
-
-/* Announcement arrow */
 
 .codm-announcement-arrow {
   display: inline-block;
 
   transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
@@ -3513,153 +3560,267 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 
 /* =========================================================
-   KEYFRAMES
+   INITIAL LOAD KEYFRAMES
    ========================================================= */
 
+@keyframes codmHeaderEntrance {
 
-/* Main header */
-
-@keyframes codmHeaderReveal {
   from {
     opacity: 0;
-    transform: translateY(-12px);
+
+    transform:
+      translateY(-18px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+
+    transform:
+      translateY(0);
   }
+
 }
 
 
-/* Header inner */
+@keyframes codmHeaderLogoIn {
 
-@keyframes codmHeaderInnerReveal {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+
+    transform:
+      translateX(-20px)
+      scale(0.97);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+
+    transform:
+      translateX(0)
+      scale(1);
   }
+
 }
 
 
-/* Logo */
+@keyframes codmHeaderNavIn {
 
-@keyframes codmHeaderLogo {
   from {
     opacity: 0;
-    transform: translateX(-18px) scale(0.97);
+
+    transform:
+      translateY(-12px);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+
+    transform:
+      translateY(0);
   }
+
 }
 
 
-/* Navigation */
+@keyframes codmHeaderRightIn {
 
-@keyframes codmHeaderNavItem {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+
+    transform:
+      translateX(18px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+
+    transform:
+      translateX(0);
   }
+
 }
 
 
-/* Right side */
+@keyframes codmHeaderCTAIn {
 
-@keyframes codmHeaderRight {
   from {
     opacity: 0;
-    transform: translateX(15px);
+
+    transform:
+      translateX(18px)
+      scale(0.97);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0);
+
+    transform:
+      translateX(0)
+      scale(1);
   }
+
 }
 
 
-/* Theme toggle */
+@keyframes codmAnnouncementIn {
 
-@keyframes codmHeaderToggle {
   from {
     opacity: 0;
-    transform: scale(0.9);
+
+    transform:
+      translateY(-12px);
   }
 
   to {
     opacity: 1;
-    transform: scale(1);
+
+    transform:
+      translateY(0);
   }
+
 }
 
 
-/* CTA */
+@keyframes codmAnnouncementContentIn {
 
-@keyframes codmHeaderCTA {
   from {
     opacity: 0;
-    transform: translateX(15px) scale(0.97);
+
+    transform:
+      translateY(-5px);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+
+    transform:
+      translateY(0);
   }
+
 }
 
 
-/* Announcement */
+/* =========================================================
+   SCROLL-DRIVEN PREMIUM HEADER
+   ========================================================= */
 
-@keyframes codmAnnouncementReveal {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+/*
+   Modern browsers:
+   Header gradually becomes glassier as the user scrolls.
+*/
+
+@supports (animation-timeline: scroll()) {
+
+  .codm-header {
+    animation:
+      codmHeaderScrollState
+      linear
+      both;
+
+    animation-timeline: scroll(root);
+    animation-range: 0px 140px;
+
+    will-change:
+      background-color,
+      backdrop-filter,
+      box-shadow;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  @keyframes codmHeaderScrollState {
+
+    from {
+      background-color: transparent;
+
+      backdrop-filter:
+        blur(0px);
+
+      -webkit-backdrop-filter:
+        blur(0px);
+
+      box-shadow:
+        0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    to {
+      background-color:
+        rgba(5, 7, 20, 0.72);
+
+      backdrop-filter:
+        blur(18px)
+        saturate(140%);
+
+      -webkit-backdrop-filter:
+        blur(18px)
+        saturate(140%);
+
+      box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.16);
+    }
+
   }
+
 }
 
 
-@keyframes codmAnnouncementInner {
-  from {
-    opacity: 0;
-    transform: scale(0.99);
-  }
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+html.light .codm-header,
+html[data-theme="light"] .codm-header,
+[data-theme="light"] .codm-header,
+.light .codm-header {
+  color: var(--foreground);
 }
 
 
-@keyframes codmAnnouncementText {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
+@supports (animation-timeline: scroll()) {
+
+  html.light .codm-header,
+  html[data-theme="light"] .codm-header,
+  [data-theme="light"] .codm-header,
+  .light .codm-header {
+
+    animation-name:
+      codmHeaderScrollStateLight;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  @keyframes codmHeaderScrollStateLight {
+
+    from {
+      background-color:
+        transparent;
+
+      backdrop-filter:
+        blur(0px);
+
+      -webkit-backdrop-filter:
+        blur(0px);
+
+      box-shadow:
+        0 0 0 rgba(15, 23, 42, 0);
+    }
+
+    to {
+      background-color:
+        rgba(255, 255, 255, 0.76);
+
+      backdrop-filter:
+        blur(18px)
+        saturate(140%);
+
+      -webkit-backdrop-filter:
+        blur(18px)
+        saturate(140%);
+
+      box-shadow:
+        0 10px 40px rgba(15, 23, 42, 0.08);
+    }
+
   }
+
 }
 
 
@@ -3668,18 +3829,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
    ========================================================= */
 
 @media (max-width: 767px) {
-
-  .codm-header {
-    animation-duration: 0.7s;
-  }
-
-  .codm-header-logo-link {
-    animation-delay: 0.1s;
-  }
-
-  .codm-header-right {
-    animation-delay: 0.2s;
-  }
 
   .codm-header-nav-link {
     animation: none;
@@ -3691,11 +3840,23 @@ html.dark #hero .codm-hero-secondary-button:hover,
     display: none;
   }
 
+  .codm-header-right {
+    animation-delay: 0.2s;
+  }
+
+  .codm-header-cta {
+    animation-delay: 0.25s;
+  }
+
+  .codm-header-logo-link {
+    animation-delay: 0.1s;
+  }
+
 }
 
 
 /* =========================================================
-   ACCESSIBILITY
+   REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -3705,24 +3866,23 @@ html.dark #hero .codm-hero-secondary-button:hover,
   .codm-header-logo-link,
   .codm-header-nav-link,
   .codm-header-right,
-  .codm-theme-toggle,
   .codm-header-cta,
   .codm-announcement-bar,
-  .codm-announcement-inner,
-  .codm-announcement-text {
+  .codm-announcement-inner {
     animation: none !important;
+
+    animation-timeline: auto !important;
 
     opacity: 1 !important;
 
     transform: none !important;
   }
 
+  .codm-header,
   .codm-header-logo-link,
   .codm-header-nav-link,
-  .codm-header-cta,
-  .codm-header-cta-arrow,
-  .codm-announcement-link,
-  .codm-announcement-arrow {
+  .codm-header-right,
+  .codm-header-cta {
     transition: none !important;
   }
 
