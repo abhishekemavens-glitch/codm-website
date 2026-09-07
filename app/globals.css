@@ -411,19 +411,37 @@ header > div > div:last-child > a:hover {
    CTA SHINE EFFECT — BUTTON ONLY
    ========================================================= */
 
+/* =========================================================
+   HEADER CTA — WHITE BUTTON + SHINE ANIMATION
+   ========================================================= */
+
 .codm-header-cta {
   position: relative !important;
   isolation: isolate !important;
   overflow: hidden !important;
 
-  /* Keeps the shine as part of the button background */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+
+  height: 44px !important;
+  padding: 0 22px !important;
+
+  border-radius: 999px !important;
+
   background-color: #ffffff !important;
+
+  /*
+   * Shine is contained inside the button.
+   * It cannot appear outside the CTA.
+   */
   background-image:
     linear-gradient(
       110deg,
       transparent 0%,
       transparent 38%,
-      rgba(255, 255, 255, 0.45) 50%,
+      rgba(115, 92, 255, 0.16) 50%,
       transparent 62%,
       transparent 100%
     ) !important;
@@ -431,16 +449,42 @@ header > div > div:last-child > a:hover {
   background-size: 250% 100% !important;
   background-position: 100% 0 !important;
 
+  color: #101424 !important;
+
   transition:
-    transform 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.3s ease,
-    background-color 0.3s ease,
     background-position 0.65s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
+/* Keep text and arrow above the background shine */
+.codm-header-cta > span {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Hover */
 .codm-header-cta:hover {
-  background-color: #735cff !important;
+  background-color: #ffffff !important;
+
   background-position: 0% 0 !important;
+
+  transform: translateY(-2px) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Arrow */
+.codm-header-cta-arrow {
+  display: inline-block !important;
+
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(4px) !important;
 }
 
 /* Keep text and arrow above the button background */
