@@ -288,21 +288,20 @@ export default function Hero() {
 
           {/* HIGHLIGHTED HEADING */}
 
-          {highlight && (
-            <span
-              className="
-                block
-                bg-gradient-to-r
-                from-[#5967ff]
-                via-[#7c68ff]
-                to-[#a08cff]
-                bg-clip-text
-                text-transparent
-              "
-            >
-              {highlight}
-            </span>
-          )}
+         {/* HIGHLIGHTED HEADING */}
+
+{highlight && (
+  <span
+    className="
+      codm-highlight
+      block
+      bg-clip-text
+      text-transparent
+    "
+  >
+    {highlight}
+  </span>
+)}
 
         </h1>
 
