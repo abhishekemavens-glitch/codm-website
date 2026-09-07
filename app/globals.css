@@ -2644,3 +2644,31 @@ html.dark .codm-announcement-link {
 	letter-spacing: -2%;
 }
 
+.codm-hero-title .salesforce-solutions {
+  background: linear-gradient(
+    100deg,
+    #2563EB 11.16%,
+    #6366F1 49.17%,
+    #A78BFA 93.16%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+[data-theme="light"] .codm-hero-title .salesforce-solutions,
+.light .codm-hero-title .salesforce-solutions {
+  background: linear-gradient(
+    100deg,
+    #FFFFFF 24.1%,
+    #9187FB 54.32%,
+    #354CCB 88.84%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
