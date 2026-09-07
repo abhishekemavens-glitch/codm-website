@@ -363,12 +363,7 @@ export default function Header() {
                   {announcement.announcementButtonText}
                 </span>
 
-                <span
-                  className="codm-announcement-arrow"
-                  aria-hidden="true"
-                >
-                  →
-                </span>
+             
 
               </a>
             )}
