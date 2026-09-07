@@ -1888,3 +1888,231 @@ header a {
   }
 
 }
+
+
+
+/* =========================================================
+   CODM ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  position: relative;
+  z-index: 1000;
+
+  width: 100%;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #202742;
+
+  color: #ffffff;
+
+  overflow: hidden;
+}
+
+.codm-announcement-inner {
+  width: 100%;
+  max-width: 1400px;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 0 20px;
+}
+
+.codm-announcement-text {
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+  font-weight: 400;
+
+  line-height: 1;
+
+  color: #ffffff;
+
+  white-space: nowrap;
+}
+
+.codm-announcement-link {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 3px 8px;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 7px;
+  font-weight: 500;
+
+  line-height: 1;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.codm-announcement-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+
+  border-color: rgba(255, 255, 255, 0.65);
+
+  transform: translateY(-1px);
+}
+
+.codm-announcement-arrow {
+  font-size: 9px;
+
+  transition:
+    transform 0.25s ease;
+}
+
+.codm-announcement-link:hover
+.codm-announcement-arrow {
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   HEADER POSITION
+   ========================================================= */
+
+/*
+   Because announcement bar is now above the header,
+   the header should NOT use top: 0.
+*/
+
+.codm-header {
+  position: fixed;
+
+  top: 28px;
+  left: 0;
+
+  width: 100%;
+
+  z-index: 999;
+
+  transition:
+    transform 0.35s ease,
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+
+/* =========================================================
+   HEADER LOAD ANIMATION
+   ========================================================= */
+
+.codm-announcement-bar {
+  animation:
+    codmAnnouncementReveal 0.6s ease both;
+}
+
+.codm-header {
+  animation:
+    codmHeaderReveal 0.7s ease 0.1s both;
+}
+
+@keyframes codmAnnouncementReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes codmHeaderReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] .codm-announcement-bar {
+  background: #202742;
+}
+
+[data-theme="dark"] .codm-announcement-text {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+[data-theme="light"] .codm-announcement-bar {
+  background: #202742;
+}
+
+[data-theme="light"] .codm-announcement-text {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .codm-announcement-bar {
+    height: 30px;
+  }
+
+  .codm-announcement-inner {
+    padding: 0 12px;
+
+    gap: 7px;
+  }
+
+  .codm-announcement-text {
+    font-size: 9px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .codm-announcement-link {
+    flex-shrink: 0;
+
+    font-size: 7px;
+
+    padding: 3px 7px;
+  }
+
+  .codm-header {
+    top: 30px;
+  }
+}
