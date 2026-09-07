@@ -15,7 +15,9 @@ type HeaderData = {
 
   buttonText: string;
   buttonUrl: string;
+};
 
+type AnnouncementData = {
   announcementText: string;
   announcementButtonText: string;
   announcementButtonUrl: string;
@@ -32,23 +34,23 @@ function parseLink(value: string = "") {
     };
   }
 
-  const separatorIndex = value.indexOf("|");
+  /* Supports:
+     Services|/services
+     Services/services
+  */
 
-  if (separatorIndex !== -1) {
+  const pipeIndex = value.indexOf("|");
+
+  if (pipeIndex !== -1) {
     return {
-      label: value.substring(0, separatorIndex).trim(),
-      url: value.substring(separatorIndex + 1).trim() || "#",
+      label: value.substring(0, pipeIndex).trim(),
+      url: value.substring(pipeIndex + 1).trim() || "#",
     };
   }
 
   /*
-   * Supports values such as:
-   *
-   * Services/services
-   * Industries/industries
-   *
-   * Only treat "/" as separator when it is not
-   * the beginning of an actual URL.
+   * Don't treat the "/" at the beginning of
+   * an actual URL as the separator.
    */
 
   if (!value.startsWith("/")) {
@@ -72,12 +74,31 @@ export default function Header() {
   const [header, setHeader] =
     useState<HeaderData | null>(null);
 
+  const [announcement, setAnnouncement] =
+    useState<AnnouncementData>({
+      announcementText: "",
+      announcementButtonText: "",
+      announcementButtonUrl: "#",
+    });
+
   useEffect(() => {
     let mounted = true;
 
     async function loadHeader() {
       try {
-        const response = await fetch(
+        /*
+         * =====================================================
+         * HEADER QUERY
+         * =====================================================
+         *
+         * IMPORTANT:
+         * Announcement fields are NOT queried here.
+         *
+         * This means an announcement GraphQL problem
+         * cannot make the complete header disappear.
+         */
+
+        const headerResponse = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
             method: "POST",
@@ -105,10 +126,6 @@ export default function Header() {
 
                       buttonText
                       buttonUrl
-
-                      announcementText
-                      announcementButtonText
-                      announcementButtonUrl
                     }
                   }
                 }
@@ -117,32 +134,33 @@ export default function Header() {
           }
         );
 
-        if (!response.ok) {
+        if (!headerResponse.ok) {
           throw new Error(
-            `WordPress request failed: ${response.status}`
+            `WordPress header request failed: ${headerResponse.status}`
           );
         }
 
-        const result = await response.json();
+        const headerResult =
+          await headerResponse.json();
 
         console.log(
-          "CODM HEADER GRAPHQL:",
-          result
+          "CODM HEADER DATA:",
+          headerResult
         );
 
-        if (result.errors) {
+        if (headerResult.errors) {
           console.error(
             "CODM HEADER GRAPHQL ERROR:",
-            result.errors
+            headerResult.errors
           );
 
           return;
         }
 
-        const data =
-          result?.data?.codmHeaders?.nodes?.[0];
+        const headerData =
+          headerResult?.data?.codmHeaders?.nodes?.[0];
 
-        if (!data) {
+        if (!headerData) {
           console.error(
             "CODM HEADER: No header data found."
           );
@@ -151,7 +169,114 @@ export default function Header() {
         }
 
         if (mounted) {
-          setHeader(data);
+          setHeader(headerData);
+        }
+
+
+        /*
+         * =====================================================
+         * ANNOUNCEMENT QUERY
+         * =====================================================
+         *
+         * We try this separately.
+         *
+         * If WordPress does not yet expose these fields,
+         * the HEADER itself will still work.
+         */
+
+        try {
+          const announcementResponse =
+            await fetch(
+              WORDPRESS_GRAPHQL_URL,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type": "application/json",
+                },
+
+                body: JSON.stringify({
+                  query: `
+                    query Announcement {
+                      codmHeaders {
+                        nodes {
+                          announcementText
+                          announcementButtonText
+                          announcementButtonUrl
+                        }
+                      }
+                    }
+                  `,
+                }),
+              }
+            );
+
+          if (!announcementResponse.ok) {
+            console.warn(
+              "Announcement request failed:",
+              announcementResponse.status
+            );
+
+            return;
+          }
+
+          const announcementResult =
+            await announcementResponse.json();
+
+          console.log(
+            "CODM ANNOUNCEMENT DATA:",
+            announcementResult
+          );
+
+          /*
+           * If WordPress does not have these fields yet,
+           * only the announcement fails.
+           *
+           * The main header remains visible.
+           */
+
+          if (announcementResult.errors) {
+            console.warn(
+              "Announcement fields are not available in WordPress GraphQL yet:",
+              announcementResult.errors
+            );
+
+            return;
+          }
+
+          const announcementData =
+            announcementResult
+              ?.data
+              ?.codmHeaders
+              ?.nodes?.[0];
+
+          if (
+            announcementData &&
+            mounted
+          ) {
+            setAnnouncement({
+              announcementText:
+                announcementData.announcementText ||
+                "",
+              announcementButtonText:
+                announcementData.announcementButtonText ||
+                "",
+              announcementButtonUrl:
+                announcementData.announcementButtonUrl ||
+                "#",
+            });
+          }
+
+        } catch (announcementError) {
+          /*
+           * Announcement failure must NEVER
+           * hide the main header.
+           */
+
+          console.warn(
+            "Announcement could not be loaded:",
+            announcementError
+          );
         }
 
       } catch (error) {
@@ -169,14 +294,23 @@ export default function Header() {
     };
   }, []);
 
+
   /*
-   * Don't render the header until WordPress data
-   * has been successfully loaded.
+   * =========================================================
+   * HEADER DATA NOT LOADED
+   * =========================================================
    */
 
   if (!header) {
     return null;
   }
+
+
+  /*
+   * =========================================================
+   * NAVIGATION LINKS
+   * =========================================================
+   */
 
   const services =
     parseLink(header.services);
@@ -193,36 +327,49 @@ export default function Header() {
   const insights =
     parseLink(header.insights);
 
+
+  /*
+   * =========================================================
+   * RENDER
+   * =========================================================
+   */
+
   return (
     <>
-      {/* =================================================
-          ANNOUNCEMENT BAR
-      ================================================= */}
 
-      {header.announcementText && (
+      {/* =====================================================
+          ANNOUNCEMENT BAR
+      ===================================================== */}
+
+      {announcement.announcementText && (
         <div className="codm-announcement-bar">
 
           <div className="codm-announcement-inner">
 
             <span className="codm-announcement-text">
-              {header.announcementText}
+              {announcement.announcementText}
             </span>
 
-            {header.announcementButtonText && (
+            {announcement.announcementButtonText && (
               <a
                 href={
-                  header.announcementButtonUrl ||
+                  announcement.announcementButtonUrl ||
                   "#"
                 }
                 className="codm-announcement-link"
               >
+
                 <span>
-                  {header.announcementButtonText}
+                  {announcement.announcementButtonText}
                 </span>
 
-                <span className="codm-announcement-arrow">
+                <span
+                  className="codm-announcement-arrow"
+                  aria-hidden="true"
+                >
                   →
                 </span>
+
               </a>
             )}
 
@@ -232,13 +379,14 @@ export default function Header() {
       )}
 
 
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* =====================================================
+          MAIN HEADER
+      ===================================================== */}
 
       <header className="codm-header">
 
         <div className="codm-header-inner">
+
 
           {/* =================================================
               LOGO
@@ -363,6 +511,7 @@ export default function Header() {
         </div>
 
       </header>
+
     </>
   );
 }
