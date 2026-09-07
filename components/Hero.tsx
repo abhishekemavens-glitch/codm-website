@@ -60,41 +60,36 @@ export default function Hero() {
             body: JSON.stringify({
               query: `
                 query GetHero {
+  heroes(first: 1) {
+    nodes {
+      id
+      databaseId
+      title
 
-                  heroes(first: 1) {
+      mainHeading
+      description
+      highlight
 
-                    nodes {
+      button1Text
+      button1Url
 
-                      id
-                      databaseId
+      button2Text
+      button2Url
 
-                      mainHeading
-                      description
-                      highlight
+      logo1
+      logo2
+      logo3
+      logo4
 
-                      button1Text
-                      button1Url
-
-                      button2Text
-                      button2Url
-
-                      logo1
-                      logo2
-                      logo3
-                      logo4
-
-                      featuredImage {
-                        node {
-                          sourceUrl
-                          altText
-                        }
-                      }
-
-                    }
-
-                  }
-
-                }
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
+    }
+  }
+}
               `,
             }),
           }
