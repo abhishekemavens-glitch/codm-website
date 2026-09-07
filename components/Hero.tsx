@@ -266,44 +266,35 @@ export default function Hero() {
             ========================================= */}
 
         <h1
-          className="
-            mx-auto
-            max-w-[950px]
-            text-center
-            text-[44px]
-            font-medium
-            leading-[1.03]
-            tracking-[-0.055em]
-            text-[var(--foreground)]
-            md:text-[64px]
-          "
-        >
-
-          {/* NORMAL HEADING */}
-
-          <span className="block">
-            {mainHeading}
-          </span>
-
-
-          {/* HIGHLIGHTED HEADING */}
-
-         {/* HIGHLIGHTED HEADING */}
-
-{highlight && (
-  <span
-    className="
-      codm-highlight
-      block
-      bg-clip-text
-      text-transparent
-    "
-  >
-    {highlight}
+  className="
+    mx-auto
+    max-w-[950px]
+    text-center
+    text-[44px]
+    font-medium
+    leading-[1.03]
+    tracking-[-0.055em]
+    text-[var(--foreground)]
+    md:text-[64px]
+  "
+>
+  <span className="block">
+    {mainHeading}
   </span>
-)}
 
-        </h1>
+  {highlight && (
+    <span
+      className="
+        codm-highlight
+        block
+        bg-clip-text
+        text-transparent
+      "
+    >
+      {highlight}
+    </span>
+  )}
+</h1>
 
 
         {/* =========================================
