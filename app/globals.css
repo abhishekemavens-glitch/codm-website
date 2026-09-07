@@ -3192,3 +3192,538 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-hero-image-section {
 	margin: 50px 0px 0px;
 }
+
+
+
+/* =========================================================
+   CODM HEADER — PREMIUM SMOOTH ANIMATION
+   Pure CSS — No Framer Motion Required
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER INITIAL LOAD
+   ========================================================= */
+
+.codm-header {
+  opacity: 0;
+  animation: codmHeaderReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+    0.05s forwards;
+
+  will-change: opacity, transform;
+}
+
+
+/* =========================================================
+   HEADER INNER
+   ========================================================= */
+
+.codm-header-inner {
+  animation: codmHeaderInnerReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s both;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.codm-header-logo-link {
+  opacity: 0;
+  animation: codmHeaderLogo 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+    0.15s forwards;
+
+  will-change: opacity, transform;
+}
+
+
+/* Subtle premium logo hover */
+
+.codm-header-logo-link {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.codm-header-logo-link:hover {
+  transform: translateY(-1px) scale(1.015);
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.codm-header-nav {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Navigation links start hidden */
+
+.codm-header-nav-link {
+  opacity: 0;
+  animation: codmHeaderNavItem 0.65s cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+
+  will-change: opacity, transform;
+}
+
+
+/* Stagger navigation */
+
+.codm-header-nav-link:nth-child(1) {
+  animation-delay: 0.25s;
+}
+
+.codm-header-nav-link:nth-child(2) {
+  animation-delay: 0.32s;
+}
+
+.codm-header-nav-link:nth-child(3) {
+  animation-delay: 0.39s;
+}
+
+.codm-header-nav-link:nth-child(4) {
+  animation-delay: 0.46s;
+}
+
+.codm-header-nav-link:nth-child(5) {
+  animation-delay: 0.53s;
+}
+
+
+/* =========================================================
+   NAVIGATION HOVER
+   ========================================================= */
+
+.codm-header-nav-link {
+  position: relative;
+  transition:
+    color 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Small upward movement */
+
+.codm-header-nav-link:hover {
+  transform: translateY(-1px);
+}
+
+
+/* Premium underline */
+
+.codm-header-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+
+  width: 0;
+  height: 1px;
+
+  background: currentColor;
+
+  transform: translateX(-50%);
+  transition:
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+
+  opacity: 0;
+}
+
+
+.codm-header-nav-link:hover::after {
+  width: 70%;
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+   ========================================================= */
+
+.codm-header-right {
+  opacity: 0;
+  animation: codmHeaderRight 0.75s cubic-bezier(0.22, 1, 0.36, 1)
+    0.35s forwards;
+
+  will-change: opacity, transform;
+}
+
+
+/* =========================================================
+   THEME TOGGLE
+   ========================================================= */
+
+.codm-theme-toggle {
+  opacity: 0;
+  animation: codmHeaderToggle 0.65s cubic-bezier(0.22, 1, 0.36, 1)
+    0.4s forwards;
+}
+
+
+/* =========================================================
+   HEADER CTA
+   ========================================================= */
+
+.codm-header-cta {
+  position: relative;
+  overflow: hidden;
+
+  opacity: 0;
+  animation: codmHeaderCTA 0.75s cubic-bezier(0.22, 1, 0.36, 1)
+    0.45s forwards;
+
+  will-change: opacity, transform;
+}
+
+
+/* CTA hover */
+
+.codm-header-cta {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    opacity 0.3s ease;
+}
+
+
+.codm-header-cta:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CTA LIGHT SWEEP
+   ========================================================= */
+
+.codm-header-cta::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -130%;
+
+  width: 70%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+  pointer-events: none;
+}
+
+
+.codm-header-cta:hover::after {
+  left: 140%;
+}
+
+
+/* =========================================================
+   CTA ARROW
+   ========================================================= */
+
+.codm-header-cta-arrow {
+  display: inline-block;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  opacity: 0;
+
+  animation: codmAnnouncementReveal 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+
+  will-change: opacity, transform;
+}
+
+
+.codm-announcement-inner {
+  animation: codmAnnouncementInner 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s both;
+}
+
+
+/* Announcement text */
+
+.codm-announcement-text {
+  display: inline-block;
+
+  animation: codmAnnouncementText 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s both;
+}
+
+
+/* Announcement link */
+
+.codm-announcement-link {
+  display: inline-flex;
+  align-items: center;
+
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+
+.codm-announcement-link:hover {
+  transform: translateX(3px);
+}
+
+
+/* Announcement arrow */
+
+.codm-announcement-arrow {
+  display: inline-block;
+
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-announcement-link:hover .codm-announcement-arrow {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+
+/* Main header */
+
+@keyframes codmHeaderReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Header inner */
+
+@keyframes codmHeaderInnerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Logo */
+
+@keyframes codmHeaderLogo {
+  from {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+/* Navigation */
+
+@keyframes codmHeaderNavItem {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Right side */
+
+@keyframes codmHeaderRight {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* Theme toggle */
+
+@keyframes codmHeaderToggle {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* CTA */
+
+@keyframes codmHeaderCTA {
+  from {
+    opacity: 0;
+    transform: translateX(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+/* Announcement */
+
+@keyframes codmAnnouncementReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmAnnouncementInner {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+@keyframes codmAnnouncementText {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-header {
+    animation-duration: 0.7s;
+  }
+
+  .codm-header-logo-link {
+    animation-delay: 0.1s;
+  }
+
+  .codm-header-right {
+    animation-delay: 0.2s;
+  }
+
+  .codm-header-nav-link {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .codm-header-nav-link::after {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .codm-header,
+  .codm-header-inner,
+  .codm-header-logo-link,
+  .codm-header-nav-link,
+  .codm-header-right,
+  .codm-theme-toggle,
+  .codm-header-cta,
+  .codm-announcement-bar,
+  .codm-announcement-inner,
+  .codm-announcement-text {
+    animation: none !important;
+
+    opacity: 1 !important;
+
+    transform: none !important;
+  }
+
+  .codm-header-logo-link,
+  .codm-header-nav-link,
+  .codm-header-cta,
+  .codm-header-cta-arrow,
+  .codm-announcement-link,
+  .codm-announcement-arrow {
+    transition: none !important;
+  }
+
+}
