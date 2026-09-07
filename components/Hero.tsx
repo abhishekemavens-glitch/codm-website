@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 type HeroData = {
   id: string;
@@ -34,31 +33,6 @@ type HeroData = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.05,
-    },
-  },
-};
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: 18,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-
 export default function Hero() {
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -70,52 +44,49 @@ export default function Hero() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          WORDPRESS_GRAPHQL_URL,
-          {
-            method: "POST",
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
 
-            headers: {
-              "Content-Type": "application/json",
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              query: `
-                query GetHero {
-                  heroes(first: 1) {
-                    nodes {
-                      id
-                      databaseId
-                      title
+          body: JSON.stringify({
+            query: `
+              query GetHero {
+                heroes(first: 1) {
+                  nodes {
+                    id
+                    databaseId
+                    title
 
-                      mainHeading
-                      description
-                      highlight
+                    mainHeading
+                    description
+                    highlight
 
-                      button1Text
-                      button1Url
+                    button1Text
+                    button1Url
 
-                      button2Text
-                      button2Url
+                    button2Text
+                    button2Url
 
-                      logo1
-                      logo2
-                      logo3
-                      logo4
+                    logo1
+                    logo2
+                    logo3
+                    logo4
 
-                      featuredImage {
-                        node {
-                          sourceUrl
-                          altText
-                        }
+                    featuredImage {
+                      node {
+                        sourceUrl
+                        altText
                       }
                     }
                   }
                 }
-              `,
-            }),
-          }
-        );
+              }
+            `,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error(
@@ -124,6 +95,8 @@ export default function Hero() {
         }
 
         const result = await response.json();
+
+        console.log("HERO DATA:", result);
 
         if (result?.errors) {
           console.error(
@@ -146,8 +119,7 @@ export default function Hero() {
         }
 
         const heroData =
-          result?.data?.heroes?.nodes?.[0] ??
-          null;
+          result?.data?.heroes?.nodes?.[0] ?? null;
 
         if (!heroData) {
           setError(
@@ -181,8 +153,11 @@ export default function Hero() {
   }, []);
 
   /*
+   * =========================================
    * LOADING
+   * =========================================
    */
+
   if (loading) {
     return (
       <section className="bg-[var(--background)] py-20">
@@ -196,8 +171,11 @@ export default function Hero() {
   }
 
   /*
+   * =========================================
    * ERROR
+   * =========================================
    */
+
   if (error) {
     return (
       <section className="bg-[var(--background)] py-20">
@@ -215,22 +193,36 @@ export default function Hero() {
   }
 
   /*
+   * =========================================
    * SAFETY
+   * =========================================
    */
+
   if (!hero) {
     return null;
   }
 
   /*
+   * =========================================
    * WORDPRESS CONTENT
+   * =========================================
    */
-  const mainHeading = hero.mainHeading || "";
-  const highlight = hero.highlight || "";
-  const description = hero.description || "";
+
+  const mainHeading =
+    hero.mainHeading || "";
+
+  const highlight =
+    hero.highlight || "";
+
+  const description =
+    hero.description || "";
 
   /*
+   * =========================================
    * LOGOS
+   * =========================================
    */
+
   const logos = [
     hero.logo1,
     hero.logo2,
@@ -242,22 +234,22 @@ export default function Hero() {
   );
 
   /*
+   * =========================================
    * HERO
+   * =========================================
    */
+
   return (
-    <motion.section
+    <section
       id="hero"
-      variants={container}
-      initial="hidden"
-      animate="show"
       className="
         relative
         overflow-hidden
         bg-[var(--background)]
-        py-20
+        py-16
         transition-colors
         duration-500
-        md:py-28
+        md:py-24
       "
     >
 
@@ -296,12 +288,11 @@ export default function Hero() {
 
         {/* =========================================
             LOGOS
-            LOGOS ARE NOW BEFORE THE HEADING
+            LOGOS ARE BEFORE THE HEADING
             ========================================= */}
 
         {logos.length > 0 && (
-          <motion.div
-            variants={item}
+          <div
             className="
               mb-8
               flex
@@ -327,23 +318,22 @@ export default function Hero() {
                   src={logo}
                   alt=""
                   className="
-                    max-h-8
+                    max-h-10
                     w-auto
-                    max-w-[120px]
+                    max-w-[140px]
                     object-contain
                   "
                 />
               </div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         {/* =========================================
             HEADING
             ========================================= */}
 
-        <motion.h1
-          variants={item}
+        <h1
           className="
             mx-auto
             max-w-[950px]
@@ -357,7 +347,7 @@ export default function Hero() {
           "
         >
 
-          {/* MAIN HEADING */}
+          {/* MAIN HEADING FROM WORDPRESS */}
 
           {mainHeading && (
             <span className="block">
@@ -365,7 +355,7 @@ export default function Hero() {
             </span>
           )}
 
-          {/* GRADIENT HEADING */}
+          {/* HIGHLIGHTED HEADING FROM WORDPRESS */}
 
           {highlight && (
             <span
@@ -380,15 +370,14 @@ export default function Hero() {
             </span>
           )}
 
-        </motion.h1>
+        </h1>
 
         {/* =========================================
-            HERO DESCRIPTION
+            HERO DESCRIPTION FROM WORDPRESS
             ========================================= */}
 
         {description && (
-          <motion.p
-            variants={item}
+          <p
             className="
               mx-auto
               mt-5
@@ -399,10 +388,11 @@ export default function Hero() {
               font-normal
               leading-[28px]
               text-[#9AA3B8]
+              light:text-[#6B7388]
             "
           >
             {description}
-          </motion.p>
+          </p>
         )}
 
         {/* =========================================
@@ -411,8 +401,8 @@ export default function Hero() {
 
         {(hero.button1Text ||
           hero.button2Text) && (
-          <motion.div
-            variants={item}
+
+          <div
             className="
               mt-8
               flex
@@ -436,9 +426,23 @@ export default function Hero() {
                 className="
                   codm-hero-primary-button
                   inline-flex
+                  h-[53px]
+                  min-w-[227px]
                   items-center
                   justify-center
                   rounded-full
+                  border
+                  border-transparent
+                  px-5
+                  text-center
+                  font-['Plus_Jakarta_Sans']
+                  text-[18px]
+                  font-medium
+                  leading-none
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:opacity-90
                 "
               >
                 {hero.button1Text}
@@ -458,16 +462,28 @@ export default function Hero() {
                 className="
                   codm-hero-secondary-button
                   inline-flex
+                  h-[53px]
+                  min-w-[177px]
                   items-center
                   justify-center
                   rounded-full
+                  border
+                  px-5
+                  text-center
+                  font-['Google_Sans_Flex']
+                  text-[18px]
+                  font-medium
+                  leading-none
+                  transition-all
+                  duration-300
+                  hover:scale-[1.02]
                 "
               >
                 {hero.button2Text}
               </a>
             )}
 
-          </motion.div>
+          </div>
         )}
 
         {/* =========================================
@@ -475,8 +491,7 @@ export default function Hero() {
             ========================================= */}
 
         {hero.featuredImage?.node?.sourceUrl && (
-          <motion.div
-            variants={item}
+          <div
             className="
               relative
               mx-auto
@@ -535,10 +550,10 @@ export default function Hero() {
               />
             </div>
 
-          </motion.div>
+          </div>
         )}
 
       </div>
-    </motion.section>
+    </section>
   );
 }
