@@ -2682,3 +2682,22 @@ html[data-theme="light"] .codm-highlight,
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
 }
+
+
+.codm-hero-description {
+  font-family: "Inter", sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 20px !important;
+  line-height: 28px !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  color: #9AA3B8 !important;
+}
+
+html.light .codm-hero-description,
+html[data-theme="light"] .codm-hero-description,
+[data-theme="light"] .codm-hero-description,
+.light .codm-hero-description {
+  color: #6B7388 !important;
+}
