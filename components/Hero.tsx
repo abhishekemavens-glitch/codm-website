@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 type HeroData = {
   id: string;
   databaseId: number;
+  title: string;
 
   mainHeading: string;
   description: string;
