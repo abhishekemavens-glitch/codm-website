@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 type HeroData = {
   id: string;
@@ -30,8 +31,35 @@ type HeroData = {
   } | null;
 };
 
-const response = await fetch("/api/wordpress", {
+const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+/*
+ * ANIMATION
+ *
+ * One orchestrated entrance: heading -> description -> buttons ->
+ * logos -> featured image, each offset slightly from the last.
+ * `container` drives the stagger; each section uses the shared
+ * `item` variant so the timing stays consistent everywhere it's used.
+ */
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 export default function Hero() {
   const [hero, setHero] =
@@ -105,19 +133,6 @@ export default function Hero() {
         const result =
           await response.json();
 
-        console.log(
-          "================================="
-        );
-
-        console.log(
-          "HERO GRAPHQL RESPONSE:",
-          result
-        );
-
-        console.log(
-          "================================="
-        );
-
         /*
          * GRAPHQL ERROR
          */
@@ -150,11 +165,6 @@ export default function Hero() {
         const heroData =
           result?.data?.heroes?.nodes?.[0] ??
           null;
-
-        console.log(
-          "HERO DATA FROM WORDPRESS:",
-          heroData
-        );
 
         /*
          * NO HERO FOUND
@@ -321,8 +331,11 @@ export default function Hero() {
    */
 
   return (
-    <section
+    <motion.section
       id="hero"
+      variants={container}
+      initial="hidden"
+      animate="show"
       className="
         relative
         overflow-hidden
@@ -338,8 +351,11 @@ export default function Hero() {
           BACKGROUND GLOW
           ========================================= */}
 
-      <div
+      <motion.div
         aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
         className="
           pointer-events-none
           absolute
@@ -372,7 +388,8 @@ export default function Hero() {
             HEADING
             ========================================= */}
 
-        <h1
+        <motion.h1
+          variants={item}
           className="
             mx-auto
             max-w-[950px]
@@ -405,7 +422,7 @@ export default function Hero() {
             </span>
           )}
 
-        </h1>
+        </motion.h1>
 
 
         {/* =========================================
@@ -413,7 +430,8 @@ export default function Hero() {
             ========================================= */}
 
         {description && (
-          <p
+          <motion.p
+            variants={item}
             className="
               mx-auto
               mt-5
@@ -427,7 +445,7 @@ export default function Hero() {
             "
           >
             {description}
-          </p>
+          </motion.p>
         )}
 
 
@@ -438,7 +456,8 @@ export default function Hero() {
         {(hero.button1Text ||
           hero.button2Text) && (
 
-          <div
+          <motion.div
+            variants={item}
             className="
               mt-8
               flex
@@ -464,6 +483,7 @@ export default function Hero() {
                   text-white
                   transition-all
                   duration-300
+                  hover:scale-[1.03]
                   hover:opacity-90
                 "
               >
@@ -489,6 +509,7 @@ export default function Hero() {
                   text-[var(--foreground)]
                   transition-all
                   duration-300
+                  hover:scale-[1.03]
                   hover:border-[var(--accent)]
                 "
               >
@@ -496,7 +517,7 @@ export default function Hero() {
               </a>
             )}
 
-          </div>
+          </motion.div>
         )}
 
 
@@ -506,7 +527,8 @@ export default function Hero() {
 
         {logos.length > 0 && (
 
-          <div
+          <motion.div
+            variants={item}
             className="
               mt-8
               flex
@@ -548,7 +570,7 @@ export default function Hero() {
               )
             )}
 
-          </div>
+          </motion.div>
 
         )}
 
@@ -560,7 +582,14 @@ export default function Hero() {
         {hero.featuredImage?.node
           ?.sourceUrl && (
 
-          <div
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="show"
+            transition={{
+              duration: 0.9,
+              ease: [0.16, 1, 0.3, 1],
+            }}
             className="
               relative
               mx-auto
@@ -621,12 +650,12 @@ export default function Hero() {
 
             </div>
 
-          </div>
+          </motion.div>
 
         )}
 
       </div>
 
-    </section>
+    </motion.section>
   );
 }
