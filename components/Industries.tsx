@@ -24,6 +24,31 @@ export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+      }
+    );
+
+    const section = document.getElementById("industries");
+
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     async function loadIndustries() {
@@ -78,165 +103,764 @@ export default function Industries() {
   const active = industries[activeIndustry];
 
   return (
-    <section
-      id="industries"
-      className="relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-300 md:py-32"
-    >
-      {/* Background Glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-[5%] h-[400px] w-[700px] -translate-x-1/2 rounded-full blur-[120px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(114,92,255,0.10), transparent 70%)",
-        }}
-      />
+    <>
+      <section
+        id="industries"
+        className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
+          isVisible ? "codm-industries-visible" : ""
+        }`}
+      >
+        {/* =====================================================
+            BACKGROUND GLOW
+            ===================================================== */}
 
-      <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
+        <div
+          aria-hidden="true"
+          className="codm-industries-glow pointer-events-none absolute left-1/2 top-[0%] h-[500px] w-[800px] -translate-x-1/2 rounded-full"
+        />
 
-        {/* SECTION HEADING */}
+        <div
+          aria-hidden="true"
+          className="codm-industries-glow-secondary pointer-events-none absolute left-[10%] top-[35%] h-[350px] w-[350px] rounded-full"
+        />
 
-        <div className="mx-auto max-w-[850px] text-center">
+        <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-          {/* Eyebrow */}
+          {/* =====================================================
+              SECTION HEADING
+              ===================================================== */}
 
-          <div className="mb-5 flex items-center justify-center gap-3">
-            <span className="h-px w-10 bg-[var(--accent)]/40" />
+          <div className="codm-industries-heading mx-auto max-w-[900px] text-center">
 
-            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
-              Industries We Serve
-            </span>
+            {/* Eyebrow */}
 
-            <span className="h-px w-10 bg-[var(--accent)]/40" />
+            <div className="codm-industries-eyebrow mb-6 flex items-center justify-center gap-3">
+              <span className="codm-industries-line h-px w-10" />
+
+              <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
+                Industries We Serve
+              </span>
+
+              <span className="codm-industries-line h-px w-10" />
+            </div>
+
+            {/* Heading */}
+
+            <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.02] tracking-[-0.055em] text-[var(--foreground)]">
+              Engineering the systems that run
+
+              <span className="codm-industries-gradient-heading block bg-gradient-to-r from-[#5967ff] via-[#7c68ff] to-[#a08cff] bg-clip-text text-transparent">
+                modern enterprises.
+              </span>
+            </h2>
+
+            {/* Description */}
+
+            <p className="codm-industries-description mx-auto mt-6 max-w-[650px] text-sm leading-6 text-[var(--muted)] md:text-base">
+              We combine Salesforce depth with product-grade engineering, so
+              transformation lands as working software not slideware.
+            </p>
+
           </div>
 
-          {/* Heading */}
 
-          <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.02] tracking-[-0.055em] text-[var(--foreground)]">
-            Engineering the systems that run
+          {/* =====================================================
+              INDUSTRY PILLS
+              ===================================================== */}
 
-            <span className="block bg-gradient-to-r from-[#5967ff] via-[#7c68ff] to-[#a08cff] bg-clip-text text-transparent">
-              modern enterprises.
-            </span>
-          </h2>
+          <div className="codm-industries-pills mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
 
-          {/* Description */}
+            {loading ? (
+              <div className="text-sm text-[var(--muted)]">
+                Loading industries...
+              </div>
+            ) : (
+              industries.map((industry, index) => {
+                const isActive = index === activeIndustry;
 
-          <p className="mx-auto mt-5 max-w-[650px] text-sm leading-6 text-[var(--muted)] md:text-base">
-            We combine Salesforce depth with product-grade engineering, so
-            transformation lands as working software not slideware.
-          </p>
+                return (
+                  <button
+                    key={industry.id}
+                    type="button"
+                    onClick={() => setActiveIndustry(index)}
+                    style={
+                      {
+                        "--pill-delay": `${index * 70}ms`,
+                      } as React.CSSProperties
+                    }
+                    className={`codm-industry-pill rounded-full border px-4 py-2.5 text-xs font-medium ${
+                      isActive
+                        ? "codm-industry-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
+                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]"
+                    }`}
+                  >
+                    {industry.title}
+                  </button>
+                );
+              })
+            )}
 
-        </div>
+          </div>
 
 
-        {/* INDUSTRY PILLS */}
+          {/* =====================================================
+              FEATURED INDUSTRY CARD
+              ===================================================== */}
 
-        <div className="mx-auto mt-8 flex max-w-[1100px] flex-wrap justify-center gap-2.5">
+          {active && (
+            <div
+              key={active.id}
+              className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
+            >
 
-          {loading ? (
-            <div className="text-sm text-[var(--muted)]">
-              Loading industries...
+              <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
+
+                {/* =================================================
+                    CONTENT
+                    ================================================= */}
+
+                <div className="codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
+
+                  <div className="max-w-[500px]">
+
+                    {/* Small accent */}
+
+                    <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
+
+                    <h3 className="text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
+                      {active.title}
+                    </h3>
+
+                    <p
+                      className="mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
+                      dangerouslySetInnerHTML={{
+                        __html: active.content || active.excerpt,
+                      }}
+                    />
+
+                    <a
+                      href={`/industries/${active.slug}`}
+                      className="codm-industry-view-link mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                    >
+                      <span>View all</span>
+
+                      <span className="codm-industry-arrow">
+                        →
+                      </span>
+                    </a>
+
+                  </div>
+
+                </div>
+
+
+                {/* =================================================
+                    IMAGE
+                    ================================================= */}
+
+                <div className="codm-industry-image-wrapper order-1 p-4 md:p-5 lg:order-2 lg:p-5">
+
+                  <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
+
+                    {/* Image Glow */}
+
+                    <div
+                      aria-hidden="true"
+                      className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    />
+
+                    {/* Image */}
+
+                    {active.featuredImage?.node?.sourceUrl && (
+                      <img
+                        src={active.featuredImage.node.sourceUrl}
+                        alt={
+                          active.featuredImage.node.altText ||
+                          active.title
+                        }
+                        className="codm-industry-image relative h-full w-full object-contain p-5 md:p-8"
+                      />
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
             </div>
-          ) : (
-            industries.map((industry, index) => {
-              const isActive = index === activeIndustry;
-
-              return (
-                <button
-                  key={industry.id}
-                  type="button"
-                  onClick={() => setActiveIndustry(index)}
-                  className={`rounded-full border px-4 py-2 text-xs font-medium transition-all duration-300 ${
-                    isActive
-                      ? "border-[var(--accent)] bg-[var(--accent)] text-white shadow-[0_8px_25px_rgba(114,92,255,0.2)]"
-                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  {industry.title}
-                </button>
-              );
-            })
           )}
 
         </div>
+      </section>
 
 
-        {/* FEATURED INDUSTRY CARD */}
+      {/* =========================================================
+          INDUSTRIES ANIMATION CSS
+          No Framer Motion required
+          ========================================================= */}
 
-        {active && (
-          <div className="mt-8 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] transition-all duration-500 md:mt-10">
+      <style jsx>{`
 
-            <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
+        /* =====================================================
+           SECTION REVEAL
+           ===================================================== */
 
-              {/* CONTENT */}
+        .codm-industries-heading,
+        .codm-industries-pills,
+        .codm-industry-card {
+          opacity: 0;
+          transform: translateY(35px);
+        }
 
-              <div className="order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
+        .codm-industries-visible .codm-industries-heading {
+          animation: codmIndustriesHeading 1s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) forwards;
+        }
 
-                <div className="max-w-[500px]">
+        .codm-industries-visible .codm-industries-pills {
+          animation: codmIndustriesPills 1s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) 0.18s forwards;
+        }
 
-                  <h3 className="text-3xl font-semibold leading-tight tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
-                    {active.title}
-                  </h3>
-
-                  <p
-                    className="mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
-                    dangerouslySetInnerHTML={{
-                      __html: active.content || active.excerpt,
-                    }}
-                  />
-
-                  <a
-                    href={`/industries/${active.slug}`}
-                    className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:text-[var(--accent)]"
-                  >
-                    View all
-                    <span>→</span>
-                  </a>
-
-                </div>
-
-              </div>
+        .codm-industries-visible .codm-industry-card {
+          animation: codmIndustryCard 1.1s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) 0.3s forwards;
+        }
 
 
-              {/* IMAGE */}
+        /* =====================================================
+           HEADING
+           ===================================================== */
 
-              <div className="order-1 p-4 md:p-5 lg:order-2 lg:p-5">
+        .codm-industries-heading {
+          will-change: transform, opacity;
+        }
 
-                <div className="relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
+        .codm-industries-gradient-heading {
+          background-size: 200% 100%;
+          animation: codmGradientMove 7s ease-in-out infinite;
+        }
 
-                  {/* Glow */}
+        .codm-industries-eyebrow {
+          opacity: 0;
+          transform: translateY(12px);
+        }
 
-                  <div
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[60px]"
-                    style={{
-                      background:
-                        "radial-gradient(circle, rgba(114,92,255,0.25), transparent 70%)",
-                    }}
-                  />
+        .codm-industries-visible .codm-industries-eyebrow {
+          animation: codmEyebrowReveal 0.8s ease-out 0.1s forwards;
+        }
 
-                  {active.featuredImage?.node?.sourceUrl && (
-                    <img
-                      src={active.featuredImage.node.sourceUrl}
-                      alt={
-                        active.featuredImage.node.altText ||
-                        active.title
-                      }
-                      className="relative h-full w-full object-contain p-5 transition-all duration-500 md:p-8"
-                    />
-                  )}
+        .codm-industries-line {
+          position: relative;
+          opacity: 0.5;
+          overflow: hidden;
+        }
 
-                </div>
+        .codm-industries-line::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          transform: translateX(-100%);
+          background: linear-gradient(
+            90deg,
+            transparent,
+            var(--accent),
+            transparent
+          );
+        }
 
-              </div>
+        .codm-industries-visible .codm-industries-line::after {
+          animation: codmLineSweep 1.2s ease-out 0.3s forwards;
+        }
 
-            </div>
 
-          </div>
-        )}
+        /* =====================================================
+           DESCRIPTION
+           ===================================================== */
 
-      </div>
-    </section>
+        .codm-industries-description {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+
+        .codm-industries-visible .codm-industries-description {
+          animation: codmDescriptionReveal 0.8s ease-out 0.4s forwards;
+        }
+
+
+        /* =====================================================
+           PILLS
+           ===================================================== */
+
+        .codm-industry-pill {
+          opacity: 0;
+          transform: translateY(12px) scale(0.97);
+          transition:
+            transform 450ms cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 350ms ease,
+            background-color 350ms ease,
+            color 350ms ease,
+            box-shadow 350ms ease;
+        }
+
+        .codm-industries-visible .codm-industry-pill {
+          animation: codmPillReveal 0.7s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) var(--pill-delay) forwards;
+        }
+
+        .codm-industry-pill:hover {
+          transform: translateY(-3px) scale(1.025);
+        }
+
+        .codm-industry-pill-active {
+          box-shadow:
+            0 8px 30px rgba(114, 92, 255, 0.22),
+            0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+
+        .codm-industry-pill-active:hover {
+          transform: translateY(-2px) scale(1.02);
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .codm-industry-card {
+          position: relative;
+          transition:
+            border-color 500ms ease,
+            box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .codm-industry-card:hover {
+          transform: translateY(-4px);
+          box-shadow:
+            0 35px 100px rgba(0, 0, 0, 0.08),
+            0 0 80px rgba(114, 92, 255, 0.05);
+        }
+
+
+        /* =====================================================
+           CARD CONTENT
+           ===================================================== */
+
+        .codm-industry-card-content {
+          opacity: 0;
+          transform: translateX(-30px);
+          animation: codmCardContent 0.9s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) 0.15s forwards;
+        }
+
+        .codm-industry-accent {
+          width: 0;
+          opacity: 0;
+          animation:
+            codmAccentReveal 0.8s cubic-bezier(
+              0.16,
+              1,
+              0.3,
+              1
+            ) 0.45s forwards;
+        }
+
+
+        /* =====================================================
+           IMAGE
+           ===================================================== */
+
+        .codm-industry-image-wrapper {
+          opacity: 0;
+          transform: translateX(30px);
+          animation: codmImageWrapper 1s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) 0.2s forwards;
+        }
+
+        .codm-industry-image-container {
+          transition:
+            transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 800ms ease;
+        }
+
+        .codm-industry-card:hover
+        .codm-industry-image-container {
+          transform: scale(0.985);
+        }
+
+        .codm-industry-image {
+          opacity: 0;
+          transform: scale(1.055);
+          animation: codmIndustryImage 1.2s cubic-bezier(
+            0.16,
+            1,
+            0.3,
+            1
+          ) 0.35s forwards;
+
+          transition:
+            transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+            filter 700ms ease;
+        }
+
+        .codm-industry-card:hover .codm-industry-image {
+          transform: scale(1.025);
+        }
+
+
+        /* =====================================================
+           IMAGE GLOW
+           ===================================================== */
+
+        .codm-industry-image-glow {
+          background:
+            radial-gradient(
+              circle,
+              rgba(114, 92, 255, 0.24),
+              transparent 70%
+            );
+
+          filter: blur(55px);
+          opacity: 0.8;
+
+          animation: codmImageGlow 5s ease-in-out infinite;
+        }
+
+        .codm-industries-glow {
+          background:
+            radial-gradient(
+              circle,
+              rgba(114, 92, 255, 0.11),
+              transparent 70%
+            );
+
+          filter: blur(120px);
+          opacity: 0.8;
+
+          animation: codmMainGlow 8s ease-in-out infinite;
+        }
+
+        .codm-industries-glow-secondary {
+          background:
+            radial-gradient(
+              circle,
+              rgba(79, 70, 229, 0.06),
+              transparent 70%
+            );
+
+          filter: blur(100px);
+
+          animation: codmSecondaryGlow 10s ease-in-out infinite;
+        }
+
+
+        /* =====================================================
+           VIEW ALL
+           ===================================================== */
+
+        .codm-industry-view-link {
+          position: relative;
+          transition:
+            color 300ms ease,
+            transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .codm-industry-view-link:hover {
+          color: var(--accent);
+          transform: translateX(4px);
+        }
+
+        .codm-industry-arrow {
+          display: inline-block;
+          transition:
+            transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .codm-industry-view-link:hover .codm-industry-arrow {
+          transform: translateX(5px);
+        }
+
+
+        /* =====================================================
+           KEYFRAMES
+           ===================================================== */
+
+        @keyframes codmIndustriesHeading {
+          from {
+            opacity: 0;
+            transform: translateY(35px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes codmIndustriesPills {
+          from {
+            opacity: 0;
+            transform: translateY(25px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes codmIndustryCard {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes codmEyebrowReveal {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes codmLineSweep {
+          from {
+            transform: translateX(-100%);
+          }
+
+          to {
+            transform: translateX(100%);
+          }
+        }
+
+        @keyframes codmDescriptionReveal {
+          from {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes codmPillReveal {
+          from {
+            opacity: 0;
+            transform: translateY(12px) scale(0.97);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes codmCardContent {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes codmImageWrapper {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes codmIndustryImage {
+          from {
+            opacity: 0;
+            transform: scale(1.055);
+          }
+
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes codmAccentReveal {
+          from {
+            width: 0;
+            opacity: 0;
+          }
+
+          to {
+            width: 40px;
+            opacity: 1;
+          }
+        }
+
+        @keyframes codmGradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+
+          50% {
+            background-position: 100% 50%;
+          }
+
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @keyframes codmImageGlow {
+          0%,
+          100% {
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0.55;
+          }
+
+          50% {
+            transform: translate(-50%, -50%) scale(1.08);
+            opacity: 0.85;
+          }
+        }
+
+        @keyframes codmMainGlow {
+          0%,
+          100% {
+            transform: translateX(-50%) scale(0.95);
+            opacity: 0.6;
+          }
+
+          50% {
+            transform: translateX(-50%) scale(1.08);
+            opacity: 1;
+          }
+        }
+
+        @keyframes codmSecondaryGlow {
+          0%,
+          100% {
+            transform: translate(0, 0);
+          }
+
+          50% {
+            transform: translate(50px, -30px);
+          }
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 767px) {
+
+          .codm-industries-section {
+            padding-top: 80px;
+            padding-bottom: 80px;
+          }
+
+          .codm-industry-card:hover {
+            transform: none;
+          }
+
+          .codm-industry-card:hover
+          .codm-industry-image-container {
+            transform: none;
+          }
+
+          .codm-industry-card:hover .codm-industry-image {
+            transform: scale(1);
+          }
+
+          .codm-industries-glow {
+            width: 500px;
+            height: 350px;
+          }
+
+          .codm-industries-pills {
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+           ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+          .codm-industries-heading,
+          .codm-industries-pills,
+          .codm-industry-card,
+          .codm-industries-eyebrow,
+          .codm-industries-description,
+          .codm-industry-pill,
+          .codm-industry-card-content,
+          .codm-industry-image-wrapper,
+          .codm-industry-image,
+          .codm-industry-accent {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+
+          .codm-industries-glow,
+          .codm-industries-glow-secondary,
+          .codm-industry-image-glow,
+          .codm-industries-gradient-heading {
+            animation: none !important;
+          }
+
+        }
+
+      `}</style>
+    </>
   );
 }
