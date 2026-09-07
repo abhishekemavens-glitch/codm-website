@@ -34,14 +34,6 @@ type HeroData = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-/*
- * ANIMATION
- *
- * One orchestrated entrance: heading -> description -> buttons ->
- * logos -> featured image, each offset slightly from the last.
- * `container` drives the stagger; each section uses the shared
- * `item` variant so the timing stays consistent everywhere it's used.
- */
 const container = {
   hidden: {},
   show: {
@@ -53,26 +45,24 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: {
+    opacity: 0,
+    y: 18,
+  },
   show: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as const,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
 };
 
 export default function Hero() {
-  const [hero, setHero] =
-    useState<HeroData | null>(null);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [error, setError] =
-    useState<string | null>(null);
+  const [hero, setHero] = useState<HeroData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadHero() {
@@ -133,12 +123,7 @@ export default function Hero() {
           );
         }
 
-        const result =
-          await response.json();
-
-        /*
-         * GRAPHQL ERROR
-         */
+        const result = await response.json();
 
         if (result?.errors) {
           console.error(
@@ -157,21 +142,12 @@ export default function Hero() {
           );
 
           setHero(null);
-
           return;
         }
-
-        /*
-         * GET FIRST HERO
-         */
 
         const heroData =
           result?.data?.heroes?.nodes?.[0] ??
           null;
-
-        /*
-         * NO HERO FOUND
-         */
 
         if (!heroData) {
           setError(
@@ -179,16 +155,10 @@ export default function Hero() {
           );
 
           setHero(null);
-
           return;
         }
 
-        /*
-         * HERO FOUND
-         */
-
         setHero(heroData);
-
       } catch (err) {
         console.error(
           "HERO FETCH ERROR:",
@@ -202,7 +172,6 @@ export default function Hero() {
         );
 
         setHero(null);
-
       } finally {
         setLoading(false);
       }
@@ -211,33 +180,14 @@ export default function Hero() {
     loadHero();
   }, []);
 
-
   /*
    * LOADING
    */
-
   if (loading) {
     return (
-      <section
-        className="
-          bg-[var(--background)]
-          py-20
-        "
-      >
-        <div
-          className="
-            mx-auto
-            max-w-[1200px]
-            px-5
-            text-center
-          "
-        >
-          <p
-            className="
-              text-sm
-              text-[var(--muted)]
-            "
-          >
+      <section className="bg-[var(--background)] py-20">
+        <div className="mx-auto max-w-[1200px] px-5 text-center">
+          <p className="text-sm text-[var(--muted)]">
             Loading...
           </p>
         </div>
@@ -245,44 +195,18 @@ export default function Hero() {
     );
   }
 
-
   /*
    * ERROR
    */
-
   if (error) {
     return (
-      <section
-        className="
-          bg-[var(--background)]
-          py-20
-        "
-      >
-        <div
-          className="
-            mx-auto
-            max-w-[1200px]
-            px-5
-            text-center
-          "
-        >
-          <p
-            className="
-              mb-2
-              text-sm
-              font-medium
-              text-red-400
-            "
-          >
+      <section className="bg-[var(--background)] py-20">
+        <div className="mx-auto max-w-[1200px] px-5 text-center">
+          <p className="mb-2 text-sm font-medium text-red-400">
             Unable to load Hero from WordPress.
           </p>
 
-          <p
-            className="
-              text-xs
-              text-red-300
-            "
-          >
+          <p className="text-xs text-red-300">
             {error}
           </p>
         </div>
@@ -290,34 +214,23 @@ export default function Hero() {
     );
   }
 
-
   /*
    * SAFETY
    */
-
   if (!hero) {
     return null;
   }
 
-
   /*
    * WORDPRESS CONTENT
    */
-
-  const mainHeading =
-    hero.mainHeading || "";
-
-  const highlight =
-    hero.highlight || "";
-
-  const description =
-    hero.description || "";
-
+  const mainHeading = hero.mainHeading || "";
+  const highlight = hero.highlight || "";
+  const description = hero.description || "";
 
   /*
    * LOGOS
    */
-
   const logos = [
     hero.logo1,
     hero.logo2,
@@ -328,11 +241,9 @@ export default function Hero() {
       Boolean(logo)
   );
 
-
   /*
    * HERO
    */
-
   return (
     <motion.section
       id="hero"
@@ -354,11 +265,8 @@ export default function Hero() {
           BACKGROUND GLOW
           ========================================= */}
 
-      <motion.div
+      <div
         aria-hidden="true"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
         className="
           pointer-events-none
           absolute
@@ -376,7 +284,6 @@ export default function Hero() {
         }}
       />
 
-
       <div
         className="
           relative
@@ -386,6 +293,50 @@ export default function Hero() {
           sm:px-8
         "
       >
+
+        {/* =========================================
+            LOGOS
+            LOGOS ARE NOW BEFORE THE HEADING
+            ========================================= */}
+
+        {logos.length > 0 && (
+          <motion.div
+            variants={item}
+            className="
+              mb-8
+              flex
+              flex-wrap
+              items-center
+              justify-center
+              gap-5
+              md:gap-7
+            "
+          >
+            {logos.map((logo, index) => (
+              <div
+                key={`${logo}-${index}`}
+                className="
+                  flex
+                  h-10
+                  min-w-[70px]
+                  items-center
+                  justify-center
+                "
+              >
+                <img
+                  src={logo}
+                  alt=""
+                  className="
+                    max-h-8
+                    w-auto
+                    max-w-[120px]
+                    object-contain
+                  "
+                />
+              </div>
+            ))}
+          </motion.div>
+        )}
 
         {/* =========================================
             HEADING
@@ -406,11 +357,15 @@ export default function Hero() {
           "
         >
 
+          {/* MAIN HEADING */}
+
           {mainHeading && (
             <span className="block">
               {mainHeading}
             </span>
           )}
+
+          {/* GRADIENT HEADING */}
 
           {highlight && (
             <span
@@ -426,7 +381,6 @@ export default function Hero() {
           )}
 
         </motion.h1>
-
 
         {/* =========================================
             HERO DESCRIPTION
@@ -451,73 +405,12 @@ export default function Hero() {
           </motion.p>
         )}
 
-
-      {/* =========================================
-    BUTTONS
-    ========================================= */}
-
-{(hero.button1Text || hero.button2Text) && (
-
-  <motion.div
-    variants={item}
-    className="
-      mt-8
-      flex
-      flex-wrap
-      items-center
-      justify-center
-      gap-3
-    "
-  >
-
-    {/* =========================================
-        PRIMARY BUTTON — BOOK A CONSULTATION
-        ========================================= */}
-
-    {hero.button1Text && (
-      <a
-        href={hero.button1Url || "/contact"}
-        className="
-          codm-hero-primary-button
-          inline-flex
-          items-center
-          justify-center
-          rounded-full
-        "
-      >
-        {hero.button1Text}
-      </a>
-    )}
-
-
-    {/* =========================================
-        SECONDARY BUTTON — EXPLORE SERVICES
-        ========================================= */}
-
-    {hero.button2Text && (
-      <a
-        href={hero.button2Url || "/services"}
-        className="
-          codm-hero-secondary-button
-          inline-flex
-          items-center
-          justify-center
-          rounded-full
-        "
-      >
-        {hero.button2Text}
-      </a>
-    )}
-
-  </motion.div>
-)}
-
         {/* =========================================
-            LOGOS
+            BUTTONS
             ========================================= */}
 
-        {logos.length > 0 && (
-
+        {(hero.button1Text ||
+          hero.button2Text) && (
           <motion.div
             variants={item}
             className="
@@ -526,61 +419,64 @@ export default function Hero() {
               flex-wrap
               items-center
               justify-center
-              gap-5
-              md:gap-7
+              gap-3
             "
           >
 
-            {logos.map(
-              (logo, index) => (
+            {/* =========================================
+                PRIMARY BUTTON
+                ========================================= */}
 
-                <div
-                  key={`${logo}-${index}`}
-                  className="
-                    flex
-                    h-10
-                    min-w-[70px]
-                    items-center
-                    justify-center
-                  "
-                >
+            {hero.button1Text && (
+              <a
+                href={
+                  hero.button1Url ||
+                  "/contact"
+                }
+                className="
+                  codm-hero-primary-button
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-full
+                "
+              >
+                {hero.button1Text}
+              </a>
+            )}
 
-                  <img
-                    src={logo}
-                    alt=""
-                    className="
-                      max-h-8
-                      w-auto
-                      max-w-[120px]
-                      object-contain
-                    "
-                  />
+            {/* =========================================
+                SECONDARY BUTTON
+                ========================================= */}
 
-                </div>
-
-              )
+            {hero.button2Text && (
+              <a
+                href={
+                  hero.button2Url ||
+                  "/services"
+                }
+                className="
+                  codm-hero-secondary-button
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-full
+                "
+              >
+                {hero.button2Text}
+              </a>
             )}
 
           </motion.div>
-
         )}
-
 
         {/* =========================================
             FEATURED IMAGE
             ========================================= */}
 
-        {hero.featuredImage?.node
-          ?.sourceUrl && (
-
+        {hero.featuredImage?.node?.sourceUrl && (
           <motion.div
             variants={item}
-            initial="hidden"
-            animate="show"
-            transition={{
-              duration: 0.9,
-              ease: [0.16, 1, 0.3, 1],
-            }}
             className="
               relative
               mx-auto
@@ -621,7 +517,6 @@ export default function Hero() {
                 md:p-5
               "
             >
-
               <img
                 src={
                   hero.featuredImage.node
@@ -638,15 +533,12 @@ export default function Hero() {
                   object-contain
                 "
               />
-
             </div>
 
           </motion.div>
-
         )}
 
       </div>
-
     </motion.section>
   );
 }
