@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 
 type HeaderData = {
-  mainLogo: string;
   mainLogoLight: string;
   mainLogoDark: string;
   services: string;
@@ -28,7 +26,20 @@ function parseLink(value: string) {
     };
   }
 
-  const separatorIndex = value.indexOf("|");
+  /*
+   * Supports:
+   *
+   * Services/services
+   * Services|/services
+   *
+   * WordPress currently uses "/"
+   */
+
+  let separatorIndex = value.indexOf("|");
+
+  if (separatorIndex === -1) {
+    separatorIndex = value.indexOf("/");
+  }
 
   if (separatorIndex === -1) {
     return {
@@ -37,48 +48,56 @@ function parseLink(value: string) {
     };
   }
 
+  const label = value
+    .substring(0, separatorIndex)
+    .trim();
+
+  const url = value
+    .substring(separatorIndex)
+    .trim();
+
   return {
-    label: value.substring(0, separatorIndex).trim(),
-    url: value.substring(separatorIndex + 1).trim(),
+    label,
+    url: url || "#",
   };
 }
 
 export default function Header() {
-  const { theme } = useTheme();
-
   const [header, setHeader] = useState<HeaderData | null>(null);
 
   useEffect(() => {
     async function loadHeader() {
       try {
-        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: `
-              query Header {
-                codmHeaders {
-                  nodes {
-                    id
-                    title
-                    mainLogo
-                    mainLogoLight
-                    mainLogoDark
-                    services
-                    industries
-                    caseStudies
-                    about
-                    insights
-                    buttonText
-                    buttonUrl
+        const response = await fetch(
+          WORDPRESS_GRAPHQL_URL,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query Header {
+                  codmHeaders {
+                    nodes {
+                      id
+                      title
+                      mainLogoLight
+                      mainLogoDark
+                      services
+                      industries
+                      caseStudies
+                      about
+                      insights
+                      buttonText
+                      buttonUrl
+                    }
                   }
                 }
-              }
-            `,
-          }),
-        });
+              `,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(
@@ -91,7 +110,10 @@ export default function Header() {
         console.log("HEADER DATA:", result);
 
         if (result.errors) {
-          console.error("Header GraphQL Error:", result.errors);
+          console.error(
+            "Header GraphQL Error:",
+            result.errors
+          );
           return;
         }
 
@@ -102,7 +124,10 @@ export default function Header() {
           setHeader(data);
         }
       } catch (error) {
-        console.error("Failed to load Header:", error);
+        console.error(
+          "Failed to load Header:",
+          error
+        );
       }
     }
 
@@ -119,44 +144,51 @@ export default function Header() {
   const about = parseLink(header.about);
   const insights = parseLink(header.insights);
 
-  /*
-   * Select logo based on current theme.
-   * Fallback to mainLogo if a theme-specific logo is missing.
-   */
-  const logo =
-    theme === "dark"
-      ? header.mainLogoDark || header.mainLogo
-      : header.mainLogoLight || header.mainLogo;
-
   return (
-    <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-xl">
+    <header className="codm-header">
 
-      <div className="mx-auto flex h-[78px] max-w-[1400px] items-center justify-between px-6 lg:px-10">
+      <div className="codm-header-inner">
 
-        {/* LOGO */}
+        {/* =================================================
+            LOGO
+        ================================================= */}
 
         <a
           href="/"
-          className="flex items-center"
+          className="codm-header-logo-link"
           aria-label="CODM"
         >
-          {logo && (
+          {header.mainLogoLight && (
             <img
-              src={logo}
+              src={header.mainLogoLight}
               alt="CODM"
-              className="codm-header-logo"
+              className="codm-header-logo codm-logo-light"
+            />
+          )}
+
+          {header.mainLogoDark && (
+            <img
+              src={header.mainLogoDark}
+              alt="CODM"
+              className="codm-header-logo codm-logo-dark"
             />
           )}
         </a>
 
-        {/* NAVIGATION */}
 
-        <nav className="hidden items-center gap-8 text-sm font-medium lg:flex">
+        {/* =================================================
+            DESKTOP NAVIGATION
+        ================================================= */}
+
+        <nav
+          className="codm-header-nav"
+          aria-label="Main navigation"
+        >
 
           {services.label && (
             <a
               href={services.url}
-              className="transition-opacity hover:opacity-50"
+              className="codm-header-nav-link"
             >
               {services.label}
             </a>
@@ -165,7 +197,7 @@ export default function Header() {
           {industries.label && (
             <a
               href={industries.url}
-              className="transition-opacity hover:opacity-50"
+              className="codm-header-nav-link"
             >
               {industries.label}
             </a>
@@ -174,7 +206,7 @@ export default function Header() {
           {caseStudies.label && (
             <a
               href={caseStudies.url}
-              className="transition-opacity hover:opacity-50"
+              className="codm-header-nav-link"
             >
               {caseStudies.label}
             </a>
@@ -183,7 +215,7 @@ export default function Header() {
           {about.label && (
             <a
               href={about.url}
-              className="transition-opacity hover:opacity-50"
+              className="codm-header-nav-link"
             >
               {about.label}
             </a>
@@ -192,7 +224,7 @@ export default function Header() {
           {insights.label && (
             <a
               href={insights.url}
-              className="transition-opacity hover:opacity-50"
+              className="codm-header-nav-link"
             >
               {insights.label}
             </a>
@@ -200,18 +232,29 @@ export default function Header() {
 
         </nav>
 
-        {/* RIGHT */}
 
-        <div className="flex items-center gap-3">
+        {/* =================================================
+            RIGHT SIDE
+        ================================================= */}
 
-          <ThemeToggle />
+        <div className="codm-header-right">
+
+          <div className="codm-theme-toggle">
+            <ThemeToggle />
+          </div>
 
           {header.buttonText && (
             <a
               href={header.buttonUrl || "#"}
-              className="hidden h-[44px] items-center whitespace-nowrap rounded-full bg-[var(--foreground)] px-6 text-sm font-semibold text-[var(--background)] transition-transform hover:scale-105 sm:flex"
+              className="codm-header-cta"
             >
-              {header.buttonText}
+              <span>
+                {header.buttonText}
+              </span>
+
+              <span className="codm-header-cta-arrow">
+                →
+              </span>
             </a>
           )}
 
