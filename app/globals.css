@@ -2725,3 +2725,13 @@ html[data-theme="light"] .codm-hero-description,
 
   text-align: center;
 }
+
+
+
+.codm-hero-button-primary {
+  background: linear-gradient(
+    90deg,
+    #8B5CF6 0%,
+    #4F46E5 100%
+  ) !important;
+}
