@@ -449,76 +449,65 @@ export default function Hero() {
         )}
 
 
-        {/* =========================================
-            BUTTONS
-            ========================================= */}
+      {/* =========================================
+    BUTTONS
+    ========================================= */}
 
-        {(hero.button1Text ||
-          hero.button2Text) && (
+{(hero.button1Text || hero.button2Text) && (
 
-          <motion.div
-            variants={item}
-            className="
-              mt-8
-              flex
-              flex-wrap
-              justify-center
-              gap-3
-            "
-          >
+  <motion.div
+    variants={item}
+    className="
+      mt-8
+      flex
+      flex-wrap
+      items-center
+      justify-center
+      gap-3
+    "
+  >
 
-            {hero.button1Text && (
-              <a
-                href={
-                  hero.button1Url ||
-                  "/contact"
-                }
-                className="
-  codm-hero-primary-button
-  rounded-full
-  px-6
-  py-3
-  text-sm
-  font-medium
-  text-white
-  transition-all
-  duration-300
-  hover:opacity-90
-"
-              >
-                {hero.button1Text}
-              </a>
-            )}
+    {/* =========================================
+        PRIMARY BUTTON — BOOK A CONSULTATION
+        ========================================= */}
 
-            {hero.button2Text && (
-              <a
-                href={
-                  hero.button2Url ||
-                  "/services"
-                }
-                className="
-                  rounded-full
-                  border
-                  border-[var(--border)]
-                  bg-[var(--surface)]
-                  px-6
-                  py-3
-                  text-sm
-                  font-medium
-                  text-[var(--foreground)]
-                  transition-all
-                  duration-300
-                  hover:scale-[1.03]
-                  hover:border-[var(--accent)]
-                "
-              >
-                {hero.button2Text}
-              </a>
-            )}
+    {hero.button1Text && (
+      <a
+        href={hero.button1Url || "/contact"}
+        className="
+          codm-hero-primary-button
+          inline-flex
+          items-center
+          justify-center
+          rounded-full
+        "
+      >
+        {hero.button1Text}
+      </a>
+    )}
 
-          </motion.div>
-        )}
 
+    {/* =========================================
+        SECONDARY BUTTON — EXPLORE SERVICES
+        ========================================= */}
+
+    {hero.button2Text && (
+      <a
+        href={hero.button2Url || "/services"}
+        className="
+          codm-hero-secondary-button
+          inline-flex
+          items-center
+          justify-center
+          rounded-full
+        "
+      >
+        {hero.button2Text}
+      </a>
+    )}
+
+  </motion.div>
+)}
 
         {/* =========================================
             LOGOS
