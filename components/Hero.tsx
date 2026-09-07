@@ -284,13 +284,10 @@ export default function Hero() {
 
   {highlight && (
     <span
-      className="
-        codm-highlight
+      className="codm-highlight
         block
         bg-clip-text
-        text-transparent
-      "
-    >
+        text-transparent">
       {highlight}
     </span>
   )}
