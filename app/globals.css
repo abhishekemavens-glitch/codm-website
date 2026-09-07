@@ -314,19 +314,28 @@ header > div > div:last-child > a:hover {
   transform: translateY(-1px);
 }
 
+/* =========================================================
+   HEADER CTA BUTTON
+   ========================================================= */
+
 .codm-header-cta {
+  position: relative;
+  isolation: isolate;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
 
   height: 44px;
-  padding: 0 22px;
+  min-width: 130px;
+
+  padding: 0 20px;
 
   border-radius: 999px;
 
-  background: var(--foreground);
-  color: var(--background);
+  background: #ffffff;
+  color: #101424;
 
   font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 16px;
@@ -338,89 +347,108 @@ header > div > div:last-child > a:hover {
   text-decoration: none;
   white-space: nowrap;
 
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.12);
+
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    opacity 0.25s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
-.codm-header-cta:hover {
-  transform: translateY(-2px);
-  opacity: 0.95;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+/* ---------------------------------------------------------
+   BUTTON TEXT
+   --------------------------------------------------------- */
+
+.codm-header-cta > span {
+  position: relative;
+  z-index: 3;
 }
 
-.codm-header-cta:active {
-  transform: translateY(0) scale(0.98);
-}
+
+/* ---------------------------------------------------------
+   ARROW
+   --------------------------------------------------------- */
 
 .codm-header-cta-arrow {
-  display: inline-block;
+  position: relative;
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   font-size: 18px;
   line-height: 1;
-  transition: transform 0.25s ease;
+
+  transition:
+    transform 0.3s ease;
 }
 
-.codm-header-cta:hover .codm-header-cta-arrow {
-  transform: translateX(4px);
-}
 
-/* =========================================================
-   HEADER CTA SHINE
-   ========================================================= */
-
-.codm-header-cta {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
+/* ---------------------------------------------------------
+   SHINE EFFECT
+   --------------------------------------------------------- */
 
 .codm-header-cta::before {
   content: "";
+
   position: absolute;
 
   top: 0;
-  left: -120%;
+  bottom: 0;
+  left: -80%;
 
-  width: 60%;
-  height: 100%;
+  width: 55%;
 
   pointer-events: none;
 
   background: linear-gradient(
     110deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.08) 65%,
     transparent 100%
   );
 
-  transform: skewX(-20deg);
-  transition: left 0.6s ease;
+  transform: skewX(-20deg) translateX(0);
 
-  z-index: 0;
-}
-
-.codm-header-cta:hover::before {
-  left: 140%;
-}
-
-.codm-header-cta > * {
-  position: relative;
   z-index: 1;
+
+  transition:
+    left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.codm-header-cta:hover::before {
-  transform: translateX(120%);
-}
+
+/* ---------------------------------------------------------
+   HOVER
+   --------------------------------------------------------- */
 
 .codm-header-cta:hover {
-  transform: translateY(-2px);
-  background: #735cff;
-  color: #ffffff;
-  box-shadow: 0 8px 24px rgba(115, 92, 255, 0.22);
-  opacity: 0.95;
-  border-color: #735cff;
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
 }
+
+.codm-header-cta:hover::before {
+  left: 130%;
+}
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(3px);
+}
+
+
+/* ---------------------------------------------------------
+   ACTIVE
+   --------------------------------------------------------- */
 
 .codm-header-cta:active {
   transform: translateY(0) scale(0.98);
