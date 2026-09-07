@@ -34,20 +34,12 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 export default function Hero() {
-
-  const [hero, setHero] =
-    useState<HeroData | null>(null);
-
-  const [loading, setLoading] =
-    useState(true);
-
+  const [hero, setHero] = useState<HeroData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
     async function loadHero() {
-
       try {
-
         const response = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
@@ -60,91 +52,93 @@ export default function Hero() {
             body: JSON.stringify({
               query: `
                 query GetHero {
-  heroes(first: 1) {
-    nodes {
-      id
-      databaseId
-      title
+                  heroes(first: 1) {
+                    nodes {
+                      id
+                      databaseId
+                      title
 
-      mainHeading
-      description
-      highlight
+                      mainHeading
+                      description
+                      highlight
 
-      button1Text
-      button1Url
+                      button1Text
+                      button1Url
 
-      button2Text
-      button2Url
+                      button2Text
+                      button2Url
 
-      logo1
-      logo2
-      logo3
-      logo4
+                      logo1
+                      logo2
+                      logo3
+                      logo4
 
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
-    }
-  }
-}
+                      featuredImage {
+                        node {
+                          sourceUrl
+                          altText
+                        }
+                      }
+                    }
+                  }
+                }
               `,
             }),
           }
         );
 
-
         if (!response.ok) {
-
           throw new Error(
             `WordPress request failed: ${response.status}`
           );
-
         }
 
-
-        const result =
-          await response.json();
-
+        const result = await response.json();
 
         console.log(
           "HERO GRAPHQL DATA:",
           result
         );
 
+        /*
+         * GRAPHQL ERROR
+         */
 
         if (result.errors) {
-
           console.error(
             "Hero GraphQL Error:",
             result.errors
           );
 
-          throw new Error(
-            "Hero GraphQL query failed."
-          );
-
+          setHero(null);
+          return;
         }
 
+        /*
+         * HERO DATA
+         */
 
         const heroData =
-          result?.data?.heroes?.nodes?.[0] ??
-          null;
-
+          result?.data?.heroes?.nodes?.[0] ?? null;
 
         console.log(
           "HERO DATA:",
           heroData
         );
 
+        if (!heroData) {
+          console.error(
+            "Hero query returned no Hero:",
+            result
+          );
+
+          setHero(null);
+          return;
+        }
 
         setHero(heroData);
 
-
       } catch (error) {
-
         console.error(
           "Failed to load Hero:",
           error
@@ -152,18 +146,12 @@ export default function Hero() {
 
         setHero(null);
 
-
       } finally {
-
         setLoading(false);
-
       }
-
     }
 
-
     loadHero();
-
   }, []);
 
 
@@ -172,38 +160,17 @@ export default function Hero() {
    */
 
   if (loading) {
-
     return (
-      <section
-        className="
-          bg-[var(--background)]
-          py-20
-        "
-      >
+      <section className="bg-[var(--background)] py-20">
+        <div className="mx-auto max-w-[1200px] px-5 text-center">
 
-        <div
-          className="
-            mx-auto
-            max-w-[1200px]
-            px-5
-            text-center
-          "
-        >
-
-          <p
-            className="
-              text-sm
-              text-[var(--muted)]
-            "
-          >
+          <p className="text-sm text-[var(--muted)]">
             Loading...
           </p>
 
         </div>
-
       </section>
     );
-
   }
 
 
@@ -212,30 +179,12 @@ export default function Hero() {
    */
 
   if (!hero) {
-
     return (
-      <section
-        className="
-          bg-[var(--background)]
-          py-20
-        "
-      >
+      <section className="bg-[var(--background)] py-20">
 
-        <div
-          className="
-            mx-auto
-            max-w-[1200px]
-            px-5
-            text-center
-          "
-        >
+        <div className="mx-auto max-w-[1200px] px-5 text-center">
 
-          <p
-            className="
-              text-sm
-              text-red-400
-            "
-          >
+          <p className="text-sm text-red-400">
             Hero content not found in WordPress.
           </p>
 
@@ -243,12 +192,20 @@ export default function Hero() {
 
       </section>
     );
-
   }
 
 
   /*
-   * BACKEND CONTENT
+   * BACKEND HERO CONTENT
+   *
+   * Main Heading:
+   * AI-Powered Enterprise &
+   *
+   * Highlight:
+   * Salesforce Solutions
+   *
+   * Description:
+   * Helping global enterprises modernise...
    */
 
   const mainHeading =
@@ -281,7 +238,6 @@ export default function Hero() {
    */
 
   return (
-
     <section
       id="hero"
       className="
@@ -348,7 +304,7 @@ export default function Hero() {
           "
         >
 
-          {/* MAIN HEADING FROM WORDPRESS */}
+          {/* MAIN HEADING */}
 
           {mainHeading && (
             <span className="block">
@@ -357,7 +313,7 @@ export default function Hero() {
           )}
 
 
-          {/* HIGHLIGHTED HEADING FROM WORDPRESS */}
+          {/* HIGHLIGHT */}
 
           {highlight && (
             <span
@@ -376,25 +332,24 @@ export default function Hero() {
 
 
         {/* =========================================
-            HERO DESCRIPTION
+            DESCRIPTION
             ========================================= */}
 
         {description && (
-          <p
+          <div
             className="
               mx-auto
               mt-5
-              max-w-[900px]
+              max-w-[700px]
               text-center
-              font-['Inter']
-              text-[20px]
-              font-normal
-              leading-[28px]
-              text-[#9AA3B8]
+              text-sm
+              leading-6
+              text-[var(--muted)]
+              md:text-base
             "
           >
             {description}
-          </p>
+          </div>
         )}
 
 
@@ -412,11 +367,9 @@ export default function Hero() {
           "
         >
 
-
           {/* PRIMARY BUTTON */}
 
           {hero.button1Text && (
-
             <a
               href={
                 hero.button1Url ||
@@ -437,14 +390,12 @@ export default function Hero() {
             >
               {hero.button1Text}
             </a>
-
           )}
 
 
           {/* SECONDARY BUTTON */}
 
           {hero.button2Text && (
-
             <a
               href={
                 hero.button2Url ||
@@ -467,18 +418,16 @@ export default function Hero() {
             >
               {hero.button2Text}
             </a>
-
           )}
 
         </div>
 
 
         {/* =========================================
-            HERO LOGOS / SMALL IMAGES
+            HERO SMALL LOGOS / IMAGES
             ========================================= */}
 
         {logos.length > 0 && (
-
           <div
             className="
               mt-8
@@ -493,7 +442,6 @@ export default function Hero() {
 
             {logos.map(
               (logo, index) => (
-
                 <div
                   key={`${logo}-${index}`}
                   className="
@@ -517,12 +465,10 @@ export default function Hero() {
                   />
 
                 </div>
-
               )
             )}
 
           </div>
-
         )}
 
 
@@ -585,7 +531,7 @@ export default function Hero() {
                 }
                 alt={
                   hero.featuredImage.node.altText ||
-                  mainHeading
+                  hero.title
                 }
                 className="
                   h-auto
@@ -603,6 +549,5 @@ export default function Hero() {
       </div>
 
     </section>
-
   );
 }
