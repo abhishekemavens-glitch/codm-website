@@ -4,20 +4,21 @@
    GLOBAL FONTS
    ========================================================= */
 
+/* =========================================================
+   CODM HEADER — FINAL
+   ========================================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 
 /* =========================================================
-   GLOBAL TYPOGRAPHY
+   FONTS
    ========================================================= */
 
 html,
 body {
   font-family: 'Inter', sans-serif;
 }
-
-
-/* HEADINGS */
 
 h1,
 h2,
@@ -28,6 +29,384 @@ h6 {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.codm-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+
+  width: 100%;
+  height: 72px;
+
+  background: rgba(5, 7, 20, 0.92);
+
+  border-bottom: 1px solid rgba(138, 150, 168, 0.18);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  font-family: 'Inter', sans-serif;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER INNER
+   ========================================================= */
+
+.codm-header-inner {
+  width: min(1280px, calc(100% - 48px));
+  height: 72px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.codm-header-logo-link {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  text-decoration: none;
+}
+
+.codm-header-logo {
+  display: block;
+
+  width: auto;
+  height: auto;
+
+  max-width: 145px;
+  max-height: 42px;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   LOGO THEME SWITCHING
+   ========================================================= */
+
+/* Dark mode */
+
+[data-theme="dark"] .codm-logo-light {
+  display: none !important;
+}
+
+[data-theme="dark"] .codm-logo-dark {
+  display: block !important;
+}
+
+
+/* Light mode */
+
+[data-theme="light"] .codm-logo-dark {
+  display: none !important;
+}
+
+[data-theme="light"] .codm-logo-light {
+  display: block !important;
+}
+
+
+/*
+   If your theme uses no data-theme initially,
+   show the light logo by default.
+*/
+
+.codm-logo-dark {
+  display: none;
+}
+
+.codm-logo-light {
+  display: block;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.codm-header-nav {
+  display: flex;
+  align-items: center;
+
+  gap: 32px;
+
+  margin-left: auto;
+  margin-right: 38px;
+}
+
+.codm-header-nav-link {
+  display: inline-flex;
+  align-items: center;
+
+  font-family: 'Inter', sans-serif !important;
+
+  font-size: 18px !important;
+  font-weight: 400 !important;
+
+  line-height: 1.4 !important;
+
+  color: #8A96A8 !important;
+
+  text-decoration: none !important;
+
+  white-space: nowrap;
+
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.codm-header-nav-link:hover {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE NAV
+   ========================================================= */
+
+[data-theme="light"] .codm-header-nav-link {
+  color: #101424 !important;
+}
+
+[data-theme="light"] .codm-header-nav-link:hover {
+  color: #6f63ff !important;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+   ========================================================= */
+
+.codm-header-right {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   THEME TOGGLE WRAPPER
+   ========================================================= */
+
+.codm-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.codm-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+
+  padding: 0 22px;
+
+  gap: 8px;
+
+  border-radius: 999px;
+
+  background: #ffffff;
+
+  color: #080914;
+
+  font-family: 'Plus Jakarta Sans', sans-serif;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  line-height: 1;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.codm-header-cta:hover {
+  transform: translateY(-1px);
+
+  background: #ffffff;
+
+  color: #080914;
+}
+
+.codm-header-cta-arrow {
+  font-family: 'Inter', sans-serif;
+
+  font-size: 18px;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .codm-header-nav {
+    gap: 22px;
+    margin-right: 24px;
+  }
+
+  .codm-header-nav-link {
+    font-size: 16px !important;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .codm-header {
+    height: 70px;
+  }
+
+  .codm-header-inner {
+    height: 70px;
+    width: calc(100% - 36px);
+  }
+
+  .codm-header-nav {
+    display: none;
+  }
+
+  .codm-header-logo {
+    max-width: 125px;
+    max-height: 38px;
+  }
+
+  .codm-header-cta {
+    min-height: 42px;
+
+    padding: 0 18px;
+
+    font-size: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .codm-header {
+    height: 64px;
+  }
+
+  .codm-header-inner {
+    height: 64px;
+
+    width: calc(100% - 28px);
+  }
+
+  .codm-header-logo {
+    max-width: 110px;
+    max-height: 34px;
+  }
+
+  .codm-header-right {
+    gap: 8px;
+  }
+
+  .codm-header-cta {
+    min-height: 40px;
+
+    padding: 0 16px;
+
+    font-size: 13px;
+  }
+
+  .codm-header-cta-arrow {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .codm-header-inner {
+    width: calc(100% - 20px);
+  }
+
+  .codm-header-logo {
+    max-width: 100px;
+  }
+
+  .codm-header-cta {
+    padding: 0 14px;
+  }
+
+}
+
+
+/* =========================================================
+   HEADER OVERFLOW PROTECTION
+   ========================================================= */
+
+.codm-header,
+.codm-header-inner,
+.codm-header-logo-link,
+.codm-header-right {
+  box-sizing: border-box;
+}
+
+.codm-header {
+  max-width: 100%;
+  overflow: hidden;
+}
 
 /* NAVIGATION */
 
