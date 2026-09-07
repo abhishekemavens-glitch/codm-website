@@ -24,7 +24,7 @@ type HeaderData = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-function parseLink(value: string) {
+function parseLink(value: string = "") {
   if (!value) {
     return {
       label: "",
@@ -32,30 +32,39 @@ function parseLink(value: string) {
     };
   }
 
-  let separatorIndex = value.indexOf("|");
+  const separatorIndex = value.indexOf("|");
 
-  if (separatorIndex === -1) {
-    separatorIndex = value.indexOf("/");
-  }
-
-  if (separatorIndex === -1) {
+  if (separatorIndex !== -1) {
     return {
-      label: value.trim(),
-      url: "#",
+      label: value.substring(0, separatorIndex).trim(),
+      url: value.substring(separatorIndex + 1).trim() || "#",
     };
   }
 
-  const label = value
-    .substring(0, separatorIndex)
-    .trim();
+  /*
+   * Supports values such as:
+   *
+   * Services/services
+   * Industries/industries
+   *
+   * Only treat "/" as separator when it is not
+   * the beginning of an actual URL.
+   */
 
-  const url = value
-    .substring(separatorIndex)
-    .trim();
+  if (!value.startsWith("/")) {
+    const slashIndex = value.indexOf("/");
+
+    if (slashIndex !== -1) {
+      return {
+        label: value.substring(0, slashIndex).trim(),
+        url: value.substring(slashIndex).trim() || "#",
+      };
+    }
+  }
 
   return {
-    label,
-    url: url || "#",
+    label: value.trim(),
+    url: "#",
   };
 }
 
@@ -64,15 +73,19 @@ export default function Header() {
     useState<HeaderData | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadHeader() {
       try {
         const response = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
             method: "POST",
+
             headers: {
               "Content-Type": "application/json",
             },
+
             body: JSON.stringify({
               query: `
                 query Header {
@@ -106,41 +119,60 @@ export default function Header() {
 
         if (!response.ok) {
           throw new Error(
-            \`WordPress request failed: \${response.status}\`
+            `WordPress request failed: ${response.status}`
           );
         }
 
         const result = await response.json();
 
         console.log(
-          "HEADER DATA:",
+          "CODM HEADER GRAPHQL:",
           result
         );
 
         if (result.errors) {
           console.error(
-            "Header GraphQL Error:",
+            "CODM HEADER GRAPHQL ERROR:",
             result.errors
           );
+
           return;
         }
 
         const data =
           result?.data?.codmHeaders?.nodes?.[0];
 
-        if (data) {
+        if (!data) {
+          console.error(
+            "CODM HEADER: No header data found."
+          );
+
+          return;
+        }
+
+        if (mounted) {
           setHeader(data);
         }
+
       } catch (error) {
         console.error(
-          "Failed to load Header:",
+          "CODM HEADER LOAD FAILED:",
           error
         );
       }
     }
 
     loadHeader();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
+
+  /*
+   * Don't render the header until WordPress data
+   * has been successfully loaded.
+   */
 
   if (!header) {
     return null;
@@ -184,7 +216,9 @@ export default function Header() {
                 }
                 className="codm-announcement-link"
               >
-                {header.announcementButtonText}
+                <span>
+                  {header.announcementButtonText}
+                </span>
 
                 <span className="codm-announcement-arrow">
                   →
@@ -213,7 +247,7 @@ export default function Header() {
           <a
             href="/"
             className="codm-header-logo-link"
-            aria-label="CODM"
+            aria-label="CODM Home"
           >
 
             {header.mainLogoLight && (
@@ -309,13 +343,18 @@ export default function Header() {
                 }
                 className="codm-header-cta"
               >
+
                 <span>
                   {header.buttonText}
                 </span>
 
-                <span className="codm-header-cta-arrow">
+                <span
+                  className="codm-header-cta-arrow"
+                  aria-hidden="true"
+                >
                   →
                 </span>
+
               </a>
             )}
 
