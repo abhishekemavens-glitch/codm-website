@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 type HeroData = {
   id: string;
   databaseId: number;
+
   title: string;
-  content: string;
+
+  mainHeading: string;
+  description: string;
 
   highlight: string;
 
