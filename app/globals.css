@@ -2012,79 +2012,129 @@ header a {
 
 
 /* =========================================================
-   CODM ANNOUNCEMENT BAR
+   ANNOUNCEMENT BAR
    ========================================================= */
 
 .codm-announcement-bar {
   width: 100%;
-  background: #1B2038;
-  color: #4A8CFF;
+  height: 44px;
+  background: #f5f7fa;
+  border-bottom: 1px solid #d9dee8;
+
+  color: #10182b;
+
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
+
+  box-sizing: border-box;
 }
 
 .codm-announcement-inner {
   width: 100%;
-  min-height: 44px;
+  height: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 10px 20px;
+
+  gap: 12px;
+
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
 .codm-announcement-text {
-  color: #4A8CFF;
+  color: #10182b;
+
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
+
+  white-space: nowrap;
 }
 
 .codm-announcement-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
 
-  padding: 5px 8px;
+  gap: 4px;
 
-  border: 0;
-  border-radius: 3px;
+  min-width: 76px;
+  height: 20px;
 
-  background: #4A8CFF;
-  color: #ffffff;
+  padding: 0 8px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dce4ef;
+  border-radius: 999px;
+
+  background: #e9eef6;
+  color: #68758a;
 
   font-family: "Google Sans Flex", sans-serif;
   font-weight: 500;
   font-size: 8px;
   line-height: 100%;
   letter-spacing: 0;
+
   text-align: center;
   text-transform: uppercase;
 
   text-decoration: none;
+
   white-space: nowrap;
 
   transition:
-    transform 0.25s ease,
-    opacity 0.25s ease;
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .codm-announcement-link:hover {
+  background: #dfe7f3;
+  color: #4a5870;
   transform: translateY(-1px);
-  opacity: 0.9;
 }
 
 .codm-announcement-arrow {
   font-family: "Inter", sans-serif;
-  font-size: 11px;
+  font-size: 9px;
   line-height: 1;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] .codm-announcement-bar {
+  background: #1b2038;
+  border-bottom: 1px solid #1b2038;
+
+  color: #4a8cff;
+}
+
+[data-theme="dark"] .codm-announcement-text {
+  color: #4a8cff;
+}
+
+[data-theme="dark"] .codm-announcement-link {
+  background: #4a8cff;
+  border-color: #4a8cff;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .codm-announcement-link:hover {
+  background: #639cff;
+  border-color: #639cff;
+  color: #ffffff;
 }
 
 
@@ -2094,22 +2144,27 @@ header a {
 
 @media (max-width: 600px) {
 
+  .codm-announcement-bar {
+    height: 42px;
+  }
+
   .codm-announcement-inner {
-    min-height: 42px;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 0 12px;
   }
 
   .codm-announcement-text {
     font-size: 13px;
     line-height: 18px;
-    text-align: center;
   }
 
   .codm-announcement-link {
-    flex-shrink: 0;
-    font-size: 8px;
-    padding: 5px 7px;
+    min-width: 70px;
+    height: 19px;
+
+    padding: 0 7px;
+
+    font-size: 7px;
   }
 
 }
