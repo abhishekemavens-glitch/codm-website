@@ -407,46 +407,46 @@ header > div > div:last-child > a:hover {
 }
 
 /* Shine is completely contained inside CTA */
-.codm-header-cta::before {
-  content: "";
+/* =========================================================
+   CTA SHINE EFFECT — BUTTON ONLY
+   ========================================================= */
 
-  position: absolute !important;
-  top: -20% !important;
-  left: -75% !important;
+.codm-header-cta {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
 
-  width: 45% !important;
-  height: 140% !important;
+  /* Keeps the shine as part of the button background */
+  background-color: #ffffff !important;
+  background-image:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 38%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 62%,
+      transparent 100%
+    ) !important;
 
-  margin: 0 !important;
-  padding: 0 !important;
-
-  background: linear-gradient(
-    110deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.05) 30%,
-    rgba(255, 255, 255, 0.45) 50%,
-    rgba(255, 255, 255, 0.05) 70%,
-    transparent 100%
-  ) !important;
-
-  transform: skewX(-20deg) !important;
-
-  pointer-events: none !important;
-  z-index: 1 !important;
+  background-size: 250% 100% !important;
+  background-position: 100% 0 !important;
 
   transition:
-    left 0.65s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease,
+    background-position 0.65s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
-/* Move shine across button ONLY */
-.codm-header-cta:hover::before {
-  left: 125% !important;
+.codm-header-cta:hover {
+  background-color: #735cff !important;
+  background-position: 0% 0 !important;
 }
 
-/* Keep text and arrow above shine */
+/* Keep text and arrow above the button background */
 .codm-header-cta > span {
   position: relative !important;
-  z-index: 3 !important;
+  z-index: 2 !important;
 }
 
 .codm-header-cta-arrow {
