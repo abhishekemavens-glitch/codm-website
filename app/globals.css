@@ -2282,3 +2282,39 @@ header a {
     font-size: 11px !important;
   }
 }
+
+
+/* =========================================================
+   LIGHT MODE — ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  background: #F5F7FA;
+  color: #10182B;
+  border-bottom: 1px solid #D9DEE8;
+}
+
+.codm-announcement-text {
+  color: #10182B;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+.codm-announcement-link {
+  background: #E8EEF7;
+  color: #68758A;
+
+  font-family: "Google Sans Flex", sans-serif;
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: uppercase;
+
+  border: 1px solid #DCE3EE;
+  border-radius: 999px;
+}
