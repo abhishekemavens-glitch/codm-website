@@ -6,13 +6,19 @@ import ThemeToggle from "./ThemeToggle";
 type HeaderData = {
   mainLogoLight: string;
   mainLogoDark: string;
+
   services: string;
   industries: string;
   caseStudies: string;
   about: string;
   insights: string;
+
   buttonText: string;
   buttonUrl: string;
+
+  announcementText: string;
+  announcementButtonText: string;
+  announcementButtonUrl: string;
 };
 
 const WORDPRESS_GRAPHQL_URL =
@@ -25,13 +31,6 @@ function parseLink(value: string) {
       url: "#",
     };
   }
-
-  /*
-   * Supports:
-   *
-   * Services/services
-   * Services|/services
-   */
 
   let separatorIndex = value.indexOf("|");
 
@@ -61,7 +60,8 @@ function parseLink(value: string) {
 }
 
 export default function Header() {
-  const [header, setHeader] = useState<HeaderData | null>(null);
+  const [header, setHeader] =
+    useState<HeaderData | null>(null);
 
   useEffect(() => {
     async function loadHeader() {
@@ -80,15 +80,22 @@ export default function Header() {
                     nodes {
                       id
                       title
+
                       mainLogoLight
                       mainLogoDark
+
                       services
                       industries
                       caseStudies
                       about
                       insights
+
                       buttonText
                       buttonUrl
+
+                      announcementText
+                      announcementButtonText
+                      announcementButtonUrl
                     }
                   }
                 }
@@ -99,13 +106,16 @@ export default function Header() {
 
         if (!response.ok) {
           throw new Error(
-            `WordPress request failed: ${response.status}`
+            \`WordPress request failed: \${response.status}\`
           );
         }
 
         const result = await response.json();
 
-        console.log("HEADER DATA:", result);
+        console.log(
+          "HEADER DATA:",
+          result
+        );
 
         if (result.errors) {
           console.error(
@@ -136,139 +146,184 @@ export default function Header() {
     return null;
   }
 
-  const services = parseLink(header.services);
-  const industries = parseLink(header.industries);
-  const caseStudies = parseLink(header.caseStudies);
-  const about = parseLink(header.about);
-  const insights = parseLink(header.insights);
+  const services =
+    parseLink(header.services);
+
+  const industries =
+    parseLink(header.industries);
+
+  const caseStudies =
+    parseLink(header.caseStudies);
+
+  const about =
+    parseLink(header.about);
+
+  const insights =
+    parseLink(header.insights);
 
   return (
-    <header className="codm-header">
+    <>
+      {/* =================================================
+          ANNOUNCEMENT BAR
+      ================================================= */}
 
-      <div className="codm-header-inner">
+      {header.announcementText && (
+        <div className="codm-announcement-bar">
 
-        {/* =================================================
-            LOGO
-        ================================================= */}
+          <div className="codm-announcement-inner">
 
-        <a
-          href="/"
-          className="codm-header-logo-link"
-          aria-label="CODM"
-        >
+            <span className="codm-announcement-text">
+              {header.announcementText}
+            </span>
 
-          {header.mainLogoLight && (
-            <img
-              src={header.mainLogoLight}
-              alt="CODM"
-              className="codm-header-logo codm-logo-light"
-            />
-          )}
+            {header.announcementButtonText && (
+              <a
+                href={
+                  header.announcementButtonUrl ||
+                  "#"
+                }
+                className="codm-announcement-link"
+              >
+                {header.announcementButtonText}
 
-          {header.mainLogoDark && (
-            <img
-              src={header.mainLogoDark}
-              alt="CODM"
-              className="codm-header-logo codm-logo-dark"
-            />
-          )}
+                <span className="codm-announcement-arrow">
+                  →
+                </span>
+              </a>
+            )}
 
-        </a>
-
-
-        {/* =================================================
-            DESKTOP NAVIGATION
-        ================================================= */}
-
-        <nav
-          className="codm-header-nav"
-          aria-label="Main navigation"
-        >
-
-          {services.label && (
-            <a
-              href={services.url}
-              className="codm-header-nav-link"
-            >
-              {services.label}
-            </a>
-          )}
-
-          {industries.label && (
-            <a
-              href={industries.url}
-              className="codm-header-nav-link"
-            >
-              {industries.label}
-            </a>
-          )}
-
-          {caseStudies.label && (
-            <a
-              href={caseStudies.url}
-              className="codm-header-nav-link"
-            >
-              {caseStudies.label}
-            </a>
-          )}
-
-          {about.label && (
-            <a
-              href={about.url}
-              className="codm-header-nav-link"
-            >
-              {about.label}
-            </a>
-          )}
-
-          {insights.label && (
-            <a
-              href={insights.url}
-              className="codm-header-nav-link"
-            >
-              {insights.label}
-            </a>
-          )}
-
-        </nav>
-
-
-        {/* =================================================
-            RIGHT SIDE
-        ================================================= */}
-
-        <div className="codm-header-right">
-
-          {/* Theme Toggle */}
-
-          <div className="codm-theme-toggle">
-            <ThemeToggle />
           </div>
 
+        </div>
+      )}
 
-          {/* CTA */}
 
-          {header.buttonText && (
-            <a
-              href={header.buttonUrl || "#"}
-              className="codm-header-cta"
-            >
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
-              <span>
-                {header.buttonText}
-              </span>
+      <header className="codm-header">
 
-              <span className="codm-header-cta-arrow">
-                →
-              </span>
+        <div className="codm-header-inner">
 
-            </a>
-          )}
+          {/* =================================================
+              LOGO
+          ================================================= */}
+
+          <a
+            href="/"
+            className="codm-header-logo-link"
+            aria-label="CODM"
+          >
+
+            {header.mainLogoLight && (
+              <img
+                src={header.mainLogoLight}
+                alt="CODM"
+                className="codm-header-logo codm-logo-light"
+              />
+            )}
+
+            {header.mainLogoDark && (
+              <img
+                src={header.mainLogoDark}
+                alt="CODM"
+                className="codm-header-logo codm-logo-dark"
+              />
+            )}
+
+          </a>
+
+
+          {/* =================================================
+              NAVIGATION
+          ================================================= */}
+
+          <nav
+            className="codm-header-nav"
+            aria-label="Main navigation"
+          >
+
+            {services.label && (
+              <a
+                href={services.url}
+                className="codm-header-nav-link"
+              >
+                {services.label}
+              </a>
+            )}
+
+            {industries.label && (
+              <a
+                href={industries.url}
+                className="codm-header-nav-link"
+              >
+                {industries.label}
+              </a>
+            )}
+
+            {caseStudies.label && (
+              <a
+                href={caseStudies.url}
+                className="codm-header-nav-link"
+              >
+                {caseStudies.label}
+              </a>
+            )}
+
+            {about.label && (
+              <a
+                href={about.url}
+                className="codm-header-nav-link"
+              >
+                {about.label}
+              </a>
+            )}
+
+            {insights.label && (
+              <a
+                href={insights.url}
+                className="codm-header-nav-link"
+              >
+                {insights.label}
+              </a>
+            )}
+
+          </nav>
+
+
+          {/* =================================================
+              RIGHT SIDE
+          ================================================= */}
+
+          <div className="codm-header-right">
+
+            <div className="codm-theme-toggle">
+              <ThemeToggle />
+            </div>
+
+            {header.buttonText && (
+              <a
+                href={
+                  header.buttonUrl || "#"
+                }
+                className="codm-header-cta"
+              >
+                <span>
+                  {header.buttonText}
+                </span>
+
+                <span className="codm-header-cta-arrow">
+                  →
+                </span>
+              </a>
+            )}
+
+          </div>
 
         </div>
 
-      </div>
-
-    </header>
+      </header>
+    </>
   );
 }
