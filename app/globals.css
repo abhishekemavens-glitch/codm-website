@@ -2769,8 +2769,7 @@ html[data-theme="light"] .codm-hero-description,
    ========================================================= */
 
 #hero .codm-hero-secondary-button {
-  width: 177px !important;
-  height: 53px !important;
+
 
   display: inline-flex !important;
   align-items: center !important;
