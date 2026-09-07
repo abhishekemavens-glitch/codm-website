@@ -378,7 +378,7 @@ export default function Header() {
           MAIN HEADER
       ===================================================== */}
 
-      <header className="codm-header">
+      <header className="codm-header codm-site-header">
 
         <div className="codm-header-inner">
 
@@ -389,7 +389,7 @@ export default function Header() {
 
           <a
             href="/"
-            className="codm-header-logo-link"
+            className="codm-header-logo-link codm-header-logo"
             aria-label="CODM Home"
           >
 
