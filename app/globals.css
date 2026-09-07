@@ -73,7 +73,417 @@ h6 {
   box-sizing: border-box;
 }
 
+/* =========================================================
+   CODM HEADER
+   ========================================================= */
 
+.codm-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+
+  width: 100%;
+  height: auto;
+
+  background: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(20, 25, 40, 0.10);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+/* =========================================================
+   HEADER INNER
+   ========================================================= */
+
+.codm-header-inner {
+  width: 100%;
+  max-width: 1400px;
+  height: 78px;
+
+  margin: 0 auto;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.codm-header-logo-link {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: auto;
+  height: 100%;
+
+  flex-shrink: 0;
+
+  text-decoration: none;
+}
+
+.codm-header-logo {
+  display: block;
+
+  width: 105px;
+  max-width: 105px;
+  height: auto;
+
+  object-fit: contain;
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+
+/* =========================================================
+   LIGHT / DARK LOGO
+   ========================================================= */
+
+/*
+   LIGHT THEME
+   Show light logo
+   Hide dark logo
+*/
+
+.codm-logo-light {
+  display: block;
+}
+
+.codm-logo-dark {
+  display: none;
+}
+
+
+/*
+   DARK THEME
+   Show dark logo
+   Hide light logo
+*/
+
+[data-theme="dark"] .codm-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .codm-logo-dark {
+  display: block;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.codm-header-nav {
+  display: flex;
+  align-items: center;
+
+  gap: 34px;
+
+  margin-left: auto;
+  margin-right: 38px;
+}
+
+.codm-header-nav-link {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  white-space: nowrap;
+
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+
+  color: #202637;
+
+  text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.codm-header-nav-link:hover {
+  color: #6f63ff;
+}
+
+
+/* =========================================================
+   DARK MODE NAVIGATION
+   ========================================================= */
+
+[data-theme="dark"] .codm-header {
+  background: rgba(7, 9, 24, 0.82);
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .codm-header-nav-link {
+  color: #8A96A8;
+}
+
+[data-theme="dark"] .codm-header-nav-link:hover {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+   ========================================================= */
+
+.codm-header-right {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   THEME TOGGLE WRAPPER
+   ========================================================= */
+
+.codm-theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   GET IN TOUCH BUTTON
+   ========================================================= */
+
+.codm-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 142px;
+  height: 46px;
+
+  padding: 0 20px;
+
+  gap: 8px;
+
+  border-radius: 999px;
+
+  background: #111525;
+  color: #ffffff;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.codm-header-cta:hover {
+  transform: translateY(-2px);
+
+  background: #6f63ff;
+
+  box-shadow:
+    0 10px 28px rgba(111, 99, 255, 0.25);
+}
+
+.codm-header-cta-arrow {
+  font-size: 18px;
+  line-height: 1;
+
+  transition:
+    transform 0.25s ease;
+}
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   DARK MODE BUTTON
+   ========================================================= */
+
+[data-theme="dark"] .codm-header-cta {
+  background: #ffffff;
+  color: #0a0c1b;
+}
+
+[data-theme="dark"] .codm-header-cta:hover {
+  background: #8a7cff;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .codm-header-inner {
+    padding: 0 28px;
+  }
+
+  .codm-header-nav {
+    gap: 22px;
+    margin-right: 24px;
+  }
+
+  .codm-header-nav-link {
+    font-size: 16px;
+  }
+
+  .codm-header-logo {
+    width: 100px;
+    max-width: 100px;
+  }
+
+  .codm-header-cta {
+    min-width: 130px;
+    height: 44px;
+
+    padding: 0 17px;
+
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-header-inner {
+    height: 68px;
+
+    padding: 0 20px;
+  }
+
+  .codm-header-logo {
+    width: 90px;
+    max-width: 90px;
+  }
+
+  /*
+     Hide desktop navigation on mobile
+  */
+
+  .codm-header-nav {
+    display: none;
+  }
+
+  .codm-header-right {
+    gap: 8px;
+  }
+
+  /*
+     Keep theme toggle visible
+  */
+
+  .codm-theme-toggle {
+    display: flex;
+  }
+
+  /*
+     Smaller CTA
+  */
+
+  .codm-header-cta {
+    min-width: auto;
+
+    height: 40px;
+
+    padding: 0 15px;
+
+    font-size: 12px;
+  }
+
+  .codm-header-cta-arrow {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .codm-header-inner {
+    height: 64px;
+
+    padding: 0 16px;
+  }
+
+  .codm-header-logo {
+    width: 82px;
+    max-width: 82px;
+  }
+
+  .codm-header-cta {
+    height: 38px;
+
+    padding: 0 13px;
+
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   PREVENT HORIZONTAL OVERFLOW
+   ========================================================= */
+
+.codm-header,
+.codm-header-inner {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.codm-header * {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   FONT IMPORT
+   ========================================================= */
+
+/*
+   Put this at the VERY TOP of your main CSS file,
+   before other rules.
+*/
+
+@import url(
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap'
+);
 /* =========================================================
    LOGO
    ========================================================= */
@@ -3381,4 +3791,168 @@ header > div > div:last-child > a:hover {
 
     font-size: 11px;
   }
+}
+
+
+/* =========================================================
+   CODM HEADER ANIMATIONS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. HEADER ENTRANCE
+   --------------------------------------------------------- */
+
+@keyframes codmHeaderEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.codm-header {
+  animation: codmHeaderEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
+/* ---------------------------------------------------------
+   2. NAVIGATION HOVER UNDERLINE
+   --------------------------------------------------------- */
+
+.codm-header-nav-link::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+
+  width: 100%;
+  height: 1px;
+
+  background: currentColor;
+
+  transform: scaleX(0);
+  transform-origin: right center;
+
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-header-nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+
+/* ---------------------------------------------------------
+   3. NAVIGATION SLIGHT LIFT
+   --------------------------------------------------------- */
+
+.codm-header-nav-link {
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.codm-header-nav-link:hover {
+  transform: translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   4. CTA PREMIUM HOVER
+   --------------------------------------------------------- */
+
+.codm-header-cta {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.codm-header-cta::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 80%
+  );
+
+  transform: translateX(-120%);
+
+  transition: transform 0.6s ease;
+
+  pointer-events: none;
+}
+
+.codm-header-cta:hover::before {
+  transform: translateX(120%);
+}
+
+.codm-header-cta:hover {
+  transform: translateY(-2px);
+}
+
+
+/* Keep CTA text above shine */
+
+.codm-header-cta span {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ---------------------------------------------------------
+   5. CTA ARROW ANIMATION
+   --------------------------------------------------------- */
+
+.codm-header-cta-arrow {
+  display: inline-block;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(4px);
+}
+
+
+/* ---------------------------------------------------------
+   6. LOGO SMOOTH TRANSITION
+   --------------------------------------------------------- */
+
+.codm-logo-light,
+.codm-logo-dark {
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+
+/* ---------------------------------------------------------
+   7. REDUCE MOTION ACCESSIBILITY
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .codm-header,
+  .codm-header *,
+  .codm-header::before,
+  .codm-header::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
 }
