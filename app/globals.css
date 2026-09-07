@@ -393,19 +393,20 @@ header > div > div:last-child > a:hover {
 }
 
 .codm-header-cta span {
-  position: relative;
-  z-index: 1;
+	z-index: 1;
+	position: relative;
+	font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
 .codm-header-cta-arrow {
-  display: inline-block;
-  font-size: 15px;
-  line-height: 1;
-  transform: translateX(-4px);
-  transition: opacity 0.25s ease, width 0.25s ease, transform 0.25s ease;
-  font-family: "Inter", sans-serif;
-  opacity: 0;
-  width: 0;
+	/* opacity: 0; */
+	/* width: 0; */
+	font-family: Inter,sans-serif;
+	font-size: 15px;
+	line-height: 1;
+	transition: opacity .25s,width .25s,transform .25s;
+	display: inline-block;
+	transform: translate(-4px);
 }
 
 .codm-header-cta:hover .codm-header-cta-arrow {
