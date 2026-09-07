@@ -365,14 +365,48 @@ header > div > div:last-child > a:hover {
   transform: translateX(4px);
 }
 
+/* =========================================================
+   HEADER CTA SHINE
+   ========================================================= */
+
+.codm-header-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
 .codm-header-cta::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.18) 50%, transparent 80%);
-  transform: translateX(-120%);
-  transition: transform 0.6s ease;
+
+  top: 0;
+  left: -120%;
+
+  width: 60%;
+  height: 100%;
+
   pointer-events: none;
+
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 100%
+  );
+
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+
+  z-index: 0;
+}
+
+.codm-header-cta:hover::before {
+  left: 140%;
+}
+
+.codm-header-cta > * {
+  position: relative;
+  z-index: 1;
 }
 
 .codm-header-cta:hover::before {
