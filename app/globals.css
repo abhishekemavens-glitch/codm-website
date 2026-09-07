@@ -3887,3 +3887,99 @@ html[data-theme="light"] .codm-header,
   }
 
 }
+
+
+/* =========================================================
+   INDUSTRIES WE SERVE — EYEBROW
+   ========================================================= */
+
+.codm-industries-eyebrow {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 18px !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+  vertical-align: middle;
+  color: #475569 !important;
+
+  /* Premium entrance animation */
+  opacity: 0;
+  transform: translateY(14px);
+  animation: codmIndustriesEyebrowIn 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s forwards;
+}
+
+/* Dark mode */
+.dark .codm-industries-eyebrow {
+  color: #A7B0C2 !important;
+}
+
+
+/* =========================================================
+   EYEBROW DECORATIVE LINES
+   ========================================================= */
+
+.codm-industries-eyebrow-line {
+  height: 1px;
+  width: 40px;
+  background: currentColor;
+  opacity: 0.35;
+
+  transform: scaleX(0);
+  animation: codmIndustriesLineIn 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s forwards;
+}
+
+.codm-industries-eyebrow-line:first-child {
+  transform-origin: right center;
+}
+
+.codm-industries-eyebrow-line:last-child {
+  transform-origin: left center;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes codmIndustriesEyebrowIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes codmIndustriesLineIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 0.35;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-industries-eyebrow,
+  .codm-industries-eyebrow-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
