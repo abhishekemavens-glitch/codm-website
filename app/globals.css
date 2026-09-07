@@ -2672,3 +2672,46 @@ html.dark .codm-announcement-link {
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+/* =========================================================
+   SALESFORCE SOLUTIONS — DARK MODE
+   ========================================================= */
+
+.codm-highlight {
+  display: block;
+
+  background: linear-gradient(
+    100deg,
+    #2563EB 11.16%,
+    #6366F1 49.17%,
+    #A78BFA 93.16%
+  ) !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+
+/* =========================================================
+   SALESFORCE SOLUTIONS — LIGHT MODE
+   ========================================================= */
+
+html.light .codm-highlight,
+html[data-theme="light"] .codm-highlight,
+[data-theme="light"] .codm-highlight,
+.light .codm-highlight {
+  background: linear-gradient(
+    100deg,
+    #FFFFFF 24.1%,
+    #9187FB 54.32%,
+    #354CCB 88.84%
+  ) !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
