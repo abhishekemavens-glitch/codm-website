@@ -134,15 +134,27 @@ export default function Industries() {
 
             {/* Eyebrow */}
 
-            <div className="codm-industries-eyebrow mb-6 flex items-center justify-center gap-3">
-              <span className="codm-industries-line h-px w-10" />
+            {/* =========================================================
+    INDUSTRIES EYEBROW
+    ========================================================= */}
 
-              <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
-                Industries We Serve
-              </span>
+<div className="mb-5 flex items-center justify-center gap-3">
 
-              <span className="codm-industries-line h-px w-10" />
-            </div>
+  <span
+    aria-hidden="true"
+    className="codm-industries-eyebrow-line"
+  />
+
+  <span className="codm-industries-eyebrow">
+    Industries We Serve
+  </span>
+
+  <span
+    aria-hidden="true"
+    className="codm-industries-eyebrow-line"
+  />
+
+</div>
 
             {/* Heading */}
 
