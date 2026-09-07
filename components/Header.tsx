@@ -31,8 +31,6 @@ function parseLink(value: string) {
    *
    * Services/services
    * Services|/services
-   *
-   * WordPress currently uses "/"
    */
 
   let separatorIndex = value.indexOf("|");
@@ -158,6 +156,7 @@ export default function Header() {
           className="codm-header-logo-link"
           aria-label="CODM"
         >
+
           {header.mainLogoLight && (
             <img
               src={header.mainLogoLight}
@@ -173,6 +172,7 @@ export default function Header() {
               className="codm-header-logo codm-logo-dark"
             />
           )}
+
         </a>
 
 
@@ -239,15 +239,21 @@ export default function Header() {
 
         <div className="codm-header-right">
 
+          {/* Theme Toggle */}
+
           <div className="codm-theme-toggle">
             <ThemeToggle />
           </div>
+
+
+          {/* CTA */}
 
           {header.buttonText && (
             <a
               href={header.buttonUrl || "#"}
               className="codm-header-cta"
             >
+
               <span>
                 {header.buttonText}
               </span>
@@ -255,6 +261,7 @@ export default function Header() {
               <span className="codm-header-cta-arrow">
                 →
               </span>
+
             </a>
           )}
 
