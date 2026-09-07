@@ -2434,3 +2434,200 @@ header a {
     letter-spacing: -2% !important;
   }
 }
+
+
+/* =========================================================
+   STICKY ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+
+  width: 100% !important;
+  height: 44px !important;
+
+  z-index: 10000 !important;
+
+  box-sizing: border-box !important;
+
+  background: #F4F6F9 !important;
+  color: #111827 !important;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+
+/* Announcement content */
+
+.codm-announcement-inner {
+  width: 100% !important;
+  height: 100% !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 14px !important;
+
+  padding: 0 20px !important;
+  box-sizing: border-box !important;
+}
+
+.codm-announcement-text {
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 22px !important;
+
+  color: #4A8CFF !important;
+}
+
+.codm-announcement-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  height: 22px !important;
+  padding: 0 9px !important;
+
+  border-radius: 4px !important;
+
+  background: #4A8CFF !important;
+  color: #ffffff !important;
+
+  font-family: "Google Sans Flex", sans-serif !important;
+  font-size: 8px !important;
+  font-weight: 500 !important;
+  line-height: 100% !important;
+
+  text-align: center !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease !important;
+}
+
+.codm-announcement-link:hover {
+  transform: translateY(-1px) !important;
+  opacity: 0.9 !important;
+}
+
+.codm-announcement-arrow {
+  margin-left: 4px !important;
+}
+
+
+/* =========================================================
+   STICKY MAIN HEADER
+   ========================================================= */
+
+.codm-header {
+  position: fixed !important;
+
+  top: 44px !important;
+  left: 0 !important;
+  right: 0 !important;
+
+  width: 100% !important;
+  height: 72px !important;
+
+  z-index: 9999 !important;
+
+  box-sizing: border-box !important;
+
+  background: rgba(5, 6, 18, 0.94) !important;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+}
+
+
+/* =========================================================
+   PAGE OFFSET
+   Announcement 44px + Header 72px = 116px
+   ========================================================= */
+
+.codm-header + main {
+  padding-top: 116px !important;
+}
+
+.codm-header ~ main {
+  padding-top: 116px !important;
+}
+
+.codm-header + .codm-hero {
+  padding-top: 116px !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.dark .codm-announcement-bar,
+[data-theme="dark"] .codm-announcement-bar,
+html.dark .codm-announcement-bar {
+  background: #1B2038 !important;
+  color: #4A8CFF !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .codm-announcement-text,
+[data-theme="dark"] .codm-announcement-text,
+html.dark .codm-announcement-text {
+  color: #4A8CFF !important;
+}
+
+.dark .codm-announcement-link,
+[data-theme="dark"] .codm-announcement-link,
+html.dark .codm-announcement-link {
+  background: #4A8CFF !important;
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-announcement-bar {
+    height: 40px !important;
+  }
+
+  .codm-announcement-inner {
+    gap: 8px !important;
+    padding: 0 10px !important;
+  }
+
+  .codm-announcement-text {
+    font-size: 12px !important;
+    line-height: 16px !important;
+    text-align: center !important;
+  }
+
+  .codm-announcement-link {
+    height: 20px !important;
+    padding: 0 7px !important;
+    font-size: 7px !important;
+  }
+
+  .codm-header {
+    top: 40px !important;
+    height: 64px !important;
+  }
+
+  .codm-header + main,
+  .codm-header ~ main,
+  .codm-header + .codm-hero {
+    padding-top: 104px !important;
+  }
+}
