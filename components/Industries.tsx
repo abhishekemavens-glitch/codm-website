@@ -38,7 +38,6 @@ export default function Industries() {
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
 
-    // Subtle tilt, max ~6deg
     setTilt({ x: (py - 0.5) * -6, y: (px - 0.5) * 6 });
     setSpotlight({ x: px * 100, y: py * 100 });
   };
@@ -128,7 +127,7 @@ export default function Industries() {
       <section
         id="industries"
         className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-          isVisible ? "codm-industries-visible" : ""
+          isVisible ? "codm-industries-visible codm-visible" : ""
         }`}
       >
         {/* =====================================================
@@ -149,9 +148,6 @@ export default function Industries() {
 
           {/* =====================================================
               SECTION HEADING
-              Wrapped in codm-industries-heading so the existing
-              scroll-reveal animation (see <style jsx> below) still
-              targets it correctly.
               ===================================================== */}
 
           <div className="codm-industries-heading">
@@ -165,9 +161,12 @@ export default function Industries() {
 
           {/* =====================================================
               INDUSTRY PILLS
+              PREMIUM: stagger-in grid — codm-stagger-grid on the
+              wrapper + codm-stagger-item on each pill. Fires when
+              the section's codm-visible class is added above.
               ===================================================== */}
 
-          <div className="codm-industries-pills mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
+          <div className="codm-industries-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
 
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
@@ -187,7 +186,7 @@ export default function Industries() {
                         "--pill-delay": `${index * 70}ms`,
                       } as React.CSSProperties
                     }
-                    className={`codm-industry-pill rounded-full border px-4 py-2.5 text-xs font-medium ${
+                    className={`codm-industry-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium ${
                       isActive
                         ? "codm-industry-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
                         : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]"
@@ -204,8 +203,6 @@ export default function Industries() {
 
           {/* =====================================================
               FEATURED INDUSTRY CARD
-              PREMIUM: mouse-driven tilt + spotlight added via
-              onMouseMove / onMouseLeave and inline custom props.
               ===================================================== */}
 
           {active && (
@@ -223,7 +220,6 @@ export default function Industries() {
               className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
             >
 
-              {/* PREMIUM: spotlight overlay that follows the cursor */}
               <div aria-hidden="true" className="codm-industry-spotlight" />
 
               <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
@@ -235,8 +231,6 @@ export default function Industries() {
                 <div className="codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
 
                   <div className="max-w-[500px]">
-
-                    {/* Small accent */}
 
                     <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
@@ -275,14 +269,10 @@ export default function Industries() {
 
                   <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
 
-                    {/* Image Glow */}
-
                     <div
                       aria-hidden="true"
                       className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full"
                     />
-
-                    {/* Image */}
 
                     {active.featuredImage?.node?.sourceUrl && (
                       <img
@@ -320,7 +310,6 @@ export default function Industries() {
            ===================================================== */
 
         .codm-industries-heading,
-        .codm-industries-pills,
         .codm-industry-card {
           opacity: 0;
           transform: translateY(35px);
@@ -335,15 +324,6 @@ export default function Industries() {
           ) forwards;
         }
 
-        .codm-industries-visible .codm-industries-pills {
-          animation: codmIndustriesPills 1s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) 0.18s forwards;
-        }
-
         .codm-industries-visible .codm-industry-card {
           animation: codmIndustryCard 1.1s cubic-bezier(
             0.16,
@@ -355,69 +335,6 @@ export default function Industries() {
 
         .codm-industries-heading {
           will-change: transform, opacity;
-        }
-
-
-        /* =====================================================
-           PILLS
-           ===================================================== */
-
-        .codm-industry-pill {
-          position: relative;
-          overflow: hidden;
-          opacity: 0;
-          transform: translateY(12px) scale(0.97);
-          transition:
-            transform 450ms cubic-bezier(0.16, 1, 0.3, 1),
-            border-color 350ms ease,
-            background-color 350ms ease,
-            color 350ms ease,
-            box-shadow 350ms ease;
-        }
-
-        .codm-industries-visible .codm-industry-pill {
-          animation: codmPillReveal 0.7s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) var(--pill-delay) forwards;
-        }
-
-        .codm-industry-pill:hover {
-          transform: translateY(-3px) scale(1.025);
-        }
-
-        .codm-industry-pill-active {
-          box-shadow:
-            0 8px 30px rgba(114, 92, 255, 0.22),
-            0 0 0 1px rgba(139, 92, 246, 0.1);
-        }
-
-        .codm-industry-pill-active:hover {
-          transform: translateY(-2px) scale(1.02);
-        }
-
-        /* PREMIUM: light sheen sweep across pill on hover */
-        .codm-industry-pill::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -60%;
-          width: 40%;
-          height: 100%;
-          background: linear-gradient(
-            100deg,
-            transparent,
-            rgba(255, 255, 255, 0.18),
-            transparent
-          );
-          transform: skewX(-20deg);
-          transition: left 550ms ease;
-        }
-
-        .codm-industry-pill:hover::before {
-          left: 130%;
         }
 
 
@@ -440,7 +357,6 @@ export default function Industries() {
             0 0 80px rgba(114, 92, 255, 0.05);
         }
 
-        /* PREMIUM: cursor-following spotlight overlay */
         .codm-industry-spotlight {
           position: absolute;
           inset: 0;
@@ -507,14 +423,12 @@ export default function Industries() {
           transition:
             transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
             box-shadow 800ms ease;
-          /* PREMIUM: gentle idle float while the card sits at rest */
           animation: codmIdleFloat 6s ease-in-out infinite;
         }
 
         .codm-industry-card:hover
         .codm-industry-image-container {
           transform: scale(0.985);
-          /* let the hover scale take over cleanly, pause the float */
           animation-play-state: paused;
         }
 
@@ -627,18 +541,6 @@ export default function Industries() {
           }
         }
 
-        @keyframes codmIndustriesPills {
-          from {
-            opacity: 0;
-            transform: translateY(25px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
         @keyframes codmIndustryCard {
           from {
             opacity: 0;
@@ -648,18 +550,6 @@ export default function Industries() {
           to {
             opacity: 1;
             transform: translateY(0);
-          }
-        }
-
-        @keyframes codmPillReveal {
-          from {
-            opacity: 0;
-            transform: translateY(12px) scale(0.97);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
           }
         }
 
@@ -748,7 +638,6 @@ export default function Industries() {
           }
         }
 
-        /* PREMIUM: idle float for the product mockup image */
         @keyframes codmIdleFloat {
           0%,
           100% {
@@ -805,10 +694,7 @@ export default function Industries() {
         @media (prefers-reduced-motion: reduce) {
 
           .codm-industries-heading,
-          .codm-industries-pills,
           .codm-industry-card,
-          .codm-industry-pill,
-          .codm-industry-pill::before,
           .codm-industry-card-content,
           .codm-industry-image-wrapper,
           .codm-industry-image,
