@@ -306,36 +306,7 @@ body {
 }
 
 
-/* =========================================================
-   08. THEME TOGGLE
-   ========================================================= */
 
-.codm-theme-toggle {
-  animation: codmThemeReveal 0.7s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.35s both;
-
-  transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-
-.codm-theme-toggle:hover {
-  transform: translateY(-2px);
-}
-
-
-@keyframes codmThemeReveal {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 
 /* =========================================================
