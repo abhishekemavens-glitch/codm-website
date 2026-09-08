@@ -4145,3 +4145,189 @@ html:not(.dark) .heading-codm-title-gradient {
   }
 }
 
+
+
+/* =========================================================
+   CODM THEME TOGGLE
+   ========================================================= */
+
+.codm-theme-toggle {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 76px !important;
+  height: 40px !important;
+
+  min-width: 76px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 1px solid var(--border) !important;
+  border-radius: 999px !important;
+
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+
+  cursor: pointer !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  z-index: 50 !important;
+
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.25s ease !important;
+}
+
+.codm-theme-toggle:hover {
+  transform: translateY(-1px) !important;
+  border-color: var(--accent) !important;
+}
+
+.codm-theme-toggle:active {
+  transform: scale(0.96) !important;
+}
+
+
+/* =========================================================
+   TRACK
+   ========================================================= */
+
+.codm-theme-toggle-track {
+  position: relative !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  border-radius: 999px !important;
+}
+
+
+/* =========================================================
+   KNOB
+   ========================================================= */
+
+.codm-theme-toggle-knob {
+  position: absolute !important;
+
+  top: 4px !important;
+  left: 4px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 30px !important;
+  height: 30px !important;
+
+  border-radius: 50% !important;
+
+  background: var(--foreground) !important;
+  color: var(--background) !important;
+
+  font-size: 15px !important;
+  line-height: 1 !important;
+
+  transform: translateX(0) !important;
+
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease,
+    color 0.35s ease !important;
+
+  z-index: 2 !important;
+}
+
+
+/* DARK POSITION */
+
+.codm-theme-toggle-knob.codm-theme-toggle-dark {
+  transform: translateX(38px) !important;
+}
+
+
+/* =========================================================
+   BACKGROUND ICONS
+   ========================================================= */
+
+.codm-theme-toggle-icons {
+  position: absolute !important;
+
+  inset: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  padding: 0 9px !important;
+
+  font-size: 12px !important;
+
+  color: var(--foreground) !important;
+
+  opacity: 0.35 !important;
+
+  pointer-events: none !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+html.dark .codm-theme-toggle,
+html[data-theme="dark"] .codm-theme-toggle {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+html:not(.dark) .codm-theme-toggle,
+html[data-theme="light"] .codm-theme-toggle {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+  .codm-theme-toggle {
+    width: 68px !important;
+    min-width: 68px !important;
+    height: 36px !important;
+  }
+
+  .codm-theme-toggle-knob {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .codm-theme-toggle-knob.codm-theme-toggle-dark {
+    transform: translateX(32px) !important;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-theme-toggle,
+  .codm-theme-toggle-knob {
+    transition: none !important;
+  }
+}
