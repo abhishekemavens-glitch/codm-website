@@ -1,5 +1,4 @@
-"use client";
-
+// components/SectionHeading.tsx
 import { splitWords } from "@/lib/codm-animations";
 
 type SectionHeadingProps = {
@@ -35,12 +34,12 @@ export default function SectionHeading({
         />
       </div>
 
-      {/* TITLE */}
-      <h2 className="heading-codm-title codm-word-stagger codm-blur-reveal">
+      {/* HEADING */}
+      <h2 className="heading-codm-title">
         {splitWords(title)}
 
         <span className="heading-codm-title-gradient">
-          {gradientText}
+          {splitWords(gradientText)}
         </span>
       </h2>
 
@@ -50,6 +49,7 @@ export default function SectionHeading({
           {description}
         </p>
       )}
+
     </div>
   );
 }
