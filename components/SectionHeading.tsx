@@ -1,4 +1,6 @@
 // components/SectionHeading.tsx
+import { splitWords } from "@/lib/codm-animations";
+
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
@@ -20,8 +22,8 @@ export default function SectionHeading({
         <span aria-hidden="true" className="heading-codm-eyebrow-line" />
       </div>
 
-      <h2 className="heading-codm-title">
-        {title}
+      <h2 className="heading-codm-title codm-word-stagger codm-blur-reveal">
+        {splitWords(title)}
         <span className="heading-codm-title-gradient">{gradientText}</span>
       </h2>
 
