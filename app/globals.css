@@ -4456,6 +4456,151 @@ html.dark {
 
 
 
+/* =========================================================
+   CODM THEME SWITCH
+   ========================================================= */
+
+.codm-theme-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Actual clickable button */
+
+.codm-theme-switch {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 76px;
+  height: 40px;
+
+  padding: 4px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--surface);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+
+  z-index: 20;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+
+/* Sliding knob */
+
+.codm-theme-switch-knob {
+  position: absolute;
+
+  top: 4px;
+  left: 4px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--foreground);
+  color: var(--background);
+
+  font-size: 14px;
+  line-height: 1;
+
+  transition:
+    left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  pointer-events: none;
+}
+
+
+/* Dark position */
+
+.codm-theme-switch-knob-dark {
+  left: 42px;
+}
+
+
+/* Sun / moon background icons */
+
+.codm-theme-switch-icons {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 10px;
+
+  font-size: 12px;
+
+  opacity: 0.45;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LIGHT MODE — DEFAULT
+   ========================================================= */
+
+html[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --surface: #f8fafc;
+  --border: #e2e8f0;
+  --muted: #475569;
+  --accent: #6366f1;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+html[data-theme="dark"] {
+  --background: #080914;
+  --foreground: #ffffff;
+  --surface: #0d1020;
+  --border: #252a45;
+  --muted: #a7b0c2;
+  --accent: #725cff;
+}
+
+
+/* =========================================================
+   GLOBAL THEME TRANSITION
+   ========================================================= */
+
+html,
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
 
 
 
