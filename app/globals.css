@@ -2,7 +2,7 @@
    FONT IMPORTS
    ========================================================= */
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet");
 
 /* =========================================================
    GLOBAL RESET & BASE
@@ -3890,7 +3890,7 @@ html[data-theme="light"] .codm-header,
 
 
 /* =========================================================
-   INDUSTRIES WE SERVE — EYEBROW
+   INDUSTRIES — EYEBROW
    ========================================================= */
 
 .codm-industries-eyebrow {
@@ -3901,17 +3901,24 @@ html[data-theme="light"] .codm-header,
   line-height: 30px !important;
   letter-spacing: 0 !important;
   vertical-align: middle;
+
   color: #475569 !important;
   text-transform: uppercase;
+
   /* Premium entrance animation */
   opacity: 0;
   transform: translateY(14px);
+
   animation: codmIndustriesEyebrowIn 0.8s
     cubic-bezier(0.22, 1, 0.36, 1)
     0.1s forwards;
 }
 
-/* Dark mode */
+
+/* =========================================================
+   DARK MODE — EYEBROW
+   ========================================================= */
+
 .dark .codm-industries-eyebrow {
   color: #A7B0C2 !important;
 }
@@ -3922,20 +3929,29 @@ html[data-theme="light"] .codm-header,
    ========================================================= */
 
 .codm-industries-eyebrow-line {
-  height: 1px;
+  display: block;
   width: 40px;
+  height: 1px;
+
   background: currentColor;
   opacity: 0.35;
 
   transform: scaleX(0);
+
   animation: codmIndustriesLineIn 0.8s
     cubic-bezier(0.22, 1, 0.36, 1)
     0.2s forwards;
 }
 
+
+/* Left line expands toward the left */
+
 .codm-industries-eyebrow-line:first-child {
   transform-origin: right center;
 }
+
+
+/* Right line expands toward the right */
 
 .codm-industries-eyebrow-line:last-child {
   transform-origin: left center;
@@ -3943,7 +3959,7 @@ html[data-theme="light"] .codm-header,
 
 
 /* =========================================================
-   ANIMATIONS
+   EYEBROW ANIMATION
    ========================================================= */
 
 @keyframes codmIndustriesEyebrowIn {
@@ -3958,29 +3974,16 @@ html[data-theme="light"] .codm-header,
   }
 }
 
+
 @keyframes codmIndustriesLineIn {
   0% {
-    transform: scaleX(0);
     opacity: 0;
+    transform: scaleX(0);
   }
 
   100% {
-    transform: scaleX(1);
     opacity: 0.35;
-  }
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .codm-industries-eyebrow,
-  .codm-industries-eyebrow-line {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+    transform: scaleX(1);
   }
 }
 
@@ -3991,19 +3994,25 @@ html[data-theme="light"] .codm-header,
 
 .codm-industries-title {
   margin: 0;
+
   font-family: "Plus Jakarta Sans", sans-serif !important;
   font-weight: 500 !important;
   font-style: normal !important;
+
   font-size: 56px !important;
   line-height: 64px !important;
-  letter-spacing: -2% !important;
+
+  /* -2% of 56px = -1.12px */
+  letter-spacing: -1.12px !important;
+
   text-align: center;
 
   color: var(--foreground);
 
-  /* Premium entrance */
+  /* Premium entrance animation */
   opacity: 0;
   transform: translateY(28px);
+
   animation: codmIndustriesTitleIn 1s
     cubic-bezier(0.22, 1, 0.36, 1)
     0.2s forwards;
@@ -4011,7 +4020,7 @@ html[data-theme="light"] .codm-header,
 
 
 /* =========================================================
-   GRADIENT — MODERN ENTERPRISES
+   "MODERN ENTERPRISES." GRADIENT
    ========================================================= */
 
 .codm-industries-title-gradient {
@@ -4026,6 +4035,7 @@ html[data-theme="light"] .codm-header,
 
   -webkit-background-clip: text;
   background-clip: text;
+
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
@@ -4045,6 +4055,7 @@ html:not(.dark) .codm-industries-title-gradient {
 
   -webkit-background-clip: text;
   background-clip: text;
+
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
@@ -4068,22 +4079,41 @@ html:not(.dark) .codm-industries-title-gradient {
 
 
 /* =========================================================
-   RESPONSIVE
+   MOBILE
    ========================================================= */
 
 @media (max-width: 767px) {
+
+  .codm-industries-eyebrow {
+    font-size: 14px !important;
+    line-height: 24px !important;
+  }
+
+  .codm-industries-eyebrow-line {
+    width: 28px;
+  }
+
   .codm-industries-title {
     font-size: 38px !important;
     line-height: 44px !important;
-    letter-spacing: -1.5% !important;
+    letter-spacing: -0.6px !important;
   }
+
 }
 
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
 @media (min-width: 768px) and (max-width: 1024px) {
+
   .codm-industries-title {
     font-size: 48px !important;
     line-height: 56px !important;
+    letter-spacing: -0.96px !important;
   }
+
 }
 
 
@@ -4092,9 +4122,13 @@ html:not(.dark) .codm-industries-title-gradient {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
+  .codm-industries-eyebrow,
+  .codm-industries-eyebrow-line,
   .codm-industries-title {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
+
 }
