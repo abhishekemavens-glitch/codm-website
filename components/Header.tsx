@@ -475,9 +475,9 @@ export default function Header() {
 
           <div className="codm-header-right">
 
-            <div className="codm-theme-toggle">
-              <ThemeToggle />
-            </div>
+            <div className="codm-theme-toggle-wrap">
+    <ThemeToggle />
+  </div>
 
             {header.buttonText && (
               <a
