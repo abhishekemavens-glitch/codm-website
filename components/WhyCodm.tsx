@@ -125,6 +125,7 @@ export default function WhyCodm() {
   const [items, setItems] = useState<WhyCodmItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isVisible, setIsVisible] = useState(false); // 👈 add this line here
 
   useEffect(() => {
     async function loadWhyCodm() {
