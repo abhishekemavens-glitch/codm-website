@@ -3902,7 +3902,7 @@ html[data-theme="light"] .codm-header,
   letter-spacing: 0 !important;
   vertical-align: middle;
   color: #475569 !important;
-
+  text-transform: uppercase;
   /* Premium entrance animation */
   opacity: 0;
   transform: translateY(14px);
