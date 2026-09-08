@@ -126,49 +126,15 @@ export default function Industries() {
 
         <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-          {/* =====================================================
-              SECTION HEADING
-              ===================================================== */}
+         import SectionHeading from "@/components/SectionHeading";
+// (adjust the "@/..." alias to match your actual tsconfig paths, or use a relative path like "../SectionHeading" if you don't have that alias set up)
 
-          <div className="codm-industries-heading mx-auto max-w-[900px] text-center">
-
-            {/* Eyebrow */}
-
-       {/* INDUSTRIES EYEBROW */}
-<div className="codm-industries-eyebrow-wrap">
-  <span
-    aria-hidden="true"
-    className="codm-industries-eyebrow-line codm-industries-eyebrow-line-left"
-  />
-
-  <span className="codm-industries-eyebrow">
-    Industries We Serve
-  </span>
-
-  <span
-    aria-hidden="true"
-    className="codm-industries-eyebrow-line codm-industries-eyebrow-line-right"
-  />
-</div>
-
-            {/* Heading */}
-
-            <h2 className="codm-industries-title">
-  Engineering the systems that run
-
-  <span className="codm-industries-title-gradient">
-    modern enterprises.
-  </span>
-</h2>
-
-            {/* Description */}
-
-            <p className="codm-industries-description mx-auto mt-6 max-w-[650px] text-sm leading-6 text-[var(--muted)] md:text-base">
-              We combine Salesforce depth with product-grade engineering, so
-              transformation lands as working software not slideware.
-            </p>
-
-          </div>
+<SectionHeading
+  eyebrow="Industries We Serve"
+  title="Engineering the systems that run"
+  gradientText="modern enterprises."
+  description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+/>
 
 
           {/* =====================================================
