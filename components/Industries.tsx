@@ -29,6 +29,24 @@ export default function Industries() {
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
+  // PREMIUM: tilt + spotlight state for the featured card
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+
+    // Subtle tilt, max ~6deg
+    setTilt({ x: (py - 0.5) * -6, y: (px - 0.5) * 6 });
+    setSpotlight({ x: px * 100, y: py * 100 });
+  };
+
+  const handleCardMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -186,13 +204,27 @@ export default function Industries() {
 
           {/* =====================================================
               FEATURED INDUSTRY CARD
+              PREMIUM: mouse-driven tilt + spotlight added via
+              onMouseMove / onMouseLeave and inline custom props.
               ===================================================== */}
 
           {active && (
             <div
               key={active.id}
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+              style={
+                {
+                  transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                  "--spot-x": `${spotlight.x}%`,
+                  "--spot-y": `${spotlight.y}%`,
+                } as React.CSSProperties
+              }
               className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
             >
+
+              {/* PREMIUM: spotlight overlay that follows the cursor */}
+              <div aria-hidden="true" className="codm-industry-spotlight" />
 
               <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
 
@@ -331,6 +363,8 @@ export default function Industries() {
            ===================================================== */
 
         .codm-industry-pill {
+          position: relative;
+          overflow: hidden;
           opacity: 0;
           transform: translateY(12px) scale(0.97);
           transition:
@@ -364,6 +398,28 @@ export default function Industries() {
           transform: translateY(-2px) scale(1.02);
         }
 
+        /* PREMIUM: light sheen sweep across pill on hover */
+        .codm-industry-pill::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -60%;
+          width: 40%;
+          height: 100%;
+          background: linear-gradient(
+            100deg,
+            transparent,
+            rgba(255, 255, 255, 0.18),
+            transparent
+          );
+          transform: skewX(-20deg);
+          transition: left 550ms ease;
+        }
+
+        .codm-industry-pill:hover::before {
+          left: 130%;
+        }
+
 
         /* =====================================================
            CARD
@@ -371,17 +427,36 @@ export default function Industries() {
 
         .codm-industry-card {
           position: relative;
+          transform-style: preserve-3d;
           transition:
+            transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
             border-color 500ms ease,
-            box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1),
-            transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .codm-industry-card:hover {
-          transform: translateY(-4px);
           box-shadow:
             0 35px 100px rgba(0, 0, 0, 0.08),
             0 0 80px rgba(114, 92, 255, 0.05);
+        }
+
+        /* PREMIUM: cursor-following spotlight overlay */
+        .codm-industry-spotlight {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0;
+          background: radial-gradient(
+            380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+            rgba(145, 135, 251, 0.14),
+            transparent 60%
+          );
+          transition: opacity 400ms ease;
+        }
+
+        .codm-industry-card:hover .codm-industry-spotlight {
+          opacity: 1;
         }
 
 
@@ -432,11 +507,15 @@ export default function Industries() {
           transition:
             transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
             box-shadow 800ms ease;
+          /* PREMIUM: gentle idle float while the card sits at rest */
+          animation: codmIdleFloat 6s ease-in-out infinite;
         }
 
         .codm-industry-card:hover
         .codm-industry-image-container {
           transform: scale(0.985);
+          /* let the hover scale take over cleanly, pause the float */
+          animation-play-state: paused;
         }
 
         .codm-industry-image {
@@ -474,7 +553,7 @@ export default function Industries() {
           filter: blur(55px);
           opacity: 0.8;
 
-          animation: codmImageGlow 5s ease-in-out infinite;
+          animation: codmImageGlow 7s ease-in-out infinite;
         }
 
         .codm-industries-glow {
@@ -488,7 +567,7 @@ export default function Industries() {
           filter: blur(120px);
           opacity: 0.8;
 
-          animation: codmMainGlow 8s ease-in-out infinite;
+          animation: codmMainGlow 12s ease-in-out infinite;
         }
 
         .codm-industries-glow-secondary {
@@ -669,6 +748,18 @@ export default function Industries() {
           }
         }
 
+        /* PREMIUM: idle float for the product mockup image */
+        @keyframes codmIdleFloat {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+
 
         /* =====================================================
            MOBILE
@@ -717,9 +808,11 @@ export default function Industries() {
           .codm-industries-pills,
           .codm-industry-card,
           .codm-industry-pill,
+          .codm-industry-pill::before,
           .codm-industry-card-content,
           .codm-industry-image-wrapper,
           .codm-industry-image,
+          .codm-industry-image-container,
           .codm-industry-accent {
             animation: none !important;
             opacity: 1 !important;
