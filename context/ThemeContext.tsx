@@ -18,29 +18,24 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // LIGHT MODE IS THE DEFAULT
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("codm-theme");
 
-    // Only restore a valid saved theme.
-    // Otherwise remain LIGHT.
     const initialTheme: Theme =
       savedTheme === "dark" ? "dark" : "light";
 
     setTheme(initialTheme);
 
-    // Use the Tailwind-compatible .dark class
-    document.documentElement.classList.toggle(
-      "dark",
-      initialTheme === "dark"
-    );
-
-    // Also keep data-theme available if any CSS uses it
     document.documentElement.setAttribute(
       "data-theme",
       initialTheme
+    );
+
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
     );
   }, []);
 
@@ -49,20 +44,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const newTheme: Theme =
         currentTheme === "light" ? "dark" : "light";
 
-      // Save preference
       localStorage.setItem("codm-theme", newTheme);
 
-      // IMPORTANT:
-      // Add/remove .dark class on <html>
-      document.documentElement.classList.toggle(
-        "dark",
-        newTheme === "dark"
-      );
-
-      // Keep data-theme synchronized too
       document.documentElement.setAttribute(
         "data-theme",
         newTheme
+      );
+
+      document.documentElement.classList.toggle(
+        "dark",
+        newTheme === "dark"
       );
 
       return newTheme;
