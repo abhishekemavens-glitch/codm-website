@@ -15,55 +15,62 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  // LIGHT MODE IS THE DEFAULT
   const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("codm-theme");
+    const savedTheme = localStorage.getItem("codm-theme");
 
+    // Only restore a valid saved theme.
+    // Otherwise remain LIGHT.
     const initialTheme: Theme =
-      saved === "dark" ? "dark" : "light";
+      savedTheme === "dark" ? "dark" : "light";
 
     setTheme(initialTheme);
 
+    // Use the Tailwind-compatible .dark class
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
+
+    // Also keep data-theme available if any CSS uses it
     document.documentElement.setAttribute(
       "data-theme",
       initialTheme
     );
-
-    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
-    const nextTheme: Theme =
-      theme === "light" ? "dark" : "light";
+    setTheme((currentTheme) => {
+      const newTheme: Theme =
+        currentTheme === "light" ? "dark" : "light";
 
-    setTheme(nextTheme);
+      // Save preference
+      localStorage.setItem("codm-theme", newTheme);
 
-    document.documentElement.setAttribute(
-      "data-theme",
-      nextTheme
-    );
+      // IMPORTANT:
+      // Add/remove .dark class on <html>
+      document.documentElement.classList.toggle(
+        "dark",
+        newTheme === "dark"
+      );
 
-    localStorage.setItem("codm-theme", nextTheme);
+      // Keep data-theme synchronized too
+      document.documentElement.setAttribute(
+        "data-theme",
+        newTheme
+      );
+
+      return newTheme;
+    });
   };
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        toggleTheme,
-      }}
-    >
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
