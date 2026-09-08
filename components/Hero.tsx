@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useMagneticButton } from "@/lib/codm-animations";
 
 type HeroData = {
   id: string;
@@ -37,6 +38,10 @@ export default function Hero() {
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // PREMIUM: magnetic hover refs for the two CTA buttons
+  const primaryButtonRef = useMagneticButton(24);
+  const secondaryButtonRef = useMagneticButton(24);
 
   useEffect(() => {
     async function loadHero() {
@@ -401,6 +406,9 @@ export default function Hero() {
 
         {/* =========================================
             BUTTONS
+            PREMIUM: both CTAs get the magnetic hover
+            pull via useMagneticButton refs above, plus
+            press feedback on click.
             ========================================= */}
 
         {(hero.button1Text ||
@@ -422,12 +430,15 @@ export default function Hero() {
 
             {hero.button1Text && (
               <a
+                ref={primaryButtonRef as React.Ref<HTMLAnchorElement>}
                 href={
                   hero.button1Url ||
                   "/contact"
                 }
                 className="
                   codm-hero-primary-button
+                  codm-magnetic
+                  codm-press
                   inline-flex
                   h-[53px]
                   min-w-[227px]
@@ -456,12 +467,15 @@ export default function Hero() {
 
             {hero.button2Text && (
               <a
+                ref={secondaryButtonRef as React.Ref<HTMLAnchorElement>}
                 href={
                   hero.button2Url ||
                   "/services"
                 }
                 className="
                   codm-hero-secondary-button
+                  codm-magnetic
+                  codm-press
                   inline-flex
                   h-[53px]
                   min-w-[177px]
