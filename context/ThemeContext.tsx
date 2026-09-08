@@ -15,92 +15,50 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+const ThemeContext = createContext<
+  ThemeContextType | undefined
+>(undefined);
 
 export function ThemeProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  /*
-   * LIGHT MODE IS THE DEFAULT
-   */
   const [theme, setTheme] = useState<Theme>("light");
 
-  /*
-   * Load saved theme
-   */
   useEffect(() => {
     const savedTheme = localStorage.getItem("codm-theme");
 
-    /*
-     * Only use dark mode if the user previously
-     * selected dark mode.
-     */
-    if (savedTheme === "dark") {
-      setTheme("dark");
+    const initialTheme: Theme =
+      savedTheme === "dark" ? "dark" : "light";
 
-      document.documentElement.classList.add("dark");
-      document.documentElement.setAttribute(
-        "data-theme",
-        "dark"
-      );
-    } else {
-      /*
-       * LIGHT MODE DEFAULT
-       */
-      setTheme("light");
-
-      document.documentElement.classList.remove("dark");
-      document.documentElement.setAttribute(
-        "data-theme",
-        "light"
-      );
-
-      /*
-       * Save light mode for first-time visitors
-       */
-      if (!savedTheme) {
-        localStorage.setItem("codm-theme", "light");
-      }
-    }
+    setTheme(initialTheme);
+    applyTheme(initialTheme);
   }, []);
 
-  /*
-   * Toggle between LIGHT and DARK
-   */
-  const toggleTheme = () => {
-    const newTheme: Theme =
-      theme === "light" ? "dark" : "light";
+  function applyTheme(newTheme: Theme) {
+    const html = document.documentElement;
 
-    setTheme(newTheme);
-
-    localStorage.setItem(
-      "codm-theme",
-      newTheme
-    );
-
-    /*
-     * Add/remove .dark
-     * This is important because your CSS
-     * uses html.dark for dark mode.
-     */
     if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
+      html.classList.add("dark");
+      html.setAttribute("data-theme", "dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      html.classList.remove("dark");
+      html.setAttribute("data-theme", "light");
     }
+  }
 
-    /*
-     * Keep data-theme as well
-     */
-    document.documentElement.setAttribute(
-      "data-theme",
-      newTheme
-    );
-  };
+  function toggleTheme() {
+    setTheme((currentTheme) => {
+      const newTheme: Theme =
+        currentTheme === "light" ? "dark" : "light";
+
+      localStorage.setItem("codm-theme", newTheme);
+      applyTheme(newTheme);
+
+      return newTheme;
+    });
+  }
 
   return (
     <ThemeContext.Provider
