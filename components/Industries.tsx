@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useInViewOnce } from "@/lib/codm-animations";
 
 type Industry = {
   id: string;
@@ -25,17 +24,6 @@ export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  /* =========================================================
-     INDUSTRIES SCROLL REVEAL
-     ========================================================= */
-
-  const { ref: industriesRef, isVisible } =
-    useInViewOnce<HTMLElement>(0.12);
-
-  /* =========================================================
-     LOAD INDUSTRIES
-     ========================================================= */
 
   useEffect(() => {
     async function loadIndustries() {
@@ -69,12 +57,6 @@ export default function Industries() {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
-        }
-
         const result = await response.json();
 
         if (result.errors) {
@@ -82,11 +64,7 @@ export default function Industries() {
           return;
         }
 
-        const nodes = result?.data?.industries?.nodes;
-
-        if (Array.isArray(nodes)) {
-          setIndustries(nodes);
-        }
+        setIndustries(result.data?.industries?.nodes || []);
       } catch (error) {
         console.error("Failed to load industries:", error);
       } finally {
@@ -101,11 +79,8 @@ export default function Industries() {
 
   return (
     <section
-      ref={industriesRef}
       id="industries"
-      className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-        isVisible ? "codm-industries-visible" : ""
-      }`}
+      className="codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-300 md:py-32"
     >
       {/* =====================================================
           AMBIENT BACKGROUND
@@ -113,82 +88,62 @@ export default function Industries() {
 
       <div
         aria-hidden="true"
-        className="codm-industries-glow pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2"
+        className="codm-industries-glow pointer-events-none absolute left-1/2 top-[5%] h-[400px] w-[700px] -translate-x-1/2 rounded-full blur-[120px]"
       />
-
-      <div
-        aria-hidden="true"
-        className="codm-industries-glow-secondary pointer-events-none absolute left-[8%] top-[30%] h-[350px] w-[350px]"
-      />
-
-      {/* =====================================================
-          CONTAINER
-          ===================================================== */}
 
       <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-        {/* ===================================================
+        {/* =====================================================
             SECTION HEADING
-            =================================================== */}
+            ===================================================== */}
 
-        <div className="codm-industries-heading mx-auto max-w-[1000px] text-center">
+        <div className="codm-industries-heading mx-auto max-w-[850px] text-center">
 
-          {/* EYEBROW */}
+          {/* Eyebrow */}
 
-          <div className="codm-industries-eyebrow-wrapper mb-6 flex items-center justify-center gap-3">
+          <div className="codm-industries-eyebrow-wrap mb-5 flex items-center justify-center gap-3">
 
-            <span
-              aria-hidden="true"
-              className="codm-industries-line h-px w-10"
-            />
+            <span className="codm-industries-eyebrow-line h-px w-10" />
 
             <span className="codm-industries-eyebrow">
               Industries We Serve
             </span>
 
-            <span
-              aria-hidden="true"
-              className="codm-industries-line h-px w-10"
-            />
+            <span className="codm-industries-eyebrow-line h-px w-10" />
 
           </div>
 
-          {/* HEADING */}
+
+          {/* Heading */}
 
           <h2 className="codm-industries-title">
-
-            <span className="codm-industries-title-main">
-              Engineering the systems that run
-            </span>
+            Engineering the systems that run
 
             <span className="codm-industries-title-gradient">
               modern enterprises.
             </span>
-
           </h2>
 
-          {/* DESCRIPTION */}
 
-          <p className="codm-industries-description mx-auto mt-6 max-w-[700px]">
+          {/* Description */}
+
+          <p className="codm-industries-description mx-auto mt-5 max-w-[650px]">
             We combine Salesforce depth with product-grade engineering, so
             transformation lands as working software not slideware.
           </p>
 
         </div>
 
-        {/* ===================================================
-            INDUSTRY PILLS
-            =================================================== */}
 
-        <div className="codm-industries-pills mx-auto mt-10 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
+        {/* =====================================================
+            INDUSTRY PILLS
+            ===================================================== */}
+
+        <div className="codm-industries-pills mx-auto mt-8 flex max-w-[1100px] flex-wrap justify-center gap-2.5">
 
           {loading ? (
-            <div className="codm-industries-loading">
+            <div className="text-sm text-[var(--muted)]">
               Loading industries...
-            </div>
-          ) : industries.length === 0 ? (
-            <div className="codm-industries-loading">
-              No industries available.
             </div>
           ) : (
             industries.map((industry, index) => {
@@ -199,15 +154,10 @@ export default function Industries() {
                   key={industry.id}
                   type="button"
                   onClick={() => setActiveIndustry(index)}
-                  style={
-                    {
-                      "--pill-delay": `${index * 70}ms`,
-                    } as React.CSSProperties
-                  }
-                  className={`codm-industry-pill ${
+                  className={`codm-industry-pill rounded-full border px-4 py-2 text-xs font-medium ${
                     isActive
-                      ? "codm-industry-pill-active"
-                      : ""
+                      ? "codm-industry-pill-active border-[var(--accent)] bg-[var(--accent)] text-white shadow-[0_8px_25px_rgba(114,92,255,0.2)]"
+                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]"
                   }`}
                 >
                   {industry.title}
@@ -218,43 +168,43 @@ export default function Industries() {
 
         </div>
 
-        {/* ===================================================
+
+        {/* =====================================================
             FEATURED INDUSTRY CARD
-            =================================================== */}
+            ===================================================== */}
 
         {active && (
           <div
             key={active.id}
-            className="codm-industry-card mt-10 md:mt-12"
+            className="codm-industry-card mt-8 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] md:mt-10"
           >
-            <div className="codm-industry-card-inner">
+
+            <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
 
               {/* =================================================
                   CONTENT
                   ================================================= */}
 
-              <div className="codm-industry-content">
+              <div className="codm-industry-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
 
-                <div className="codm-industry-content-inner">
+                <div className="max-w-[500px]">
 
-                  <h3 className="codm-industry-title">
+                  <h3 className="codm-industry-card-title text-3xl font-semibold leading-tight tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
                     {active.title}
                   </h3>
 
                   <div
-                    className="codm-industry-description"
+                    className="codm-industry-card-description mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
                     dangerouslySetInnerHTML={{
-                      __html:
-                        active.content || active.excerpt || "",
+                      __html: active.content || active.excerpt,
                     }}
                   />
 
                   <a
                     href={`/industries/${active.slug}`}
-                    className="codm-industry-view-link"
+                    className="codm-industry-view-link mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
                   >
-                    <span>View all</span>
-
+                    View all
                     <span className="codm-industry-arrow">
                       →
                     </span>
@@ -264,22 +214,21 @@ export default function Industries() {
 
               </div>
 
+
               {/* =================================================
                   IMAGE
                   ================================================= */}
 
-              <div className="codm-industry-image-wrapper">
+              <div className="codm-industry-image-wrap order-1 p-4 md:p-5 lg:order-2 lg:p-5">
 
-                <div className="codm-industry-image-container">
+                <div className="codm-industry-image relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
 
-                  {/* IMAGE AMBIENT GLOW */}
+                  {/* Image Glow */}
 
                   <div
                     aria-hidden="true"
-                    className="codm-industry-image-glow"
+                    className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[60px]"
                   />
-
-                  {/* IMAGE */}
 
                   {active.featuredImage?.node?.sourceUrl && (
                     <img
@@ -288,7 +237,7 @@ export default function Industries() {
                         active.featuredImage.node.altText ||
                         active.title
                       }
-                      className="codm-industry-image"
+                      className="codm-industry-featured-image relative h-full w-full object-contain p-5 md:p-8"
                     />
                   )}
 
@@ -297,6 +246,7 @@ export default function Industries() {
               </div>
 
             </div>
+
           </div>
         )}
 
