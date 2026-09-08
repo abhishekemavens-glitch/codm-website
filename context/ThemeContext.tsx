@@ -10,21 +10,25 @@ import {
 
 type Theme = "light" | "dark";
 
-interface ThemeContextType {
+type ThemeContextType = {
   theme: Theme;
   toggleTheme: () => void;
-}
+};
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("codm-theme");
+    const saved = localStorage.getItem("codm-theme");
 
     const initialTheme: Theme =
-      savedTheme === "dark" ? "dark" : "light";
+      saved === "dark" ? "dark" : "light";
 
     setTheme(initialTheme);
 
@@ -32,36 +36,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       "data-theme",
       initialTheme
     );
-
-    document.documentElement.classList.toggle(
-      "dark",
-      initialTheme === "dark"
-    );
   }, []);
 
   const toggleTheme = () => {
     setTheme((currentTheme) => {
-      const newTheme: Theme =
+      const nextTheme: Theme =
         currentTheme === "light" ? "dark" : "light";
-
-      localStorage.setItem("codm-theme", newTheme);
 
       document.documentElement.setAttribute(
         "data-theme",
-        newTheme
+        nextTheme
       );
 
-      document.documentElement.classList.toggle(
-        "dark",
-        newTheme === "dark"
+      localStorage.setItem(
+        "codm-theme",
+        nextTheme
       );
 
-      return newTheme;
+      return nextTheme;
     });
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
