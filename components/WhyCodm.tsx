@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 import { useTheme } from "../context/ThemeContext";
 
 type WhyCodmItem = {
@@ -202,47 +203,11 @@ export default function WhyCodm() {
       <div className="mx-auto max-w-[1110px] px-5 sm:px-8">
         <div className="mx-auto max-w-[1018px]">
 
-          {/* EYEBROW */}
-          <div className="mb-7 flex items-center justify-center gap-3">
-            <span className="h-px w-14 bg-[var(--accent)]/35" />
-
-            <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--muted)]">
-              WHY CODM
-            </span>
-
-            <span className="h-px w-14 bg-[var(--accent)]/35" />
-          </div>
-
-          {/* HEADING */}
-          <div className="mx-auto max-w-[850px] text-center">
-            <h2
-              className="
-                text-[42px]
-                font-medium
-                leading-[1.05]
-                tracking-[-0.055em]
-                text-[var(--foreground)]
-                md:text-[48px]
-                lg:text-[50px]
-              "
-            >
-              A partner enterprise boards are
-
-              <span
-                className="
-                  block
-                  bg-gradient-to-r
-                  from-[#5269ff]
-                  via-[#7668ff]
-                  to-[#a08cff]
-                  bg-clip-text
-                  text-transparent
-                "
-              >
-                comfortable signing off.
-              </span>
-            </h2>
-          </div>
+          <SectionHeading
+  eyebrow="Why CODM"
+  title="A partner enterprise boards are"
+  gradientText="comfortable signing off."
+/>
 
           {/* CONTENT CARD */}
           <div
