@@ -310,21 +310,7 @@ header > div > div:last-child > a:hover {
   flex-shrink: 0;
 }
 
-.codm-theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
 
-.codm-theme-toggle > * {
-  flex-shrink: 0;
-}
-
-.codm-theme-toggle:hover {
-  transform: translateY(-1px);
-}
 
 /* =========================================================
    HEADER CTA BUTTON
@@ -3417,19 +3403,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 }
 
 
-/* =========================================================
-   THEME TOGGLE
-   ========================================================= */
-
-.codm-theme-toggle {
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-
-.codm-theme-toggle:hover {
-  transform: rotate(8deg) scale(1.04);
-}
 
 
 /* =========================================================
