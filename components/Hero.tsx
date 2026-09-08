@@ -7,7 +7,6 @@ type HeroData = {
   id: string;
   databaseId: number;
   title: string;
-
   mainHeading: string;
   description: string;
   highlight: string;
