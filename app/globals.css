@@ -3890,45 +3890,32 @@ html[data-theme="light"] .codm-header,
 
 
 /* =========================================================
-   INDUSTRIES — EYEBROW
+   HEADING — EYEBROW DECORATIVE LINES
    ========================================================= */
 
-.codm-industries-eyebrow {
-  font-family: "Plus Jakarta Sans", sans-serif !important;
-  font-weight: 400 !important;
-  font-style: normal !important;
-  font-size: 18px !important;
-  line-height: 30px !important;
-  letter-spacing: 0 !important;
-  vertical-align: middle;
+.heading-codm-eyebrow-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
 
-  color: #475569 !important;
+.heading-codm-eyebrow {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--muted);
 
-  /* Premium entrance animation */
   opacity: 0;
   transform: translateY(14px);
-
-  animation: codmIndustriesEyebrowIn 0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.1s forwards;
+  animation: headingCodmEyebrowIn 0.8s ease-out 0.1s forwards;
 }
 
-
-/* =========================================================
-   DARK MODE — EYEBROW
-   ========================================================= */
-
-.dark .codm-industries-eyebrow {
-  color: #A7B0C2 !important;
-}
-
-
-/* =========================================================
-   EYEBROW DECORATIVE LINES
-   ========================================================= */
-
-.codm-industries-eyebrow-line {
+.heading-codm-eyebrow-line {
+  position: relative;
   display: block;
   width: 40px;
   height: 1px;
@@ -3937,62 +3924,42 @@ html[data-theme="light"] .codm-header,
   opacity: 0.35;
 
   transform: scaleX(0);
-
-  animation: codmIndustriesLineIn 0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s forwards;
+  animation: headingCodmLineIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 }
 
+.heading-codm-eyebrow-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent, #9187FB);
+  transform: translateY(-50%) scale(0);
+  opacity: 0;
+  animation: headingCodmDotIn 0.5s ease-out 0.7s forwards;
+}
 
-/* Left line expands toward the left */
-
-.codm-industries-eyebrow-line:first-child {
+.heading-codm-eyebrow-line:first-child {
   transform-origin: right center;
 }
+.heading-codm-eyebrow-line:first-child::after {
+  right: -8px;
+}
 
-
-/* Right line expands toward the right */
-
-.codm-industries-eyebrow-line:last-child {
+.heading-codm-eyebrow-line:last-child {
   transform-origin: left center;
 }
-
-
-/* =========================================================
-   EYEBROW ANIMATION
-   ========================================================= */
-
-@keyframes codmIndustriesEyebrowIn {
-  0% {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-@keyframes codmIndustriesLineIn {
-  0% {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  100% {
-    opacity: 0.35;
-    transform: scaleX(1);
-  }
+.heading-codm-eyebrow-line:last-child::after {
+  left: -8px;
 }
 
 
 /* =========================================================
-   INDUSTRIES — MAIN HEADING
+   HEADING — MAIN TITLE
    ========================================================= */
 
-.codm-industries-title {
+.heading-codm-title {
   margin: 0;
 
   font-family: "Plus Jakarta Sans", sans-serif !important;
@@ -4001,29 +3968,17 @@ html[data-theme="light"] .codm-header,
 
   font-size: 56px !important;
   line-height: 64px !important;
-
-  /* -2% of 56px = -1.12px */
   letter-spacing: -1.12px !important;
 
   text-align: center;
-
   color: var(--foreground);
 
-  /* Premium entrance animation */
   opacity: 0;
   transform: translateY(28px);
-
-  animation: codmIndustriesTitleIn 1s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s forwards;
+  animation: headingCodmTitleIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 }
 
-
-/* =========================================================
-   "MODERN ENTERPRISES." GRADIENT
-   ========================================================= */
-
-.codm-industries-title-gradient {
+.heading-codm-title-gradient {
   display: block;
 
   background: linear-gradient(
@@ -4035,17 +3990,11 @@ html[data-theme="light"] .codm-header,
 
   -webkit-background-clip: text;
   background-clip: text;
-
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
-
-/* =========================================================
-   LIGHT MODE GRADIENT
-   ========================================================= */
-
-html:not(.dark) .codm-industries-title-gradient {
+html:not(.dark) .heading-codm-title-gradient {
   background: linear-gradient(
     100deg,
     #2563EB 11.16%,
@@ -4055,26 +4004,49 @@ html:not(.dark) .codm-industries-title-gradient {
 
   -webkit-background-clip: text;
   background-clip: text;
-
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
 
 /* =========================================================
-   HEADING ANIMATION
+   HEADING — DESCRIPTION
    ========================================================= */
 
-@keyframes codmIndustriesTitleIn {
-  0% {
-    opacity: 0;
-    transform: translateY(28px);
-  }
+.heading-codm-description {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: headingCodmDescriptionIn 0.8s ease-out 0.4s forwards;
+}
 
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes headingCodmEyebrowIn {
+  0%   { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes headingCodmLineIn {
+  0%   { opacity: 0;    transform: scaleX(0); }
+  100% { opacity: 0.35; transform: scaleX(1); }
+}
+
+@keyframes headingCodmDotIn {
+  0%   { opacity: 0; transform: translateY(-50%) scale(0); }
+  100% { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+@keyframes headingCodmTitleIn {
+  0%   { opacity: 0; transform: translateY(28px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes headingCodmDescriptionIn {
+  0%   { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -4083,22 +4055,18 @@ html:not(.dark) .codm-industries-title-gradient {
    ========================================================= */
 
 @media (max-width: 767px) {
-
-  .codm-industries-eyebrow {
+  .heading-codm-eyebrow {
     font-size: 14px !important;
     line-height: 24px !important;
   }
-
-  .codm-industries-eyebrow-line {
+  .heading-codm-eyebrow-line {
     width: 28px;
   }
-
-  .codm-industries-title {
+  .heading-codm-title {
     font-size: 38px !important;
     line-height: 44px !important;
     letter-spacing: -0.6px !important;
   }
-
 }
 
 
@@ -4107,13 +4075,11 @@ html:not(.dark) .codm-industries-title-gradient {
    ========================================================= */
 
 @media (min-width: 768px) and (max-width: 1024px) {
-
-  .codm-industries-title {
+  .heading-codm-title {
     font-size: 48px !important;
     line-height: 56px !important;
     letter-spacing: -0.96px !important;
   }
-
 }
 
 
@@ -4122,13 +4088,17 @@ html:not(.dark) .codm-industries-title-gradient {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
-  .codm-industries-eyebrow,
-  .codm-industries-eyebrow-line,
-  .codm-industries-title {
+  .heading-codm-eyebrow,
+  .heading-codm-eyebrow-line,
+  .heading-codm-eyebrow-line::after,
+  .heading-codm-title,
+  .heading-codm-description {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
-
+  .heading-codm-eyebrow-line:first-child::after,
+  .heading-codm-eyebrow-line:last-child::after {
+    transform: translateY(-50%) scale(1) !important;
+  }
 }
