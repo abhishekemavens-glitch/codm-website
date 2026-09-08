@@ -1085,3 +1085,594 @@ body {
     transform: translateY(-3px);
   }
 }
+
+
+
+/* =========================================================
+   INDUSTRIES SECTION
+   PREMIUM REVEAL SYSTEM
+   ========================================================= */
+
+.codm-industries-section {
+  --industries-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* =========================================================
+   INITIAL STATES
+   ========================================================= */
+
+.codm-industries-eyebrow,
+.codm-industries-eyebrow-line,
+.codm-industries-title,
+.codm-industries-description,
+.codm-industries-pills,
+.codm-industries-card {
+  opacity: 0;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.codm-industries-eyebrow {
+  transform: translateY(16px);
+}
+
+.codm-industries-eyebrow-line {
+  transform: scaleX(0);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow {
+  animation: codmIndustriesEyebrowReveal 0.8s
+    var(--industries-ease) 0.05s forwards;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow-line:first-child {
+  animation: codmIndustriesLineLeft 0.9s
+    var(--industries-ease) 0.15s forwards;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow-line:last-child {
+  animation: codmIndustriesLineRight 0.9s
+    var(--industries-ease) 0.15s forwards;
+}
+
+
+/* =========================================================
+   MAIN TITLE
+   ========================================================= */
+
+.codm-industries-title {
+  transform: translateY(35px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-title {
+  animation: codmIndustriesTitleReveal 1s
+    var(--industries-ease) 0.18s forwards;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.codm-industries-description {
+  transform: translateY(22px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-description {
+  animation: codmIndustriesDescriptionReveal 0.9s
+    var(--industries-ease) 0.34s forwards;
+}
+
+
+/* =========================================================
+   INDUSTRY PILLS
+   ========================================================= */
+
+.codm-industries-pills {
+  transform: translateY(25px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-pills {
+  animation: codmIndustriesPillsReveal 0.9s
+    var(--industries-ease) 0.48s forwards;
+}
+
+
+/* Individual pill stagger */
+
+.codm-industry-pill {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industry-pill {
+  animation: codmIndustryPillReveal 0.7s
+    var(--industries-ease)
+    calc(0.52s + (var(--industry-index) * 0.045s))
+    forwards;
+}
+
+
+/* =========================================================
+   FEATURED CARD
+   ========================================================= */
+
+.codm-industries-card {
+  transform: translateY(45px) scale(0.985);
+  transform-origin: center center;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card {
+  animation: codmIndustriesCardReveal 1.1s
+    var(--industries-ease) 0.62s forwards;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.codm-industries-card-content {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-content {
+  animation: codmIndustriesContentReveal 0.9s
+    var(--industries-ease) 0.78s forwards;
+}
+
+
+/* =========================================================
+   CARD LABEL
+   ========================================================= */
+
+.codm-industries-card-label {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-label {
+  animation: codmIndustriesSmallReveal 0.7s
+    var(--industries-ease) 0.82s forwards;
+}
+
+
+/* =========================================================
+   CARD TITLE
+   ========================================================= */
+
+.codm-industries-card-title {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-title {
+  animation: codmIndustriesSmallReveal 0.8s
+    var(--industries-ease) 0.90s forwards;
+}
+
+
+/* =========================================================
+   CARD DESCRIPTION
+   ========================================================= */
+
+.codm-industries-card-description {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-description {
+  animation: codmIndustriesSmallReveal 0.8s
+    var(--industries-ease) 1s forwards;
+}
+
+
+/* =========================================================
+   CARD LINK
+   ========================================================= */
+
+.codm-industries-card-link {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-link {
+  animation: codmIndustriesSmallReveal 0.7s
+    var(--industries-ease) 1.1s forwards;
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.codm-industries-card-image-wrap {
+  opacity: 0;
+  transform: translateX(35px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-image-wrap {
+  animation: codmIndustriesImageReveal 1s
+    var(--industries-ease) 0.78s forwards;
+}
+
+
+/* Actual image */
+
+.codm-industries-main-image {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    transform 1.2s var(--industries-ease),
+    opacity 0.8s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-main-image {
+  animation: codmIndustriesImageScale 1.2s
+    var(--industries-ease) 0.9s forwards;
+}
+
+
+/* =========================================================
+   IMAGE GLOW
+   ========================================================= */
+
+.codm-industries-image-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition:
+    opacity 1s ease,
+    transform 1.4s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-image-glow {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
+/* =========================================================
+   AMBIENT BACKGROUND
+   ========================================================= */
+
+.codm-industries-bg-glow {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.75);
+  transition:
+    opacity 1.8s ease,
+    transform 2s var(--industries-ease);
+}
+
+.codm-industries-bg-glow-2 {
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 2s ease,
+    transform 2.2s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-bg-glow {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-bg-glow-2 {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — PILL
+   ========================================================= */
+
+.codm-industry-pill {
+  will-change: transform;
+}
+
+.codm-industry-pill:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — CARD LINK
+   ========================================================= */
+
+.codm-industries-card-link:hover .codm-industries-arrow {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — IMAGE
+   ========================================================= */
+
+.codm-industries-card:hover .codm-industries-main-image {
+  transform: scale(1.025);
+}
+
+.codm-industries-card:hover .codm-industries-image-glow {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes codmIndustriesEyebrowReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesLineLeft {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+
+  to {
+    opacity: 0.35;
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+}
+
+
+@keyframes codmIndustriesLineRight {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  to {
+    opacity: 0.35;
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+
+@keyframes codmIndustriesTitleReveal {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesDescriptionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesPillsReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustryPillReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(45px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes codmIndustriesContentReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes codmIndustriesImageReveal {
+  from {
+    opacity: 0;
+    transform: translateX(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes codmIndustriesImageScale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+@keyframes codmIndustriesSmallReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-industries-title {
+    font-size: 38px !important;
+    line-height: 44px !important;
+    letter-spacing: -1.5% !important;
+  }
+
+  .codm-industries-card-content {
+    transform: translateY(25px);
+  }
+
+  .codm-industries-section.codm-industries-visible
+    .codm-industries-card-content {
+    animation-name: codmIndustriesMobileContentReveal;
+  }
+
+  .codm-industries-card-image-wrap {
+    transform: translateY(25px);
+  }
+
+  .codm-industries-section.codm-industries-visible
+    .codm-industries-card-image-wrap {
+    animation-name: codmIndustriesMobileImageReveal;
+  }
+}
+
+
+@keyframes codmIndustriesMobileContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesMobileImageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .codm-industries-section,
+  .codm-industries-section *,
+  .codm-industries-bg-glow,
+  .codm-industries-bg-glow-2 {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .codm-industries-eyebrow,
+  .codm-industries-eyebrow-line,
+  .codm-industries-title,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-pill,
+  .codm-industries-card,
+  .codm-industries-card-content,
+  .codm-industries-card-label,
+  .codm-industries-card-title,
+  .codm-industries-card-description,
+  .codm-industries-card-link,
+  .codm-industries-card-image-wrap,
+  .codm-industries-main-image,
+  .codm-industries-bg-glow,
+  .codm-industries-bg-glow-2 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
