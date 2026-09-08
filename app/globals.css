@@ -41,6 +41,11 @@ button {
    THEME VARIABLES
    ========================================================= */
 
+/* =========================================================
+   THEME VARIABLES
+   LIGHT MODE = DEFAULT
+   ========================================================= */
+
 :root {
   --background: #f7f7f5;
   --surface: #ffffff;
@@ -52,17 +57,23 @@ button {
   --accent-secondary: #8c7cff;
 }
 
-[data-theme="dark"] {
-	--background: #070812;
-	--surface: #0d1020;
-	--surface-secondary: #111526;
-	--foreground: #fff;
-	--muted: #A7B0C2;
-	--border: #ffffff1f;
-	--accent: #806cff;
-	--accent-secondary: #a394ff;
-}
 
+/* =========================================================
+   DARK MODE
+   Works with both .dark and data-theme="dark"
+   ========================================================= */
+
+html.dark,
+html[data-theme="dark"] {
+  --background: #070812;
+  --surface: #0d1020;
+  --surface-secondary: #111526;
+  --foreground: #ffffff;
+  --muted: #a7b0c2;
+  --border: #ffffff1f;
+  --accent: #806cff;
+  --accent-secondary: #a394ff;
+}
 /* =========================================================
    HEADER
    ========================================================= */
