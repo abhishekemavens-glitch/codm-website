@@ -799,7 +799,7 @@ body {
 }
 
 
-.codm-industry-pill:active {
+:active {
   transform:
     translateY(0)
     scale(0.97);
@@ -2436,7 +2436,6 @@ html:not(.dark) .codm-industries-title-gradient {
    ========================================================= */
 
 .codm-industry-pill {
-  opacity: 0;
 
   transform:
     translateY(12px)
@@ -3128,27 +3127,26 @@ html:not(.dark) .codm-industries-title-gradient {
     forwards;
 }
 
-
-/* ============================================================
-   GRADIENT TITLE
-   ============================================================ */
+/* =========================================================
+   SECTION HEADING — GRADIENT TEXT
+   ========================================================= */
 
 .heading-codm-title-gradient {
   display: block;
 
   font-family: "Plus Jakarta Sans", sans-serif !important;
   font-weight: 500 !important;
+  font-style: normal !important;
 
-  background:
-    linear-gradient(
-      100deg,
-      #FFFFFF 24.1%,
-      #9187FB 54.32%,
-      #354CCB 88.84%
-    );
+  background: linear-gradient(
+    100deg,
+    #FFFFFF 24.1%,
+    #9187FB 54.32%,
+    #354CCB 88.84%
+  );
 
   background-size: 180% 100%;
-  background-position: 100% center;
+  background-position: 100% 0;
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -3157,9 +3155,6 @@ html:not(.dark) .codm-industries-title-gradient {
   color: transparent;
 
   opacity: 0;
-
-  transform:
-    translate3d(0, 35px, 0);
 
   animation:
     codm-heading-gradient-reveal
@@ -3170,21 +3165,20 @@ html:not(.dark) .codm-industries-title-gradient {
 }
 
 
-/* ============================================================
-   LIGHT MODE GRADIENT
-   ============================================================ */
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
 
 html:not(.dark) .heading-codm-title-gradient {
-  background:
-    linear-gradient(
-      100deg,
-      #2563EB 11.16%,
-      #6366F1 42.11%,
-      #A78BFA 93.16%
-    );
+  background: linear-gradient(
+    100deg,
+    #2563EB 11.16%,
+    #6366F1 42.11%,
+    #A78BFA 93.16%
+  );
 
   background-size: 180% 100%;
-  background-position: 100% center;
+  background-position: 100% 0;
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -3193,6 +3187,41 @@ html:not(.dark) .heading-codm-title-gradient {
   color: transparent;
 }
 
+
+/* =========================================================
+   GRADIENT REVEAL ANIMATION
+   ========================================================= */
+
+@keyframes codm-heading-gradient-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    background-position: 100% 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    background-position: 0% 0;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-codm-title-gradient {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 
 /* ============================================================
    DESCRIPTION
