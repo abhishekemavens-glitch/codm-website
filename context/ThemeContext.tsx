@@ -15,9 +15,9 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<
-  ThemeContextType | undefined
->(undefined);
+const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);
 
 export function ThemeProvider({
   children,
@@ -25,40 +25,37 @@ export function ThemeProvider({
   children: ReactNode;
 }) {
   const [theme, setTheme] = useState<Theme>("light");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("codm-theme");
+    const saved = localStorage.getItem("codm-theme");
 
     const initialTheme: Theme =
-      savedTheme === "dark" ? "dark" : "light";
+      saved === "dark" ? "dark" : "light";
 
     setTheme(initialTheme);
-    applyTheme(initialTheme);
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      initialTheme
+    );
+
+    setMounted(true);
   }, []);
 
-  function applyTheme(newTheme: Theme) {
-    const html = document.documentElement;
+  const toggleTheme = () => {
+    const nextTheme: Theme =
+      theme === "light" ? "dark" : "light";
 
-    if (newTheme === "dark") {
-      html.classList.add("dark");
-      html.setAttribute("data-theme", "dark");
-    } else {
-      html.classList.remove("dark");
-      html.setAttribute("data-theme", "light");
-    }
-  }
+    setTheme(nextTheme);
 
-  function toggleTheme() {
-    setTheme((currentTheme) => {
-      const newTheme: Theme =
-        currentTheme === "light" ? "dark" : "light";
+    document.documentElement.setAttribute(
+      "data-theme",
+      nextTheme
+    );
 
-      localStorage.setItem("codm-theme", newTheme);
-      applyTheme(newTheme);
-
-      return newTheme;
-    });
-  }
+    localStorage.setItem("codm-theme", nextTheme);
+  };
 
   return (
     <ThemeContext.Provider
