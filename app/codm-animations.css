@@ -1,0 +1,385 @@
+/* =============================================================
+   CODM ANIMATION TOOLKIT
+   Drop this file into your global styles (import once in
+   app/globals.css or layout.tsx). Every effect below is a
+   standalone class — add it to any element's className and
+   it just works. No JS required except where noted (see
+   codm-animations.ts for those).
+   ============================================================= */
+
+
+/* =============================================================
+   1. TEXT & HEADING REVEALS
+   ============================================================= */
+
+/* ---- 1a. Word-by-word stagger ----
+   Wrap each word in a <span className="codm-word"> inside a
+   parent with className="codm-word-stagger". Use the JS helper
+   splitWords() from codm-animations.ts to do this automatically,
+   or hand-wrap short headings yourself. */
+
+.codm-word-stagger .codm-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: codmWordIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--word-index, 0) * 70ms);
+}
+
+@keyframes codmWordIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- 1b. Blur-to-focus reveal ----
+   Add directly to a heading or paragraph. Fires once, on mount
+   or when you toggle a "visible" class via IntersectionObserver
+   (same pattern your sections already use with isVisible). */
+
+.codm-blur-reveal {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(16px);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.codm-visible .codm-blur-reveal {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* ---- 1c. Underline draw-on ----
+   Wrap the phrase: <span className="codm-underline-draw">text</span> */
+
+.codm-underline-draw {
+  position: relative;
+  display: inline-block;
+}
+
+.codm-underline-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #8B5CF6, #4F46E5);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.codm-visible .codm-underline-draw::after {
+  transform: scaleX(1);
+}
+
+
+/* =============================================================
+   2. CARDS & CONTENT BLOCKS
+   ============================================================= */
+
+/* ---- 2a. Border gradient trace ----
+   Wrap your card content and add this class to the OUTER card
+   element (needs position: relative + overflow allowed, i.e.
+   don't put overflow-hidden on the same element — wrap an inner
+   div for clipped content instead). */
+
+.codm-border-trace {
+  position: relative;
+  border-radius: inherit;
+}
+
+.codm-border-trace::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--trace-angle, 0deg),
+    transparent 0%,
+    rgba(139, 92, 246, 0.9) 8%,
+    transparent 18%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: codmBorderTrace 4s linear infinite;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+.codm-border-trace:hover::before {
+  opacity: 1;
+}
+
+@property --trace-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes codmBorderTrace {
+  to {
+    --trace-angle: 360deg;
+  }
+}
+
+/* ---- 2b. Stagger-in grid ----
+   Add "codm-stagger-grid" to the grid container, and
+   "codm-stagger-item" to each child. Delay is auto-set via
+   nth-child up to 12 items; for more, use the JS helper to set
+   --item-index inline. */
+
+.codm-stagger-grid .codm-stagger-item {
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: none;
+}
+
+.codm-stagger-grid.codm-visible .codm-stagger-item {
+  animation: codmStaggerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.codm-stagger-grid .codm-stagger-item:nth-child(1)  { animation-delay: 0ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(2)  { animation-delay: 70ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(3)  { animation-delay: 140ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(4)  { animation-delay: 210ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(5)  { animation-delay: 280ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(6)  { animation-delay: 350ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(7)  { animation-delay: 420ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(8)  { animation-delay: 490ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(9)  { animation-delay: 560ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(10) { animation-delay: 630ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(11) { animation-delay: 700ms; }
+.codm-stagger-grid .codm-stagger-item:nth-child(12) { animation-delay: 770ms; }
+
+@keyframes codmStaggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---- 2c. Count-up numbers ----
+   Pure CSS can't count — this class just styles the number while
+   codm-animations.ts's useCountUp() hook drives the actual value.
+   Add className="codm-count-number" to the <span> holding the number. */
+
+.codm-count-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- 2d. Icon morph on hover ----
+   Add to any icon wrapper inside a hoverable card. */
+
+.codm-icon-morph {
+  display: inline-flex;
+  transition: transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.codm-stagger-item:hover .codm-icon-morph,
+.codm-icon-morph-trigger:hover .codm-icon-morph {
+  transform: rotate(-8deg) scale(1.12);
+}
+
+
+/* =============================================================
+   3. BACKGROUND & AMBIENT
+   ============================================================= */
+
+/* ---- 3a. Grain/noise overlay ----
+   Add className="codm-grain" to a dark section (needs
+   position: relative on that section). Uses an inline SVG data
+   URI, no image request needed. */
+
+.codm-grain {
+  position: relative;
+}
+
+.codm-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ---- 3b. Parallax background blob ----
+   Pairs with the JS scroll listener in codm-animations.ts
+   (useParallax hook), which sets --parallax-y inline. */
+
+.codm-parallax-blob {
+  transform: translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
+
+/* ---- 3c. Cursor-trailing glow (site-wide) ----
+   Add ONE instance near the root of a dark layout, e.g. in your
+   main layout.tsx just inside <body>. The JS hook moves it via
+   --cursor-x / --cursor-y custom props on <body> or a wrapper. */
+
+.codm-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 500px;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.08),
+    transparent 70%
+  );
+  transform: translate3d(
+    calc(var(--cursor-x, 50vw) - 250px),
+    calc(var(--cursor-y, 50vh) - 250px),
+    0
+  );
+  transition: transform 200ms ease-out;
+}
+
+
+/* =============================================================
+   4. NAVIGATION & SCROLL
+   ============================================================= */
+
+/* ---- 4a. Scroll progress bar ----
+   Add a fixed div at the very top of your layout:
+   <div className="codm-scroll-progress" style={{ "--progress": progress }} />
+   where `progress` (0–100) comes from the JS scroll hook. */
+
+.codm-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 100;
+  background: transparent;
+}
+
+.codm-scroll-progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: calc(var(--progress, 0) * 1%);
+  background: linear-gradient(90deg, #8B5CF6, #4F46E5);
+  transition: width 100ms linear;
+}
+
+/* ---- 4b. Sticky nav shrink + blur ----
+   Add className="codm-nav-scrolled" (toggled via JS scroll hook)
+   to your <header> alongside its base classes. */
+
+header {
+  transition:
+    height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 350ms ease,
+    backdrop-filter 350ms ease,
+    box-shadow 350ms ease;
+}
+
+header.codm-nav-scrolled {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(10, 10, 20, 0.72);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- 4c. Section-to-section scale/fade ----
+   Add className="codm-section-transition" to each <section>,
+   paired with the isVisible pattern you already use per-section. */
+
+.codm-section-transition {
+  opacity: 0;
+  transform: scale(0.98) translateY(30px);
+  transition:
+    opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.codm-section-transition.codm-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+
+/* =============================================================
+   5. MICRO-INTERACTIONS
+   ============================================================= */
+
+/* ---- 5a. Magnetic button ----
+   Add className="codm-magnetic" to any button/CTA. The JS hook
+   sets --mag-x / --mag-y inline on mousemove within a small
+   radius, and resets to 0 on mouseleave. */
+
+.codm-magnetic {
+  display: inline-flex;
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- 5b. Button press feedback ----
+   Add alongside any existing button className. */
+
+.codm-press {
+  transition: transform 150ms ease;
+}
+
+.codm-press:active {
+  transform: scale(0.96);
+}
+
+/* ---- 5c. Link arrow slide (reusable version of your
+   codm-industry-arrow pattern, for any "View all / Learn more"
+   link across the site) ---- */
+
+.codm-link-arrow {
+  display: inline-block;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.codm-link-arrow-trigger:hover .codm-link-arrow {
+  transform: translateX(5px);
+}
+
+
+/* =============================================================
+   REDUCED MOTION — disables everything above at once
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-word-stagger .codm-word,
+  .codm-blur-reveal,
+  .codm-underline-draw::after,
+  .codm-border-trace::before,
+  .codm-stagger-grid .codm-stagger-item,
+  .codm-icon-morph,
+  .codm-parallax-blob,
+  .codm-cursor-glow,
+  .codm-magnetic,
+  .codm-press,
+  .codm-section-transition,
+  .codm-link-arrow {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
