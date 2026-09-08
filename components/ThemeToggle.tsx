@@ -14,17 +14,19 @@ export default function ThemeToggle() {
           ? "Switch to dark mode"
           : "Switch to light mode"
       }
-      className="relative flex h-10 w-[76px] cursor-pointer items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 transition-all duration-300"
+      className="codm-theme-toggle-button"
     >
       <span
-        className={`absolute flex h-8 w-8 items-center justify-center rounded-full bg-[var(--foreground)] text-[var(--background)] transition-transform duration-300 ${
-          theme === "dark" ? "translate-x-9" : "translate-x-0"
+        className={`codm-theme-toggle-knob ${
+          theme === "dark"
+            ? "codm-theme-toggle-knob-dark"
+            : "codm-theme-toggle-knob-light"
         }`}
       >
         {theme === "light" ? "☀" : "☾"}
       </span>
 
-      <span className="flex w-full justify-between px-2 text-xs opacity-40">
+      <span className="codm-theme-toggle-icons" aria-hidden="true">
         <span>☀</span>
         <span>☾</span>
       </span>
