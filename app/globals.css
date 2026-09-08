@@ -2028,7 +2028,7 @@ header a {
     .codm-header-nav-link,
     .codm-header-cta,
     .codm-header-cta-arrow,
-    .codm-theme-toggle,
+    ,
     .codm-header-logo {
     animation: none !important;
     transition: none !important;
@@ -2046,7 +2046,7 @@ header a {
     .codm-header-cta,
     .codm-header-cta::before,
     .codm-header-cta-arrow,
-    .codm-theme-toggle,
+    ,
     .codm-header-logo-link {
     transition: none !important;
   }
@@ -4159,438 +4159,6 @@ html:not(.dark) .heading-codm-title-gradient {
 
 
 
-/* =========================================================
-   CODM THEME TOGGLE — FINAL
-   ========================================================= */
-
-.codm-theme-toggle {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  width: 76px;
-  height: 40px;
-  padding: 4px;
-
-  border: 1px solid var(--border);
-  border-radius: 999px;
-
-  background: var(--surface);
-
-  cursor: pointer;
-  overflow: hidden;
-
-  z-index: 9999;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.codm-theme-toggle:hover {
-  box-shadow: 0 8px 25px rgba(114, 92, 255, 0.15);
-}
-
-
-/* =========================================================
-   TOGGLE KNOB
-   ========================================================= */
-
-.codm-theme-toggle-knob {
-  position: absolute;
-
-  top: 4px;
-  left: 4px;
-
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--foreground);
-  color: var(--background);
-
-  font-size: 14px;
-  line-height: 1;
-
-  pointer-events: none;
-
-  transform: translateX(0);
-
-  transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-
-/* DARK POSITION */
-
-.codm-theme-toggle-knob-dark {
-  transform: translateX(36px);
-}
-
-
-/* =========================================================
-   SUN / MOON BACKGROUND ICONS
-   ========================================================= */
-
-.codm-theme-toggle-icons {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 10px;
-
-  color: var(--foreground);
-
-  font-size: 12px;
-  line-height: 1;
-
-  opacity: 0.4;
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   THEME VARIABLES
-   LIGHT = DEFAULT
-   ========================================================= */
-
-:root {
-  --background: #f7f7f5;
-  --surface: #ffffff;
-  --surface-secondary: #eeeeeb;
-  --foreground: #111111;
-  --muted: #666666;
-  --border: rgba(0, 0, 0, 0.1);
-  --accent: #725cff;
-  --accent-secondary: #8c7cff;
-}
-
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-html.dark,
-html[data-theme="dark"] {
-  --background: #070812;
-  --surface: #0d1020;
-  --surface-secondary: #111526;
-  --foreground: #ffffff;
-  --muted: #a7b0c2;
-  --border: #ffffff1f;
-  --accent: #806cff;
-  --accent-secondary: #a394ff;
-}
-
-
-/* =========================================================
-   THEME TOGGLE DARK
-   ========================================================= */
-
-html.dark .codm-theme-toggle,
-html[data-theme="dark"] .codm-theme-toggle {
-  background: var(--surface);
-  border-color: var(--border);
-}
-
-
-/* =========================================================
-   THEME TOGGLE LIGHT
-   ========================================================= */
-
-html:not(.dark) .codm-theme-toggle,
-html[data-theme="light"] .codm-theme-toggle {
-  background: var(--surface);
-  border-color: var(--border);
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 767px) {
-  .codm-theme-toggle {
-    width: 68px;
-    height: 36px;
-  }
-
-  .codm-theme-toggle-knob {
-    width: 28px;
-    height: 28px;
-  }
-
-  .codm-theme-toggle-knob-dark {
-    transform: translateX(32px);
-  }
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .codm-theme-toggle,
-  .codm-theme-toggle-knob {
-    transition: none !important;
-  }
-}
-
-
-/* =========================================================
-   PAGE THEME
-   ========================================================= */
-
-html,
-body {
-  background: var(--background);
-  color: var(--foreground);
-
-  transition:
-    background-color 0.35s ease,
-    color 0.35s ease;
-}
-
-
-/* =========================================================
-   IMPORTANT:
-   Don't let Tailwind .dark force the entire website dark.
-   ========================================================= */
-
-html.dark {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-
-
-/* =========================================================
-   CODM THEME SWITCH
-   ========================================================= */
-
-.codm-theme-toggle-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-/* Actual clickable button */
-
-.codm-theme-switch {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-
-  width: 76px;
-  height: 40px;
-
-  padding: 4px;
-
-  border: 1px solid var(--border);
-  border-radius: 999px;
-
-  background: var(--surface);
-
-  cursor: pointer;
-
-  overflow: hidden;
-
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease;
-
-  z-index: 20;
-
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-
-/* Sliding knob */
-
-.codm-theme-switch-knob {
-  position: absolute;
-
-  top: 4px;
-  left: 4px;
-
-  width: 30px;
-  height: 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--foreground);
-  color: var(--background);
-
-  font-size: 14px;
-  line-height: 1;
-
-  transition:
-    left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.3s ease,
-    color 0.3s ease;
-
-  pointer-events: none;
-}
-
-
-/* Dark position */
-
-.codm-theme-switch-knob-dark {
-  left: 42px;
-}
-
-
-/* Sun / moon background icons */
-
-.codm-theme-switch-icons {
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 10px;
-
-  font-size: 12px;
-
-  opacity: 0.45;
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   LIGHT MODE — DEFAULT
-   ========================================================= */
-
-html[data-theme="light"] {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --surface: #f8fafc;
-  --border: #e2e8f0;
-  --muted: #475569;
-  --accent: #6366f1;
-}
-
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-html[data-theme="dark"] {
-  --background: #080914;
-  --foreground: #ffffff;
-  --surface: #0d1020;
-  --border: #252a45;
-  --muted: #a7b0c2;
-  --accent: #725cff;
-}
-
-
-/* =========================================================
-   GLOBAL THEME TRANSITION
-   ========================================================= */
-
-html,
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-
-  transition:
-    background-color 0.35s ease,
-    color 0.35s ease;
-}
-
-/* =========================================================
-   CODM THEME — FINAL OVERRIDE
-   ========================================================= */
-
-/* ---------- LIGHT MODE DEFAULT ---------- */
-
-html[data-theme="light"],
-html:not([data-theme="dark"]) {
-  --background: #f7f7f5;
-  --surface: #ffffff;
-  --surface-secondary: #eeeeeb;
-  --foreground: #111111;
-  --muted: #666666;
-  --border: rgba(0, 0, 0, 0.10);
-  --accent: #725cff;
-  --accent-secondary: #8c7cff;
-}
-
-
-/* ---------- DARK MODE ---------- */
-
-html[data-theme="dark"] {
-  --background: #070812;
-  --surface: #0d1020;
-  --surface-secondary: #111526;
-  --foreground: #ffffff;
-  --muted: #a7b0c2;
-  --border: rgba(255, 255, 255, 0.12);
-  --accent: #806cff;
-  --accent-secondary: #a394ff;
-}
-
-
-/* ---------- PAGE ---------- */
-
-html,
-body {
-  background-color: var(--background) !important;
-  color: var(--foreground) !important;
-
-  transition:
-    background-color 0.4s ease,
-    color 0.4s ease;
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.codm-header {
-  background: rgba(255, 255, 255, 0.82) !important;
-  border-bottom-color: rgba(20, 25, 40, 0.10) !important;
-
-  transition:
-    background-color 0.4s ease,
-    border-color 0.4s ease,
-    backdrop-filter 0.4s ease;
-}
-
-html[data-theme="dark"] .codm-header {
-  background: rgba(7, 9, 24, 0.88) !important;
-  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
-}
-
 
 /* ---------- HEADER NAV ---------- */
 
@@ -4637,334 +4205,85 @@ html[data-theme="dark"] .codm-logo-dark {
 
 
 /* =========================================================
-   THEME TOGGLE
+   THEME TOGGLE — SINGLE SOURCE OF TRUTH
+   Delete every other .codm-theme-toggle block in this file
+   and keep only this one, at the very end.
    ========================================================= */
 
 .codm-theme-toggle {
   position: relative !important;
-
   display: flex !important;
   align-items: center !important;
-
   width: 76px !important;
   height: 40px !important;
-
+  min-width: 76px !important;
+  min-height: 40px !important;
+  flex-shrink: 0 !important;
   padding: 4px !important;
-
+  margin: 0 !important;
   border: 1px solid var(--border) !important;
   border-radius: 999px !important;
-
   background: var(--surface) !important;
-
   cursor: pointer !important;
-  overflow: hidden !important;
-
+  overflow: visible !important;
   appearance: none !important;
   -webkit-appearance: none !important;
-
-  z-index: 99999 !important;
-
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease !important;
+  box-sizing: border-box !important;
+  z-index: 100 !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
 .codm-theme-toggle:hover {
-  box-shadow:
-    0 8px 30px rgba(114, 92, 255, 0.16) !important;
+  box-shadow: 0 8px 25px rgba(114, 92, 255, 0.15) !important;
 }
-
-
-/* ---------- TOGGLE ICONS ---------- */
 
 .codm-theme-toggle-icons {
   position: absolute !important;
   inset: 0 !important;
-
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-
   padding: 0 10px !important;
-
   color: var(--foreground) !important;
-
   font-size: 12px !important;
-
+  opacity: 0.4 !important;
   pointer-events: none !important;
 }
 
-
-/* ---------- TOGGLE KNOB ---------- */
-
 .codm-theme-toggle-knob {
   position: absolute !important;
-
   top: 4px !important;
   left: 4px !important;
-
   width: 32px !important;
   height: 32px !important;
-
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-
   border-radius: 50% !important;
-
   background: var(--foreground) !important;
   color: var(--background) !important;
-
-  pointer-events: none !important;
-
-  transform: translateX(0) !important;
-
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.35s ease,
-    color 0.35s ease !important;
-}
-
-
-/* DARK POSITION */
-
-.codm-theme-toggle-knob-dark {
-  transform: translateX(36px) !important;
-}
-
-
-/* =========================================================
-   GET IN TOUCH
-   ========================================================= */
-
-.codm-header-cta {
-  background: #111525 !important;
-  color: #ffffff !important;
-}
-
-html[data-theme="dark"] .codm-header-cta {
-  background: #ffffff !important;
-  color: #0a0c1b !important;
-}
-
-
-/* =========================================================
-   GLOBAL COMMON ELEMENTS
-   ========================================================= */
-
-html[data-theme="dark"] .bg-\[var\(--background\)\] {
-  background-color: var(--background) !important;
-}
-
-html[data-theme="dark"] .bg-\[var\(--surface\)\] {
-  background-color: var(--surface) !important;
-}
-
-html[data-theme="dark"] .text-\[var\(--foreground\)\] {
-  color: var(--foreground) !important;
-}
-
-html[data-theme="dark"] .text-\[var\(--muted\)\] {
-  color: var(--muted) !important;
-}
-
-html[data-theme="dark"] .border-\[var\(--border\)\] {
-  border-color: var(--border) !important;
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 767px) {
-
-  .codm-theme-toggle {
-    width: 68px !important;
-    height: 36px !important;
-  }
-
-  .codm-theme-toggle-knob {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .codm-theme-toggle-knob-dark {
-    transform: translateX(32px) !important;
-  }
-
-}
-
-
-
-
-
-
-/* =========================================================
-   CODM THEME TOGGLE — SINGLE FINAL VERSION
-   ========================================================= */
-
-.codm-theme-toggle {
-  position: relative !important;
-
-  display: flex !important;
-  align-items: center !important;
-
-  width: 76px !important;
-  height: 40px !important;
-
-  padding: 4px !important;
-
-  margin: 0 !important;
-
-  border: 1px solid var(--border) !important;
-  border-radius: 999px !important;
-
-  background: var(--surface) !important;
-
-  cursor: pointer !important;
-
-  appearance: none !important;
-  -webkit-appearance: none !important;
-
-  overflow: hidden !important;
-
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease !important;
-}
-
-.codm-theme-toggle:hover {
-  box-shadow: 0 8px 28px rgba(114, 92, 255, 0.18) !important;
-}
-
-
-/* ICONS */
-
-.codm-theme-toggle-icons {
-  position: absolute !important;
-  inset: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-
-  padding: 0 10px !important;
-
-  font-size: 12px !important;
-
-  color: var(--foreground) !important;
-
-  opacity: 0.45 !important;
-
-  pointer-events: none !important;
-}
-
-
-/* KNOB */
-
-.codm-theme-toggle-knob {
-  position: absolute !important;
-
-  top: 4px !important;
-  left: 4px !important;
-
-  width: 30px !important;
-  height: 30px !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  border-radius: 50% !important;
-
-  background: var(--foreground) !important;
-  color: var(--background) !important;
-
   font-size: 14px !important;
-
+  line-height: 1 !important;
   pointer-events: none !important;
-
   transform: translateX(0) !important;
-
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.35s ease,
-    color 0.35s ease !important;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease, color 0.3s ease !important;
 }
-
-
-/* DARK = MOVE KNOB RIGHT */
 
 .codm-theme-toggle-knob-dark {
   transform: translateX(36px) !important;
 }
 
-
-/* =========================================================
-   LIGHT MODE
-   ========================================================= */
-
-html[data-theme="light"] {
-  --background: #f7f7f5;
-  --surface: #ffffff;
-  --surface-secondary: #eeeeeb;
-  --foreground: #111111;
-  --muted: #475569;
-  --border: rgba(0, 0, 0, 0.10);
-  --accent: #725cff;
-  --accent-secondary: #8c7cff;
-}
-
-
-/* =========================================================
-   DARK MODE
-   ========================================================= */
-
-html[data-theme="dark"] {
-  --background: #070812;
-  --surface: #0d1020;
-  --surface-secondary: #111526;
-  --foreground: #ffffff;
-  --muted: #a7b0c2;
-  --border: rgba(255, 255, 255, 0.12);
-  --accent: #806cff;
-  --accent-secondary: #a394ff;
-}
-
-
-/* =========================================================
-   PAGE
-   ========================================================= */
-
-html,
-body {
-  background-color: var(--background) !important;
-  color: var(--foreground) !important;
-
-  transition:
-    background-color 0.4s ease,
-    color 0.4s ease;
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
 @media (max-width: 767px) {
   .codm-theme-toggle {
     width: 68px !important;
     height: 36px !important;
+    min-width: 68px !important;
+    min-height: 36px !important;
   }
-
   .codm-theme-toggle-knob {
     width: 28px !important;
     height: 28px !important;
   }
-
   .codm-theme-toggle-knob-dark {
     transform: translateX(32px) !important;
   }
