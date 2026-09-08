@@ -14,19 +14,19 @@ export default function ThemeToggle() {
           ? "Switch to dark mode"
           : "Switch to light mode"
       }
-      className="codm-theme-toggle"
+      className="codm-theme-switch"
     >
       <span
-        className={`codm-theme-toggle-knob ${
+        className={`codm-theme-switch-knob ${
           theme === "dark"
-            ? "codm-theme-toggle-knob-dark"
+            ? "codm-theme-switch-knob-dark"
             : ""
         }`}
       >
         {theme === "light" ? "☀" : "☾"}
       </span>
 
-      <span className="codm-theme-toggle-icons">
+      <span className="codm-theme-switch-icons">
         <span>☀</span>
         <span>☾</span>
       </span>
