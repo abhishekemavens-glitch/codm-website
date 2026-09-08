@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./codm-animations.css";
 import { ThemeProvider } from "../context/ThemeContext";
 
 export const metadata: Metadata = {
