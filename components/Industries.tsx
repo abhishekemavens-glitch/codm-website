@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
+// If you don't have the "@/" path alias set up in tsconfig.json,
+// use a relative path instead, e.g. "../SectionHeading" or "./SectionHeading"
 
 type Industry = {
   id: string;
@@ -126,16 +129,21 @@ export default function Industries() {
 
         <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-         import SectionHeading from "@/components/SectionHeading";
-// (adjust the "@/..." alias to match your actual tsconfig paths, or use a relative path like "../SectionHeading" if you don't have that alias set up)
+          {/* =====================================================
+              SECTION HEADING
+              Wrapped in codm-industries-heading so the existing
+              scroll-reveal animation (see <style jsx> below) still
+              targets it correctly.
+              ===================================================== */}
 
-<SectionHeading
-  eyebrow="Industries We Serve"
-  title="Engineering the systems that run"
-  gradientText="modern enterprises."
-  description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
-/>
-
+          <div className="codm-industries-heading">
+            <SectionHeading
+              eyebrow="Industries We Serve"
+              title="Engineering the systems that run"
+              gradientText="modern enterprises."
+              description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+            />
+          </div>
 
           {/* =====================================================
               INDUSTRY PILLS
@@ -313,64 +321,8 @@ export default function Industries() {
           ) 0.3s forwards;
         }
 
-
-        /* =====================================================
-           HEADING
-           ===================================================== */
-
         .codm-industries-heading {
           will-change: transform, opacity;
-        }
-
-        .codm-industries-gradient-heading {
-          background-size: 200% 100%;
-          animation: codmGradientMove 7s ease-in-out infinite;
-        }
-
-        .codm-industries-eyebrow {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-
-        .codm-industries-visible .codm-industries-eyebrow {
-          animation: codmEyebrowReveal 0.8s ease-out 0.1s forwards;
-        }
-
-        .codm-industries-line {
-          position: relative;
-          opacity: 0.5;
-          overflow: hidden;
-        }
-
-        .codm-industries-line::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          transform: translateX(-100%);
-          background: linear-gradient(
-            90deg,
-            transparent,
-            var(--accent),
-            transparent
-          );
-        }
-
-        .codm-industries-visible .codm-industries-line::after {
-          animation: codmLineSweep 1.2s ease-out 0.3s forwards;
-        }
-
-
-        /* =====================================================
-           DESCRIPTION
-           ===================================================== */
-
-        .codm-industries-description {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-
-        .codm-industries-visible .codm-industries-description {
-          animation: codmDescriptionReveal 0.8s ease-out 0.4s forwards;
         }
 
 
@@ -620,40 +572,6 @@ export default function Industries() {
           }
         }
 
-        @keyframes codmEyebrowReveal {
-          from {
-            opacity: 0;
-            transform: translateY(12px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes codmLineSweep {
-          from {
-            transform: translateX(-100%);
-          }
-
-          to {
-            transform: translateX(100%);
-          }
-        }
-
-        @keyframes codmDescriptionReveal {
-          from {
-            opacity: 0;
-            transform: translateY(15px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
         @keyframes codmPillReveal {
           from {
             opacity: 0;
@@ -711,20 +629,6 @@ export default function Industries() {
           to {
             width: 40px;
             opacity: 1;
-          }
-        }
-
-        @keyframes codmGradientMove {
-          0% {
-            background-position: 0% 50%;
-          }
-
-          50% {
-            background-position: 100% 50%;
-          }
-
-          100% {
-            background-position: 0% 50%;
           }
         }
 
@@ -812,8 +716,6 @@ export default function Industries() {
           .codm-industries-heading,
           .codm-industries-pills,
           .codm-industry-card,
-          .codm-industries-eyebrow,
-          .codm-industries-description,
           .codm-industry-pill,
           .codm-industry-card-content,
           .codm-industry-image-wrapper,
@@ -826,8 +728,7 @@ export default function Industries() {
 
           .codm-industries-glow,
           .codm-industries-glow-secondary,
-          .codm-industry-image-glow,
-          .codm-industries-gradient-heading {
+          .codm-industry-image-glow {
             animation: none !important;
           }
 
