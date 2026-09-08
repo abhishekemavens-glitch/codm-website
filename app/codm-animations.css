@@ -3154,8 +3154,6 @@ html:not(.dark) .codm-industries-title-gradient {
   -webkit-text-fill-color: transparent;
   color: transparent;
 
-  opacity: 0;
-
   animation:
     codm-heading-gradient-reveal
     1.15s
