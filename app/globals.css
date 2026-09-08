@@ -4525,6 +4525,275 @@ body {
     color 0.35s ease;
 }
 
+/* =========================================================
+   CODM THEME — FINAL OVERRIDE
+   ========================================================= */
+
+/* ---------- LIGHT MODE DEFAULT ---------- */
+
+html[data-theme="light"],
+html:not([data-theme="dark"]) {
+  --background: #f7f7f5;
+  --surface: #ffffff;
+  --surface-secondary: #eeeeeb;
+  --foreground: #111111;
+  --muted: #666666;
+  --border: rgba(0, 0, 0, 0.10);
+  --accent: #725cff;
+  --accent-secondary: #8c7cff;
+}
+
+
+/* ---------- DARK MODE ---------- */
+
+html[data-theme="dark"] {
+  --background: #070812;
+  --surface: #0d1020;
+  --surface-secondary: #111526;
+  --foreground: #ffffff;
+  --muted: #a7b0c2;
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #806cff;
+  --accent-secondary: #a394ff;
+}
+
+
+/* ---------- PAGE ---------- */
+
+html,
+body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.codm-header {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-bottom-color: rgba(20, 25, 40, 0.10) !important;
+
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    backdrop-filter 0.4s ease;
+}
+
+html[data-theme="dark"] .codm-header {
+  background: rgba(7, 9, 24, 0.88) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+
+/* ---------- HEADER NAV ---------- */
+
+.codm-header-nav-link {
+  color: #202637 !important;
+
+  transition:
+    color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+html[data-theme="dark"] .codm-header-nav-link {
+  color: #a7b0c2 !important;
+}
+
+html[data-theme="dark"] .codm-header-nav-link:hover {
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .codm-header-nav-link:hover {
+  color: #6f63ff !important;
+}
+
+
+/* =========================================================
+   LOGOS
+   ========================================================= */
+
+.codm-logo-light {
+  display: block !important;
+}
+
+.codm-logo-dark {
+  display: none !important;
+}
+
+html[data-theme="dark"] .codm-logo-light {
+  display: none !important;
+}
+
+html[data-theme="dark"] .codm-logo-dark {
+  display: block !important;
+}
+
+
+/* =========================================================
+   THEME TOGGLE
+   ========================================================= */
+
+.codm-theme-toggle {
+  position: relative !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  width: 76px !important;
+  height: 40px !important;
+
+  padding: 4px !important;
+
+  border: 1px solid var(--border) !important;
+  border-radius: 999px !important;
+
+  background: var(--surface) !important;
+
+  cursor: pointer !important;
+  overflow: hidden !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+
+  z-index: 99999 !important;
+
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease !important;
+}
+
+.codm-theme-toggle:hover {
+  box-shadow:
+    0 8px 30px rgba(114, 92, 255, 0.16) !important;
+}
+
+
+/* ---------- TOGGLE ICONS ---------- */
+
+.codm-theme-toggle-icons {
+  position: absolute !important;
+  inset: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  padding: 0 10px !important;
+
+  color: var(--foreground) !important;
+
+  font-size: 12px !important;
+
+  pointer-events: none !important;
+}
+
+
+/* ---------- TOGGLE KNOB ---------- */
+
+.codm-theme-toggle-knob {
+  position: absolute !important;
+
+  top: 4px !important;
+  left: 4px !important;
+
+  width: 32px !important;
+  height: 32px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 50% !important;
+
+  background: var(--foreground) !important;
+  color: var(--background) !important;
+
+  pointer-events: none !important;
+
+  transform: translateX(0) !important;
+
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease,
+    color 0.35s ease !important;
+}
+
+
+/* DARK POSITION */
+
+.codm-theme-toggle-knob-dark {
+  transform: translateX(36px) !important;
+}
+
+
+/* =========================================================
+   GET IN TOUCH
+   ========================================================= */
+
+.codm-header-cta {
+  background: #111525 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .codm-header-cta {
+  background: #ffffff !important;
+  color: #0a0c1b !important;
+}
+
+
+/* =========================================================
+   GLOBAL COMMON ELEMENTS
+   ========================================================= */
+
+html[data-theme="dark"] .bg-\[var\(--background\)\] {
+  background-color: var(--background) !important;
+}
+
+html[data-theme="dark"] .bg-\[var\(--surface\)\] {
+  background-color: var(--surface) !important;
+}
+
+html[data-theme="dark"] .text-\[var\(--foreground\)\] {
+  color: var(--foreground) !important;
+}
+
+html[data-theme="dark"] .text-\[var\(--muted\)\] {
+  color: var(--muted) !important;
+}
+
+html[data-theme="dark"] .border-\[var\(--border\)\] {
+  border-color: var(--border) !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-theme-toggle {
+    width: 68px !important;
+    height: 36px !important;
+  }
+
+  .codm-theme-toggle-knob {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .codm-theme-toggle-knob-dark {
+    transform: translateX(32px) !important;
+  }
+
+}
 
 
 
