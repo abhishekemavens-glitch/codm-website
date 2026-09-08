@@ -4014,9 +4014,13 @@ html:not(.dark) .heading-codm-title-gradient {
    ========================================================= */
 
 .heading-codm-description {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: headingCodmDescriptionIn 0.8s ease-out 0.4s forwards;
+	opacity: 0;
+	animation: .8s ease-out .4s forwards headingCodmDescriptionIn;
+	transform: translateY(15px);
+	color: #9AA3B8;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 30px;
 }
 
 
