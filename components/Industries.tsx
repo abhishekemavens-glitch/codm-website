@@ -27,15 +27,17 @@ export default function Industries() {
   const [loading, setLoading] = useState(true);
   const [cardKey, setCardKey] = useState(0);
 
-  /*
-   * Section reveal
-   */
+  /* =========================================================
+     SECTION VIEWPORT REVEAL
+     ========================================================= */
+
   const { ref: industriesRef, isVisible } =
     useInViewOnce<HTMLElement>(0.08);
 
-  /*
-   * Load industries
-   */
+  /* =========================================================
+     LOAD INDUSTRIES
+     ========================================================= */
+
   useEffect(() => {
     async function loadIndustries() {
       try {
@@ -88,9 +90,10 @@ export default function Industries() {
 
   const active = industries[activeIndustry];
 
-  /*
-   * Animate card whenever active industry changes
-   */
+  /* =========================================================
+     INDUSTRY CHANGE
+     ========================================================= */
+
   const handleIndustryChange = (index: number) => {
     if (index === activeIndustry) return;
 
@@ -102,41 +105,56 @@ export default function Industries() {
     <section
       ref={industriesRef}
       id="industries"
-      className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-300 md:py-32 ${
+      className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
         isVisible ? "codm-industries-visible" : ""
       }`}
     >
       {/* =====================================================
-          BACKGROUND / AMBIENT
+          AMBIENT BACKGROUND
           ===================================================== */}
 
       <div
         aria-hidden="true"
-        className="codm-industries-bg-glow pointer-events-none absolute left-1/2 top-[2%] h-[500px] w-[800px] -translate-x-1/2 rounded-full blur-[140px]"
+        className="codm-industries-bg-glow pointer-events-none absolute left-1/2 top-[0%] h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-[140px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(114,92,255,0.11), transparent 68%)",
+            "radial-gradient(circle, rgba(114,92,255,0.12), transparent 68%)",
         }}
       />
 
       <div
         aria-hidden="true"
-        className="codm-industries-bg-glow-2 pointer-events-none absolute bottom-[5%] left-[15%] h-[350px] w-[350px] rounded-full blur-[130px]"
+        className="codm-industries-bg-glow-2 pointer-events-none absolute bottom-[5%] left-[10%] h-[380px] w-[380px] rounded-full blur-[130px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(79,70,229,0.06), transparent 70%)",
+            "radial-gradient(circle, rgba(79,70,229,0.07), transparent 70%)",
         }}
       />
 
+      <div
+        aria-hidden="true"
+        className="codm-industries-bg-glow-3 pointer-events-none absolute right-[5%] top-[40%] h-[300px] w-[300px] rounded-full blur-[120px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(124,104,255,0.05), transparent 70%)",
+        }}
+      />
+
+      {/* =====================================================
+          MAIN CONTAINER
+          ===================================================== */}
+
       <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-        {/* =====================================================
+        {/* ===================================================
             SECTION INTRO
-            ===================================================== */}
+            =================================================== */}
 
         <div className="mx-auto max-w-[900px] text-center">
 
-          {/* EYEBROW */}
+          {/* =================================================
+              EYEBROW
+              ================================================= */}
 
           <div className="codm-industries-eyebrow-wrap mb-5 flex items-center justify-center gap-3">
 
@@ -151,7 +169,9 @@ export default function Industries() {
           </div>
 
 
-          {/* HEADING */}
+          {/* =================================================
+              MAIN HEADING
+              ================================================= */}
 
           <h2 className="codm-industries-title">
 
@@ -166,7 +186,9 @@ export default function Industries() {
           </h2>
 
 
-          {/* DESCRIPTION */}
+          {/* =================================================
+              DESCRIPTION
+              ================================================= */}
 
           <p className="codm-industries-description mx-auto mt-5 max-w-[700px] text-sm leading-6 text-[var(--muted)] md:text-base">
 
@@ -178,17 +200,20 @@ export default function Industries() {
         </div>
 
 
-        {/* =====================================================
+        {/* ===================================================
             INDUSTRY PILLS
-            ===================================================== */}
+            =================================================== */}
 
         <div className="codm-industries-pills mx-auto mt-8 flex max-w-[1150px] flex-wrap justify-center gap-2.5 md:mt-10">
 
           {loading ? (
+
             <div className="codm-industries-loading text-sm text-[var(--muted)]">
               Loading industries...
             </div>
+
           ) : (
+
             industries.map((industry, index) => {
 
               const isActive = index === activeIndustry;
@@ -209,20 +234,25 @@ export default function Industries() {
                     } as React.CSSProperties
                   }
                 >
-                  {industry.title}
+                  <span className="codm-industry-pill-text">
+                    {industry.title}
+                  </span>
                 </button>
               );
+
             })
+
           )}
 
         </div>
 
 
-        {/* =====================================================
+        {/* ===================================================
             FEATURED INDUSTRY CARD
-            ===================================================== */}
+            =================================================== */}
 
         {active && (
+
           <div
             key={cardKey}
             className="codm-industries-card mt-8 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] md:mt-10"
@@ -230,10 +260,9 @@ export default function Industries() {
 
             <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
 
-
-              {/* =================================================
+              {/* =============================================
                   CONTENT
-                  ================================================= */}
+                  ============================================= */}
 
               <div className="codm-industries-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
 
@@ -255,9 +284,7 @@ export default function Industries() {
                   {/* CARD TITLE */}
 
                   <h3 className="codm-industries-card-title text-3xl font-semibold leading-tight tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
-
                     {active.title}
-
                   </h3>
 
 
@@ -279,7 +306,7 @@ export default function Industries() {
                   >
                     <span>View all</span>
 
-                    <span className="codm-industries-arrow transition-transform duration-300">
+                    <span className="codm-industries-arrow">
                       →
                     </span>
                   </a>
@@ -289,9 +316,9 @@ export default function Industries() {
               </div>
 
 
-              {/* =================================================
+              {/* =============================================
                   IMAGE
-                  ================================================= */}
+                  ============================================= */}
 
               <div className="codm-industries-card-image-wrap order-1 p-4 md:p-5 lg:order-2 lg:p-5">
 
@@ -312,6 +339,7 @@ export default function Industries() {
                   {/* IMAGE */}
 
                   {active.featuredImage?.node?.sourceUrl && (
+
                     <img
                       src={active.featuredImage.node.sourceUrl}
                       alt={
@@ -320,6 +348,7 @@ export default function Industries() {
                       }
                       className="codm-industries-main-image relative h-full w-full object-contain p-5 md:p-8"
                     />
+
                   )}
 
                 </div>
@@ -329,9 +358,11 @@ export default function Industries() {
             </div>
 
           </div>
+
         )}
 
       </div>
+
     </section>
   );
 }
