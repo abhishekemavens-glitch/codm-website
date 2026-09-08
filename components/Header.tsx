@@ -475,33 +475,27 @@ export default function Header() {
 
           <div className="codm-header-right">
 
-            <div className="codm-theme-toggle-wrap">
-    <ThemeToggle />
-  </div>
+  <ThemeToggle />
 
-            {header.buttonText && (
-              <a
-                href={
-                  header.buttonUrl || "#"
-                }
-                className="codm-header-cta"
-              >
+  {header.buttonText && (
+    <a
+      href={header.buttonUrl || "#"}
+      className="codm-header-cta"
+    >
+      <span>
+        {header.buttonText}
+      </span>
 
-                <span>
-                  {header.buttonText}
-                </span>
+      <span
+        className="codm-header-cta-arrow"
+        aria-hidden="true"
+      >
+        →
+      </span>
+    </a>
+  )}
 
-                <span
-                  className="codm-header-cta-arrow"
-                  aria-hidden="true"
-                >
-                  →
-                </span>
-
-              </a>
-            )}
-
-          </div>
+</div>
 
         </div>
 
