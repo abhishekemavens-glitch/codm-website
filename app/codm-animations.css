@@ -141,7 +141,6 @@
    --item-index inline. */
 
 .codm-stagger-grid .codm-stagger-item {
-  opacity: 0;
   transform: translateY(24px) scale(0.97);
   transition: none;
 }
