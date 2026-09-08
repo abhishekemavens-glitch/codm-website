@@ -2,8 +2,7 @@
    FONT IMPORTS
    ========================================================= */
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet");
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 /* =========================================================
    GLOBAL RESET & BASE
    ========================================================= */
@@ -4105,4 +4104,30 @@ html:not(.dark) .heading-codm-title-gradient {
   .heading-codm-eyebrow-line:last-child::after {
     transform: translateY(-50%) scale(1) !important;
   }
+}
+
+
+
+.codm-industries-pills {
+	justify-content: start;
+}
+.codm-industries-pills .codm-industry-pill {
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: 500;
+}
+.codm-industry-card-content .codm-industry-accent {
+	display: none;
+}
+.codm-industry-card-content .font-semibold {
+	font-size: 40px;
+	line-height: 48px;
+	font-weight: 700;
+	letter-spacing: -2%;
+}
+.codm-industry-card-content .text-sm {
+	color: #9AA3B8;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 22.75px;
 }
