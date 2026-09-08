@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useInViewOnce } from "@/lib/codm-animations";
 
 type Industry = {
   id: string;
@@ -24,6 +25,17 @@ export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  /* =========================================================
+     INDUSTRIES SCROLL REVEAL
+     ========================================================= */
+
+  const { ref: industriesRef, isVisible } =
+    useInViewOnce<HTMLElement>(0.12);
+
+  /* =========================================================
+     LOAD INDUSTRIES
+     ========================================================= */
 
   useEffect(() => {
     async function loadIndustries() {
@@ -57,6 +69,12 @@ export default function Industries() {
           }),
         });
 
+        if (!response.ok) {
+          throw new Error(
+            `WordPress request failed: ${response.status}`
+          );
+        }
+
         const result = await response.json();
 
         if (result.errors) {
@@ -64,7 +82,11 @@ export default function Industries() {
           return;
         }
 
-        setIndustries(result.data.industries.nodes);
+        const nodes = result?.data?.industries?.nodes;
+
+        if (Array.isArray(nodes)) {
+          setIndustries(nodes);
+        }
       } catch (error) {
         console.error("Failed to load industries:", error);
       } finally {
@@ -79,190 +101,94 @@ export default function Industries() {
 
   return (
     <section
+      ref={industriesRef}
       id="industries"
-      className="
-        relative
-        overflow-hidden
-        bg-[var(--background)]
-        py-24
-        transition-colors
-        duration-300
-        md:py-32
-      "
+      className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
+        isVisible ? "codm-industries-visible" : ""
+      }`}
     >
       {/* =====================================================
-          BACKGROUND GLOW
+          AMBIENT BACKGROUND
           ===================================================== */}
 
       <div
         aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[5%]
-          h-[400px]
-          w-[700px]
-          -translate-x-1/2
-          rounded-full
-          blur-[120px]
-        "
-        style={{
-          background:
-            "radial-gradient(circle, rgba(114,92,255,0.10), transparent 70%)",
-        }}
+        className="codm-industries-glow pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2"
       />
+
+      <div
+        aria-hidden="true"
+        className="codm-industries-glow-secondary pointer-events-none absolute left-[8%] top-[30%] h-[350px] w-[350px]"
+      />
+
+      {/* =====================================================
+          CONTAINER
+          ===================================================== */}
 
       <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
 
-        {/* =====================================================
+        {/* ===================================================
             SECTION HEADING
-            ===================================================== */}
+            =================================================== */}
 
-        <div className="mx-auto max-w-[850px] text-center">
+        <div className="codm-industries-heading mx-auto max-w-[1000px] text-center">
 
-          {/* Eyebrow */}
+          {/* EYEBROW */}
 
-          <div
-            className="
-              mb-5
-              flex
-              items-center
-              justify-center
-              gap-3
-            "
-          >
+          <div className="codm-industries-eyebrow-wrapper mb-6 flex items-center justify-center gap-3">
+
             <span
-              className="
-                h-px
-                w-10
-                bg-[var(--accent)]/40
-              "
+              aria-hidden="true"
+              className="codm-industries-line h-px w-10"
             />
 
-            <span
-              className="
-                text-[18px]
-                font-normal
-                uppercase
-                leading-[30px]
-                tracking-normal
-                text-[#475569]
-                dark:text-[#A7B0C2]
-              "
-              style={{
-                fontFamily: '"Plus Jakarta Sans", sans-serif',
-              }}
-            >
+            <span className="codm-industries-eyebrow">
               Industries We Serve
             </span>
 
             <span
-              className="
-                h-px
-                w-10
-                bg-[var(--accent)]/40
-              "
+              aria-hidden="true"
+              className="codm-industries-line h-px w-10"
             />
+
           </div>
 
-          {/* Heading */}
+          {/* HEADING */}
 
-          <h2
-            className="
-              m-0
-              text-center
-              text-[56px]
-              font-medium
-              leading-[64px]
-              tracking-[-0.02em]
-              text-[var(--foreground)]
-              max-md:text-[38px]
-              max-md:leading-[44px]
-              md:max-lg:text-[48px]
-              md:max-lg:leading-[56px]
-            "
-            style={{
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-            }}
-          >
-            Engineering the systems that run
+          <h2 className="codm-industries-title">
 
-            <span
-              className="
-                block
-                bg-gradient-to-r
-                from-[#FFFFFF]
-                via-[#9187FB]
-                to-[#354CCB]
-                bg-clip-text
-                text-transparent
-                dark:from-[#FFFFFF]
-                dark:via-[#9187FB]
-                dark:to-[#354CCB]
-              "
-            >
+            <span className="codm-industries-title-main">
+              Engineering the systems that run
+            </span>
+
+            <span className="codm-industries-title-gradient">
               modern enterprises.
             </span>
+
           </h2>
 
-          {/* Light mode gradient */}
+          {/* DESCRIPTION */}
 
-          <style jsx>{`
-            @media (prefers-color-scheme: light) {
-              .industries-gradient {
-                background: linear-gradient(
-                  100deg,
-                  #2563eb 11.16%,
-                  #6366f1 42.11%,
-                  #a78bfa 93.16%
-                );
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-              }
-            }
-          `}</style>
-
-          {/* Description */}
-
-          <p
-            className="
-              mx-auto
-              mt-5
-              max-w-[650px]
-              text-sm
-              leading-6
-              text-[var(--muted)]
-              md:text-base
-            "
-            style={{
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-            }}
-          >
+          <p className="codm-industries-description mx-auto mt-6 max-w-[700px]">
             We combine Salesforce depth with product-grade engineering, so
             transformation lands as working software not slideware.
           </p>
+
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             INDUSTRY PILLS
-            ===================================================== */}
+            =================================================== */}
 
-        <div
-          className="
-            mx-auto
-            mt-8
-            flex
-            max-w-[1100px]
-            flex-wrap
-            justify-center
-            gap-2.5
-          "
-        >
+        <div className="codm-industries-pills mx-auto mt-10 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
+
           {loading ? (
-            <div className="text-sm text-[var(--muted)]">
+            <div className="codm-industries-loading">
               Loading industries...
+            </div>
+          ) : industries.length === 0 ? (
+            <div className="codm-industries-loading">
+              No industries available.
             </div>
           ) : (
             industries.map((industry, index) => {
@@ -273,187 +199,87 @@ export default function Industries() {
                   key={industry.id}
                   type="button"
                   onClick={() => setActiveIndustry(index)}
-                  className={`
-                    rounded-full
-                    border
-                    px-4
-                    py-2
-                    text-xs
-                    font-medium
-                    transition-all
-                    duration-300
-
-                    ${
-                      isActive
-                        ? `
-                          border-[var(--accent)]
-                          bg-[var(--accent)]
-                          text-white
-                          shadow-[0_8px_25px_rgba(114,92,255,0.20)]
-                        `
-                        : `
-                          border-[var(--border)]
-                          bg-[var(--surface)]
-                          text-[var(--muted)]
-                          hover:border-[var(--accent)]
-                          hover:text-[var(--foreground)]
-                        `
-                    }
-                  `}
-                  style={{
-                    fontFamily: '"Plus Jakarta Sans", sans-serif',
-                  }}
+                  style={
+                    {
+                      "--pill-delay": `${index * 70}ms`,
+                    } as React.CSSProperties
+                  }
+                  className={`codm-industry-pill ${
+                    isActive
+                      ? "codm-industry-pill-active"
+                      : ""
+                  }`}
                 >
                   {industry.title}
                 </button>
               );
             })
           )}
+
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             FEATURED INDUSTRY CARD
-            ===================================================== */}
+            =================================================== */}
 
         {active && (
           <div
-            className="
-              mt-8
-              overflow-hidden
-              rounded-[22px]
-              border
-              border-[var(--border)]
-              bg-[var(--surface)]
-              transition-all
-              duration-500
-              md:mt-10
-            "
+            key={active.id}
+            className="codm-industry-card mt-10 md:mt-12"
           >
-            <div
-              className="
-                grid
-                items-center
-                lg:grid-cols-[1fr_0.95fr]
-              "
-            >
+            <div className="codm-industry-card-inner">
 
               {/* =================================================
                   CONTENT
                   ================================================= */}
 
-              <div
-                className="
-                  order-2
-                  p-8
-                  md:p-12
-                  lg:order-1
-                  lg:pl-12
-                  xl:p-16
-                "
-              >
-                <div className="max-w-[500px]">
+              <div className="codm-industry-content">
 
-                  <h3
-                    className="
-                      text-3xl
-                      font-semibold
-                      leading-tight
-                      tracking-[-0.045em]
-                      text-[var(--foreground)]
-                      md:text-4xl
-                    "
-                    style={{
-                      fontFamily: '"Plus Jakarta Sans", sans-serif',
-                    }}
-                  >
+                <div className="codm-industry-content-inner">
+
+                  <h3 className="codm-industry-title">
                     {active.title}
                   </h3>
 
-                  <p
-                    className="
-                      mt-5
-                      text-sm
-                      leading-6
-                      text-[var(--muted)]
-                      md:text-[15px]
-                    "
-                    style={{
-                      fontFamily: '"Plus Jakarta Sans", sans-serif',
-                    }}
+                  <div
+                    className="codm-industry-description"
                     dangerouslySetInnerHTML={{
-                      __html: active.content || active.excerpt,
+                      __html:
+                        active.content || active.excerpt || "",
                     }}
                   />
 
                   <a
                     href={`/industries/${active.slug}`}
-                    className="
-                      mt-7
-                      inline-flex
-                      items-center
-                      gap-2
-                      text-sm
-                      font-medium
-                      text-[var(--foreground)]
-                      transition-colors
-                      duration-300
-                      hover:text-[var(--accent)]
-                    "
-                    style={{
-                      fontFamily: '"Plus Jakarta Sans", sans-serif',
-                    }}
+                    className="codm-industry-view-link"
                   >
-                    View all
-                    <span>→</span>
+                    <span>View all</span>
+
+                    <span className="codm-industry-arrow">
+                      →
+                    </span>
                   </a>
 
                 </div>
+
               </div>
 
               {/* =================================================
                   IMAGE
                   ================================================= */}
 
-              <div
-                className="
-                  order-1
-                  p-4
-                  md:p-5
-                  lg:order-2
-                  lg:p-5
-                "
-              >
-                <div
-                  className="
-                    relative
-                    aspect-[1.2/1]
-                    overflow-hidden
-                    rounded-[18px]
-                    bg-[#f5f3ff]
-                    dark:bg-[#111326]
-                  "
-                >
+              <div className="codm-industry-image-wrapper">
 
-                  {/* Image Glow */}
+                <div className="codm-industry-image-container">
+
+                  {/* IMAGE AMBIENT GLOW */}
 
                   <div
                     aria-hidden="true"
-                    className="
-                      absolute
-                      left-1/2
-                      top-1/2
-                      h-[70%]
-                      w-[70%]
-                      -translate-x-1/2
-                      -translate-y-1/2
-                      rounded-full
-                      blur-[60px]
-                    "
-                    style={{
-                      background:
-                        "radial-gradient(circle, rgba(114,92,255,0.25), transparent 70%)",
-                    }}
+                    className="codm-industry-image-glow"
                   />
+
+                  {/* IMAGE */}
 
                   {active.featuredImage?.node?.sourceUrl && (
                     <img
@@ -462,18 +288,12 @@ export default function Industries() {
                         active.featuredImage.node.altText ||
                         active.title
                       }
-                      className="
-                        relative
-                        h-full
-                        w-full
-                        object-contain
-                        p-5
-                        md:p-8
-                      "
+                      className="codm-industry-image"
                     />
                   )}
 
                 </div>
+
               </div>
 
             </div>
