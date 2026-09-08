@@ -1,384 +1,1087 @@
-/* =============================================================
-   CODM ANIMATION TOOLKIT
-   Drop this file into your global styles (import once in
-   app/globals.css or layout.tsx). Every effect below is a
-   standalone class — add it to any element's className and
-   it just works. No JS required except where noted (see
-   codm-animations.ts for those).
-   ============================================================= */
+/* =========================================================
+   CODM — PREMIUM MOTION SYSTEM
+   Smooth / subtle / premium agency-style motion
+   Font: Plus Jakarta Sans
+   ========================================================= */
 
 
-/* =============================================================
-   1. TEXT & HEADING REVEALS
-   ============================================================= */
+/* =========================================================
+   01. GLOBAL FONT
+   ========================================================= */
 
-/* ---- 1a. Word-by-word stagger ----
-   Wrap each word in a <span className="codm-word"> inside a
-   parent with className="codm-word-stagger". Use the JS helper
-   splitWords() from codm-animations.ts to do this automatically,
-   or hand-wrap short headings yourself. */
-
-.codm-word-stagger .codm-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(24px);
-  animation: codmWordIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: calc(var(--word-index, 0) * 70ms);
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
-@keyframes codmWordIn {
+
+/* =========================================================
+   02. GLOBAL SMOOTHNESS
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   03. HEADER — INITIAL ENTRANCE
+   ========================================================= */
+
+.codm-header {
+  animation: codmHeaderReveal 0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  will-change: transform, opacity, background-color;
+}
+
+@keyframes codmHeaderReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* ---- 1b. Blur-to-focus reveal ----
-   Add directly to a heading or paragraph. Fires once, on mount
-   or when you toggle a "visible" class via IntersectionObserver
-   (same pattern your sections already use with isVisible). */
 
-.codm-blur-reveal {
-  opacity: 0;
-  filter: blur(14px);
-  transform: translateY(16px);
-  transition:
-    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+/* =========================================================
+   04. HEADER LOGO
+   ========================================================= */
+
+.codm-header-logo-link {
+  animation: codmHeaderLogoReveal 0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.12s both;
+
+  will-change: transform, opacity;
 }
 
-.codm-visible .codm-blur-reveal {
-  opacity: 1;
-  filter: blur(0);
-  transform: translateY(0);
-}
-
-/* ---- 1c. Underline draw-on ----
-   Wrap the phrase: <span className="codm-underline-draw">text</span> */
-
-.codm-underline-draw {
-  position: relative;
-  display: inline-block;
-}
-
-.codm-underline-draw::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, #8B5CF6, #4F46E5);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.codm-visible .codm-underline-draw::after {
-  transform: scaleX(1);
-}
-
-
-/* =============================================================
-   2. CARDS & CONTENT BLOCKS
-   ============================================================= */
-
-/* ---- 2a. Border gradient trace ----
-   Wrap your card content and add this class to the OUTER card
-   element (needs position: relative + overflow allowed, i.e.
-   don't put overflow-hidden on the same element — wrap an inner
-   div for clipped content instead). */
-
-.codm-border-trace {
-  position: relative;
-  border-radius: inherit;
-}
-
-.codm-border-trace::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--trace-angle, 0deg),
-    transparent 0%,
-    rgba(139, 92, 246, 0.9) 8%,
-    transparent 18%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: codmBorderTrace 4s linear infinite;
-  opacity: 0;
-  transition: opacity 400ms ease;
-  pointer-events: none;
-}
-
-.codm-border-trace:hover::before {
-  opacity: 1;
-}
-
-@property --trace-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes codmBorderTrace {
-  to {
-    --trace-angle: 360deg;
+@keyframes codmHeaderLogoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.96);
   }
-}
 
-/* ---- 2b. Stagger-in grid ----
-   Add "codm-stagger-grid" to the grid container, and
-   "codm-stagger-item" to each child. Delay is auto-set via
-   nth-child up to 12 items; for more, use the JS helper to set
-   --item-index inline. */
-
-.codm-stagger-grid .codm-stagger-item {
-  transform: translateY(24px) scale(0.97);
-  transition: none;
-}
-
-.codm-stagger-grid.codm-visible .codm-stagger-item {
-  animation: codmStaggerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.codm-stagger-grid .codm-stagger-item:nth-child(1)  { animation-delay: 0ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(2)  { animation-delay: 70ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(3)  { animation-delay: 140ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(4)  { animation-delay: 210ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(5)  { animation-delay: 280ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(6)  { animation-delay: 350ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(7)  { animation-delay: 420ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(8)  { animation-delay: 490ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(9)  { animation-delay: 560ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(10) { animation-delay: 630ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(11) { animation-delay: 700ms; }
-.codm-stagger-grid .codm-stagger-item:nth-child(12) { animation-delay: 770ms; }
-
-@keyframes codmStaggerIn {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-/* ---- 2c. Count-up numbers ----
-   Pure CSS can't count — this class just styles the number while
-   codm-animations.ts's useCountUp() hook drives the actual value.
-   Add className="codm-count-number" to the <span> holding the number. */
 
-.codm-count-number {
-  font-variant-numeric: tabular-nums;
+/* Logo hover */
+
+.codm-header-logo-link {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
 }
 
-/* ---- 2d. Icon morph on hover ----
-   Add to any icon wrapper inside a hoverable card. */
-
-.codm-icon-morph {
-  display: inline-flex;
-  transition: transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.codm-stagger-item:hover .codm-icon-morph,
-.codm-icon-morph-trigger:hover .codm-icon-morph {
-  transform: rotate(-8deg) scale(1.12);
+.codm-header-logo-link:hover {
+  opacity: 0.88;
+  transform: translateY(-1px) scale(1.015);
 }
 
 
-/* =============================================================
-   3. BACKGROUND & AMBIENT
-   ============================================================= */
+/* =========================================================
+   05. HEADER NAVIGATION
+   ========================================================= */
 
-/* ---- 3a. Grain/noise overlay ----
-   Add className="codm-grain" to a dark section (needs
-   position: relative on that section). Uses an inline SVG data
-   URI, no image request needed. */
-
-.codm-grain {
+.codm-header-nav-link {
   position: relative;
-}
 
-.codm-grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-}
-
-/* ---- 3b. Parallax background blob ----
-   Pairs with the JS scroll listener in codm-animations.ts
-   (useParallax hook), which sets --parallax-y inline. */
-
-.codm-parallax-blob {
-  transform: translateY(var(--parallax-y, 0px));
-  will-change: transform;
-}
-
-/* ---- 3c. Cursor-trailing glow (site-wide) ----
-   Add ONE instance near the root of a dark layout, e.g. in your
-   main layout.tsx just inside <body>. The JS hook moves it via
-   --cursor-x / --cursor-y custom props on <body> or a wrapper. */
-
-.codm-cursor-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 500px;
-  height: 500px;
-  pointer-events: none;
-  z-index: 0;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(139, 92, 246, 0.08),
-    transparent 70%
-  );
-  transform: translate3d(
-    calc(var(--cursor-x, 50vw) - 250px),
-    calc(var(--cursor-y, 50vh) - 250px),
-    0
-  );
-  transition: transform 200ms ease-out;
-}
-
-
-/* =============================================================
-   4. NAVIGATION & SCROLL
-   ============================================================= */
-
-/* ---- 4a. Scroll progress bar ----
-   Add a fixed div at the very top of your layout:
-   <div className="codm-scroll-progress" style={{ "--progress": progress }} />
-   where `progress` (0–100) comes from the JS scroll hook. */
-
-.codm-scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  width: 100%;
-  z-index: 100;
-  background: transparent;
-}
-
-.codm-scroll-progress::after {
-  content: "";
-  display: block;
-  height: 100%;
-  width: calc(var(--progress, 0) * 1%);
-  background: linear-gradient(90deg, #8B5CF6, #4F46E5);
-  transition: width 100ms linear;
-}
-
-/* ---- 4b. Sticky nav shrink + blur ----
-   Add className="codm-nav-scrolled" (toggled via JS scroll hook)
-   to your <header> alongside its base classes. */
-
-header {
-  transition:
-    height 350ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 350ms ease,
-    backdrop-filter 350ms ease,
-    box-shadow 350ms ease;
-}
-
-header.codm-nav-scrolled {
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  background-color: rgba(10, 10, 20, 0.72);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* ---- 4c. Section-to-section scale/fade ----
-   Add className="codm-section-transition" to each <section>,
-   paired with the isVisible pattern you already use per-section. */
-
-.codm-section-transition {
   opacity: 0;
-  transform: scale(0.98) translateY(30px);
+
+  animation: codmHeaderNavReveal 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
   transition:
-    opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+
+  will-change: transform, opacity;
 }
 
-.codm-section-transition.codm-visible {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+
+/* Sequential reveal */
+
+.codm-header-nav-link:nth-child(1) {
+  animation-delay: 0.18s;
+}
+
+.codm-header-nav-link:nth-child(2) {
+  animation-delay: 0.23s;
+}
+
+.codm-header-nav-link:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+.codm-header-nav-link:nth-child(4) {
+  animation-delay: 0.33s;
+}
+
+.codm-header-nav-link:nth-child(5) {
+  animation-delay: 0.38s;
 }
 
 
-/* =============================================================
-   5. MICRO-INTERACTIONS
-   ============================================================= */
+@keyframes codmHeaderNavReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 
-/* ---- 5a. Magnetic button ----
-   Add className="codm-magnetic" to any button/CTA. The JS hook
-   sets --mag-x / --mag-y inline on mousemove within a small
-   radius, and resets to 0 on mouseleave. */
-
-.codm-magnetic {
-  display: inline-flex;
-  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ---- 5b. Button press feedback ----
-   Add alongside any existing button className. */
 
-.codm-press {
-  transition: transform 150ms ease;
+/* Premium underline */
+
+.codm-header-nav-link::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #735cff,
+    transparent
+  );
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.codm-press:active {
-  transform: scale(0.96);
+
+.codm-header-nav-link:hover {
+  transform: translateY(-1px);
 }
 
-/* ---- 5c. Link arrow slide (reusable version of your
-   codm-industry-arrow pattern, for any "View all / Learn more"
-   link across the site) ---- */
 
-.codm-link-arrow {
+.codm-header-nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   06. HEADER RIGHT SIDE
+   ========================================================= */
+
+.codm-header-right {
+  animation: codmHeaderRightReveal 0.75s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.25s both;
+
+  will-change: transform, opacity;
+}
+
+
+@keyframes codmHeaderRightReveal {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   07. HEADER CTA
+   ========================================================= */
+
+.codm-header-cta {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+
+/* Moving light sweep */
+
+.codm-header-cta::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 80%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition:
+    left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-header-cta:hover::before {
+  left: 140%;
+}
+
+
+.codm-header-cta:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 35px rgba(115, 92, 255, 0.22);
+}
+
+
+.codm-header-cta:active {
+  transform: translateY(0) scale(0.97);
+}
+
+
+/* CTA content stays above sweep */
+
+.codm-header-cta span {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Arrow */
+
+.codm-header-cta-arrow {
   display: inline-block;
-  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
 }
 
-.codm-link-arrow-trigger:hover .codm-link-arrow {
+
+.codm-header-cta:hover .codm-header-cta-arrow {
   transform: translateX(5px);
 }
 
 
-/* =============================================================
-   REDUCED MOTION — disables everything above at once
-   ============================================================= */
+/* =========================================================
+   08. THEME TOGGLE
+   ========================================================= */
+
+.codm-theme-toggle {
+  animation: codmThemeReveal 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.35s both;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-theme-toggle:hover {
+  transform: translateY(-2px);
+}
+
+
+@keyframes codmThemeReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================================
+   09. HEADER — SCROLLED STATE
+   Works with useStickyNavState()
+   ========================================================= */
+
+.codm-header {
+  transition:
+    height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    backdrop-filter 0.45s ease;
+}
+
+
+.codm-header.codm-nav-scrolled {
+  background: rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 8px 35px rgba(15, 23, 42, 0.06);
+}
+
+
+[data-theme="dark"] .codm-header.codm-nav-scrolled {
+  background: rgba(6, 7, 18, 0.72);
+
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   10. TEXT / HEADING SCROLL REVEALS
+   Use:
+   className="codm-reveal"
+   and add "codm-visible" when in view
+   ========================================================= */
+
+.codm-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(35px);
+
+  filter: blur(5px);
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+
+.codm-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* Heading */
+
+.codm-reveal-heading {
+  opacity: 0;
+
+  transform:
+    translateY(45px);
+
+  filter: blur(7px);
+
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-reveal-heading.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   11. WORD-BY-WORD TEXT REVEAL
+   Works with splitWords()
+   ========================================================= */
+
+.codm-word-stagger {
+  overflow: hidden;
+}
+
+
+.codm-word {
+  display: inline-block;
+
+  opacity: 0;
+
+  transform:
+    translateY(110%);
+
+  filter: blur(4px);
+
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+
+  transition-delay:
+    calc(var(--word-index) * 45ms);
+}
+
+
+.codm-visible .codm-word {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   12. CARDS / CONTENT BLOCKS
+   ========================================================= */
+
+.codm-card-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(45px)
+    scale(0.985);
+
+  filter: blur(4px);
+
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+
+.codm-card-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  filter: blur(0);
+}
+
+
+/* Stagger cards */
+
+.codm-card-reveal:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.codm-card-reveal:nth-child(2) {
+  transition-delay: 80ms;
+}
+
+.codm-card-reveal:nth-child(3) {
+  transition-delay: 160ms;
+}
+
+.codm-card-reveal:nth-child(4) {
+  transition-delay: 240ms;
+}
+
+.codm-card-reveal:nth-child(5) {
+  transition-delay: 320ms;
+}
+
+
+/* =========================================================
+   13. CARD HOVER
+   ========================================================= */
+
+.codm-premium-card {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    box-shadow 0.55s ease;
+}
+
+
+.codm-premium-card:hover {
+  transform:
+    translateY(-7px);
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.10);
+}
+
+
+[data-theme="dark"] .codm-premium-card:hover {
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   14. IMAGE REVEAL
+   ========================================================= */
+
+.codm-image-reveal {
+  overflow: hidden;
+}
+
+
+.codm-image-reveal img {
+  opacity: 0;
+
+  transform:
+    scale(1.06);
+
+  filter: blur(5px);
+
+  transition:
+    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-image-reveal.codm-visible img {
+  opacity: 1;
+
+  transform:
+    scale(1);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   15. IMAGE HOVER — VERY SUBTLE
+   ========================================================= */
+
+.codm-image-hover {
+  overflow: hidden;
+}
+
+
+.codm-image-hover img {
+  transition:
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-image-hover:hover img {
+  transform:
+    scale(1.025);
+}
+
+
+/* =========================================================
+   16. AMBIENT BACKGROUND GLOW
+   ========================================================= */
+
+.codm-ambient {
+  animation:
+    codmAmbientFloat 12s ease-in-out infinite;
+
+  will-change:
+    transform;
+}
+
+
+@keyframes codmAmbientFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate3d(0, -18px, 0)
+      scale(1.04);
+  }
+}
+
+
+/* Secondary ambient */
+
+.codm-ambient-slow {
+  animation:
+    codmAmbientSlow 18s ease-in-out infinite;
+}
+
+
+@keyframes codmAmbientSlow {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform:
+      translate3d(20px, -12px, 0);
+  }
+}
+
+
+/* =========================================================
+   17. HERO / SECTION GLOW
+   ========================================================= */
+
+.codm-section-glow {
+  position: relative;
+}
+
+
+.codm-section-glow::before {
+  content: "";
+
+  position: absolute;
+
+  top: 10%;
+  left: 50%;
+
+  width: 600px;
+  height: 350px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(115, 92, 255, 0.10),
+      transparent 70%
+    );
+
+  filter: blur(80px);
+
+  pointer-events: none;
+
+  animation:
+    codmGlowPulse 8s ease-in-out infinite;
+}
+
+
+@keyframes codmGlowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform:
+      translateX(-50%)
+      scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform:
+      translateX(-50%)
+      scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   18. BUTTON MICRO INTERACTION
+   ========================================================= */
+
+.codm-magnetic {
+  transform:
+    translate3d(
+      var(--mag-x, 0px),
+      var(--mag-y, 0px),
+      0
+    );
+
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* =========================================================
+   19. LINKS / MICRO INTERACTION
+   ========================================================= */
+
+.codm-micro-link {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-micro-link:hover {
+  transform:
+    translateX(3px);
+}
+
+
+.codm-micro-link span:last-child {
+  display: inline-block;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-micro-link:hover span:last-child {
+  transform:
+    translateX(4px);
+}
+
+
+/* =========================================================
+   20. PILL MICRO INTERACTION
+   ========================================================= */
+
+.codm-industry-pill {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+.codm-industry-pill:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+.codm-industry-pill:active {
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+
+/* =========================================================
+   21. ACTIVE INDUSTRY CARD
+   ========================================================= */
+
+.codm-industry-card {
+  animation:
+    codmIndustryCardIn 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+@keyframes codmIndustryCardIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.99);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+    filter: blur(0);
+  }
+}
+
+
+/* =========================================================
+   22. SCROLL PROGRESS
+   ========================================================= */
+
+.codm-scroll-progress {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  z-index: 10000;
+
+  pointer-events: none;
+
+  transform:
+    scaleX(
+      calc(var(--progress, 0) / 100)
+    );
+
+  transform-origin: left center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5967ff,
+      #7c68ff,
+      #a08cff
+    );
+}
+
+
+/* =========================================================
+   23. CURSOR GLOW
+   ========================================================= */
+
+.codm-cursor-glow {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+
+  width: 350px;
+  height: 350px;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(115, 92, 255, 0.08),
+      transparent 70%
+    );
+
+  transform:
+    translate3d(
+      calc(var(--cursor-x, -500px) - 175px),
+      calc(var(--cursor-y, -500px) - 175px),
+      0
+    );
+
+  transition:
+    transform 0.15s ease-out;
+
+  filter: blur(20px);
+}
+
+
+/* =========================================================
+   24. ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  animation:
+    codmAnnouncementIn 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+@keyframes codmAnnouncementIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================================
+   25. SECTION SPACING REVEAL
+   ========================================================= */
+
+.codm-section-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(50px);
+
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-section-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================================
+   26. PREMIUM BORDER GLOW
+   ========================================================= */
+
+.codm-border-glow {
+  position: relative;
+}
+
+
+.codm-border-glow::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -1px;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(115, 92, 255, 0.35),
+      transparent 80%
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.5s ease;
+
+  pointer-events: none;
+}
+
+
+.codm-border-glow:hover::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   27. INDUSTRIES IMAGE / FEATURE CARD
+   ========================================================= */
+
+.codm-industries-feature-image {
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s ease;
+}
+
+
+.codm-industries-feature-image:hover {
+  transform:
+    scale(1.015);
+}
+
+
+/* =========================================================
+   28. REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .codm-word-stagger .codm-word,
-  .codm-blur-reveal,
-  .codm-underline-draw::after,
-  .codm-border-trace::before,
-  .codm-stagger-grid .codm-stagger-item,
-  .codm-icon-morph,
-  .codm-parallax-blob,
-  .codm-cursor-glow,
-  .codm-magnetic,
-  .codm-press,
-  .codm-section-transition,
-  .codm-link-arrow {
-    animation: none !important;
-    transition: none !important;
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .codm-reveal,
+  .codm-reveal-heading,
+  .codm-card-reveal,
+  .codm-image-reveal img,
+  .codm-section-reveal {
+    opacity: 1 !important;
     transform: none !important;
     filter: none !important;
-    opacity: 1 !important;
+  }
+}
+
+
+/* =========================================================
+   29. MOBILE PERFORMANCE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-cursor-glow {
+    display: none;
+  }
+
+  .codm-section-glow::before {
+    width: 350px;
+    height: 250px;
+
+    filter: blur(65px);
+  }
+
+  .codm-ambient,
+  .codm-ambient-slow {
+    animation-duration: 18s;
+  }
+
+  .codm-header-nav-link:hover {
+    transform: none;
+  }
+
+  .codm-premium-card:hover {
+    transform: translateY(-3px);
   }
 }
