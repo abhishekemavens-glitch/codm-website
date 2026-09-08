@@ -1,4 +1,5 @@
-// components/SectionHeading.tsx
+"use client";
+
 import { splitWords } from "@/lib/codm-animations";
 
 type SectionHeadingProps = {
@@ -16,17 +17,34 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className="heading-codm-wrap mx-auto max-w-[900px] text-center">
+
+      {/* EYEBROW */}
       <div className="heading-codm-eyebrow-wrap">
-        <span aria-hidden="true" className="heading-codm-eyebrow-line" />
-        <span className="heading-codm-eyebrow">{eyebrow}</span>
-        <span aria-hidden="true" className="heading-codm-eyebrow-line" />
+        <span
+          aria-hidden="true"
+          className="heading-codm-eyebrow-line"
+        />
+
+        <span className="heading-codm-eyebrow">
+          {eyebrow}
+        </span>
+
+        <span
+          aria-hidden="true"
+          className="heading-codm-eyebrow-line"
+        />
       </div>
 
+      {/* TITLE */}
       <h2 className="heading-codm-title codm-word-stagger codm-blur-reveal">
         {splitWords(title)}
-        <span className="heading-codm-title-gradient">{gradientText}</span>
+
+        <span className="heading-codm-title-gradient">
+          {gradientText}
+        </span>
       </h2>
 
+      {/* DESCRIPTION */}
       {description && (
         <p className="heading-codm-description mx-auto mt-6 max-w-[650px] text-sm leading-6 text-[var(--muted)] md:text-base">
           {description}
