@@ -15,32 +15,100 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  /*
+   * LIGHT MODE IS THE DEFAULT
+   */
   const [theme, setTheme] = useState<Theme>("light");
 
+  /*
+   * Load saved theme
+   */
   useEffect(() => {
-    const savedTheme = localStorage.getItem("codm-theme") as Theme | null;
+    const savedTheme = localStorage.getItem("codm-theme");
 
-    if (savedTheme === "dark" || savedTheme === "light") {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute("data-theme", savedTheme);
+    /*
+     * Only use dark mode if the user previously
+     * selected dark mode.
+     */
+    if (savedTheme === "dark") {
+      setTheme("dark");
+
+      document.documentElement.classList.add("dark");
+      document.documentElement.setAttribute(
+        "data-theme",
+        "dark"
+      );
     } else {
-      document.documentElement.setAttribute("data-theme", "light");
+      /*
+       * LIGHT MODE DEFAULT
+       */
+      setTheme("light");
+
+      document.documentElement.classList.remove("dark");
+      document.documentElement.setAttribute(
+        "data-theme",
+        "light"
+      );
+
+      /*
+       * Save light mode for first-time visitors
+       */
+      if (!savedTheme) {
+        localStorage.setItem("codm-theme", "light");
+      }
     }
   }, []);
 
+  /*
+   * Toggle between LIGHT and DARK
+   */
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
+    const newTheme: Theme =
+      theme === "light" ? "dark" : "light";
 
     setTheme(newTheme);
-    localStorage.setItem("codm-theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+
+    localStorage.setItem(
+      "codm-theme",
+      newTheme
+    );
+
+    /*
+     * Add/remove .dark
+     * This is important because your CSS
+     * uses html.dark for dark mode.
+     */
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    /*
+     * Keep data-theme as well
+     */
+    document.documentElement.setAttribute(
+      "data-theme",
+      newTheme
+    );
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
@@ -50,7 +118,9 @@ export function useTheme() {
   const context = useContext(ThemeContext);
 
   if (!context) {
-    throw new Error("useTheme must be used inside ThemeProvider");
+    throw new Error(
+      "useTheme must be used inside ThemeProvider"
+    );
   }
 
   return context;
