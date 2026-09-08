@@ -1,412 +1,20 @@
-/* =========================================================
-   CODM — PREMIUM MOTION SYSTEM
-   Animation-only stylesheet
-   ========================================================= */
-
 
 /* =========================================================
-   01. GLOBAL SMOOTHNESS
-   ========================================================= */
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-
-/* =========================================================
-   02. HEADER ENTRANCE
+   03. HEADER — INITIAL ENTRANCE
    ========================================================= */
 
 .codm-header {
-  animation: codmHeaderIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.codm-header-logo-link {
-  animation: codmHeaderLogoIn 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.codm-header-nav {
-  animation: codmHeaderNavIn 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.codm-header-right {
-  animation: codmHeaderRightIn 0.7s 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.codm-header-nav-link {
-  animation: codmNavLinkIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.codm-header-nav-link:nth-child(1) {
-  animation-delay: 0.20s;
-}
-
-.codm-header-nav-link:nth-child(2) {
-  animation-delay: 0.25s;
-}
-
-.codm-header-nav-link:nth-child(3) {
-  animation-delay: 0.30s;
-}
-
-.codm-header-nav-link:nth-child(4) {
-  animation-delay: 0.35s;
-}
-
-.codm-header-nav-link:nth-child(5) {
-  animation-delay: 0.40s;
-}
-
-
-/* =========================================================
-   03. HEADER MICRO INTERACTIONS
-   ========================================================= */
-
-.codm-header-logo-link {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-.codm-header-logo-link:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.codm-header-logo {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-.codm-header-logo-link:hover .codm-header-logo {
-  transform: scale(1.03);
-}
-
-.codm-header-nav-link {
-  transition:
-    color 0.25s ease,
-    transform 0.25s ease;
-}
-
-.codm-header-nav-link::after {
-  transition:
-    transform 0.3s ease;
-}
-
-.codm-header-nav-link:hover {
-  transform: translateY(-1px);
-}
-
-.codm-header-nav-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-.codm-header-cta {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-}
-
-.codm-header-cta:hover {
-  transform: translateY(-2px);
-}
-
-.codm-header-cta-arrow {
-  transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.codm-header-cta:hover .codm-header-cta-arrow {
-  transform: translateX(4px);
-}
-
-
-/* =========================================================
-   04. GENERIC TEXT REVEALS
-   ========================================================= */
-
-.codm-reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  animation: codmReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.codm-fade-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: codmFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.codm-blur-reveal {
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(20px);
-  animation: codmBlurReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-
-/* =========================================================
-   05. WORD STAGGER
-   ========================================================= */
-
-.codm-word-stagger .codm-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(24px);
-  animation:
-    codmWordIn
-    0.7s
+  animation: codmHeaderReveal 0.9s
     cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--word-index) * 0.045s)
-    forwards;
+    both;
+
+  will-change: transform, opacity, background-color;
 }
 
-
-/* =========================================================
-   06. SHARED SECTION HEADING
-   ========================================================= */
-
-.heading-codm-eyebrow-wrap {
-  opacity: 0;
-  transform: translateY(14px);
-  animation:
-    headingCodmEyebrowIn
-    0.7s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.1s
-    forwards;
-}
-
-.heading-codm-eyebrow-line {
-  transform: scaleX(0);
-  animation:
-    headingCodmLineIn
-    0.7s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.15s
-    forwards;
-}
-
-.heading-codm-title {
-  opacity: 0;
-  transform: translateY(28px);
-  animation:
-    headingCodmTitleIn
-    0.9s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s
-    forwards;
-}
-
-.heading-codm-description {
-  opacity: 0;
-  transform: translateY(15px);
-  animation:
-    headingCodmDescriptionIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.35s
-    forwards;
-}
-
-.heading-codm-title-gradient {
-  display: block;
-  background-size: 180% 100%;
-  animation:
-    headingCodmGradientIn
-    1s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.35s
-    forwards;
-}
-
-
-/* =========================================================
-   07. CARDS & CONTENT BLOCKS
-   ========================================================= */
-
-.codm-card-reveal,
-.codm-industry-card,
-.codm-industries-card {
-  opacity: 0;
-  transform: translateY(28px);
-  animation:
-    codmCardIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    forwards;
-}
-
-.codm-card-reveal:nth-child(1),
-.codm-industry-card:nth-child(1),
-.codm-industries-card:nth-child(1) {
-  animation-delay: 0.05s;
-}
-
-.codm-card-reveal:nth-child(2),
-.codm-industry-card:nth-child(2),
-.codm-industries-card:nth-child(2) {
-  animation-delay: 0.10s;
-}
-
-.codm-card-reveal:nth-child(3),
-.codm-industry-card:nth-child(3),
-.codm-industries-card:nth-child(3) {
-  animation-delay: 0.15s;
-}
-
-.codm-card-reveal:nth-child(4),
-.codm-industry-card:nth-child(4),
-.codm-industries-card:nth-child(4) {
-  animation-delay: 0.20s;
-}
-
-
-/* =========================================================
-   08. INDUSTRIES
-   ========================================================= */
-
-.codm-industries-eyebrow {
-  opacity: 0;
-  transform: translateY(14px);
-  animation:
-    codmIndustriesEyebrowIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.1s
-    forwards;
-}
-
-.codm-industries-eyebrow-line {
-  transform: scaleX(0);
-  animation:
-    codmIndustriesLineIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s
-    forwards;
-}
-
-.codm-industries-title {
-  opacity: 0;
-  transform: translateY(28px);
-  animation:
-    codmIndustriesTitleIn
-    0.9s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s
-    forwards;
-}
-
-.codm-industries-description {
-  opacity: 0;
-  transform: translateY(18px);
-  animation:
-    codmIndustriesDescriptionIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.3s
-    forwards;
-}
-
-.codm-industries-pills {
-  opacity: 0;
-  transform: translateY(18px);
-  animation:
-    codmIndustriesPillsIn
-    0.8s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.4s
-    forwards;
-}
-
-.codm-industry-pill {
-  opacity: 0;
-  transform: translateY(12px);
-  animation:
-    codmIndustryPillIn
-    0.55s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--pill-index, 0) * 0.06s + 0.45s)
-    forwards;
-}
-
-
-/* =========================================================
-   09. IMAGE REVEALS
-   ========================================================= */
-
-.codm-image-reveal {
-  opacity: 0;
-  transform: translateY(30px) scale(0.98);
-  animation:
-    codmImageReveal
-    1s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    forwards;
-}
-
-
-/* =========================================================
-   10. AMBIENT EFFECTS
-   ========================================================= */
-
-.codm-ambient,
-.codm-ambient-glow,
-.codm-cursor-glow {
-  pointer-events: none;
-}
-
-.codm-ambient-glow {
-  animation:
-    codmAmbientFloat
-    8s
-    ease-in-out
-    infinite alternate;
-}
-
-
-/* =========================================================
-   11. HOVER MICRO INTERACTIONS
-   ========================================================= */
-
-.codm-magnetic {
-  transform:
-    translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
-  transition:
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.codm-hover-lift {
-  transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.3s ease;
-}
-
-.codm-hover-lift:hover {
-  transform: translateY(-4px);
-}
-
-
-/* =========================================================
-   12. KEYFRAMES
-   ========================================================= */
-
-@keyframes codmHeaderIn {
+@keyframes codmHeaderReveal {
   from {
     opacity: 0;
-    transform: translateY(-14px);
+    transform: translateY(-18px);
   }
 
   to {
@@ -415,19 +23,92 @@ body {
   }
 }
 
-@keyframes codmHeaderLogoIn {
+
+/* =========================================================
+   04. HEADER LOGO
+   ========================================================= */
+
+.codm-header-logo-link {
+  animation: codmHeaderLogoReveal 0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.12s both;
+
+  will-change: transform, opacity;
+}
+
+@keyframes codmHeaderLogoReveal {
   from {
     opacity: 0;
-    transform: translateX(-15px);
+    transform: translateY(-10px) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes codmHeaderNavIn {
+
+/* Logo hover */
+
+.codm-header-logo-link {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+.codm-header-logo-link:hover {
+  opacity: 0.88;
+  transform: translateY(-1px) scale(1.015);
+}
+
+
+/* =========================================================
+   05. HEADER NAVIGATION
+   ========================================================= */
+
+.codm-header-nav-link {
+  position: relative;
+
+  opacity: 0;
+
+  animation: codmHeaderNavReveal 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+
+  will-change: transform, opacity;
+}
+
+
+/* Sequential reveal */
+
+.codm-header-nav-link:nth-child(1) {
+  animation-delay: 0.18s;
+}
+
+.codm-header-nav-link:nth-child(2) {
+  animation-delay: 0.23s;
+}
+
+.codm-header-nav-link:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+.codm-header-nav-link:nth-child(4) {
+  animation-delay: 0.33s;
+}
+
+.codm-header-nav-link:nth-child(5) {
+  animation-delay: 0.38s;
+}
+
+
+@keyframes codmHeaderNavReveal {
   from {
     opacity: 0;
     transform: translateY(-8px);
@@ -439,10 +120,61 @@ body {
   }
 }
 
-@keyframes codmHeaderRightIn {
+
+/* Premium underline */
+
+.codm-header-nav-link::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #735cff,
+    transparent
+  );
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-header-nav-link:hover {
+  transform: translateY(-1px);
+}
+
+
+.codm-header-nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   06. HEADER RIGHT SIDE
+   ========================================================= */
+
+.codm-header-right {
+  animation: codmHeaderRightReveal 0.75s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.25s both;
+
+  will-change: transform, opacity;
+}
+
+
+@keyframes codmHeaderRightReveal {
   from {
     opacity: 0;
-    transform: translateX(15px);
+    transform: translateX(14px);
   }
 
   to {
@@ -451,60 +183,1172 @@ body {
   }
 }
 
-@keyframes codmNavLinkIn {
-  from {
-    opacity: 0;
-    transform: translateY(-7px);
+
+/* =========================================================
+   07. HEADER CTA
+   ========================================================= */
+
+.codm-header-cta {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+
+/* Moving light sweep */
+
+.codm-header-cta::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 80%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition:
+    left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-header-cta:hover::before {
+  left: 140%;
+}
+
+
+.codm-header-cta:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 35px rgba(115, 92, 255, 0.22);
+}
+
+
+.codm-header-cta:active {
+  transform: translateY(0) scale(0.97);
+}
+
+
+/* CTA content stays above sweep */
+
+.codm-header-cta span {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Arrow */
+
+.codm-header-cta-arrow {
+  display: inline-block;
+
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+
+.codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translateX(5px);
+}
+
+
+
+
+
+/* =========================================================
+   09. HEADER — SCROLLED STATE
+   Works with useStickyNavState()
+   ========================================================= */
+
+.codm-header {
+  transition:
+    height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    backdrop-filter 0.45s ease;
+}
+
+
+.codm-header.codm-nav-scrolled {
+  background: rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 8px 35px rgba(15, 23, 42, 0.06);
+}
+
+
+[data-theme="dark"] .codm-header.codm-nav-scrolled {
+  background: rgba(6, 7, 18, 0.72);
+
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   10. TEXT / HEADING SCROLL REVEALS
+   Use:
+   className="codm-reveal"
+   and add "codm-visible" when in view
+   ========================================================= */
+
+.codm-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(35px);
+
+  filter: blur(5px);
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+
+.codm-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* Heading */
+
+.codm-reveal-heading {
+  opacity: 0;
+
+  transform:
+    translateY(45px);
+
+  filter: blur(7px);
+
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-reveal-heading.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   11. WORD-BY-WORD TEXT REVEAL
+   Works with splitWords()
+   ========================================================= */
+
+.codm-word-stagger {
+  overflow: hidden;
+}
+
+
+.codm-word {
+  display: inline-block;
+
+  opacity: 0;
+
+  transform:
+    translateY(110%);
+
+  filter: blur(4px);
+
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+
+  transition-delay:
+    calc(var(--word-index) * 45ms);
+}
+
+
+.codm-visible .codm-word {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   12. CARDS / CONTENT BLOCKS
+   ========================================================= */
+
+.codm-card-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(45px)
+    scale(0.985);
+
+  filter: blur(4px);
+
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+
+.codm-card-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  filter: blur(0);
+}
+
+
+/* Stagger cards */
+
+.codm-card-reveal:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.codm-card-reveal:nth-child(2) {
+  transition-delay: 80ms;
+}
+
+.codm-card-reveal:nth-child(3) {
+  transition-delay: 160ms;
+}
+
+.codm-card-reveal:nth-child(4) {
+  transition-delay: 240ms;
+}
+
+.codm-card-reveal:nth-child(5) {
+  transition-delay: 320ms;
+}
+
+
+/* =========================================================
+   13. CARD HOVER
+   ========================================================= */
+
+.codm-premium-card {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    box-shadow 0.55s ease;
+}
+
+
+.codm-premium-card:hover {
+  transform:
+    translateY(-7px);
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.10);
+}
+
+
+[data-theme="dark"] .codm-premium-card:hover {
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   14. IMAGE REVEAL
+   ========================================================= */
+
+.codm-image-reveal {
+  overflow: hidden;
+}
+
+
+.codm-image-reveal img {
+  opacity: 0;
+
+  transform:
+    scale(1.06);
+
+  filter: blur(5px);
+
+  transition:
+    opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-image-reveal.codm-visible img {
+  opacity: 1;
+
+  transform:
+    scale(1);
+
+  filter: blur(0);
+}
+
+
+/* =========================================================
+   15. IMAGE HOVER — VERY SUBTLE
+   ========================================================= */
+
+.codm-image-hover {
+  overflow: hidden;
+}
+
+
+.codm-image-hover img {
+  transition:
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-image-hover:hover img {
+  transform:
+    scale(1.025);
+}
+
+
+/* =========================================================
+   16. AMBIENT BACKGROUND GLOW
+   ========================================================= */
+
+.codm-ambient {
+  animation:
+    codmAmbientFloat 12s ease-in-out infinite;
+
+  will-change:
+    transform;
+}
+
+
+@keyframes codmAmbientFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform:
+      translate3d(0, -18px, 0)
+      scale(1.04);
   }
 }
 
-@keyframes codmReveal {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
+
+/* Secondary ambient */
+
+.codm-ambient-slow {
+  animation:
+    codmAmbientSlow 18s ease-in-out infinite;
+}
+
+
+@keyframes codmAmbientSlow {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 0);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform:
+      translate3d(20px, -12px, 0);
   }
 }
 
-@keyframes codmFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+
+/* =========================================================
+   17. HERO / SECTION GLOW
+   ========================================================= */
+
+.codm-section-glow {
+  position: relative;
+}
+
+
+.codm-section-glow::before {
+  content: "";
+
+  position: absolute;
+
+  top: 10%;
+  left: 50%;
+
+  width: 600px;
+  height: 350px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(115, 92, 255, 0.10),
+      transparent 70%
+    );
+
+  filter: blur(80px);
+
+  pointer-events: none;
+
+  animation:
+    codmGlowPulse 8s ease-in-out infinite;
+}
+
+
+@keyframes codmGlowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform:
+      translateX(-50%)
+      scale(1);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    opacity: 0.9;
+    transform:
+      translateX(-50%)
+      scale(1.08);
   }
 }
 
-@keyframes codmBlurReveal {
+
+/* =========================================================
+   18. BUTTON MICRO INTERACTION
+   ========================================================= */
+
+.codm-magnetic {
+  transform:
+    translate3d(
+      var(--mag-x, 0px),
+      var(--mag-y, 0px),
+      0
+    );
+
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* =========================================================
+   19. LINKS / MICRO INTERACTION
+   ========================================================= */
+
+.codm-micro-link {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-micro-link:hover {
+  transform:
+    translateX(3px);
+}
+
+
+.codm-micro-link span:last-child {
+  display: inline-block;
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-micro-link:hover span:last-child {
+  transform:
+    translateX(4px);
+}
+
+
+/* =========================================================
+   20. PILL MICRO INTERACTION
+   ========================================================= */
+
+.codm-industry-pill {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+
+.codm-industry-pill:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+:active {
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+
+/* =========================================================
+   21. ACTIVE INDUSTRY CARD
+   ========================================================= */
+
+.codm-industry-card {
+  animation:
+    codmIndustryCardIn 0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+@keyframes codmIndustryCardIn {
   from {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(20px);
+    transform:
+      translateY(18px)
+      scale(0.99);
+    filter: blur(4px);
   }
 
   to {
     opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
     filter: blur(0);
-    transform: translateY(0);
   }
 }
 
-@keyframes codmWordIn {
+
+/* =========================================================
+   22. SCROLL PROGRESS
+   ========================================================= */
+
+.codm-scroll-progress {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  z-index: 10000;
+
+  pointer-events: none;
+
+  transform:
+    scaleX(
+      calc(var(--progress, 0) / 100)
+    );
+
+  transform-origin: left center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5967ff,
+      #7c68ff,
+      #a08cff
+    );
+}
+
+
+/* =========================================================
+   23. CURSOR GLOW
+   ========================================================= */
+
+.codm-cursor-glow {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+
+  width: 350px;
+  height: 350px;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(115, 92, 255, 0.08),
+      transparent 70%
+    );
+
+  transform:
+    translate3d(
+      calc(var(--cursor-x, -500px) - 175px),
+      calc(var(--cursor-y, -500px) - 175px),
+      0
+    );
+
+  transition:
+    transform 0.15s ease-out;
+
+  filter: blur(20px);
+}
+
+
+/* =========================================================
+   24. ANNOUNCEMENT BAR
+   ========================================================= */
+
+.codm-announcement-bar {
+  animation:
+    codmAnnouncementIn 0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+@keyframes codmAnnouncementIn {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform:
+      translateY(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================================
+   25. SECTION SPACING REVEAL
+   ========================================================= */
+
+.codm-section-reveal {
+  opacity: 0;
+
+  transform:
+    translateY(50px);
+
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-section-reveal.codm-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================================
+   26. PREMIUM BORDER GLOW
+   ========================================================= */
+
+.codm-border-glow {
+  position: relative;
+}
+
+
+.codm-border-glow::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -1px;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(115, 92, 255, 0.35),
+      transparent 80%
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.5s ease;
+
+  pointer-events: none;
+}
+
+
+.codm-border-glow:hover::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   27. INDUSTRIES IMAGE / FEATURE CARD
+   ========================================================= */
+
+.codm-industries-feature-image {
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s ease;
+}
+
+
+.codm-industries-feature-image:hover {
+  transform:
+    scale(1.015);
+}
+
+
+/* =========================================================
+   28. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .codm-reveal,
+  .codm-reveal-heading,
+  .codm-card-reveal,
+  .codm-image-reveal img,
+  .codm-section-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+
+/* =========================================================
+   29. MOBILE PERFORMANCE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-cursor-glow {
+    display: none;
+  }
+
+  .codm-section-glow::before {
+    width: 350px;
+    height: 250px;
+
+    filter: blur(65px);
+  }
+
+  .codm-ambient,
+  .codm-ambient-slow {
+    animation-duration: 18s;
+  }
+
+  .codm-header-nav-link:hover {
+    transform: none;
+  }
+
+  .codm-premium-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+
+
+/* =========================================================
+   INDUSTRIES SECTION
+   PREMIUM REVEAL SYSTEM
+   ========================================================= */
+
+.codm-industries-section {
+  --industries-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* =========================================================
+   INITIAL STATES
+   ========================================================= */
+
+
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+
+.codm-industries-eyebrow-line {
+  transform: scaleX(0);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow {
+  animation: codmIndustriesEyebrowReveal 0.8s
+    var(--industries-ease) 0.05s forwards;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow-line:first-child {
+  animation: codmIndustriesLineLeft 0.9s
+    var(--industries-ease) 0.15s forwards;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-eyebrow-line:last-child {
+  animation: codmIndustriesLineRight 0.9s
+    var(--industries-ease) 0.15s forwards;
+}
+
+
+/* =========================================================
+   MAIN TITLE
+   ========================================================= */
+
+.codm-industries-title {
+  transform: translateY(35px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-title {
+  animation: codmIndustriesTitleReveal 1s
+    var(--industries-ease) 0.18s forwards;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.codm-industries-description {
+  transform: translateY(22px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-description {
+  animation: codmIndustriesDescriptionReveal 0.9s
+    var(--industries-ease) 0.34s forwards;
+}
+
+
+/* =========================================================
+   INDUSTRY PILLS
+   ========================================================= */
+
+.codm-industries-pills {
+  transform: translateY(25px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-pills {
+  animation: codmIndustriesPillsReveal 0.9s
+    var(--industries-ease) 0.48s forwards;
+}
+
+
+/* Individual pill stagger */
+
+
+
+.codm-industries-section.codm-industries-visible
+  .codm-industry-pill {
+  animation: codmIndustryPillReveal 0.7s
+    var(--industries-ease)
+    calc(0.52s + (var(--industry-index) * 0.045s))
+    forwards;
+}
+
+
+/* =========================================================
+   FEATURED CARD
+   ========================================================= */
+
+.codm-industries-card {
+  transform: translateY(45px) scale(0.985);
+  transform-origin: center center;
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card {
+  animation: codmIndustriesCardReveal 1.1s
+    var(--industries-ease) 0.62s forwards;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.codm-industries-card-content {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-content {
+  animation: codmIndustriesContentReveal 0.9s
+    var(--industries-ease) 0.78s forwards;
+}
+
+
+/* =========================================================
+   CARD LABEL
+   ========================================================= */
+
+.codm-industries-card-label {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-label {
+  animation: codmIndustriesSmallReveal 0.7s
+    var(--industries-ease) 0.82s forwards;
+}
+
+
+/* =========================================================
+   CARD TITLE
+   ========================================================= */
+
+.codm-industries-card-title {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-title {
+  animation: codmIndustriesSmallReveal 0.8s
+    var(--industries-ease) 0.90s forwards;
+}
+
+
+/* =========================================================
+   CARD DESCRIPTION
+   ========================================================= */
+
+.codm-industries-card-description {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-description {
+  animation: codmIndustriesSmallReveal 0.8s
+    var(--industries-ease) 1s forwards;
+}
+
+
+/* =========================================================
+   CARD LINK
+   ========================================================= */
+
+.codm-industries-card-link {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-link {
+  animation: codmIndustriesSmallReveal 0.7s
+    var(--industries-ease) 1.1s forwards;
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.codm-industries-card-image-wrap {
+  opacity: 0;
+  transform: translateX(35px);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-card-image-wrap {
+  animation: codmIndustriesImageReveal 1s
+    var(--industries-ease) 0.78s forwards;
+}
+
+
+/* Actual image */
+
+.codm-industries-main-image {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    transform 1.2s var(--industries-ease),
+    opacity 0.8s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-main-image {
+  animation: codmIndustriesImageScale 1.2s
+    var(--industries-ease) 0.9s forwards;
+}
+
+
+/* =========================================================
+   IMAGE GLOW
+   ========================================================= */
+
+.codm-industries-image-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition:
+    opacity 1s ease,
+    transform 1.4s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-image-glow {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
+/* =========================================================
+   AMBIENT BACKGROUND
+   ========================================================= */
+
+.codm-industries-bg-glow {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.75);
+  transition:
+    opacity 1.8s ease,
+    transform 2s var(--industries-ease);
+}
+
+.codm-industries-bg-glow-2 {
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 2s ease,
+    transform 2.2s var(--industries-ease);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-bg-glow {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.codm-industries-section.codm-industries-visible
+  .codm-industries-bg-glow-2 {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — PILL
+   ========================================================= */
+
+.codm-industry-pill {
+  will-change: transform;
+}
+
+.codm-industry-pill:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — CARD LINK
+   ========================================================= */
+
+.codm-industries-card-link:hover .codm-industries-arrow {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   MICRO INTERACTION — IMAGE
+   ========================================================= */
+
+.codm-industries-card:hover .codm-industries-main-image {
+  transform: scale(1.025);
+}
+
+.codm-industries-card:hover .codm-industries-image-glow {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes codmIndustriesEyebrowReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
 
   to {
@@ -513,106 +1357,41 @@ body {
   }
 }
 
-@keyframes headingCodmEyebrowIn {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes headingCodmLineIn {
+@keyframes codmIndustriesLineLeft {
   from {
     opacity: 0;
     transform: scaleX(0);
+    transform-origin: right center;
   }
 
   to {
     opacity: 0.35;
     transform: scaleX(1);
+    transform-origin: right center;
   }
 }
 
-@keyframes headingCodmTitleIn {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes headingCodmDescriptionIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes headingCodmGradientIn {
-  from {
-    opacity: 0;
-    background-position: 100% 50%;
-  }
-
-  to {
-    opacity: 1;
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes codmCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes codmIndustriesEyebrowIn {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes codmIndustriesLineIn {
+@keyframes codmIndustriesLineRight {
   from {
     opacity: 0;
     transform: scaleX(0);
+    transform-origin: left center;
   }
 
   to {
     opacity: 0.35;
     transform: scaleX(1);
+    transform-origin: left center;
   }
 }
 
-@keyframes codmIndustriesTitleIn {
+
+@keyframes codmIndustriesTitleReveal {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(35px);
   }
 
   to {
@@ -621,10 +1400,11 @@ body {
   }
 }
 
-@keyframes codmIndustriesDescriptionIn {
+
+@keyframes codmIndustriesDescriptionReveal {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(22px);
   }
 
   to {
@@ -633,10 +1413,11 @@ body {
   }
 }
 
-@keyframes codmIndustriesPillsIn {
+
+@keyframes codmIndustriesPillsReveal {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(25px);
   }
 
   to {
@@ -645,7 +1426,8 @@ body {
   }
 }
 
-@keyframes codmIndustryPillIn {
+
+@keyframes codmIndustryPillReveal {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -657,10 +1439,11 @@ body {
   }
 }
 
-@keyframes codmImageReveal {
+
+@keyframes codmIndustriesCardReveal {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
+    transform: translateY(45px) scale(0.985);
   }
 
   to {
@@ -669,28 +1452,1914 @@ body {
   }
 }
 
-@keyframes codmAmbientFloat {
+
+@keyframes codmIndustriesContentReveal {
   from {
-    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+    transform: translateX(-30px);
   }
 
   to {
-    transform: translate3d(0, -12px, 0) scale(1.03);
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes codmIndustriesImageReveal {
+  from {
+    opacity: 0;
+    transform: translateX(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes codmIndustriesImageScale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+@keyframes codmIndustriesSmallReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 
 /* =========================================================
-   13. REDUCED MOTION
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-industries-title {
+    font-size: 38px !important;
+    line-height: 44px !important;
+    letter-spacing: -1.5% !important;
+  }
+
+  .codm-industries-card-content {
+    transform: translateY(25px);
+  }
+
+  .codm-industries-section.codm-industries-visible
+    .codm-industries-card-content {
+    animation-name: codmIndustriesMobileContentReveal;
+  }
+
+  .codm-industries-card-image-wrap {
+    transform: translateY(25px);
+  }
+
+  .codm-industries-section.codm-industries-visible
+    .codm-industries-card-image-wrap {
+    animation-name: codmIndustriesMobileImageReveal;
+  }
+}
+
+
+@keyframes codmIndustriesMobileContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmIndustriesMobileImageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+
+  .codm-industries-section,
+  .codm-industries-section *,
+  .codm-industries-bg-glow,
+  .codm-industries-bg-glow-2 {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .codm-industries-eyebrow,
+  .codm-industries-eyebrow-line,
+  .codm-industries-title,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-pill,
+  .codm-industries-card,
+  .codm-industries-card-content,
+  .codm-industries-card-label,
+  .codm-industries-card-title,
+  .codm-industries-card-description,
+  .codm-industries-card-link,
+  .codm-industries-card-image-wrap,
+  .codm-industries-main-image,
+  .codm-industries-bg-glow,
+  .codm-industries-bg-glow-2 {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
+
+
+
+/* =========================================================
+   CODM — GLOBAL PREMIUM SECTION ANIMATIONS
+   ========================================================= */
+
+
+/* =========================================================
+   INDUSTRIES — AMBIENT BACKGROUND
+   ========================================================= */
+
+.codm-industries-glow {
+  background:
+    radial-gradient(
+      circle,
+      rgba(114, 92, 255, 0.10),
+      transparent 70%
+    );
+
+  animation:
+    codmAmbientFloat
+    8s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   INDUSTRIES — EYEBROW
+   ========================================================= */
+
+.codm-industries-eyebrow-wrap {
+  opacity: 0;
+  transform: translateY(14px);
+
+  animation:
+    codmFadeUp
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s
+    forwards;
+}
+
+
+.codm-industries-eyebrow {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+  color: #475569 !important;
+}
+
+
+.dark .codm-industries-eyebrow {
+  color: #A7B0C2 !important;
+}
+
+
+.codm-industries-eyebrow-line {
+  background: currentColor;
+  color: var(--accent);
+  opacity: 0.35;
+
+  transform: scaleX(0);
+
+  animation:
+    codmLineReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.25s
+    forwards;
+}
+
+
+.codm-industries-eyebrow-line:first-child {
+  transform-origin: right center;
+}
+
+
+.codm-industries-eyebrow-line:last-child {
+  transform-origin: left center;
+}
+
+
+/* =========================================================
+   INDUSTRIES — MAIN HEADING
+   ========================================================= */
+
+.codm-industries-title {
+  margin: 0;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 56px !important;
+  line-height: 64px !important;
+  letter-spacing: -0.02em !important;
+  text-align: center;
+
+  color: var(--foreground);
+
+  opacity: 0;
+  transform: translateY(28px);
+
+  animation:
+    codmFadeUp
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s
+    forwards;
+}
+
+
+/* =========================================================
+   INDUSTRIES — GRADIENT TEXT
+   ========================================================= */
+
+.codm-industries-title-gradient {
+  display: block;
+
+  background:
+    linear-gradient(
+      100deg,
+      #FFFFFF 24.1%,
+      #9187FB 54.32%,
+      #354CCB 88.84%
+    );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  animation:
+    codmGradientFlow
+    7s
+    ease-in-out
+    infinite;
+}
+
+
+html:not(.dark) .codm-industries-title-gradient {
+  background:
+    linear-gradient(
+      100deg,
+      #2563EB 11.16%,
+      #6366F1 42.11%,
+      #A78BFA 93.16%
+    );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   INDUSTRIES — DESCRIPTION
+   ========================================================= */
+
+.codm-industries-description {
+  color: var(--muted);
+
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmFadeUp
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.4s
+    forwards;
+}
+
+
+/* =========================================================
+   INDUSTRY PILLS
+   ========================================================= */
+
+.codm-industries-pills {
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmFadeUp
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.55s
+    forwards;
+}
+
+
+.codm-industry-pill {
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease,
+    background-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+
+.codm-industry-pill:hover {
+  transform: translateY(-2px);
+}
+
+
+.codm-industry-pill-active {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   INDUSTRY CARD
+   ========================================================= */
+
+.codm-industry-card {
+  animation:
+    codmCardReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.08);
+
+  transition:
+    box-shadow 500ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-industry-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 35px 100px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.codm-industry-content {
+  animation:
+    codmContentReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s
+    both;
+}
+
+
+.codm-industry-card-title {
+  opacity: 0;
+  transform: translateY(20px);
+
+  animation:
+    codmFadeUp
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.15s
+    forwards;
+}
+
+
+.codm-industry-card-description {
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmFadeUp
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.25s
+    forwards;
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.codm-industry-image-wrap {
+  animation:
+    codmImageReveal
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.15s
+    both;
+}
+
+
+.codm-industry-image {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  transition:
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-industry-card:hover .codm-industry-image {
+  transform: scale(1.008);
+}
+
+
+.codm-industry-image-glow {
+  background:
+    radial-gradient(
+      circle,
+      rgba(114, 92, 255, 0.25),
+      transparent 70%
+    );
+
+  animation:
+    codmImageGlow
+    6s
+    ease-in-out
+    infinite;
+}
+
+
+.codm-industry-featured-image {
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms ease;
+}
+
+
+.codm-industry-card:hover .codm-industry-featured-image {
+  transform: scale(1.025);
+}
+
+
+/* =========================================================
+   VIEW ALL LINK
+   ========================================================= */
+
+.codm-industry-view-link {
+  transition:
+    color 250ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-industry-view-link:hover {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+
+.codm-industry-arrow {
+  display: inline-block;
+
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+.codm-industry-view-link:hover .codm-industry-arrow {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   GLOBAL KEYFRAMES
+   ========================================================= */
+
+@keyframes codmFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes codmCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes codmContentReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes codmImageReveal {
+  from {
+    opacity: 0;
+    transform: translateX(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+@keyframes codmLineReveal {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 0.35;
+    transform: scaleX(1);
+  }
+}
+
+
+@keyframes codmAmbientFloat {
+  0%,
+  100% {
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      translateY(20px)
+      scale(1.04);
+  }
+}
+
+
+@keyframes codmImageGlow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
+  }
+}
+
+
+@keyframes codmGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-industries-title {
+    font-size: 38px !important;
+    line-height: 44px !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  .codm-industries-eyebrow {
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+
+  .codm-industries-eyebrow-line {
+    width: 25px;
+  }
+
+  .codm-industry-card:hover {
+    transform: none;
+  }
+
+  .codm-industry-card:hover .codm-industry-featured-image {
+    transform: none;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .codm-industries-title {
+    font-size: 48px !important;
+    line-height: 56px !important;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .codm-industries-glow,
+  .codm-industries-eyebrow-wrap,
+  .codm-industries-eyebrow-line,
+  .codm-industries-title,
+  .codm-industries-title-gradient,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-card,
+  .codm-industry-content,
+  .codm-industry-card-title,
+  .codm-industry-card-description,
+  .codm-industry-image-wrap,
+  .codm-industry-image-glow {
+    animation: none !important;
+  }
+
+  .codm-industry-card,
+  .codm-industry-featured-image,
+  .codm-industry-image {
+    transition: none !important;
+  }
+
+  .codm-industries-eyebrow-wrap,
+  .codm-industries-title,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-card-title,
+  .codm-industry-card-description {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =========================================================
+   CODM INDUSTRIES — PREMIUM REVEAL SYSTEM
+   ========================================================= */
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.codm-industries-eyebrow-wrap {
+  opacity: 0;
+  transform: translateY(14px);
+
+  animation:
+    codmIndustriesEyebrowReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.1s
+    forwards;
+}
+
+
+/* Text itself must remain visible */
+
+.codm-industries-eyebrow {
+  display: inline-block;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 18px !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+
+  color: #475569 !important;
+}
+
+
+.dark .codm-industries-eyebrow {
+  color: #A7B0C2 !important;
+}
+
+
+/* =========================================================
+   EYEBROW LINES
+   ========================================================= */
+
+.codm-industries-eyebrow-line {
+  display: block;
+
+  height: 1px;
+  width: 40px;
+
+  background: var(--accent);
+
+  opacity: 0;
+
+  animation:
+    codmIndustriesLineReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s
+    forwards;
+}
+
+
+.codm-industries-eyebrow-line:first-child {
+  transform-origin: right center;
+}
+
+
+.codm-industries-eyebrow-line:last-child {
+  transform-origin: left center;
+}
+
+
+/* =========================================================
+   MAIN HEADING
+   ========================================================= */
+
+.codm-industries-title {
+  margin: 0;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+
+  font-size: 56px !important;
+  line-height: 64px !important;
+  letter-spacing: -0.02em !important;
+
+  text-align: center;
+
+  color: var(--foreground);
+
+  opacity: 0;
+  transform: translateY(28px);
+
+  animation:
+    codmIndustriesTitleReveal
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s
+    forwards;
+}
+
+
+/* =========================================================
+   GRADIENT HEADING
+   ========================================================= */
+
+.codm-industries-title-gradient {
+  display: block;
+
+  background:
+    linear-gradient(
+      100deg,
+      #FFFFFF 24.1%,
+      #9187FB 54.32%,
+      #354CCB 88.84%
+    );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  animation:
+    codmIndustriesGradient
+    8s
+    ease-in-out
+    infinite;
+}
+
+
+/* LIGHT MODE */
+
+html:not(.dark) .codm-industries-title-gradient {
+  background:
+    linear-gradient(
+      100deg,
+      #2563EB 11.16%,
+      #6366F1 42.11%,
+      #A78BFA 93.16%
+    );
+
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.codm-industries-description {
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmIndustriesDescriptionReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.4s
+    forwards;
+}
+
+
+/* =========================================================
+   INDUSTRY PILLS CONTAINER
+   ========================================================= */
+
+.codm-industries-pills {
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmIndustriesPillsReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.55s
+    forwards;
+}
+
+
+/* =========================================================
+   INDIVIDUAL PILLS
+   ========================================================= */
+
+.codm-industry-pill {
+
+  transform:
+    translateY(12px)
+    scale(0.97);
+
+  animation:
+    codmIndustryPillReveal
+    0.65s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease,
+    background-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+
+/* Stagger */
+
+.codm-industry-pill:nth-child(1) {
+  animation-delay: 0.60s;
+}
+
+.codm-industry-pill:nth-child(2) {
+  animation-delay: 0.66s;
+}
+
+.codm-industry-pill:nth-child(3) {
+  animation-delay: 0.72s;
+}
+
+.codm-industry-pill:nth-child(4) {
+  animation-delay: 0.78s;
+}
+
+.codm-industry-pill:nth-child(5) {
+  animation-delay: 0.84s;
+}
+
+.codm-industry-pill:nth-child(6) {
+  animation-delay: 0.90s;
+}
+
+.codm-industry-pill:nth-child(7) {
+  animation-delay: 0.96s;
+}
+
+.codm-industry-pill:nth-child(8) {
+  animation-delay: 1.02s;
+}
+
+
+/* Hover */
+
+.codm-industry-pill:hover {
+  transform:
+    translateY(-2px)
+    scale(1.01);
+}
+
+
+/* =========================================================
+   FEATURED CARD
+   ========================================================= */
+
+.codm-industry-card {
+  opacity: 0;
+
+  animation:
+    codmIndustryCardReveal
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.75s
+    forwards;
+
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms ease;
+}
+
+
+.codm-industry-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 35px 100px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.codm-industry-content {
+  animation:
+    codmIndustryContentReveal
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.9s
+    both;
+}
+
+
+.codm-industry-card-title {
+  opacity: 0;
+  transform: translateY(18px);
+
+  animation:
+    codmIndustryInnerReveal
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.95s
+    forwards;
+}
+
+
+.codm-industry-card-description {
+  opacity: 0;
+  transform: translateY(16px);
+
+  animation:
+    codmIndustryInnerReveal
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    1.05s
+    forwards;
+}
+
+
+.codm-industry-view-link {
+  opacity: 0;
+  transform: translateY(12px);
+
+  animation:
+    codmIndustryInnerReveal
+    0.8s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    1.15s
+    forwards;
+
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 250ms ease;
+}
+
+
+.codm-industry-view-link:hover {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   CARD IMAGE
+   ========================================================= */
+
+.codm-industry-image-wrap {
+  opacity: 0;
+
+  animation:
+    codmIndustryImageReveal
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.85s
+    forwards;
+}
+
+
+.codm-industry-featured-image {
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms ease;
+}
+
+
+.codm-industry-card:hover .codm-industry-featured-image {
+  transform: scale(1.025);
+}
+
+
+/* =========================================================
+   IMAGE AMBIENT GLOW
+   ========================================================= */
+
+.codm-industry-image-glow {
+  background:
+    radial-gradient(
+      circle,
+      rgba(114, 92, 255, 0.25),
+      transparent 70%
+    );
+
+  animation:
+    codmIndustryImageGlow
+    6s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes codmIndustriesEyebrowReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codmIndustriesLineReveal {
+
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 0.35;
+    transform: scaleX(1);
+  }
+
+}
+
+
+@keyframes codmIndustriesTitleReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codmIndustriesDescriptionReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codmIndustriesPillsReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codmIndustryPillReveal {
+
+  from {
+    opacity: 0;
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes codmIndustryCardReveal {
+
+  from {
+    opacity: 0;
+    transform:
+      translateY(35px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes codmIndustryContentReveal {
+
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+
+@keyframes codmIndustryInnerReveal {
+
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codmIndustryImageReveal {
+
+  from {
+    opacity: 0;
+    transform:
+      translateX(25px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes codmIndustryImageGlow {
+
+  0%,
+  100% {
+    opacity: 0.65;
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
+  }
+
+}
+
+
+@keyframes codmIndustriesGradient {
+
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+  .codm-industries-eyebrow {
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+
+  .codm-industries-eyebrow-line {
+    width: 25px;
+  }
+
+  .codm-industries-title {
+    font-size: 38px !important;
+    line-height: 44px !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  .codm-industry-card:hover {
+    transform: none;
+  }
+
+  .codm-industry-card:hover .codm-industry-featured-image {
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .codm-industries-eyebrow-wrap,
+  .codm-industries-eyebrow-line,
+  .codm-industries-title,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-pill,
+  .codm-industry-card,
+  .codm-industry-content,
+  .codm-industry-card-title,
+  .codm-industry-card-description,
+  .codm-industry-view-link,
+  .codm-industry-image-wrap,
+  .codm-industry-image-glow,
+  .codm-industries-title-gradient {
+    animation: none !important;
+  }
+
+  .codm-industries-eyebrow-wrap,
+  .codm-industries-eyebrow-line,
+  .codm-industries-title,
+  .codm-industries-description,
+  .codm-industries-pills,
+  .codm-industry-pill,
+  .codm-industry-card,
+  .codm-industry-card-title,
+  .codm-industry-card-description,
+  .codm-industry-view-link,
+  .codm-industry-image-wrap {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+}
+
+/* ============================================================
+   CODM — SHARED SECTION HEADING SYSTEM
+   Premium smooth reveal
+   Works in BOTH light + dark mode
+   Same typography across entire website
+   ============================================================ */
+
+
+/* ============================================================
+   WRAPPER
+   ============================================================ */
+
+.heading-codm-wrap {
+  position: relative;
+  isolation: isolate;
+}
+
+
+/* ============================================================
+   EYEBROW
+   ============================================================ */
+
+.heading-codm-eyebrow-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  overflow: visible;
+}
+
+
+/* Text */
+
+.heading-codm-eyebrow {
+  position: relative;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+
+  color: #475569 !important;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(12px);
+
+  animation:
+    codm-heading-eyebrow-in
+    0.9s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.05s
+    forwards;
+}
+
+
+/* Dark mode */
+
+.dark .heading-codm-eyebrow {
+  color: #A7B0C2 !important;
+}
+
+
+/* ============================================================
+   EYEBROW LINES
+   ============================================================ */
+
+.heading-codm-eyebrow-line {
+  position: relative;
+
+  display: block;
+
+  width: 42px;
+  height: 1px;
+
+  flex: 0 0 42px;
+
+  background: currentColor;
+
+  color: #475569;
+
+  opacity: 0;
+
+  transform: scaleX(0);
+
+  animation:
+    codm-heading-line-in
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.12s
+    forwards;
+}
+
+
+/* Dark mode */
+
+.dark .heading-codm-eyebrow-line {
+  color: #A7B0C2;
+}
+
+
+/* Left line */
+
+.heading-codm-eyebrow-line:first-child {
+  transform-origin: right center;
+}
+
+
+/* Right line */
+
+.heading-codm-eyebrow-line:last-child {
+  transform-origin: left center;
+}
+
+
+/* Small glowing dot */
+
+.heading-codm-eyebrow-line::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+
+  width: 6px;
+  height: 6px;
+
+  margin-top: -3px;
+
+  border-radius: 999px;
+
+  background: #8b7cff;
+
+  box-shadow:
+    0 0 8px rgba(139, 124, 255, 0.65);
+
+  opacity: 0;
+
+  animation:
+    codm-heading-dot-in
+    0.7s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.45s
+    forwards;
+}
+
+
+/* Left dot */
+
+.heading-codm-eyebrow-line:first-child::after {
+  right: -3px;
+}
+
+
+/* Right dot */
+
+.heading-codm-eyebrow-line:last-child::after {
+  left: -3px;
+}
+
+
+/* ============================================================
+   MAIN HEADING
+   ============================================================ */
+
+.heading-codm-title {
+  margin: 0;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+
+  font-size: 56px !important;
+  line-height: 64px !important;
+  letter-spacing: -0.02em !important;
+
+  text-align: center;
+
+  color: var(--foreground);
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   WORD REVEAL
+   ============================================================ */
+
+.heading-codm-title .codm-word {
+  display: inline-block;
+
+  opacity: 0;
+
+  transform:
+    translate3d(0, 42px, 0)
+    rotateX(8deg);
+
+  transform-origin: center bottom;
+
+  will-change: transform, opacity;
+
+  animation:
+    codm-heading-word-reveal
+    1s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    calc(0.12s + (var(--word-index) * 0.045s))
+    forwards;
+}
+
+/* =========================================================
+   SECTION HEADING — GRADIENT TEXT
+   ========================================================= */
+
+.heading-codm-title-gradient {
+  display: block;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+
+  background: linear-gradient(
+    100deg,
+    #FFFFFF 24.1%,
+    #9187FB 54.32%,
+    #354CCB 88.84%
+  );
+
+  background-size: 180% 100%;
+  background-position: 100% 0;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  animation:
+    codm-heading-gradient-reveal
+    1.15s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    0.42s
+    forwards;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+html:not(.dark) .heading-codm-title-gradient {
+  background: linear-gradient(
+    100deg,
+    #2563EB 11.16%,
+    #6366F1 42.11%,
+    #A78BFA 93.16%
+  );
+
+  background-size: 180% 100%;
+  background-position: 100% 0;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+
+/* =========================================================
+   GRADIENT REVEAL ANIMATION
+   ========================================================= */
+
+@keyframes codm-heading-gradient-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    background-position: 100% 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    background-position: 0% 0;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-codm-title-gradient {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+
+.heading-codm-description {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 400 !important;
+
+  color: var(--muted);
+
+  opacity: 0;
+
+  transform: translate3d(0, 22px, 0);
+
+  animation:
+    codm-heading-description-reveal
+    0.95s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.58s
+    forwards;
+}
+
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+
+@keyframes codm-heading-eyebrow-in {
+
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes codm-heading-line-in {
+
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  100% {
+    opacity: 0.45;
+    transform: scaleX(1);
+  }
+
+}
+
+
+@keyframes codm-heading-dot-in {
+
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+}
+
+
+@keyframes codm-heading-word-reveal {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(0, 42px, 0)
+      rotateX(8deg);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(0, 0, 0)
+      rotateX(0);
+  }
+
+}
+
+
+@keyframes codm-heading-gradient-reveal {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(0, 35px, 0);
+
+    background-position: 100% center;
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate3d(0, 0, 0);
+
+    background-position: 0% center;
+  }
+
+}
+
+
+@keyframes codm-heading-description-reveal {
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  .heading-codm-eyebrow {
+    font-size: 14px !important;
+    line-height: 24px !important;
+  }
+
+  .heading-codm-eyebrow-line {
+    width: 28px;
+    flex-basis: 28px;
+  }
+
+  .heading-codm-eyebrow-wrap {
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+
+  .heading-codm-title {
+    font-size: 38px !important;
+    line-height: 45px !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .heading-codm-description {
+    margin-top: 18px;
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .heading-codm-title {
+    font-size: 48px !important;
+    line-height: 56px !important;
+  }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .heading-codm-eyebrow,
+  .heading-codm-eyebrow-line,
+  .heading-codm-eyebrow-line::after,
+  .heading-codm-title .codm-word,
+  .heading-codm-title-gradient,
+  .heading-codm-description {
+    animation: none !important;
+
+    opacity: 1 !important;
+
+    transform: none !important;
+  }
+
+}
+
+
