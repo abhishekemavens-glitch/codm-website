@@ -16,16 +16,21 @@ export default function ThemeToggle() {
       }
       className="codm-theme-toggle"
     >
-      <span className="codm-theme-toggle-icons" aria-hidden="true">
+      <span
+        className="codm-theme-toggle-icons"
+        aria-hidden="true"
+      >
         <span>☀</span>
         <span>☾</span>
       </span>
 
       <span
-        aria-hidden="true"
         className={`codm-theme-toggle-knob ${
-          theme === "dark" ? "codm-theme-toggle-knob-dark" : ""
+          theme === "dark"
+            ? "codm-theme-toggle-knob-dark"
+            : ""
         }`}
+        aria-hidden="true"
       >
         {theme === "light" ? "☀" : "☾"}
       </span>
