@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 type ContactCTAData = {
   id: string;
@@ -120,29 +121,19 @@ export default function ContactCTA() {
 
       <div className="contact-cta-content">
 
-        {/* LABEL */}
-        <div className="contact-cta-label">
-          <span />
+        {/* =================================================
+            SECTION HEADING
+            Uses the shared SectionHeading component so this
+            matches Industries, Why CODM, What We Do, and
+            Testimonials. Content is dynamic from WordPress.
+            ================================================= */}
 
-          <p>{cta.eyebrow}</p>
-
-          <span />
-        </div>
-
-        {/* HEADING */}
-        <h2>
-          {cta.heading}
-          <br />
-
-          <strong>
-            {cta.highlight}
-          </strong>
-        </h2>
-
-        {/* DESCRIPTION */}
-        <p className="contact-cta-description">
-          {cta.description}
-        </p>
+        <SectionHeading
+          eyebrow={cta.eyebrow}
+          title={cta.heading}
+          gradientText={cta.highlight}
+          description={cta.description}
+        />
 
         {/* BUTTON */}
         <a
