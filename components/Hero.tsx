@@ -91,6 +91,7 @@ export default function Hero() {
                           altText
                         }
                       }
+                      videoUrl
                     }
                   }
                 }
