@@ -3433,3 +3433,114 @@ html:not(.dark) .heading-codm-title-gradient {
     transition: none;
   }
 }
+
+
+/* =========================================================
+   WHY CODM — FINAL REVEAL
+   ========================================================= */
+
+#why-codm .codm-reveal-heading {
+  opacity: 0 !important;
+  transform: translateY(35px) !important;
+  filter: blur(4px) !important;
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) !important;
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+#why-codm .codm-reveal-heading.codm-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  filter: blur(0) !important;
+}
+
+
+/* =========================================================
+   WHY CODM — BOXES
+   ========================================================= */
+
+#why-codm .codm-card-reveal {
+  opacity: 0 !important;
+
+  transform:
+    translateY(45px)
+    scale(0.97) !important;
+
+  filter: blur(5px) !important;
+
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
+
+  will-change:
+    opacity,
+    transform,
+    filter;
+}
+
+
+/* Visible state */
+
+#why-codm .codm-card-reveal.codm-visible {
+  opacity: 1 !important;
+
+  transform:
+    translateY(0)
+    scale(1) !important;
+
+  filter: blur(0) !important;
+}
+
+
+/* =========================================================
+   STAGGER
+   ========================================================= */
+
+#why-codm .codm-card-reveal:nth-child(1) {
+  transition-delay: 0ms !important;
+}
+
+#why-codm .codm-card-reveal:nth-child(2) {
+  transition-delay: 100ms !important;
+}
+
+#why-codm .codm-card-reveal:nth-child(3) {
+  transition-delay: 200ms !important;
+}
+
+#why-codm .codm-card-reveal:nth-child(4) {
+  transition-delay: 300ms !important;
+}
+
+#why-codm .codm-card-reveal:nth-child(5) {
+  transition-delay: 400ms !important;
+}
+
+#why-codm .codm-card-reveal:nth-child(6) {
+  transition-delay: 500ms !important;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #why-codm .codm-reveal-heading,
+  #why-codm .codm-card-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+}
