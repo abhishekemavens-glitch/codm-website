@@ -1,28 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { ThemeProvider } from "../context/ThemeContext";
-import ScrollToTop from "../components/ScrollToTop";
+"use client";
 
-export const metadata: Metadata = {
-  title: "CODM Software | Salesforce, AI & Enterprise Technology",
-  description:
-    "CODM delivers Salesforce, AI, Agentforce and custom software solutions for modern enterprises.",
-};
+import { useLayoutEffect } from "react";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <ScrollToTop />
+export default function ScrollToTop() {
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
 
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, []);
+
+  return null;
 }
