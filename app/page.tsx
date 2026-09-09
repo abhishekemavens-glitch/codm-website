@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Industries from "../components/Industries";
@@ -14,39 +10,43 @@ import ContactCTA from "../components/ContactCTA";
 import Footer from "../components/Footer";
 
 export default function Home() {
-  const [pageReady, setPageReady] = useState(false);
-
-  useEffect(() => {
-    // Prevent the browser from restoring an old scroll position
-    // while the page is being rebuilt/hydrated.
-    window.history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
-
-    const timer = window.setTimeout(() => {
-      setPageReady(true);
-    }, 50);
-
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  if (!pageReady) {
-    return (
-      <main className="min-h-screen bg-[var(--background)]" />
-    );
-  }
-
   return (
-    <>
+    <main className="relative min-h-screen overflow-x-hidden">
       <Header />
-      <Hero />
-      <Industries />
-      <WhyCodm />
-      <ServicesSection />
-      <TrustedBy />
-      <Testimonials />
-      <LatestBlogs />
-      <ContactCTA />
+
+      <div className="relative z-10">
+        <Hero />
+      </div>
+
+      <div className="relative z-10">
+        <Industries />
+      </div>
+
+      <div className="relative z-10">
+        <WhyCodm />
+      </div>
+
+      <div className="relative z-10">
+        <ServicesSection />
+      </div>
+
+      <div className="relative z-10">
+        <TrustedBy />
+      </div>
+
+      <div className="relative z-10">
+        <Testimonials />
+      </div>
+
+      <div className="relative z-10">
+        <LatestBlogs />
+      </div>
+
+      <div className="relative z-10">
+        <ContactCTA />
+      </div>
+
       <Footer />
-    </>
+    </main>
   );
 }
