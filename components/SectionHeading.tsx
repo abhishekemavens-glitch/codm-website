@@ -1,17 +1,13 @@
 // components/SectionHeading.tsx
-import { splitWords } from "@/lib/codm-animations";
+"use client";
+
+import { splitWords, useInViewOnce } from "@/lib/codm-animations";
 
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
   gradientText: string;
   description?: string;
-  /**
-   * When true, keeps `title` and `gradientText` on the same line
-   * (e.g. "Our Latest Blogs" with only "Latest Blogs" gradient-colored).
-   * When false/omitted, gradientText drops to its own line below
-   * title (e.g. Industries/Why CODM headings).
-   */
   inline?: boolean;
 };
 
@@ -22,8 +18,15 @@ export default function SectionHeading({
   description,
   inline = false,
 }: SectionHeadingProps) {
+  const { ref, isVisible } = useInViewOnce<HTMLDivElement>(0.2);
+
   return (
-    <div className="heading-codm-wrap mx-auto max-w-[900px] text-center">
+    <div
+      ref={ref}
+      className={`heading-codm-wrap mx-auto max-w-[900px] text-center ${
+        isVisible ? "codm-visible" : ""
+      }`}
+    >
       <div className="heading-codm-eyebrow-wrap">
         <span aria-hidden="true" className="heading-codm-eyebrow-line" />
         <span className="heading-codm-eyebrow">{eyebrow}</span>
