@@ -3162,8 +3162,9 @@ html:not(.dark) .heading-codm-title-gradient {
    ============================================================ */
 
 .heading-codm-description {
-  font-family: "Plus Jakarta Sans", sans-serif !important;
+ font-family: Plus Jakarta Sans,sans-serif !important;
   font-weight: 400 !important;
+  font-size: 18px;  font-weight: 400 !important;
 
   color: var(--muted);
 
