@@ -108,26 +108,14 @@ export default function TrustedBy() {
     >
       <div className="mx-auto max-w-[1200px] px-6">
 
-        {/* EYEBROW */}
-        <div className="mb-8 flex items-center justify-center gap-3">
-
-          <span className="h-px w-12 bg-[var(--accent)]/35" />
-
-          <span
-            className="
-              text-[10px]
-              font-medium
-              uppercase
-              tracking-[0.1em]
-              text-[var(--muted)]
-            "
-          >
-            Trusted by world best
-          </span>
-
-          <span className="h-px w-12 bg-[var(--accent)]/35" />
-
-        </div>
+       {/* EYEBROW */}
+<div className="heading-codm-eyebrow-wrap">
+  <span aria-hidden="true" className="heading-codm-eyebrow-line" />
+  <span className="heading-codm-eyebrow">
+    Trusted by world best
+  </span>
+  <span aria-hidden="true" className="heading-codm-eyebrow-line" />
+</div>
 
         {/* LOGOS */}
         {loading ? (
