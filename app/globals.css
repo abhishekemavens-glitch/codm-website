@@ -1176,7 +1176,6 @@ header a {
 .contact-cta {
   position: relative;
   width: 100%;
-  min-height: 410px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -1278,7 +1277,7 @@ header a {
   border-radius: 999px;
   background: linear-gradient(135deg, #8475ff, #7564ed);
   color: #ffffff;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
   text-decoration: none;
   box-shadow: 0 8px 22px rgba(111, 87, 255, 0.21);
