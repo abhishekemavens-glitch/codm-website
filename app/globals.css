@@ -4143,3 +4143,48 @@ html[data-theme="dark"] .codm-logo-dark {
     filter: none !important;
   }
 }
+
+
+
+/* =========================================================
+   HOMEPAGE SECTION ORDER FIX
+   ========================================================= */
+
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Keep header above everything */
+header,
+.codm-header,
+#header {
+  position: relative;
+  z-index: 1000;
+}
+
+/* Hero must remain before Industries visually */
+#hero {
+  position: relative;
+  z-index: 10;
+}
+
+/* Industries must never visually jump above Hero */
+#industries,
+.industries,
+[id*="industries"] {
+  position: relative;
+  z-index: 5;
+}
+
+/* Prevent animated elements from escaping their sections */
+#hero,
+#industries,
+#why-codm {
+  isolation: isolate;
+}
