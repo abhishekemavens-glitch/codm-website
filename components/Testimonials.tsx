@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 type Testimonial = {
   id: string;
@@ -132,37 +133,11 @@ export default function Testimonials() {
     >
       <div className="codm-testimonials-container">
 
-        {/* =================================================
-            EYEBROW
-            ================================================= */}
-
-        <div className="codm-testimonials-eyebrow">
-
-          <span />
-
-          <span className="codm-testimonials-eyebrow-text">
-            Testimonial
-          </span>
-
-          <span />
-
-        </div>
-
-
-        {/* =================================================
-            HEADING
-            ================================================= */}
-
-        <div className="codm-testimonials-heading-wrap">
-
-          <h2>
-            Experiences Shared by
-            <span>
-              Our Clients
-            </span>
-          </h2>
-
-        </div>
+         <SectionHeading
+     eyebrow="Testimonial"
+     title="Experiences Shared by"
+     gradientText="Our Clients"
+   />
 
 
         {/* =================================================
