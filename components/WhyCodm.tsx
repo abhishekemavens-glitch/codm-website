@@ -22,8 +22,7 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 function LightIcon({ type }: { type: string }) {
-  const common =
-    "h-7 w-7 text-[var(--accent)] transition-colors duration-300 group-hover:text-white";
+  const common = "h-7 w-7 text-[var(--accent)]";
 
   if (type === "building") {
     return (
@@ -127,13 +126,6 @@ export default function WhyCodm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /*
-   * Separate state for card animation.
-   * This makes sure the cards animate only after
-   * WordPress content has been rendered.
-   */
-  const [cardsVisible, setCardsVisible] = useState(false);
-
   useEffect(() => {
     async function loadWhyCodm() {
       try {
@@ -203,53 +195,22 @@ export default function WhyCodm() {
     loadWhyCodm();
   }, []);
 
-  /*
-   * Start card animation after:
-   * 1. Section enters viewport
-   * 2. WordPress data has loaded
-   * 3. Cards have been rendered
-   */
-  useEffect(() => {
-    if (!isVisible || loading || items.length === 0) {
-      return;
-    }
-
-    setCardsVisible(false);
-
-    const timer = window.setTimeout(() => {
-      setCardsVisible(true);
-    }, 80);
-
-    return () => window.clearTimeout(timer);
-  }, [isVisible, loading, items.length]);
-
   return (
     <section
       id="why-codm"
-      className="
-        relative
-        overflow-hidden
-        bg-[var(--background)]
-        py-20
-        transition-colors
-        duration-500
-        md:py-28
-      "
+      className="relative overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
       <div className="mx-auto max-w-[1110px] px-5 sm:px-8">
         <div
           ref={animationRef}
           className="mx-auto max-w-[1018px]"
         >
-          {/* =====================================================
-              SECTION HEADING
-              ===================================================== */}
 
+          {/* SECTION HEADING */}
           <div
-            className={[
-              "codm-reveal-heading",
-              isVisible ? "codm-visible" : "",
-            ].join(" ")}
+            className={`codm-reveal-heading ${
+              isVisible ? "codm-visible" : ""
+            }`}
           >
             <SectionHeading
               eyebrow="Why CODM"
@@ -258,10 +219,7 @@ export default function WhyCodm() {
             />
           </div>
 
-          {/* =====================================================
-              CONTENT CARD
-              ===================================================== */}
-
+          {/* CONTENT CARD */}
           <div
             className="
               mx-auto
@@ -298,55 +256,16 @@ export default function WhyCodm() {
                   <article
                     key={item.id}
                     className={[
-                      /*
-                       * =================================================
-                       * CARD ANIMATION
-                       * =================================================
-                       */
-
+                      /* REVEAL */
                       "codm-card-reveal",
+                      isVisible ? "codm-visible" : "",
 
-                      cardsVisible
-                        ? "codm-card-visible"
-                        : "",
-
-                      /*
-                       * =================================================
-                       * CARD BASE
-                       * =================================================
-                       */
-
-                      "group",
-                      "relative",
-                      "min-h-[180px]",
-                      "p-7",
-                      "md:p-8",
-
-                      "border-b",
-                      "border-[var(--border)]",
-
+                      /* BASE */
+                      "group relative min-h-[180px] p-7 md:p-8",
+                      "border-b border-[var(--border)]",
                       "bg-[var(--surface)]",
 
-                      /*
-                       * =================================================
-                       * HOVER
-                       * =================================================
-                       */
-
-                      "transition-all",
-                      "duration-500",
-                      "ease-out",
-
-                      "hover:-translate-y-[1px]",
-
-                      "hover:bg-[radial-gradient(circle_at_100%_100%,rgba(74,55,255,0.95)_0%,rgba(52,38,180,0.70)_38%,rgba(13,16,32,0.98)_78%)]",
-
-                      /*
-                       * =================================================
-                       * GRID BORDERS
-                       * =================================================
-                       */
-
+                      /* GRID BORDERS */
                       index % 3 !== 2
                         ? "lg:border-r"
                         : "",
@@ -355,20 +274,13 @@ export default function WhyCodm() {
                         ? "md:border-r"
                         : "",
 
-                      /*
-                       * Remove bottom border from
-                       * final desktop row.
-                       */
-
                       index >= items.length - 3
                         ? "lg:border-b-0"
                         : "",
                     ].join(" ")}
                   >
-                    {/* =================================================
-                        ICON
-                        ================================================= */}
 
+                    {/* ICON */}
                     <div
                       className="
                         mb-6
@@ -377,9 +289,9 @@ export default function WhyCodm() {
                         w-8
                         items-center
                         transition-transform
-                        duration-500
+                        duration-300
                         ease-out
-                        group-hover:scale-110
+                        group-hover:scale-105
                       "
                     >
                       {item.featuredImage?.node?.sourceUrl ? (
@@ -404,10 +316,7 @@ export default function WhyCodm() {
                       )}
                     </div>
 
-                    {/* =================================================
-                        TITLE
-                        ================================================= */}
-
+                    {/* TITLE */}
                     <h3
                       className="
                         text-[16px]
@@ -422,10 +331,7 @@ export default function WhyCodm() {
                       {item.title}
                     </h3>
 
-                    {/* =================================================
-                        DESCRIPTION
-                        ================================================= */}
-
+                    {/* DESCRIPTION */}
                     <div
                       className="
                         mt-2
@@ -441,11 +347,13 @@ export default function WhyCodm() {
                         __html: item.content,
                       }}
                     />
+
                   </article>
                 ))}
               </div>
             )}
           </div>
+
         </div>
       </div>
     </section>
