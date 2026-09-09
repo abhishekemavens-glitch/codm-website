@@ -410,91 +410,6 @@
 }
 
 
-/* =========================================================
-   12. CARDS / CONTENT BLOCKS
-   ========================================================= */
-
-.codm-card-reveal {
-  opacity: 0;
-
-  transform:
-    translateY(45px)
-    scale(0.985);
-
-  filter: blur(4px);
-
-  transition:
-    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-
-  will-change:
-    opacity,
-    transform,
-    filter;
-}
-
-
-.codm-card-reveal.codm-visible {
-  opacity: 1;
-
-  transform:
-    translateY(0)
-    scale(1);
-
-  filter: blur(0);
-}
-
-
-/* Stagger cards */
-
-.codm-card-reveal:nth-child(1) {
-  transition-delay: 0ms;
-}
-
-.codm-card-reveal:nth-child(2) {
-  transition-delay: 80ms;
-}
-
-.codm-card-reveal:nth-child(3) {
-  transition-delay: 160ms;
-}
-
-.codm-card-reveal:nth-child(4) {
-  transition-delay: 240ms;
-}
-
-.codm-card-reveal:nth-child(5) {
-  transition-delay: 320ms;
-}
-
-
-/* =========================================================
-   13. CARD HOVER
-   ========================================================= */
-
-.codm-premium-card {
-  transition:
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.4s ease,
-    box-shadow 0.55s ease;
-}
-
-
-.codm-premium-card:hover {
-  transform:
-    translateY(-7px);
-
-  box-shadow:
-    0 25px 70px rgba(15, 23, 42, 0.10);
-}
-
-
-[data-theme="dark"] .codm-premium-card:hover {
-  box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.28);
-}
-
 
 /* =========================================================
    14. IMAGE REVEAL
@@ -3391,20 +3306,53 @@ html:not(.dark) .heading-codm-title-gradient {
 
 
 /* =========================================================
+   WHY CODM — HEADING REVEAL
+   ========================================================= */
+
+#why-codm .codm-reveal-heading {
+  opacity: 0;
+  transform: translateY(35px);
+  filter: blur(4px);
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change: opacity, transform, filter;
+}
+
+#why-codm .codm-reveal-heading.codm-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+
+/* =========================================================
    WHY CODM — CARD REVEAL
    ========================================================= */
 
 #why-codm .codm-card-reveal {
   opacity: 0;
-  transform: translateY(45px) scale(0.97);
+
+  transform:
+    translateY(45px)
+    scale(0.97);
+
   filter: blur(5px);
 
   transition:
     opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.4s ease,
+    background-image 0.4s ease;
 
-  will-change: opacity, transform, filter;
+  will-change:
+    opacity,
+    transform,
+    filter;
 }
 
 
@@ -3414,7 +3362,11 @@ html:not(.dark) .heading-codm-title-gradient {
 
 #why-codm .codm-card-reveal.codm-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+
+  transform:
+    translateY(0)
+    scale(1);
+
   filter: blur(0);
 }
 
@@ -3468,15 +3420,6 @@ html:not(.dark) .heading-codm-title-gradient {
    WHY CODM — HOVER
    ========================================================= */
 
-#why-codm .codm-card-reveal {
-  transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.4s ease,
-    background-image 0.4s ease;
-}
-
 #why-codm .codm-card-reveal:hover {
   background-image:
     radial-gradient(
@@ -3501,7 +3444,8 @@ html:not(.dark) .heading-codm-title-gradient {
    ========================================================= */
 
 #why-codm .codm-card-reveal > div:first-child {
-  transition: transform 0.4s ease;
+  transition:
+    transform 0.4s ease;
 }
 
 #why-codm .codm-card-reveal:hover > div:first-child {
@@ -3510,7 +3454,7 @@ html:not(.dark) .heading-codm-title-gradient {
 
 
 /* =========================================================
-   REDUCED MOTION
+   WHY CODM — REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
