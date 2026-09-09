@@ -133,11 +133,17 @@ export default function Testimonials() {
     >
       <div className="codm-testimonials-container">
 
-         <SectionHeading
-     eyebrow="Testimonial"
-     title="Experiences Shared by"
-     gradientText="Our Clients"
-   />
+        {/* =================================================
+            SECTION HEADING
+            Uses the shared SectionHeading component so this
+            matches Industries, Why CODM, and What We Do.
+            ================================================= */}
+
+        <SectionHeading
+          eyebrow="Testimonial"
+          title="Experiences Shared by"
+          gradientText="Our Clients"
+        />
 
 
         {/* =================================================
