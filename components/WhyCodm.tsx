@@ -117,6 +117,9 @@ function LightIcon({ type }: { type: string }) {
 }
 
 export default function WhyCodm() {
+  // PREMIUM: scroll-triggered reveal. animationRef watches the
+  // wrapping div; isVisible flips true once it's ~12% in view,
+  // driving the codm-reveal-heading / codm-card-reveal CSS.
   const {
     ref: animationRef,
     isVisible,
@@ -206,7 +209,11 @@ export default function WhyCodm() {
           className="mx-auto max-w-[1018px]"
         >
 
-          {/* SECTION HEADING */}
+          {/* =================================================
+              SECTION HEADING
+              codm-reveal-heading + codm-visible drives the
+              blur/translateY fade-in from globals.css.
+              ================================================= */}
           <div
             className={`codm-reveal-heading ${
               isVisible ? "codm-visible" : ""
@@ -219,7 +226,9 @@ export default function WhyCodm() {
             />
           </div>
 
-          {/* CONTENT CARD */}
+          {/* =================================================
+              CONTENT CARD
+              ================================================= */}
           <div
             className="
               mx-auto
@@ -256,7 +265,9 @@ export default function WhyCodm() {
                   <article
                     key={item.id}
                     className={[
-                      /* REVEAL */
+                      /* PREMIUM: staggered reveal — see #why-codm
+                         .codm-card-reveal:nth-child(n) in globals.css
+                         for the per-card delay */
                       "codm-card-reveal",
                       isVisible ? "codm-visible" : "",
 
