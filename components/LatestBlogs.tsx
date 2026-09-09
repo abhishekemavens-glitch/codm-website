@@ -19,7 +19,7 @@ type Blog = {
       name: string;
     }[];
   };
-};
+}; 
 
 export default function LatestBlogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
