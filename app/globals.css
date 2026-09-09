@@ -2014,7 +2014,6 @@ header a {
     .codm-header-nav-link,
     .codm-header-cta,
     .codm-header-cta-arrow,
-    ,
     .codm-header-logo {
     animation: none !important;
     transition: none !important;
@@ -2032,7 +2031,6 @@ header a {
     .codm-header-cta,
     .codm-header-cta::before,
     .codm-header-cta-arrow,
-    ,
     .codm-header-logo-link {
     transition: none !important;
   }
