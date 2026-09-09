@@ -22,7 +22,8 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 function LightIcon({ type }: { type: string }) {
-  const common = "h-7 w-7 text-[var(--accent)]";
+  const common =
+    "h-7 w-7 text-[var(--accent)] transition-colors duration-300 group-hover:text-white";
 
   if (type === "building") {
     return (
@@ -126,7 +127,11 @@ export default function WhyCodm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Separate animation state for the cards
+  /*
+   * Separate state for card animation.
+   * This makes sure the cards animate only after
+   * WordPress content has been rendered.
+   */
   const [cardsVisible, setCardsVisible] = useState(false);
 
   useEffect(() => {
@@ -199,45 +204,52 @@ export default function WhyCodm() {
   }, []);
 
   /*
-   * IMPORTANT:
-   * Start card animation only AFTER the WordPress cards
-   * have actually been rendered.
+   * Start card animation after:
+   * 1. Section enters viewport
+   * 2. WordPress data has loaded
+   * 3. Cards have been rendered
    */
   useEffect(() => {
-    if (!isVisible || items.length === 0 || loading) {
+    if (!isVisible || loading || items.length === 0) {
       return;
     }
 
     setCardsVisible(false);
 
-    const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setCardsVisible(true);
-      });
-    });
+    const timer = window.setTimeout(() => {
+      setCardsVisible(true);
+    }, 80);
 
-    return () => cancelAnimationFrame(frame);
-  }, [isVisible, items.length, loading]);
+    return () => window.clearTimeout(timer);
+  }, [isVisible, loading, items.length]);
 
   return (
     <section
       id="why-codm"
-      className="relative overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
+      className="
+        relative
+        overflow-hidden
+        bg-[var(--background)]
+        py-20
+        transition-colors
+        duration-500
+        md:py-28
+      "
     >
       <div className="mx-auto max-w-[1110px] px-5 sm:px-8">
         <div
           ref={animationRef}
           className="mx-auto max-w-[1018px]"
         >
-
           {/* =====================================================
               SECTION HEADING
               ===================================================== */}
 
           <div
-            className={`codm-reveal-heading ${
-              isVisible ? "codm-visible" : ""
-            }`}
+            className={[
+              "codm-reveal-heading",
+              isVisible ? "codm-visible" : "",
+            ].join(" ")}
           >
             <SectionHeading
               eyebrow="Why CODM"
@@ -284,29 +296,92 @@ export default function WhyCodm() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item, index) => (
                   <article
-  key={item.id}
-  className={[
-    "group relative min-h-[180px] p-7 md:p-8",
-    "border-b border-[var(--border)]",
-    "bg-[var(--surface)]",
+                    key={item.id}
+                    className={[
+                      /*
+                       * =================================================
+                       * CARD ANIMATION
+                       * =================================================
+                       */
 
-    // Smooth hover transition
-    "transition-all duration-500 ease-out",
+                      "codm-card-reveal",
 
-    // Hover gradient
-    "hover:bg-[radial-gradient(circle_at_100%_100%,rgba(74,55,255,0.95)_0%,rgba(52,38,180,0.65)_38%,rgba(13,16,32,0.98)_78%)]",
+                      cardsVisible
+                        ? "codm-card-visible"
+                        : "",
 
-    index % 3 !== 2 ? "lg:border-r" : "",
-    index % 2 === 0 ? "md:border-r" : "",
-    index >= items.length - 3 ? "lg:border-b-0" : "",
-  ].join(" ")}
->
+                      /*
+                       * =================================================
+                       * CARD BASE
+                       * =================================================
+                       */
 
+                      "group",
+                      "relative",
+                      "min-h-[180px]",
+                      "p-7",
+                      "md:p-8",
+
+                      "border-b",
+                      "border-[var(--border)]",
+
+                      "bg-[var(--surface)]",
+
+                      /*
+                       * =================================================
+                       * HOVER
+                       * =================================================
+                       */
+
+                      "transition-all",
+                      "duration-500",
+                      "ease-out",
+
+                      "hover:-translate-y-[1px]",
+
+                      "hover:bg-[radial-gradient(circle_at_100%_100%,rgba(74,55,255,0.95)_0%,rgba(52,38,180,0.70)_38%,rgba(13,16,32,0.98)_78%)]",
+
+                      /*
+                       * =================================================
+                       * GRID BORDERS
+                       * =================================================
+                       */
+
+                      index % 3 !== 2
+                        ? "lg:border-r"
+                        : "",
+
+                      index % 2 === 0
+                        ? "md:border-r"
+                        : "",
+
+                      /*
+                       * Remove bottom border from
+                       * final desktop row.
+                       */
+
+                      index >= items.length - 3
+                        ? "lg:border-b-0"
+                        : "",
+                    ].join(" ")}
+                  >
                     {/* =================================================
                         ICON
                         ================================================= */}
 
-                    <div className="mb-6 flex h-8 w-8 items-center transition-transform duration-500 group-hover:scale-105">
+                    <div
+                      className="
+                        mb-6
+                        flex
+                        h-8
+                        w-8
+                        items-center
+                        transition-transform
+                        duration-500
+                        ease-out
+                        group-hover:scale-110
+                      "
+                    >
                       {item.featuredImage?.node?.sourceUrl ? (
                         <img
                           src={item.featuredImage.node.sourceUrl}
@@ -314,7 +389,15 @@ export default function WhyCodm() {
                             item.featuredImage.node.altText ||
                             item.title
                           }
-                          className="h-8 w-8 object-contain"
+                          className="
+                            h-8
+                            w-8
+                            object-contain
+                            transition-all
+                            duration-300
+                            group-hover:brightness-0
+                            group-hover:invert
+                          "
                         />
                       ) : (
                         <LightIcon type={item.icon} />
@@ -327,13 +410,13 @@ export default function WhyCodm() {
 
                     <h3
                       className="
-    text-[16px]
-    font-medium
-    tracking-[-0.025em]
-    text-[var(--foreground)]
-    transition-colors
-    duration-300
-    group-hover:text-white
+                        text-[16px]
+                        font-medium
+                        tracking-[-0.025em]
+                        text-[var(--foreground)]
+                        transition-colors
+                        duration-300
+                        group-hover:text-white
                       "
                     >
                       {item.title}
@@ -344,20 +427,20 @@ export default function WhyCodm() {
                         ================================================= */}
 
                     <div
-                      className="mt-2
-    max-w-[290px]
-    text-[11px]
-    leading-[1.55]
-    text-[var(--muted)]
-    transition-colors
-    duration-300
-    group-hover:text-white/80
+                      className="
+                        mt-2
+                        max-w-[290px]
+                        text-[11px]
+                        leading-[1.55]
+                        text-[var(--muted)]
+                        transition-colors
+                        duration-300
+                        group-hover:text-white/80
                       "
                       dangerouslySetInnerHTML={{
                         __html: item.content,
                       }}
                     />
-
                   </article>
                 ))}
               </div>
