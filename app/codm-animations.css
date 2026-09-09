@@ -3747,3 +3747,38 @@ html:not(.dark) .heading-codm-title-gradient {
     transform: none !important;
   }
 }
+
+
+/* =====================================================
+   PILL STAGGER REVEAL
+   ===================================================== */
+
+.codm-stagger-item {
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--pill-delay, 0ms);
+}
+
+.codm-industries-visible .codm-stagger-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-industries-heading,
+  .codm-industry-card,
+  .codm-industry-card-content,
+  .codm-industry-image-wrapper,
+  .codm-industry-image,
+  .codm-industry-image-container,
+  .codm-industry-accent,
+  .codm-stagger-item {   /* 👈 add this line */
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
