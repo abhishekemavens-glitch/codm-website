@@ -3466,3 +3466,284 @@ html:not(.dark) .heading-codm-title-gradient {
     transition: none;
   }
 }
+
+
+/* ============================================================
+   SHARED SECTION HEADING SYSTEM — scroll-triggered
+   ============================================================ */
+
+.heading-codm-wrap {
+  position: relative;
+  isolation: isolate;
+}
+
+/* ---------- EYEBROW ---------- */
+
+.heading-codm-eyebrow-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  overflow: visible;
+}
+
+.heading-codm-eyebrow {
+  position: relative;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+  color: #475569 !important;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.dark .heading-codm-eyebrow {
+  color: #A7B0C2 !important;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-eyebrow {
+  animation: codm-heading-eyebrow-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+
+.heading-codm-eyebrow-line {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 1px;
+  flex: 0 0 42px;
+  background: currentColor;
+  color: #475569;
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.dark .heading-codm-eyebrow-line {
+  color: #A7B0C2;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-eyebrow-line {
+  animation: codm-heading-line-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+}
+
+.heading-codm-eyebrow-line:first-child {
+  transform-origin: right center;
+}
+
+.heading-codm-eyebrow-line:last-child {
+  transform-origin: left center;
+}
+
+.heading-codm-eyebrow-line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 999px;
+  background: #8b7cff;
+  box-shadow: 0 0 8px rgba(139, 124, 255, 0.65);
+  opacity: 0;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-eyebrow-line::after {
+  animation: codm-heading-dot-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+
+.heading-codm-eyebrow-line:first-child::after {
+  right: -3px;
+}
+
+.heading-codm-eyebrow-line:last-child::after {
+  left: -3px;
+}
+
+/* ---------- MAIN HEADING ---------- */
+
+.heading-codm-title {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  font-size: 56px !important;
+  line-height: 64px !important;
+  letter-spacing: -0.02em !important;
+  text-align: center;
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+/* Word reveal — only applies to plain title words now,
+   since gradientText is no longer split into words */
+
+.heading-codm-title .codm-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(0);
+  transform: translate3d(0, 42px, 0) rotateX(8deg);
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-title .codm-word {
+  animation: codm-heading-word-reveal 1s cubic-bezier(0.16, 1, 0.3, 1)
+    calc(0.12s + (var(--word-index) * 0.045s)) forwards;
+}
+
+/* ---------- GRADIENT TEXT ---------- */
+
+.heading-codm-title-gradient {
+  display: block;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  background: linear-gradient(100deg, #FFFFFF 24.1%, #9187FB 54.32%, #354CCB 88.84%);
+  background-size: 180% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+}
+
+html:not(.dark) .heading-codm-title-gradient {
+  background: linear-gradient(100deg, #2563EB 11.16%, #6366F1 42.11%, #A78BFA 93.16%);
+  background-size: 180% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Inline variant: stays on the same line as the title
+   e.g. "Our Latest Blogs" with only "Blogs" gradient-colored */
+
+.heading-codm-title-gradient-inline {
+  display: inline;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-title-gradient {
+  animation: codm-heading-gradient-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.42s forwards;
+}
+
+/* Shimmer loop, plays after the reveal settles */
+
+.heading-codm-title-gradient {
+  background-size: 200% 100%;
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-title-gradient {
+  animation:
+    codm-heading-gradient-reveal 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.42s forwards,
+    headingCodmShimmer 6s ease-in-out 1.6s infinite;
+}
+
+/* ---------- DESCRIPTION ---------- */
+
+.heading-codm-description {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 400 !important;
+  color: var(--muted);
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+
+.heading-codm-wrap.codm-visible .heading-codm-description {
+  animation: codm-heading-description-reveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.58s forwards;
+}
+
+/* ---------- KEYFRAMES ---------- */
+
+@keyframes codm-heading-eyebrow-in {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes codm-heading-line-in {
+  0%   { opacity: 0;    transform: scaleX(0); }
+  100% { opacity: 0.45; transform: scaleX(1); }
+}
+
+@keyframes codm-heading-dot-in {
+  0%   { opacity: 0; transform: scale(0); }
+  60%  { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 0.9; transform: scale(1); }
+}
+
+@keyframes codm-heading-word-reveal {
+  0%   { opacity: 0; transform: translate3d(0, 42px, 0) rotateX(8deg); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0); }
+}
+
+@keyframes codm-heading-gradient-reveal {
+  0%   { opacity: 0; transform: translate3d(0, 35px, 0); background-position: 100% center; }
+  100% { opacity: 1; transform: translate3d(0, 0, 0);   background-position: 0% center; }
+}
+
+@keyframes headingCodmShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+@keyframes codm-heading-description-reveal {
+  0%   { opacity: 0; transform: translate3d(0, 22px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 767px) {
+  .heading-codm-eyebrow {
+    font-size: 14px !important;
+    line-height: 24px !important;
+  }
+  .heading-codm-eyebrow-line {
+    width: 28px;
+    flex-basis: 28px;
+  }
+  .heading-codm-eyebrow-wrap {
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+  .heading-codm-title {
+    font-size: 38px !important;
+    line-height: 45px !important;
+    letter-spacing: -0.02em !important;
+  }
+  .heading-codm-description {
+    margin-top: 18px;
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+}
+
+/* ---------- TABLET ---------- */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .heading-codm-title {
+    font-size: 48px !important;
+    line-height: 56px !important;
+  }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-codm-eyebrow,
+  .heading-codm-eyebrow-line,
+  .heading-codm-eyebrow-line::after,
+  .heading-codm-title .codm-word,
+  .heading-codm-title-gradient,
+  .heading-codm-description {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
