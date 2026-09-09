@@ -126,6 +126,9 @@ export default function WhyCodm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Separate animation state for the cards
+  const [cardsVisible, setCardsVisible] = useState(false);
+
   useEffect(() => {
     async function loadWhyCodm() {
       try {
@@ -195,6 +198,27 @@ export default function WhyCodm() {
     loadWhyCodm();
   }, []);
 
+  /*
+   * IMPORTANT:
+   * Start card animation only AFTER the WordPress cards
+   * have actually been rendered.
+   */
+  useEffect(() => {
+    if (!isVisible || items.length === 0 || loading) {
+      return;
+    }
+
+    setCardsVisible(false);
+
+    const frame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setCardsVisible(true);
+      });
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [isVisible, items.length, loading]);
+
   return (
     <section
       id="why-codm"
@@ -206,7 +230,10 @@ export default function WhyCodm() {
           className="mx-auto max-w-[1018px]"
         >
 
-          {/* SECTION HEADING */}
+          {/* =====================================================
+              SECTION HEADING
+              ===================================================== */}
+
           <div
             className={`codm-reveal-heading ${
               isVisible ? "codm-visible" : ""
@@ -219,7 +246,10 @@ export default function WhyCodm() {
             />
           </div>
 
-          {/* CONTENT CARD */}
+          {/* =====================================================
+              CONTENT CARD
+              ===================================================== */}
+
           <div
             className="
               mx-auto
@@ -257,7 +287,8 @@ export default function WhyCodm() {
                     key={item.id}
                     className={[
                       "codm-card-reveal",
-                      isVisible ? "codm-visible" : "",
+
+                      cardsVisible ? "codm-visible" : "",
 
                       "group relative min-h-[180px] p-7 md:p-8",
 
@@ -281,9 +312,15 @@ export default function WhyCodm() {
                         ? "lg:border-b-0"
                         : "",
                     ].join(" ")}
+                    style={{
+                      transitionDelay: `${index * 100}ms`,
+                    }}
                   >
 
-                    {/* ICON */}
+                    {/* =================================================
+                        ICON
+                        ================================================= */}
+
                     <div className="mb-6 flex h-8 w-8 items-center">
                       {item.featuredImage?.node?.sourceUrl ? (
                         <img
@@ -299,7 +336,10 @@ export default function WhyCodm() {
                       )}
                     </div>
 
-                    {/* TITLE */}
+                    {/* =================================================
+                        TITLE
+                        ================================================= */}
+
                     <h3
                       className="
                         text-[16px]
@@ -311,7 +351,10 @@ export default function WhyCodm() {
                       {item.title}
                     </h3>
 
-                    {/* DESCRIPTION */}
+                    {/* =================================================
+                        DESCRIPTION
+                        ================================================= */}
+
                     <div
                       className="
                         mt-2
@@ -330,7 +373,6 @@ export default function WhyCodm() {
               </div>
             )}
           </div>
-
         </div>
       </div>
     </section>
