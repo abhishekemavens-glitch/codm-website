@@ -4050,3 +4050,16 @@ html[data-theme="dark"] .codm-logo-dark {
 .heading-codm-title-gradient-inline {
   display: inline !important;
 }
+
+#why-codm .codm-reveal-heading,
+#why-codm .codm-card-reveal {
+  animation: whyCodmRevealFallback 0.01s 1.5s forwards;
+}
+
+@keyframes whyCodmRevealFallback {
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
