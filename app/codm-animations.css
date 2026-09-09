@@ -3367,12 +3367,36 @@ html:not(.dark) .heading-codm-title-gradient {
 
 
 /* =========================================================
+   WHY CODM — HEADING REVEAL
+   ========================================================= */
+
+#why-codm .codm-reveal-heading {
+  opacity: 0;
+  transform: translateY(35px);
+  filter: blur(4px);
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change: opacity, transform, filter;
+}
+
+#why-codm .codm-reveal-heading.codm-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+
+/* =========================================================
    WHY CODM — CARD REVEAL
    ========================================================= */
 
-.codm-card-reveal {
+#why-codm .codm-card-reveal {
   opacity: 0;
-  transform: translateY(50px) scale(0.97);
+  transform: translateY(45px) scale(0.97);
   filter: blur(5px);
 
   transition:
@@ -3383,243 +3407,115 @@ html:not(.dark) .heading-codm-title-gradient {
   will-change: opacity, transform, filter;
 }
 
-.codm-card-reveal.codm-visible {
+
+/* =========================================================
+   WHY CODM — CARD VISIBLE
+   ========================================================= */
+
+#why-codm .codm-card-reveal.codm-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
 
-/* Stagger */
-.codm-card-reveal:nth-child(1) {
-  transition-delay: 0ms;
-}
-
-.codm-card-reveal:nth-child(2) {
-  transition-delay: 100ms;
-}
-
-.codm-card-reveal:nth-child(3) {
-  transition-delay: 200ms;
-}
-
-.codm-card-reveal:nth-child(4) {
-  transition-delay: 300ms;
-}
-
-.codm-card-reveal:nth-child(5) {
-  transition-delay: 400ms;
-}
-
-.codm-card-reveal:nth-child(6) {
-  transition-delay: 500ms;
-}
-
-.codm-card-reveal:nth-child(7) {
-  transition-delay: 600ms;
-}
-
-.codm-card-reveal:nth-child(8) {
-  transition-delay: 700ms;
-}
-
-.codm-card-reveal:nth-child(9) {
-  transition-delay: 800ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .codm-card-reveal {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: none;
-  }
-}
-
 
 /* =========================================================
-   WHY CODM — FINAL REVEAL
-   ========================================================= */
-
-#why-codm .codm-reveal-heading {
-  opacity: 0 !important;
-  transform: translateY(35px) !important;
-  filter: blur(4px) !important;
-
-  transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) !important;
-
-  will-change:
-    opacity,
-    transform,
-    filter;
-}
-
-#why-codm .codm-reveal-heading.codm-visible {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  filter: blur(0) !important;
-}
-
-
-/* =========================================================
-   WHY CODM — BOXES
-   ========================================================= */
-
-#why-codm .codm-card-reveal {
-  opacity: 0 !important;
-
-  transform:
-    translateY(45px)
-    scale(0.97) !important;
-
-  filter: blur(5px) !important;
-
-  transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
-
-  will-change:
-    opacity,
-    transform,
-    filter;
-}
-
-
-/* Visible state */
-
-#why-codm .codm-card-reveal.codm-visible {
-  opacity: 1 !important;
-
-  transform:
-    translateY(0)
-    scale(1) !important;
-
-  filter: blur(0) !important;
-}
-
-
-/* =========================================================
-   STAGGER
+   WHY CODM — STAGGER
    ========================================================= */
 
 #why-codm .codm-card-reveal:nth-child(1) {
-  transition-delay: 0ms !important;
-}
-
-#why-codm .codm-card-reveal:nth-child(2) {
-  transition-delay: 100ms !important;
-}
-
-#why-codm .codm-card-reveal:nth-child(3) {
-  transition-delay: 200ms !important;
-}
-
-#why-codm .codm-card-reveal:nth-child(4) {
-  transition-delay: 300ms !important;
-}
-
-#why-codm .codm-card-reveal:nth-child(5) {
-  transition-delay: 400ms !important;
-}
-
-#why-codm .codm-card-reveal:nth-child(6) {
-  transition-delay: 500ms !important;
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  #why-codm .codm-reveal-heading,
-  #why-codm .codm-card-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
-  }
-
-}
-
-
-/* =========================================================
-   WHY CODM — CARD REVEAL
-   ========================================================= */
-
-.codm-card-reveal {
-  opacity: 0;
-  transform: translateY(32px) scale(0.97);
-  filter: blur(4px);
-
-  transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 700ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.codm-card-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-
-/* =========================================================
-   STAGGER EACH CARD
-   ========================================================= */
-
-.codm-card-reveal:nth-child(1) {
   transition-delay: 0ms;
 }
 
-.codm-card-reveal:nth-child(2) {
+#why-codm .codm-card-reveal:nth-child(2) {
   transition-delay: 100ms;
 }
 
-.codm-card-reveal:nth-child(3) {
+#why-codm .codm-card-reveal:nth-child(3) {
   transition-delay: 200ms;
 }
 
-.codm-card-reveal:nth-child(4) {
+#why-codm .codm-card-reveal:nth-child(4) {
   transition-delay: 300ms;
 }
 
-.codm-card-reveal:nth-child(5) {
+#why-codm .codm-card-reveal:nth-child(5) {
   transition-delay: 400ms;
 }
 
-.codm-card-reveal:nth-child(6) {
+#why-codm .codm-card-reveal:nth-child(6) {
   transition-delay: 500ms;
 }
 
-.codm-card-reveal:nth-child(7) {
+#why-codm .codm-card-reveal:nth-child(7) {
   transition-delay: 600ms;
 }
 
-.codm-card-reveal:nth-child(8) {
+#why-codm .codm-card-reveal:nth-child(8) {
   transition-delay: 700ms;
 }
 
-.codm-card-reveal:nth-child(9) {
+#why-codm .codm-card-reveal:nth-child(9) {
   transition-delay: 800ms;
 }
 
-.codm-card-reveal:nth-child(10) {
+#why-codm .codm-card-reveal:nth-child(10) {
   transition-delay: 900ms;
 }
 
 
 /* =========================================================
+   WHY CODM — HOVER
+   ========================================================= */
+
+#why-codm .codm-card-reveal {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.4s ease,
+    background-image 0.4s ease;
+}
+
+#why-codm .codm-card-reveal:hover {
+  background-image:
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(74, 55, 255, 0.95) 0%,
+      rgba(52, 38, 180, 0.65) 38%,
+      rgba(13, 16, 32, 0.98) 78%
+    );
+}
+
+#why-codm .codm-card-reveal:hover h3 {
+  color: #ffffff;
+}
+
+#why-codm .codm-card-reveal:hover .mt-2 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* =========================================================
+   WHY CODM — ICON HOVER
+   ========================================================= */
+
+#why-codm .codm-card-reveal > div:first-child {
+  transition: transform 0.4s ease;
+}
+
+#why-codm .codm-card-reveal:hover > div:first-child {
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
    REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .codm-card-reveal {
+  #why-codm .codm-reveal-heading,
+  #why-codm .codm-card-reveal {
     opacity: 1;
     transform: none;
     filter: none;
