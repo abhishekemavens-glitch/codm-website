@@ -4145,3 +4145,34 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 
+
+
+/* =========================================================
+   FIX HERO HEADING INITIAL POSITION
+   ========================================================= */
+
+#hero .codm-hero-title {
+  position: relative !important;
+  transform: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+#hero .codm-hero-title > span {
+  position: relative !important;
+  display: block !important;
+  transform: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+#hero .codm-hero-title .codm-highlight {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
