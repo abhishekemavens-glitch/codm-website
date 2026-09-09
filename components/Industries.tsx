@@ -124,12 +124,12 @@ export default function Industries() {
 
   return (
     <>
-      <section
-        id="industries"
-        className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-          isVisible ? "codm-industries-visible codm-visible" : ""
-        }`}
-      >
+     <section
+  id="industries"
+  className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
+    isVisible ? "codm-industries-visible" : ""
+  }`}
+>
         {/* =====================================================
             BACKGROUND GLOW
             ===================================================== */}
