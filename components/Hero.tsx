@@ -22,13 +22,17 @@ type HeroData = {
   logo3: string;
   logo4: string;
 
-  featuredImage: {
+   featuredImage: {
     node: {
       sourceUrl: string;
       altText: string;
     } | null;
   } | null;
+
+  videoUrl: string;
 };
+
+
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
