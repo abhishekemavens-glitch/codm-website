@@ -7,6 +7,10 @@ type HeroData = {
   id: string;
   databaseId: number;
   title: string;
+
+  videoId?: string;
+  videoUrl?: string;
+  
   mainHeading: string;
   description: string;
   highlight: string;
@@ -21,6 +25,9 @@ type HeroData = {
   logo2: string;
   logo3: string;
   logo4: string;
+
+  videoId
+  videoUrl
 
    featuredImage: {
     node: {
@@ -512,11 +519,12 @@ export default function Hero() {
           </div>
         )}
 
-        {/* =========================================
-            FEATURED IMAGE
-            ========================================= */}
+       {/* =========================================
+    HERO MEDIA
+    VIDEO FIRST → FEATURED IMAGE FALLBACK
+    ========================================= */}
 
-        {hero.featuredImage?.node?.sourceUrl && (
+{(hero.videoUrl || hero.featuredImage?.node?.sourceUrl) && (
   <div className="codm-hero-image-section">
 
     {/* Soft ambient glow */}
@@ -525,19 +533,37 @@ export default function Hero() {
       className="codm-hero-image-glow"
     />
 
-    {/* Dashboard image */}
+    {/* Media frame */}
     <div className="codm-hero-image-frame">
 
       <div className="codm-hero-image-inner">
-        <img
-          src={hero.featuredImage.node.sourceUrl}
-          alt={
-            hero.featuredImage.node.altText ||
-            hero.title ||
-            "CODM Software Dashboard"
-          }
-          className="codm-hero-dashboard-image"
-        />
+
+        {hero.videoUrl ? (
+          <video
+            className="codm-hero-dashboard-image"
+            src={hero.videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={
+              hero.featuredImage?.node?.sourceUrl ||
+              undefined
+            }
+          />
+        ) : hero.featuredImage?.node?.sourceUrl ? (
+          <img
+            src={hero.featuredImage.node.sourceUrl}
+            alt={
+              hero.featuredImage.node.altText ||
+              hero.title ||
+              "CODM Software Dashboard"
+            }
+            className="codm-hero-dashboard-image"
+          />
+        ) : null}
+
       </div>
 
     </div>
