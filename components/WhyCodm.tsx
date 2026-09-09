@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { useInViewOnce } from "@/lib/codm-animations";
 
 type WhyCodmItem = {
   id: string;
@@ -117,14 +116,6 @@ function LightIcon({ type }: { type: string }) {
 }
 
 export default function WhyCodm() {
-  // PREMIUM: scroll-triggered reveal. animationRef watches the
-  // wrapping div; isVisible flips true once it's ~12% in view,
-  // driving the codm-reveal-heading / codm-card-reveal CSS.
-  const {
-    ref: animationRef,
-    isVisible,
-  } = useInViewOnce<HTMLDivElement>(0.12);
-
   const [items, setItems] = useState<WhyCodmItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -204,21 +195,14 @@ export default function WhyCodm() {
       className="relative overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
       <div className="mx-auto max-w-[1110px] px-5 sm:px-8">
-        <div
-          ref={animationRef}
-          className="mx-auto max-w-[1018px]"
-        >
+        <div className="mx-auto max-w-[1018px]">
 
           {/* =================================================
               SECTION HEADING
-              codm-reveal-heading + codm-visible drives the
-              blur/translateY fade-in from globals.css.
+              codm-why-heading-in fires automatically on mount,
+              no scroll detection needed.
               ================================================= */}
-          <div
-            className={`codm-reveal-heading ${
-              isVisible ? "codm-visible" : ""
-            }`}
-          >
+          <div className="codm-why-heading-in">
             <SectionHeading
               eyebrow="Why CODM"
               title="A partner enterprise boards are"
@@ -264,12 +248,15 @@ export default function WhyCodm() {
                 {items.map((item, index) => (
                   <article
                     key={item.id}
+                    style={
+                      {
+                        "--why-card-index": index,
+                      } as React.CSSProperties
+                    }
                     className={[
-                      /* PREMIUM: staggered reveal — see #why-codm
-                         .codm-card-reveal:nth-child(n) in globals.css
-                         for the per-card delay */
-                      "codm-card-reveal",
-                      isVisible ? "codm-visible" : "",
+                      /* PREMIUM: fires automatically on mount,
+                         staggered by --why-card-index */
+                      "codm-why-card-in",
 
                       /* BASE */
                       "group relative min-h-[180px] p-7 md:p-8",
