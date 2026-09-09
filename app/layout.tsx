@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "../context/ThemeContext";
+import ScrollToTop from "../components/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "CODM Software | Salesforce, AI & Enterprise Technology",
@@ -16,6 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <ScrollToTop />
+
         <ThemeProvider>
           {children}
         </ThemeProvider>
