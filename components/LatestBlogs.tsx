@@ -81,9 +81,8 @@ export default function LatestBlogs() {
 
         {/* =================================================
             SECTION HEADING
-            Uses the shared SectionHeading component so this
-            matches Industries, Why CODM, What We Do, and
-            Testimonials.
+            inline={true} keeps "Our" and "Latest Blogs" on the
+            same line, matching the target design.
             ================================================= */}
 
         <SectionHeading
@@ -91,6 +90,7 @@ export default function LatestBlogs() {
           title="Our"
           gradientText="Latest Blogs"
           description="Explore the insights and trends shaping our industry"
+          inline
         />
 
       </div>
