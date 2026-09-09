@@ -4041,3 +4041,14 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-theme-toggle-knob-dark {
   transform: translateX(36px);
 }
+
+/* =========================================================
+   HEADING — INLINE GRADIENT VARIANT
+   Add this near your other .heading-codm-title-gradient rules
+   in globals.css. Used when SectionHeading is given inline={true},
+   e.g. "Our Latest Blogs" instead of stacking on two lines.
+   ========================================================= */
+
+.heading-codm-title-gradient-inline {
+  display: inline !important;
+}
