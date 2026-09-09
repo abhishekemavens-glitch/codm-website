@@ -284,44 +284,29 @@ export default function WhyCodm() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item, index) => (
                   <article
-                    key={item.id}
-                    className={[
-                      "codm-card-reveal",
+  key={item.id}
+  className={[
+    "group relative min-h-[180px] p-7 md:p-8",
+    "border-b border-[var(--border)]",
+    "bg-[var(--surface)]",
 
-                      cardsVisible ? "codm-visible" : "",
+    // Smooth hover transition
+    "transition-all duration-500 ease-out",
 
-                      "group relative min-h-[180px] p-7 md:p-8",
+    // Hover gradient
+    "hover:bg-[radial-gradient(circle_at_100%_100%,rgba(74,55,255,0.95)_0%,rgba(52,38,180,0.65)_38%,rgba(13,16,32,0.98)_78%)]",
 
-                      "border-b border-[var(--border)]",
-
-                      "bg-[var(--surface)]",
-
-                      "transition-[background-color,background-image] duration-300 ease-out",
-
-                      "hover:bg-[radial-gradient(circle_at_100%_100%,rgba(74,55,255,0.95)_0%,rgba(52,38,180,0.65)_38%,rgba(13,16,32,0.98)_78%)]",
-
-                      index % 3 !== 2
-                        ? "lg:border-r"
-                        : "",
-
-                      index % 2 === 0
-                        ? "md:border-r"
-                        : "",
-
-                      index >= items.length - 3
-                        ? "lg:border-b-0"
-                        : "",
-                    ].join(" ")}
-                    style={{
-                      transitionDelay: `${index * 100}ms`,
-                    }}
-                  >
+    index % 3 !== 2 ? "lg:border-r" : "",
+    index % 2 === 0 ? "md:border-r" : "",
+    index >= items.length - 3 ? "lg:border-b-0" : "",
+  ].join(" ")}
+>
 
                     {/* =================================================
                         ICON
                         ================================================= */}
 
-                    <div className="mb-6 flex h-8 w-8 items-center">
+                    <div className="mb-6 flex h-8 w-8 items-center transition-transform duration-500 group-hover:scale-105">
                       {item.featuredImage?.node?.sourceUrl ? (
                         <img
                           src={item.featuredImage.node.sourceUrl}
@@ -342,10 +327,13 @@ export default function WhyCodm() {
 
                     <h3
                       className="
-                        text-[16px]
-                        font-medium
-                        tracking-[-0.025em]
-                        text-[var(--foreground)]
+    text-[16px]
+    font-medium
+    tracking-[-0.025em]
+    text-[var(--foreground)]
+    transition-colors
+    duration-300
+    group-hover:text-white
                       "
                     >
                       {item.title}
@@ -356,12 +344,14 @@ export default function WhyCodm() {
                         ================================================= */}
 
                     <div
-                      className="
-                        mt-2
-                        max-w-[290px]
-                        text-[11px]
-                        leading-[1.55]
-                        text-[var(--muted)]
+                      className="mt-2
+    max-w-[290px]
+    text-[11px]
+    leading-[1.55]
+    text-[var(--muted)]
+    transition-colors
+    duration-300
+    group-hover:text-white/80
                       "
                       dangerouslySetInnerHTML={{
                         __html: item.content,
