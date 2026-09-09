@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 type Blog = {
   id: string;
@@ -77,17 +78,21 @@ export default function LatestBlogs() {
   return (
     <section className="latest-blogs">
       <div className="latest-blogs-header">
-        <div className="section-label">
-          <span />
-          FROM BLOG
-          <span />
-        </div>
 
-        <h2>
-          Our <strong>Latest Blogs</strong>
-        </h2>
+        {/* =================================================
+            SECTION HEADING
+            Uses the shared SectionHeading component so this
+            matches Industries, Why CODM, What We Do, and
+            Testimonials.
+            ================================================= */}
 
-        <p>Explore the insights and trends shaping our industry</p>
+        <SectionHeading
+          eyebrow="From Blog"
+          title="Our"
+          gradientText="Latest Blogs"
+          description="Explore the insights and trends shaping our industry"
+        />
+
       </div>
 
       {loading ? (
