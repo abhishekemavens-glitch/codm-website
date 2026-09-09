@@ -8,9 +8,6 @@ type HeroData = {
   databaseId: number;
   title: string;
 
-  videoId?: string;
-  videoUrl?: string;
-  
   mainHeading: string;
   description: string;
   highlight: string;
@@ -26,17 +23,15 @@ type HeroData = {
   logo3: string;
   logo4: string;
 
-  videoId
-  videoUrl
+  videoId: string;
+  videoUrl: string;
 
-   featuredImage: {
+  featuredImage: {
     node: {
       sourceUrl: string;
       altText: string;
     } | null;
   } | null;
-
-  videoUrl: string;
 };
 
 
