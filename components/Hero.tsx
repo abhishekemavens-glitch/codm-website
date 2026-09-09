@@ -171,16 +171,23 @@ export default function Hero() {
    */
 
   if (loading) {
-    return (
-      <section className="bg-[var(--background)] py-20">
-        <div className="mx-auto max-w-[1200px] px-5 text-center">
-          <p className="text-sm text-[var(--muted)]">
-            Loading...
-          </p>
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section
+      className="
+        relative
+        min-h-[calc(100vh-78px)]
+        overflow-hidden
+        bg-[var(--background)]
+        pt-[78px]
+      "
+      aria-hidden="true"
+    >
+      <div className="mx-auto max-w-[1200px] px-5">
+        <div className="min-h-[calc(100vh-78px)]" />
+      </div>
+    </section>
+  );
+}
 
   /*
    * =========================================
