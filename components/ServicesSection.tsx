@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 type Service = {
   id: string;
@@ -306,110 +307,12 @@ export default function ServicesSection() {
         "
       >
 
-        {/* =================================================
-            EYEBROW
-            ================================================= */}
-
-        <div
-          className="
-            mb-5
-            flex
-            items-center
-            justify-center
-            gap-3
-          "
-        >
-
-          <span
-            className="
-              h-px
-              w-12
-              bg-[var(--accent)]/40
-            "
-          />
-
-          <span
-            className="
-              text-[10px]
-              font-medium
-              uppercase
-              tracking-[0.1em]
-              text-[var(--muted)]
-            "
-          >
-            What We Do
-          </span>
-
-          <span
-            className="
-              h-px
-              w-12
-              bg-[var(--accent)]/40
-            "
-          />
-
-        </div>
-
-
-        {/* =================================================
-            HEADING
-            ================================================= */}
-
-        <div
-          className="
-            mx-auto
-            max-w-[780px]
-            text-center
-          "
-        >
-
-          <h2
-            className="
-              text-[36px]
-              font-medium
-              leading-[1.08]
-              tracking-[-0.045em]
-              text-[var(--foreground)]
-              sm:text-[42px]
-              md:text-[46px]
-            "
-          >
-            Engineering the systems that run
-
-            <span
-              className="
-                block
-                bg-gradient-to-r
-                from-[#5269ff]
-                via-[#7168ff]
-                to-[#9b87ff]
-                bg-clip-text
-                text-transparent
-              "
-            >
-              modern enterprises.
-            </span>
-
-          </h2>
-
-
-          <p
-            className="
-              mx-auto
-              mt-5
-              max-w-[610px]
-              text-[13px]
-              leading-[1.6]
-              text-[var(--muted)]
-              md:text-[14px]
-            "
-          >
-            We combine Salesforce depth with product-grade engineering, so
-            transformation lands as working software not slideware.
-          </p>
-
-        </div>
-
+    <SectionHeading
+  eyebrow="What We Do"
+  title="Engineering the systems that run"
+  gradientText="modern enterprises."
+  description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+/>
 
         {/* =================================================
             LOADING
