@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Ref } from "react";
-import { useMagneticButton } from "@/lib/codm-animations";
+import { useMagneticButton, useScrollScale } from "@/lib/codm-animations";
 
 type HeroData = {
   id: string;
@@ -40,33 +40,8 @@ const WORDPRESS_GRAPHQL_URL =
 
 export default function Hero() {
 
-   const heroMediaRef = useRef<HTMLDivElement>(null);
+  const heroMediaRef = useScrollScale<HTMLDivElement>();
 
-  useEffect(() => {
-    const element = heroMediaRef.current;
-
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          element.classList.add("codm-hero-media-visible");
-        } else {
-          element.classList.remove("codm-hero-media-visible");
-        }
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -80px 0px",
-      }
-    );
-
-    observer.observe(element);
-
-    return () => observer.disconnect();
-  }, []);
-  
-  
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -437,7 +412,7 @@ export default function Hero() {
             {/* PRIMARY */}
 
             {hero.button1Text && (
-              <a
+              
                 ref={
                   primaryButtonRef as Ref<HTMLAnchorElement>
                 }
@@ -476,7 +451,7 @@ export default function Hero() {
             {/* SECONDARY */}
 
             {hero.button2Text && (
-              <a
+              
                 ref={
                   secondaryButtonRef as Ref<HTMLAnchorElement>
                 }
@@ -521,17 +496,18 @@ export default function Hero() {
 
         {(hero.videoUrl ||
           hero.featuredImage?.node?.sourceUrl) && (
-         <div
-  ref={heroMediaRef}
-  className="
-    codm-hero-image-section
-    relative
-    mx-auto
-    mt-12
-    w-full
-    max-w-[1100px]
-  "
->
+          <div
+            ref={heroMediaRef as Ref<HTMLDivElement>}
+            className="
+              codm-hero-image-section
+              codm-hero-media-scale
+              relative
+              mx-auto
+              mt-12
+              w-full
+              max-w-[1100px]
+            "
+          >
 
             {/* Ambient glow */}
 
