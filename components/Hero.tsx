@@ -42,38 +42,37 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
- /* =========================================================
-   HERO MEDIA SCROLL ANIMATION
-   ========================================================= */
+  /* =========================================================
+     HERO MEDIA SCROLL ANIMATION
+     ========================================================= */
 
-const heroMediaRef = useRef<HTMLDivElement>(null);
-const [heroMediaVisible, setHeroMediaVisible] = useState(false);
+  const heroMediaRef = useRef<HTMLDivElement>(null);
+  const [heroMediaVisible, setHeroMediaVisible] = useState(false);
 
-useEffect(() => {
-  const element = heroMediaRef.current;
+  useEffect(() => {
+    // Wait until hero data has loaded — only then does the
+    // media <div ref={heroMediaRef}> actually exist in the DOM.
+    if (!hero) return;
 
-  if (!element) return;
+    const element = heroMediaRef.current;
+    if (!element) return;
 
-  // Make the video visible immediately when Hero loads.
-  // The scroll animation is handled separately below.
-  setHeroMediaVisible(true);
-
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setHeroMediaVisible(true);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHeroMediaVisible(true);
+        }
+      },
+      {
+        threshold: 0.01,
+        rootMargin: "200px 0px 200px 0px",
       }
-    },
-    {
-      threshold: 0.01,
-      rootMargin: "200px 0px 200px 0px",
-    }
-  );
+    );
 
-  observer.observe(element);
+    observer.observe(element);
 
-  return () => observer.disconnect();
-}, []);
+    return () => observer.disconnect();
+  }, [hero]);
 
   /* =========================================================
      LOAD HERO FROM WORDPRESS
@@ -85,17 +84,15 @@ useEffect(() => {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          WORDPRESS_GRAPHQL_URL,
-          {
-            method: "POST",
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
 
-            headers: {
-              "Content-Type": "application/json",
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              query: `
+          body: JSON.stringify({
+            query: `
                 query GetHero {
                   heroes(first: 1) {
                     nodes {
@@ -130,14 +127,11 @@ useEffect(() => {
                   }
                 }
               `,
-            }),
-          }
-        );
+          }),
+        });
 
         if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
+          throw new Error(`WordPress request failed: ${response.status}`);
         }
 
         const result = await response.json();
@@ -145,37 +139,27 @@ useEffect(() => {
         console.log("HERO DATA:", result);
 
         if (result?.errors) {
-          console.error(
-            "HERO GRAPHQL ERRORS:",
-            result.errors
-          );
+          console.error("HERO GRAPHQL ERRORS:", result.errors);
 
           throw new Error(
             result.errors
               .map(
                 (item: { message?: string }) =>
-                  item.message ||
-                  "Unknown GraphQL error"
+                  item.message || "Unknown GraphQL error"
               )
               .join(", ")
           );
         }
 
-        const heroData =
-          result?.data?.heroes?.nodes?.[0] ?? null;
+        const heroData = result?.data?.heroes?.nodes?.[0] ?? null;
 
         if (!heroData) {
-          throw new Error(
-            "WordPress returned no Hero post."
-          );
+          throw new Error("WordPress returned no Hero post.");
         }
 
         setHero(heroData);
       } catch (err) {
-        console.error(
-          "Failed to load Hero:",
-          err
-        );
+        console.error("Failed to load Hero:", err);
 
         setError(
           err instanceof Error
@@ -225,9 +209,7 @@ useEffect(() => {
             Unable to load Hero from WordPress.
           </p>
 
-          <p className="text-xs text-red-300">
-            {error}
-          </p>
+          <p className="text-xs text-red-300">{error}</p>
         </div>
       </section>
     );
@@ -251,36 +233,24 @@ useEffect(() => {
   let mainHeading = fullTitle;
 
   if (highlight) {
-    mainHeading = fullTitle
-      .replace(highlight, "")
-      .trim();
+    mainHeading = fullTitle.replace(highlight, "").trim();
   }
 
   /* =========================================================
      LOGOS
      ========================================================= */
 
-  const logos = [
-    hero.logo1,
-    hero.logo2,
-    hero.logo3,
-    hero.logo4,
-  ].filter(
-    (logo): logo is string =>
-      Boolean(logo)
+  const logos = [hero.logo1, hero.logo2, hero.logo3, hero.logo4].filter(
+    (logo): logo is string => Boolean(logo)
   );
 
   /* =========================================================
      MEDIA
      ========================================================= */
 
-  const hasVideo = Boolean(
-    hero.videoUrl
-  );
+  const hasVideo = Boolean(hero.videoUrl);
 
-  const hasImage = Boolean(
-    hero.featuredImage?.node?.sourceUrl
-  );
+  const hasImage = Boolean(hero.featuredImage?.node?.sourceUrl);
 
   return (
     <section
@@ -327,7 +297,6 @@ useEffect(() => {
           sm:px-8
         "
       >
-
         {/* =====================================================
             HEADING
             ===================================================== */}
@@ -345,9 +314,7 @@ useEffect(() => {
             md:text-[64px]
           "
         >
-          <span className="block">
-            {mainHeading}
-          </span>
+          <span className="block">{mainHeading}</span>
 
           {highlight && (
             <span
@@ -399,15 +366,11 @@ useEffect(() => {
             gap-3
           "
         >
-
           {/* PRIMARY BUTTON */}
 
           {hero.button1Text && (
-            <a
-              href={
-                hero.button1Url ||
-                "/contact"
-              }
+            
+              href={hero.button1Url || "/contact"}
               className="
                 rounded-full
                 bg-[var(--accent)]
@@ -428,11 +391,8 @@ useEffect(() => {
           {/* SECONDARY BUTTON */}
 
           {hero.button2Text && (
-            <a
-              href={
-                hero.button2Url ||
-                "/services"
-              }
+            
+              href={hero.button2Url || "/services"}
               className="
                 rounded-full
                 border
@@ -451,7 +411,6 @@ useEffect(() => {
               {hero.button2Text}
             </a>
           )}
-
         </div>
 
         {/* =====================================================
@@ -470,31 +429,29 @@ useEffect(() => {
               md:gap-7
             "
           >
-            {logos.map(
-              (logo, index) => (
-                <div
-                  key={`${logo}-${index}`}
-                  className="
+            {logos.map((logo, index) => (
+              <div
+                key={`${logo}-${index}`}
+                className="
                     flex
                     h-10
                     min-w-[70px]
                     items-center
                     justify-center
                   "
-                >
-                  <img
-                    src={logo}
-                    alt=""
-                    className="
+              >
+                <img
+                  src={logo}
+                  alt=""
+                  className="
                       max-h-8
                       w-auto
                       max-w-[120px]
                       object-contain
                     "
-                  />
-                </div>
-              )
-            )}
+                />
+              </div>
+            ))}
           </div>
         )}
 
@@ -504,9 +461,9 @@ useEffect(() => {
             ===================================================== */}
 
         {(hasVideo || hasImage) && (
-  <div
-    ref={heroMediaRef}
-    className={`
+          <div
+            ref={heroMediaRef}
+            className={`
       relative
       mx-auto
       mt-12
@@ -523,8 +480,7 @@ useEffect(() => {
           : "translate-y-[40px] scale-[0.96] opacity-0 blur-[4px]"
       }
     `}
-  >
-
+          >
             {/* =================================================
                 MEDIA GLOW
                 ================================================= */}
@@ -573,7 +529,6 @@ useEffect(() => {
                 md:p-5
               "
             >
-
               {/* =================================================
                   VIDEO
                   ================================================= */}
@@ -596,21 +551,13 @@ useEffect(() => {
                   "
                 />
               ) : hasImage ? (
-
                 /* =================================================
                    IMAGE FALLBACK
                    ================================================= */
 
                 <img
-                  src={
-                    hero.featuredImage?.node
-                      ?.sourceUrl
-                  }
-                  alt={
-                    hero.featuredImage?.node
-                      ?.altText ||
-                    hero.title
-                  }
+                  src={hero.featuredImage?.node?.sourceUrl}
+                  alt={hero.featuredImage?.node?.altText || hero.title}
                   className="
                     codm-hero-image
                     block
@@ -620,13 +567,10 @@ useEffect(() => {
                     object-contain
                   "
                 />
-
               ) : null}
-
             </div>
           </div>
         )}
-
       </div>
     </section>
   );
