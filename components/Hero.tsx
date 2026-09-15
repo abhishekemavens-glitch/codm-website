@@ -366,12 +366,12 @@ export default function Hero() {
             gap-3
           "
         >
-          {/* PRIMARY BUTTON */}
+        {/* PRIMARY BUTTON */}
 
-          {hero.button1Text && (
-            
-              href={hero.button1Url || "/contact"}
-              className="
+{hero.button1Text && (
+  
+    href={hero.button1Url || "/contact"}
+    className="
                 rounded-full
                 bg-[var(--accent)]
                 px-6
@@ -383,17 +383,17 @@ export default function Hero() {
                 duration-300
                 hover:opacity-90
               "
-            >
-              {hero.button1Text}
-            </a>
-          )}
+  >
+    {hero.button1Text}
+  </a>
+)}
 
-          {/* SECONDARY BUTTON */}
+{/* SECONDARY BUTTON */}
 
-          {hero.button2Text && (
-            
-              href={hero.button2Url || "/services"}
-              className="
+{hero.button2Text && (
+  
+    href={hero.button2Url || "/services"}
+    className="
                 rounded-full
                 border
                 border-[var(--border)]
@@ -407,12 +407,10 @@ export default function Hero() {
                 duration-300
                 hover:border-[var(--accent)]
               "
-            >
-              {hero.button2Text}
-            </a>
-          )}
-        </div>
-
+  >
+    {hero.button2Text}
+  </a>
+)}
         {/* =====================================================
             HERO LOGOS
             ===================================================== */}
