@@ -1078,3 +1078,133 @@ export function useTilt(
 
   return ref;
 }
+
+
+
+/* =============================================================
+   18. useScrollScale
+   =============================================================
+   Scroll-driven scale for hero media / video frames.
+
+   Writes --scroll-progress (0 → 1) onto the element as it
+   moves up through the viewport. Drive transform, opacity,
+   and border-radius from that variable in CSS.
+
+   Usage:
+
+   const heroMediaRef = useScrollScale<HTMLDivElement>();
+
+   <div
+     ref={heroMediaRef}
+     className="codm-hero-media-scale"
+   >
+   ============================================================= */
+
+export function useScrollScale
+  T extends HTMLElement = HTMLDivElement
+>(
+  options: {
+    startRatio?: number;
+    endRatio?: number;
+  } = {}
+) {
+  const {
+    startRatio = 1,
+    endRatio = 0.35,
+  } = options;
+
+  const ref = useRef<T | null>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) return;
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      element.style.setProperty(
+        "--scroll-progress",
+        "1"
+      );
+
+      return;
+    }
+
+    let frame = 0;
+
+    const updateProgress = () => {
+      frame = 0;
+
+      const rect =
+        element.getBoundingClientRect();
+
+      const viewportHeight =
+        window.innerHeight;
+
+      const start =
+        viewportHeight * startRatio;
+
+      const end =
+        viewportHeight * endRatio;
+
+      const raw =
+        (start - rect.top) /
+        (start - end);
+
+      const progress = Math.min(
+        1,
+        Math.max(0, raw)
+      );
+
+      element.style.setProperty(
+        "--scroll-progress",
+        progress.toFixed(4)
+      );
+    };
+
+    const handleScroll = () => {
+      if (!frame) {
+        frame =
+          window.requestAnimationFrame(
+            updateProgress
+          );
+      }
+    };
+
+    updateProgress();
+
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      {
+        passive: true,
+      }
+    );
+
+    window.addEventListener(
+      "resize",
+      handleScroll
+    );
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(
+          frame
+        );
+      }
+
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+
+      window.removeEventListener(
+        "resize",
+        handleScroll
+      );
+    };
+  }, [startRatio, endRatio]);
+
+  return ref;
+}
