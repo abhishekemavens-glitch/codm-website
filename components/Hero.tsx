@@ -1,16 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import type { Ref } from "react";
-import { useMagneticButton } from "@/lib/codm-animations";
+import { useEffect, useRef, useState } from "react";
 
 type HeroData = {
   id: string;
   databaseId: number;
   title: string;
+  content: string;
 
-  mainHeading: string;
-  description: string;
   highlight: string;
 
   button1Text: string;
@@ -24,9 +21,11 @@ type HeroData = {
   logo3: string;
   logo4: string;
 
+  /* HERO VIDEO */
   videoId?: string;
   videoUrl?: string;
 
+  /* HERO IMAGE */
   featuredImage: {
     node: {
       sourceUrl: string;
@@ -41,10 +40,11 @@ const WORDPRESS_GRAPHQL_URL =
 export default function Hero() {
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
-  const primaryButtonRef = useMagneticButton(24);
-  const secondaryButtonRef = useMagneticButton(24);
+  /* =========================================================
+     HERO MEDIA SCROLL ANIMATION
+     ========================================================= */
 
   const heroMediaRef = useRef<HTMLDivElement>(null);
   const [heroMediaVisible, setHeroMediaVisible] = useState(false);
@@ -72,22 +72,25 @@ export default function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    async function loadHero() {
+  /* =========================================================
+     LOAD HERO FROM WORDPRESS
+     ========================================================= */
 
   useEffect(() => {
     async function loadHero() {
       try {
         setLoading(true);
-        setError(null);
+        setError("");
 
         const response = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
             method: "POST",
+
             headers: {
               "Content-Type": "application/json",
             },
+
             body: JSON.stringify({
               query: `
                 query GetHero {
@@ -96,9 +99,8 @@ export default function Hero() {
                       id
                       databaseId
                       title
+                      content
 
-                      mainHeading
-                      description
                       highlight
 
                       button1Text
@@ -145,7 +147,7 @@ export default function Hero() {
             result.errors
           );
 
-          setError(
+          throw new Error(
             result.errors
               .map(
                 (item: { message?: string }) =>
@@ -154,27 +156,21 @@ export default function Hero() {
               )
               .join(", ")
           );
-
-          setHero(null);
-          return;
         }
 
         const heroData =
           result?.data?.heroes?.nodes?.[0] ?? null;
 
         if (!heroData) {
-          setError(
-            "WordPress returned no Hero posts."
+          throw new Error(
+            "WordPress returned no Hero post."
           );
-
-          setHero(null);
-          return;
         }
 
         setHero(heroData);
       } catch (err) {
         console.error(
-          "HERO FETCH ERROR:",
+          "Failed to load Hero:",
           err
         );
 
@@ -183,8 +179,6 @@ export default function Hero() {
             ? err.message
             : "Unable to load Hero from WordPress."
         );
-
-        setHero(null);
       } finally {
         setLoading(false);
       }
@@ -193,9 +187,9 @@ export default function Hero() {
     loadHero();
   }, []);
 
-  /* =========================================
+  /* =========================================================
      LOADING
-     ========================================= */
+     ========================================================= */
 
   if (loading) {
     return (
@@ -216,9 +210,9 @@ export default function Hero() {
     );
   }
 
-  /* =========================================
+  /* =========================================================
      ERROR
-     ========================================= */
+     ========================================================= */
 
   if (error) {
     return (
@@ -236,21 +230,32 @@ export default function Hero() {
     );
   }
 
+  /* =========================================================
+     NO HERO
+     ========================================================= */
+
   if (!hero) {
     return null;
   }
 
-  /* =========================================
-     WORDPRESS CONTENT
-     ========================================= */
+  /* =========================================================
+     SPLIT HEADING
+     ========================================================= */
 
-  const mainHeading = hero.mainHeading || "";
+  const fullTitle = hero.title || "";
   const highlight = hero.highlight || "";
-  const description = hero.description || "";
 
-  /* =========================================
+  let mainHeading = fullTitle;
+
+  if (highlight) {
+    mainHeading = fullTitle
+      .replace(highlight, "")
+      .trim();
+  }
+
+  /* =========================================================
      LOGOS
-     ========================================= */
+     ========================================================= */
 
   const logos = [
     hero.logo1,
@@ -262,9 +267,17 @@ export default function Hero() {
       Boolean(logo)
   );
 
-  /* =========================================
-     HERO
-     ========================================= */
+  /* =========================================================
+     MEDIA
+     ========================================================= */
+
+  const hasVideo = Boolean(
+    hero.videoUrl
+  );
+
+  const hasImage = Boolean(
+    hero.featuredImage?.node?.sourceUrl
+  );
 
   return (
     <section
@@ -273,16 +286,15 @@ export default function Hero() {
         relative
         overflow-hidden
         bg-[var(--background)]
-        py-16
+        py-20
         transition-colors
         duration-500
-        md:py-24
+        md:py-28
       "
     >
-
-      {/* =========================================
+      {/* =====================================================
           BACKGROUND GLOW
-          ========================================= */}
+          ===================================================== */}
 
       <div
         aria-hidden="true"
@@ -313,56 +325,12 @@ export default function Hero() {
         "
       >
 
-        {/* =========================================
-            LOGOS
-            ========================================= */}
-
-        {logos.length > 0 && (
-          <div
-            className="
-              codm-hero-logos
-              mb-8
-              flex
-              flex-wrap
-              items-center
-              justify-center
-              gap-5
-              md:gap-7
-            "
-          >
-            {logos.map((logo, index) => (
-              <div
-                key={`${logo}-${index}`}
-                className="
-                  flex
-                  h-10
-                  min-w-[70px]
-                  items-center
-                  justify-center
-                "
-              >
-                <img
-                  src={logo}
-                  alt=""
-                  className="
-                    max-h-10
-                    w-auto
-                    max-w-[140px]
-                    object-contain
-                  "
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* =========================================
+        {/* =====================================================
             HEADING
-            ========================================= */}
+            ===================================================== */}
 
         <h1
           className="
-            codm-hero-title
             mx-auto
             max-w-[950px]
             text-center
@@ -374,17 +342,18 @@ export default function Hero() {
             md:text-[64px]
           "
         >
-          {mainHeading && (
-            <span className="block">
-              {mainHeading}
-            </span>
-          )}
+          <span className="block">
+            {mainHeading}
+          </span>
 
           {highlight && (
             <span
               className="
-                codm-highlight
                 block
+                bg-gradient-to-r
+                from-[#5967ff]
+                via-[#7c68ff]
+                to-[#a08cff]
                 bg-clip-text
                 text-transparent
               "
@@ -394,256 +363,264 @@ export default function Hero() {
           )}
         </h1>
 
-        {/* =========================================
+        {/* =====================================================
             DESCRIPTION
-            ========================================= */}
+            ===================================================== */}
 
-        {description && (
-          <p
-            className="
-              codm-hero-description
-              mx-auto
-              mt-5
-              max-w-[900px]
-              text-center
-              font-['Inter']
-              text-[20px]
-              font-normal
-              leading-[28px]
-              text-[#9AA3B8]
-            "
-          >
-            {description}
-          </p>
-        )}
+        <div
+          className="
+            mx-auto
+            mt-5
+            max-w-[700px]
+            text-center
+            text-sm
+            leading-6
+            text-[var(--muted)]
+            md:text-base
+          "
+          dangerouslySetInnerHTML={{
+            __html: hero.content,
+          }}
+        />
 
-        {/* =========================================
+        {/* =====================================================
             BUTTONS
-            ========================================= */}
+            ===================================================== */}
 
-        {(hero.button1Text ||
-          hero.button2Text) && (
+        <div
+          className="
+            mt-8
+            flex
+            flex-wrap
+            justify-center
+            gap-3
+          "
+        >
+
+          {/* PRIMARY BUTTON */}
+
+          {hero.button1Text && (
+            <a
+              href={
+                hero.button1Url ||
+                "/contact"
+              }
+              className="
+                rounded-full
+                bg-[var(--accent)]
+                px-6
+                py-3
+                text-sm
+                font-medium
+                text-white
+                transition-all
+                duration-300
+                hover:opacity-90
+              "
+            >
+              {hero.button1Text}
+            </a>
+          )}
+
+          {/* SECONDARY BUTTON */}
+
+          {hero.button2Text && (
+            <a
+              href={
+                hero.button2Url ||
+                "/services"
+              }
+              className="
+                rounded-full
+                border
+                border-[var(--border)]
+                bg-[var(--surface)]
+                px-6
+                py-3
+                text-sm
+                font-medium
+                text-[var(--foreground)]
+                transition-all
+                duration-300
+                hover:border-[var(--accent)]
+              "
+            >
+              {hero.button2Text}
+            </a>
+          )}
+
+        </div>
+
+        {/* =====================================================
+            HERO LOGOS
+            ===================================================== */}
+
+        {logos.length > 0 && (
           <div
             className="
-              codm-hero-buttons
               mt-8
               flex
               flex-wrap
               items-center
               justify-center
-              gap-3
+              gap-5
+              md:gap-7
             "
           >
-
-            {/* PRIMARY */}
-
-            {hero.button1Text && (
-              <a
-                ref={
-                  primaryButtonRef as Ref<HTMLAnchorElement>
-                }
-                href={
-                  hero.button1Url ||
-                  "/contact"
-                }
-                className="
-                  codm-hero-primary-button
-                  codm-magnetic
-                  codm-press
-                  inline-flex
-                  h-[53px]
-                  min-w-[227px]
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-transparent
-                  px-5
-                  text-center
-                  font-['Plus_Jakarta_Sans']
-                  text-[18px]
-                  font-medium
-                  leading-none
-                  text-white
-                  transition-all
-                  duration-300
-                  hover:opacity-90
-                "
-              >
-                {hero.button1Text}
-              </a>
+            {logos.map(
+              (logo, index) => (
+                <div
+                  key={`${logo}-${index}`}
+                  className="
+                    flex
+                    h-10
+                    min-w-[70px]
+                    items-center
+                    justify-center
+                  "
+                >
+                  <img
+                    src={logo}
+                    alt=""
+                    className="
+                      max-h-8
+                      w-auto
+                      max-w-[120px]
+                      object-contain
+                    "
+                  />
+                </div>
+              )
             )}
-
-            {/* SECONDARY */}
-
-            {hero.button2Text && (
-              <a
-                ref={
-                  secondaryButtonRef as Ref<HTMLAnchorElement>
-                }
-                href={
-                  hero.button2Url ||
-                  "/services"
-                }
-                className="
-                  codm-hero-secondary-button
-                  codm-magnetic
-                  codm-press
-                  inline-flex
-                  h-[53px]
-                  min-w-[177px]
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  px-5
-                  text-center
-                  font-['Google_Sans_Flex']
-                  text-[18px]
-                  font-medium
-                  leading-none
-                  transition-all
-                  duration-300
-                  hover:scale-[1.02]
-                "
-              >
-                {hero.button2Text}
-              </a>
-            )}
-
           </div>
         )}
 
-        {/* =========================================
+        {/* =====================================================
             HERO MEDIA
-            VIDEO FIRST
-            FEATURED IMAGE = FALLBACK / POSTER
-            ========================================= */}
+            VIDEO OR IMAGE
+            ===================================================== */}
 
-        {(hero.videoUrl ||
-          hero.featuredImage?.node?.sourceUrl) && (
-         <div
-  ref={heroMediaRef}
-  className={`
-    codm-hero-image-section
-    relative
-    mx-auto
-    mt-12
-    w-full
-    max-w-[1100px]
-    transition-all
-    duration-[1200ms]
-    ease-[cubic-bezier(0.22,1,0.36,1)]
-    ${
-      heroMediaVisible
-        ? "translate-y-0 scale-100 opacity-100 blur-0"
-        : "translate-y-[100px] scale-[0.88] opacity-0 blur-[8px]"
-    }
-  `}
->
+        {(hasVideo || hasImage) && (
+          <div
+            ref={heroMediaRef}
+            className={`
+              relative
+              mx-auto
+              mt-12
+              max-w-[1100px]
 
-            {/* Ambient glow */}
+              transform-gpu
+              will-change-transform
+              transition-all
+              duration-[1200ms]
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+
+              ${
+                heroMediaVisible
+                  ? "translate-y-0 scale-100 opacity-100 blur-0"
+                  : "translate-y-[100px] scale-[0.88] opacity-0 blur-[8px]"
+              }
+            `}
+          >
+
+            {/* =================================================
+                MEDIA GLOW
+                ================================================= */}
 
             <div
               aria-hidden="true"
               className="
-                codm-hero-image-glow
+                codm-hero-media-glow
                 pointer-events-none
                 absolute
-                bottom-[-80px]
+                bottom-[-30px]
                 left-1/2
-                h-[260px]
+                h-[220px]
                 w-[75%]
                 -translate-x-1/2
                 rounded-full
-                blur-[90px]
+                blur-[80px]
+                transition-all
+                duration-[1400ms]
+                ease-out
               "
               style={{
                 background:
-                  "radial-gradient(circle, rgba(114,92,255,0.35), transparent 70%)",
+                  "radial-gradient(circle, rgba(114,92,255,0.45), transparent 70%)",
               }}
             />
 
-            {/* Media frame */}
+            {/* =================================================
+                MEDIA CONTAINER
+                ================================================= */}
 
             <div
               className="
-                codm-hero-image-frame
+                codm-hero-media-frame
                 relative
                 overflow-hidden
                 rounded-[22px]
                 border
                 border-[var(--border)]
                 bg-[var(--surface)]
-                shadow-[0_30px_100px_rgba(0,0,0,0.20)]
+                p-3
+                shadow-[0_30px_100px_rgba(0,0,0,0.25)]
+                transition-all
+                duration-[1200ms]
+                ease-[cubic-bezier(0.22,1,0.36,1)]
+                md:p-5
               "
             >
 
-              <div
-                className="
-                  codm-hero-image-inner
-                  relative
-                  overflow-hidden
-                "
-              >
+              {/* =================================================
+                  VIDEO
+                  ================================================= */}
 
-                {/* =====================================
-                    VIDEO
-                    ===================================== */}
+              {hasVideo ? (
+                <video
+                  src={hero.videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="
+                    codm-hero-video
+                    block
+                    h-auto
+                    w-full
+                    rounded-[14px]
+                    object-contain
+                  "
+                />
+              ) : hasImage ? (
 
-                {hero.videoUrl ? (
-                  <video
-                    className="
-                      codm-hero-dashboard-image
-                      block
-                      h-auto
-                      w-full
-                      object-cover
-                    "
-                    src={hero.videoUrl}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    poster={
-                      hero.featuredImage?.node?.sourceUrl ||
-                      undefined
-                    }
-                    aria-label={
-                      hero.title ||
-                      "CODM Hero Video"
-                    }
-                  />
-                ) : (
+                /* =================================================
+                   IMAGE FALLBACK
+                   ================================================= */
 
-                  /* ===================================
-                     FEATURED IMAGE FALLBACK
-                     =================================== */
+                <img
+                  src={
+                    hero.featuredImage?.node
+                      ?.sourceUrl
+                  }
+                  alt={
+                    hero.featuredImage?.node
+                      ?.altText ||
+                    hero.title
+                  }
+                  className="
+                    codm-hero-image
+                    block
+                    h-auto
+                    w-full
+                    rounded-[14px]
+                    object-contain
+                  "
+                />
 
-                  hero.featuredImage?.node
-                    ?.sourceUrl && (
-                    <img
-                      src={
-                        hero.featuredImage.node.sourceUrl
-                      }
-                      alt={
-                        hero.featuredImage.node.altText ||
-                        hero.title ||
-                        "CODM Software Dashboard"
-                      }
-                      className="
-                        codm-hero-dashboard-image
-                        block
-                        h-auto
-                        w-full
-                        object-contain
-                      "
-                    />
-                  )
-                )}
+              ) : null}
 
-              </div>
             </div>
           </div>
         )}
