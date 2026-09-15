@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Ref } from "react";
 import { useMagneticButton } from "@/lib/codm-animations";
 
 type HeroData = {
@@ -23,8 +24,8 @@ type HeroData = {
   logo3: string;
   logo4: string;
 
-  videoId: string;
-  videoUrl: string;
+  videoId?: string;
+  videoUrl?: string;
 
   featuredImage: {
     node: {
@@ -34,8 +35,6 @@ type HeroData = {
   } | null;
 };
 
-
-
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
@@ -44,7 +43,6 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // PREMIUM: magnetic hover refs for the two CTA buttons
   const primaryButtonRef = useMagneticButton(24);
   const secondaryButtonRef = useMagneticButton(24);
 
@@ -58,11 +56,9 @@ export default function Hero() {
           WORDPRESS_GRAPHQL_URL,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json",
             },
-
             body: JSON.stringify({
               query: `
                 query GetHero {
@@ -87,13 +83,15 @@ export default function Hero() {
                       logo3
                       logo4
 
+                      videoId
+                      videoUrl
+
                       featuredImage {
                         node {
                           sourceUrl
                           altText
                         }
                       }
-                      videoUrl
                     }
                   }
                 }
@@ -166,36 +164,32 @@ export default function Hero() {
     loadHero();
   }, []);
 
-  /*
-   * =========================================
-   * LOADING
-   * =========================================
-   */
+  /* =========================================
+     LOADING
+     ========================================= */
 
   if (loading) {
-  return (
-    <section
-      className="
-        relative
-        min-h-[calc(100vh-78px)]
-        overflow-hidden
-        bg-[var(--background)]
-        pt-[78px]
-      "
-      aria-hidden="true"
-    >
-      <div className="mx-auto max-w-[1200px] px-5">
-        <div className="min-h-[calc(100vh-78px)]" />
-      </div>
-    </section>
-  );
-}
+    return (
+      <section
+        className="
+          relative
+          min-h-[calc(100vh-78px)]
+          overflow-hidden
+          bg-[var(--background)]
+          pt-[78px]
+        "
+        aria-hidden="true"
+      >
+        <div className="mx-auto max-w-[1200px] px-5">
+          <div className="min-h-[calc(100vh-78px)]" />
+        </div>
+      </section>
+    );
+  }
 
-  /*
-   * =========================================
-   * ERROR
-   * =========================================
-   */
+  /* =========================================
+     ERROR
+     ========================================= */
 
   if (error) {
     return (
@@ -213,36 +207,21 @@ export default function Hero() {
     );
   }
 
-  /*
-   * =========================================
-   * SAFETY
-   * =========================================
-   */
-
   if (!hero) {
     return null;
   }
 
-  /*
-   * =========================================
-   * WORDPRESS CONTENT
-   * =========================================
-   */
+  /* =========================================
+     WORDPRESS CONTENT
+     ========================================= */
 
-  const mainHeading =
-    hero.mainHeading || "";
+  const mainHeading = hero.mainHeading || "";
+  const highlight = hero.highlight || "";
+  const description = hero.description || "";
 
-  const highlight =
-    hero.highlight || "";
-
-  const description =
-    hero.description || "";
-
-  /*
-   * =========================================
-   * LOGOS
-   * =========================================
-   */
+  /* =========================================
+     LOGOS
+     ========================================= */
 
   const logos = [
     hero.logo1,
@@ -254,11 +233,9 @@ export default function Hero() {
       Boolean(logo)
   );
 
-  /*
-   * =========================================
-   * HERO
-   * =========================================
-   */
+  /* =========================================
+     HERO
+     ========================================= */
 
   return (
     <section
@@ -368,16 +345,11 @@ export default function Hero() {
             md:text-[64px]
           "
         >
-
-          {/* MAIN HEADING */}
-
           {mainHeading && (
             <span className="block">
               {mainHeading}
             </span>
           )}
-
-          {/* HIGHLIGHTED HEADING */}
 
           {highlight && (
             <span
@@ -391,11 +363,10 @@ export default function Hero() {
               {highlight}
             </span>
           )}
-
         </h1>
 
         {/* =========================================
-            HERO DESCRIPTION
+            DESCRIPTION
             ========================================= */}
 
         {description && (
@@ -419,14 +390,10 @@ export default function Hero() {
 
         {/* =========================================
             BUTTONS
-            PREMIUM: both CTAs get the magnetic hover
-            pull via useMagneticButton refs above, plus
-            press feedback on click.
             ========================================= */}
 
         {(hero.button1Text ||
           hero.button2Text) && (
-
           <div
             className="
               codm-hero-buttons
@@ -439,11 +406,13 @@ export default function Hero() {
             "
           >
 
-            {/* PRIMARY BUTTON */}
+            {/* PRIMARY */}
 
             {hero.button1Text && (
               <a
-                ref={primaryButtonRef as React.Ref<HTMLAnchorElement>}
+                ref={
+                  primaryButtonRef as Ref<HTMLAnchorElement>
+                }
                 href={
                   hero.button1Url ||
                   "/contact"
@@ -476,11 +445,13 @@ export default function Hero() {
               </a>
             )}
 
-            {/* SECONDARY BUTTON */}
+            {/* SECONDARY */}
 
             {hero.button2Text && (
               <a
-                ref={secondaryButtonRef as React.Ref<HTMLAnchorElement>}
+                ref={
+                  secondaryButtonRef as Ref<HTMLAnchorElement>
+                }
                 href={
                   hero.button2Url ||
                   "/services"
@@ -514,57 +485,130 @@ export default function Hero() {
           </div>
         )}
 
-       {/* =========================================
-    HERO MEDIA
-    VIDEO FIRST → FEATURED IMAGE FALLBACK
-    ========================================= */}
+        {/* =========================================
+            HERO MEDIA
+            VIDEO FIRST
+            FEATURED IMAGE = FALLBACK / POSTER
+            ========================================= */}
 
-{(hero.videoUrl || hero.featuredImage?.node?.sourceUrl) && (
-  <div className="codm-hero-image-section">
+        {(hero.videoUrl ||
+          hero.featuredImage?.node?.sourceUrl) && (
+          <div
+            className="
+              codm-hero-image-section
+              relative
+              mx-auto
+              mt-12
+              w-full
+              max-w-[1100px]
+            "
+          >
 
-    {/* Soft ambient glow */}
-    <div
-      aria-hidden="true"
-      className="codm-hero-image-glow"
-    />
+            {/* Ambient glow */}
 
-    {/* Media frame */}
-    <div className="codm-hero-image-frame">
+            <div
+              aria-hidden="true"
+              className="
+                codm-hero-image-glow
+                pointer-events-none
+                absolute
+                bottom-[-80px]
+                left-1/2
+                h-[260px]
+                w-[75%]
+                -translate-x-1/2
+                rounded-full
+                blur-[90px]
+              "
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(114,92,255,0.35), transparent 70%)",
+              }}
+            />
 
-      <div className="codm-hero-image-inner">
+            {/* Media frame */}
 
-        {hero.videoUrl ? (
-          <video
-            className="codm-hero-dashboard-image"
-            src={hero.videoUrl}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={
-              hero.featuredImage?.node?.sourceUrl ||
-              undefined
-            }
-          />
-        ) : hero.featuredImage?.node?.sourceUrl ? (
-          <img
-            src={hero.featuredImage.node.sourceUrl}
-            alt={
-              hero.featuredImage.node.altText ||
-              hero.title ||
-              "CODM Software Dashboard"
-            }
-            className="codm-hero-dashboard-image"
-          />
-        ) : null}
+            <div
+              className="
+                codm-hero-image-frame
+                relative
+                overflow-hidden
+                rounded-[22px]
+                border
+                border-[var(--border)]
+                bg-[var(--surface)]
+                shadow-[0_30px_100px_rgba(0,0,0,0.20)]
+              "
+            >
 
-      </div>
+              <div
+                className="
+                  codm-hero-image-inner
+                  relative
+                  overflow-hidden
+                "
+              >
 
-    </div>
+                {/* =====================================
+                    VIDEO
+                    ===================================== */}
 
-  </div>
-)}
+                {hero.videoUrl ? (
+                  <video
+                    className="
+                      codm-hero-dashboard-image
+                      block
+                      h-auto
+                      w-full
+                      object-cover
+                    "
+                    src={hero.videoUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    poster={
+                      hero.featuredImage?.node?.sourceUrl ||
+                      undefined
+                    }
+                    aria-label={
+                      hero.title ||
+                      "CODM Hero Video"
+                    }
+                  />
+                ) : (
+
+                  /* ===================================
+                     FEATURED IMAGE FALLBACK
+                     =================================== */
+
+                  hero.featuredImage?.node
+                    ?.sourceUrl && (
+                    <img
+                      src={
+                        hero.featuredImage.node.sourceUrl
+                      }
+                      alt={
+                        hero.featuredImage.node.altText ||
+                        hero.title ||
+                        "CODM Software Dashboard"
+                      }
+                      className="
+                        codm-hero-dashboard-image
+                        block
+                        h-auto
+                        w-full
+                        object-contain
+                      "
+                    />
+                  )
+                )}
+
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </section>
