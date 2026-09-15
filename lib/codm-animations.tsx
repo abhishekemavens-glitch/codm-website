@@ -1112,21 +1112,19 @@ export function useScrollScale(
     endRatio = 0.35,
   } = options;
 
-  const ref = useRef<HTMLDivElement | null>(null);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
+
+  const ref = useCallback((node: HTMLDivElement | null) => {
+    setElement(node);
+  }, []);
 
   useEffect(() => {
-    const element = ref.current;
-
     if (!element) return;
 
     if (
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      element.style.setProperty(
-        "--scroll-progress",
-        "1"
-      );
-
+      element.style.setProperty("--scroll-progress", "1");
       return;
     }
 
@@ -1135,75 +1133,35 @@ export function useScrollScale(
     const updateProgress = () => {
       frame = 0;
 
-      const rect =
-        element.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
 
-      const viewportHeight =
-        window.innerHeight;
+      const start = viewportHeight * startRatio;
+      const end = viewportHeight * endRatio;
 
-      const start =
-        viewportHeight * startRatio;
+      const raw = (start - rect.top) / (start - end);
+      const progress = Math.min(1, Math.max(0, raw));
 
-      const end =
-        viewportHeight * endRatio;
-
-      const raw =
-        (start - rect.top) /
-        (start - end);
-
-      const progress = Math.min(
-        1,
-        Math.max(0, raw)
-      );
-
-      element.style.setProperty(
-        "--scroll-progress",
-        progress.toFixed(4)
-      );
+      element.style.setProperty("--scroll-progress", progress.toFixed(4));
     };
 
     const handleScroll = () => {
       if (!frame) {
-        frame =
-          window.requestAnimationFrame(
-            updateProgress
-          );
+        frame = window.requestAnimationFrame(updateProgress);
       }
     };
 
     updateProgress();
 
-    window.addEventListener(
-      "scroll",
-      handleScroll,
-      {
-        passive: true,
-      }
-    );
-
-    window.addEventListener(
-      "resize",
-      handleScroll
-    );
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
 
     return () => {
-      if (frame) {
-        window.cancelAnimationFrame(
-          frame
-        );
-      }
-
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-
-      window.removeEventListener(
-        "resize",
-        handleScroll
-      );
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
-  }, [startRatio, endRatio]);
+  }, [element, startRatio, endRatio]);
 
   return ref;
 }
