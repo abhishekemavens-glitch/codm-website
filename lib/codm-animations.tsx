@@ -1101,9 +1101,7 @@ export function useTilt(
    >
    ============================================================= */
 
-export function useScrollScale
-  T extends HTMLElement = HTMLDivElement
->(
+export function useScrollScale(
   options: {
     startRatio?: number;
     endRatio?: number;
@@ -1114,7 +1112,7 @@ export function useScrollScale
     endRatio = 0.35,
   } = options;
 
-  const ref = useRef<T | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const element = ref.current;
