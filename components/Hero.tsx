@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { Ref } from "react";
 import { useMagneticButton } from "@/lib/codm-animations";
 
@@ -45,6 +45,35 @@ export default function Hero() {
 
   const primaryButtonRef = useMagneticButton(24);
   const secondaryButtonRef = useMagneticButton(24);
+
+  const heroMediaRef = useRef<HTMLDivElement>(null);
+  const [heroMediaVisible, setHeroMediaVisible] = useState(false);
+
+  useEffect(() => {
+    const element = heroMediaRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHeroMediaVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -80px 0px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    async function loadHero() {
 
   useEffect(() => {
     async function loadHero() {
@@ -493,16 +522,25 @@ export default function Hero() {
 
         {(hero.videoUrl ||
           hero.featuredImage?.node?.sourceUrl) && (
-          <div
-            className="
-              codm-hero-image-section
-              relative
-              mx-auto
-              mt-12
-              w-full
-              max-w-[1100px]
-            "
-          >
+         <div
+  ref={heroMediaRef}
+  className={`
+    codm-hero-image-section
+    relative
+    mx-auto
+    mt-12
+    w-full
+    max-w-[1100px]
+    transition-all
+    duration-[1200ms]
+    ease-[cubic-bezier(0.22,1,0.36,1)]
+    ${
+      heroMediaVisible
+        ? "translate-y-0 scale-100 opacity-100 blur-0"
+        : "translate-y-[100px] scale-[0.88] opacity-0 blur-[8px]"
+    }
+  `}
+>
 
             {/* Ambient glow */}
 
