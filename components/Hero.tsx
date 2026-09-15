@@ -42,35 +42,38 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /* =========================================================
-     HERO MEDIA SCROLL ANIMATION
-     ========================================================= */
+ /* =========================================================
+   HERO MEDIA SCROLL ANIMATION
+   ========================================================= */
 
-  const heroMediaRef = useRef<HTMLDivElement>(null);
-  const [heroMediaVisible, setHeroMediaVisible] = useState(false);
+const heroMediaRef = useRef<HTMLDivElement>(null);
+const [heroMediaVisible, setHeroMediaVisible] = useState(false);
 
-  useEffect(() => {
-    const element = heroMediaRef.current;
+useEffect(() => {
+  const element = heroMediaRef.current;
 
-    if (!element) return;
+  if (!element) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHeroMediaVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -80px 0px",
+  // Make the video visible immediately when Hero loads.
+  // The scroll animation is handled separately below.
+  setHeroMediaVisible(true);
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setHeroMediaVisible(true);
       }
-    );
+    },
+    {
+      threshold: 0.01,
+      rootMargin: "200px 0px 200px 0px",
+    }
+  );
 
-    observer.observe(element);
+  observer.observe(element);
 
-    return () => observer.disconnect();
-  }, []);
+  return () => observer.disconnect();
+}, []);
 
   /* =========================================================
      LOAD HERO FROM WORDPRESS
@@ -501,27 +504,26 @@ export default function Hero() {
             ===================================================== */}
 
         {(hasVideo || hasImage) && (
-          <div
-            ref={heroMediaRef}
-            className={`
-              relative
-              mx-auto
-              mt-12
-              max-w-[1100px]
+  <div
+    ref={heroMediaRef}
+    className={`
+      relative
+      mx-auto
+      mt-12
+      max-w-[1100px]
+      transform-gpu
+      will-change-transform
+      transition-all
+      duration-[1200ms]
+      ease-[cubic-bezier(0.22,1,0.36,1)]
 
-              transform-gpu
-              will-change-transform
-              transition-all
-              duration-[1200ms]
-              ease-[cubic-bezier(0.22,1,0.36,1)]
-
-              ${
-                heroMediaVisible
-                  ? "translate-y-0 scale-100 opacity-100 blur-0"
-                  : "translate-y-[100px] scale-[0.88] opacity-0 blur-[8px]"
-              }
-            `}
-          >
+      ${
+        heroMediaVisible
+          ? "translate-y-0 scale-100 opacity-100 blur-0"
+          : "translate-y-[40px] scale-[0.96] opacity-0 blur-[4px]"
+      }
+    `}
+  >
 
             {/* =================================================
                 MEDIA GLOW
