@@ -369,8 +369,7 @@ export default function Hero() {
         {/* PRIMARY BUTTON */}
 
 {hero.button1Text && (
-  
-    href={hero.button1Url || "/contact"}
+  <a href={hero.button1Url || "/contact"}
     className="
                 rounded-full
                 bg-[var(--accent)]
@@ -391,8 +390,7 @@ export default function Hero() {
 {/* SECONDARY BUTTON */}
 
 {hero.button2Text && (
-  
-    href={hero.button2Url || "/services"}
+  <a href={hero.button2Url || "/services"}
     className="
                 rounded-full
                 border
@@ -411,6 +409,9 @@ export default function Hero() {
     {hero.button2Text}
   </a>
 )}
+
+
+          
         {/* =====================================================
             HERO LOGOS
             ===================================================== */}
