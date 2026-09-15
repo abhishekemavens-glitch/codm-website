@@ -4176,3 +4176,47 @@ html[data-theme="dark"] .codm-logo-dark {
   animation: none !important;
   opacity: 1 !important;
 }
+
+
+
+
+/* =========================================================
+   HERO MEDIA — SCROLL SCALE
+   ========================================================= */
+
+.codm-hero-media-scale {
+  --scroll-progress: 0;
+
+  transform-origin: center top;
+
+  transform:
+    scale(calc(0.78 + (0.22 * var(--scroll-progress))))
+    translate3d(0, calc(40px - (40px * var(--scroll-progress))), 0);
+
+  opacity: calc(0.45 + (0.55 * var(--scroll-progress)));
+
+  will-change: transform, opacity;
+}
+
+.codm-hero-media-scale .codm-hero-image-frame {
+  border-radius: calc(44px - (22px * var(--scroll-progress)));
+  transition: border-radius 0.1s linear;
+}
+
+.codm-hero-media-scale .codm-hero-image-glow {
+  opacity: var(--scroll-progress);
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  .codm-hero-media-scale {
+    transform: scale(calc(0.9 + (0.1 * var(--scroll-progress))));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-hero-media-scale {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
