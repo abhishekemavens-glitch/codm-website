@@ -39,6 +39,34 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 export default function Hero() {
+
+   const heroMediaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = heroMediaRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          element.classList.add("codm-hero-media-visible");
+        } else {
+          element.classList.remove("codm-hero-media-visible");
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -80px 0px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+  
+  
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -493,16 +521,17 @@ export default function Hero() {
 
         {(hero.videoUrl ||
           hero.featuredImage?.node?.sourceUrl) && (
-          <div
-            className="
-              codm-hero-image-section
-              relative
-              mx-auto
-              mt-12
-              w-full
-              max-w-[1100px]
-            "
-          >
+         <div
+  ref={heroMediaRef}
+  className="
+    codm-hero-image-section
+    relative
+    mx-auto
+    mt-12
+    w-full
+    max-w-[1100px]
+  "
+>
 
             {/* Ambient glow */}
 
