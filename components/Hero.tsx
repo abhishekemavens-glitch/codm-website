@@ -570,40 +570,54 @@ export default function Hero() {
                       "CODM Hero Video"
                     }
                   />
-                ) : (
+              {/* =====================================
+    VIDEO
+    ===================================== */}
 
-                  /* ===================================
-                     FEATURED IMAGE FALLBACK
-                     =================================== */
+{hero.videoUrl ? (
+  <video
+    className="
+      codm-hero-dashboard-image
+      block
+      h-auto
+      w-full
+      object-cover
+    "
+    src={hero.videoUrl}
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+    poster={
+      hero.featuredImage?.node?.sourceUrl || undefined
+    }
+    aria-label={
+      hero.title || "CODM Hero Video"
+    }
+  />
+) : (
+  <>
+    {/* ===================================
+        FEATURED IMAGE FALLBACK
+        =================================== */}
 
-                  hero.featuredImage?.node
-                    ?.sourceUrl && (
-                    <img
-                      src={
-                        hero.featuredImage.node.sourceUrl
-                      }
-                      alt={
-                        hero.featuredImage.node.altText ||
-                        hero.title ||
-                        "CODM Software Dashboard"
-                      }
-                      className="
-                        codm-hero-dashboard-image
-                        block
-                        h-auto
-                        w-full
-                        object-contain
-                      "
-                    />
-                  )
-                )}
-
-              </div>
-            </div>
-          </div>
-        )}
-
-      </div>
-    </section>
-  );
-}
+    {hero.featuredImage?.node?.sourceUrl && (
+      <img
+        src={hero.featuredImage.node.sourceUrl}
+        alt={
+          hero.featuredImage.node.altText ||
+          hero.title ||
+          "CODM Software Dashboard"
+        }
+        className="
+          codm-hero-dashboard-image
+          block
+          h-auto
+          w-full
+          object-contain
+        "
+      />
+    )}
+  </>
+)}
