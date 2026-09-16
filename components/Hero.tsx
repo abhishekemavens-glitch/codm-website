@@ -1,3 +1,4 @@
+```tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -39,7 +40,6 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 export default function Hero() {
-
   const heroMediaRef = useScrollScale<HTMLDivElement>();
 
   const [hero, setHero] = useState<HeroData | null>(null);
@@ -55,53 +55,50 @@ export default function Hero() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          WORDPRESS_GRAPHQL_URL,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              query: `
-                query GetHero {
-                  heroes(first: 1) {
-                    nodes {
-                      id
-                      databaseId
-                      title
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query GetHero {
+                heroes(first: 1) {
+                  nodes {
+                    id
+                    databaseId
+                    title
 
-                      mainHeading
-                      description
-                      highlight
+                    mainHeading
+                    description
+                    highlight
 
-                      button1Text
-                      button1Url
+                    button1Text
+                    button1Url
 
-                      button2Text
-                      button2Url
+                    button2Text
+                    button2Url
 
-                      logo1
-                      logo2
-                      logo3
-                      logo4
+                    logo1
+                    logo2
+                    logo3
+                    logo4
 
-                      videoId
-                      videoUrl
+                    videoId
+                    videoUrl
 
-                      featuredImage {
-                        node {
-                          sourceUrl
-                          altText
-                        }
+                    featuredImage {
+                      node {
+                        sourceUrl
+                        altText
                       }
                     }
                   }
                 }
-              `,
-            }),
-          }
-        );
+              }
+            `,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error(
@@ -409,72 +406,84 @@ export default function Hero() {
             "
           >
 
-                   {/* PRIMARY */}
+            {/* PRIMARY */}
 
-{hero.button1Text && (
-  <a
-    ref={primaryButtonRef as Ref<HTMLAnchorElement>}
-    href={hero.button1Url || "/contact"}
-    className="
-      codm-hero-primary-button
-      codm-magnetic
-      codm-press
-      inline-flex
-      h-[53px]
-      min-w-[227px]
-      items-center
-      justify-center
-      rounded-full
-      border
-      border-transparent
-      px-5
-      text-center
-      font-['Plus_Jakarta_Sans']
-      text-[18px]
-      font-medium
-      leading-none
-      text-white
-      transition-all
-      duration-300
-      hover:opacity-90
-    "
-  >
-    {hero.button1Text}
-  </a>
-)}
+            {hero.button1Text && (
+              <a
+                ref={
+                  primaryButtonRef as Ref<HTMLAnchorElement>
+                }
+                href={
+                  hero.button1Url ||
+                  "/contact"
+                }
+                className="
+                  codm-hero-primary-button
+                  codm-magnetic
+                  codm-press
+                  inline-flex
+                  h-[53px]
+                  min-w-[227px]
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-transparent
+                  px-5
+                  text-center
+                  font-['Plus_Jakarta_Sans']
+                  text-[18px]
+                  font-medium
+                  leading-none
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:opacity-90
+                "
+              >
+                {hero.button1Text}
+              </a>
+            )}
 
-{/* SECONDARY */}
+            {/* SECONDARY */}
 
-{hero.button2Text && (
-  <a
-    ref={secondaryButtonRef as Ref<HTMLAnchorElement>}
-    href={hero.button2Url || "/services"}
-    className="
-      codm-hero-secondary-button
-      codm-magnetic
-      codm-press
-      inline-flex
-      h-[53px]
-      min-w-[177px]
-      items-center
-      justify-center
-      rounded-full
-      border
-      px-5
-      text-center
-      font-['Google_Sans_Flex']
-      text-[18px]
-      font-medium
-      leading-none
-      transition-all
-      duration-300
-      hover:scale-[1.02]
-    "
-  >
-    {hero.button2Text}
-  </a>
-)}
+            {hero.button2Text && (
+              <a
+                ref={
+                  secondaryButtonRef as Ref<HTMLAnchorElement>
+                }
+                href={
+                  hero.button2Url ||
+                  "/services"
+                }
+                className="
+                  codm-hero-secondary-button
+                  codm-magnetic
+                  codm-press
+                  inline-flex
+                  h-[53px]
+                  min-w-[177px]
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  px-5
+                  text-center
+                  font-['Google_Sans_Flex']
+                  text-[18px]
+                  font-medium
+                  leading-none
+                  transition-all
+                  duration-300
+                  hover:scale-[1.02]
+                "
+              >
+                {hero.button2Text}
+              </a>
+            )}
 
+          </div>
+        )}
 
         {/* =========================================
             HERO MEDIA
@@ -485,7 +494,9 @@ export default function Hero() {
         {(hero.videoUrl ||
           hero.featuredImage?.node?.sourceUrl) && (
           <div
-            ref={heroMediaRef as Ref<HTMLDivElement>}
+            ref={
+              heroMediaRef as Ref<HTMLDivElement>
+            }
             className="
               codm-hero-image-section
               codm-hero-media-scale
@@ -543,7 +554,7 @@ export default function Hero() {
               >
 
                 {/* =====================================
-                    VIDEO
+                    VIDEO / FEATURED IMAGE
                     ===================================== */}
 
                 {hero.videoUrl ? (
@@ -570,54 +581,57 @@ export default function Hero() {
                       "CODM Hero Video"
                     }
                   />
-              {/* =====================================
-    VIDEO
-    ===================================== */}
+                ) : (
+                  <>
+                    {/* ===================================
+                        FEATURED IMAGE FALLBACK
+                        =================================== */}
 
-{hero.videoUrl ? (
-  <video
-    className="
-      codm-hero-dashboard-image
-      block
-      h-auto
-      w-full
-      object-cover
-    "
-    src={hero.videoUrl}
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="auto"
-    poster={
-      hero.featuredImage?.node?.sourceUrl || undefined
-    }
-    aria-label={
-      hero.title || "CODM Hero Video"
-    }
-  />
-) : (
-  <>
-    {/* ===================================
-        FEATURED IMAGE FALLBACK
-        =================================== */}
+                    {hero.featuredImage?.node?.sourceUrl && (
+                      <img
+                        src={
+                          hero.featuredImage.node.sourceUrl
+                        }
+                        alt={
+                          hero.featuredImage.node.altText ||
+                          hero.title ||
+                          "CODM Software Dashboard"
+                        }
+                        className="
+                          codm-hero-dashboard-image
+                          block
+                          h-auto
+                          w-full
+                          object-contain
+                        "
+                      />
+                    )}
+                  </>
+                )}
 
-    {hero.featuredImage?.node?.sourceUrl && (
-      <img
-        src={hero.featuredImage.node.sourceUrl}
-        alt={
-          hero.featuredImage.node.altText ||
-          hero.title ||
-          "CODM Software Dashboard"
-        }
-        className="
-          codm-hero-dashboard-image
-          block
-          h-auto
-          w-full
-          object-contain
-        "
-      />
-    )}
-  </>
-)}
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </section>
+  );
+}
+```
+
+This version fixes the duplicated video block and restores the missing `</div>`, `</section>`, and conditional closures. The original uploaded file currently ends inside the media section without those final structural closures.
+
+**After pasting:**
+
+1. Save `components/Hero.tsx`
+2. Run:
+
+```bash
+npm run build
+```
+
+3. If it passes, commit and push to GitHub.
+4. Vercel will automatically redeploy.
+
+The `unrs-resolver` `npm warn` is **not** the cause of the build failure. The issue is the malformed JSX in `Hero.tsx`.
