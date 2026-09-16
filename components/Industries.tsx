@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { useInViewOnce, useParallax, splitWords } from "@/lib/codm-animations";
-// If you don't have the "@/" path alias set up in tsconfig.json,
-// use a relative path instead, e.g. "../SectionHeading" or "./SectionHeading"
 
 type Industry = {
   id: string;
@@ -22,6 +20,7 @@ type Industry = {
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
 export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
@@ -29,8 +28,7 @@ export default function Industries() {
 
   const active = industries[activeIndustry];
 
-  const { ref: sectionRef, isVisible } =
-    useInViewOnce<HTMLElement>(0.12);
+  const { ref: sectionRef, isVisible } = useInViewOnce<HTMLElement>(0.12);
 
   const { ref: imageParallaxRef, offset: imageOffset } =
     useParallax<HTMLDivElement>(0.06);
@@ -45,7 +43,6 @@ export default function Industries() {
     return () => window.cancelAnimationFrame(frame);
   }, [active?.id]);
 
-  // PREMIUM: tilt + spotlight state for the featured card
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
 
@@ -61,7 +58,6 @@ export default function Industries() {
   const handleCardMouseLeave = () => {
     setTilt({ x: 0, y: 0 });
   };
-
 
   useEffect(() => {
     async function loadIndustries() {
@@ -113,38 +109,31 @@ export default function Industries() {
     loadIndustries();
   }, []);
 
-  
-
   return (
     <>
-        <section
-  id="industries"
-  ref={sectionRef}
-  className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-    isVisible ? "codm-industries-visible codm-visible" : ""
-  }`}
->
-        {/* =====================================================
-            BACKGROUND GLOW
-            ===================================================== */}
-
+      <section
+        id="industries"
+        ref={sectionRef}
+        className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
+          isVisible ? "codm-industries-visible codm-visible" : ""
+        }`}
+      >
         <div
           aria-hidden="true"
           className="codm-industries-glow pointer-events-none absolute left-1/2 top-[0%] h-[500px] w-[800px] -translate-x-1/2 rounded-full"
         />
-
         <div
           aria-hidden="true"
           className="codm-industries-glow-secondary pointer-events-none absolute left-[10%] top-[35%] h-[350px] w-[350px] rounded-full"
         />
 
         <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
-
-          {/* =====================================================
-              SECTION HEADING
-              ===================================================== */}
-
-          <div className="codm-industries-heading">
+          {/* HEADING — matches Hero's description timing/easing (0.9s, cubic-bezier(0.22,1,0.36,1), 22px) */}
+          <div
+            className={`codm-industries-heading ${
+              isVisible ? "codm-industries-heading-in" : ""
+            }`}
+          >
             <SectionHeading
               eyebrow="Industries We Serve"
               title="Engineering the systems that run"
@@ -153,15 +142,8 @@ export default function Industries() {
             />
           </div>
 
-          {/* =====================================================
-              INDUSTRY PILLS
-              PREMIUM: stagger-in grid — codm-stagger-grid on the
-              wrapper + codm-stagger-item on each pill. Fires when
-              the section's codm-visible class is added above.
-              ===================================================== */}
-
+          {/* PILLS — unchanged */}
           <div className="codm-industries-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
-
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
                 Loading industries...
@@ -191,14 +173,9 @@ export default function Industries() {
                 );
               })
             )}
-
           </div>
 
-
-          {/* =====================================================
-              FEATURED INDUSTRY CARD
-              ===================================================== */}
-
+          {/* FEATURED CARD */}
           {active && (
             <div
               key={active.id}
@@ -213,28 +190,25 @@ export default function Industries() {
               }
               className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
             >
-
               <div aria-hidden="true" className="codm-industry-spotlight" />
 
               <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
-
-                {/* =================================================
-                    CONTENT
-                    ================================================= */}
-
-                <div className="codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16">
-
+                {/* CONTENT — matches Hero's buttons timing (0.9s, 20px, 0.15s delay) */}
+                <div
+                  className={`codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16 ${
+                    isVisible ? "codm-industry-content-in" : ""
+                  }`}
+                >
                   <div className="max-w-[500px]">
-
                     <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
                     <h3
-  className={`codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl ${
-    titleVisible ? "codm-industry-title-visible" : ""
-  }`}
->
-  {splitWords(active.title)}
-</h3>
+                      className={`codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl ${
+                        titleVisible ? "codm-industry-title-visible" : ""
+                      }`}
+                    >
+                      {splitWords(active.title)}
+                    </h3>
 
                     <p
                       className="mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
@@ -243,34 +217,26 @@ export default function Industries() {
                       }}
                     />
 
-                    <a
+                    
                       href={`/industries/${active.slug}`}
                       className="codm-industry-view-link mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
                     >
                       <span>View all</span>
-
-                      <span className="codm-industry-arrow">
-                        →
-                      </span>
+                      <span className="codm-industry-arrow">→</span>
                     </a>
-
                   </div>
-
                 </div>
 
-
-                {/* =================================================
-                    IMAGE
-                    ================================================= */}
-
-                               <div
+                {/* IMAGE — reuses Hero's OWN classes directly: .codm-hero-media-scale / .codm-media-loaded */}
+                <div
                   ref={imageParallaxRef}
                   style={{
                     transform: `translate3d(0, ${imageOffset}px, 0)`,
                   }}
-                  className="codm-industry-image-wrapper order-1 p-4 md:p-5 lg:order-2 lg:p-5"
+                  className={`codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 ${
+                    isVisible ? "codm-media-loaded" : ""
+                  }`}
                 >
-
                   <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
                     <div
                       aria-hidden="true"
@@ -280,78 +246,66 @@ export default function Industries() {
                     {active.featuredImage?.node?.sourceUrl && (
                       <img
                         src={active.featuredImage.node.sourceUrl}
-                        alt={
-                          active.featuredImage.node.altText ||
-                          active.title
-                        }
+                        alt={active.featuredImage.node.altText || active.title}
                         className="codm-industry-image relative h-full w-full object-contain p-5 md:p-8"
                       />
                     )}
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
           )}
-
         </div>
       </section>
 
-
-      {/* =========================================================
-          INDUSTRIES ANIMATION CSS
-          No Framer Motion required
-          ========================================================= */}
-
       <style jsx>{`
-
         /* =====================================================
-           SECTION REVEAL
+           REVEAL — same easing/duration/distance as Hero's
+           description + buttons keyframes (codmHeroDescription,
+           codmHeroButtons), just triggered by scroll (isVisible)
+           instead of unconditional on-mount, since this section
+           is below the fold.
            ===================================================== */
 
-        .codm-industries-heading,
-        .codm-industry-card {
-          opacity: 0;
-          transform: translateY(35px);
-        }
-
-        .codm-industries-visible .codm-industries-heading {
-          animation: codmIndustriesHeading 1s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) forwards;
-        }
-
-        .codm-industries-visible .codm-industry-card {
-          animation: codmIndustryCard 1.1s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) 0.3s forwards;
-        }
-
         .codm-industries-heading {
-          will-change: transform, opacity;
+          opacity: 0;
+          transform: translateY(22px);
+          transition:
+            opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: opacity, transform;
         }
 
+        .codm-industries-heading-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .codm-industry-card-content {
+          opacity: 0;
+          transform: translateY(20px);
+          transition:
+            opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+          will-change: opacity, transform;
+        }
+
+        .codm-industry-content-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
 
         /* =====================================================
-           CARD
+           CARD (hover interaction — untouched)
            ===================================================== */
 
         .codm-industry-card {
           position: relative;
           transform-style: preserve-3d;
           transition:
-            transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
             border-color 500ms ease,
-            box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .codm-industry-card:hover {
@@ -378,75 +332,27 @@ export default function Industries() {
           opacity: 1;
         }
 
-
         /* =====================================================
-           CARD CONTENT
+           IMAGE (idle float / hover — untouched;
+           entrance now comes from Hero's global
+           .codm-hero-media-scale / .codm-media-loaded)
            ===================================================== */
-
-        .codm-industry-card-content {
-          opacity: 0;
-          transform: translateX(-30px);
-          animation: codmCardContent 0.9s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) 0.15s forwards;
-        }
-
-        .codm-industry-accent {
-          width: 0;
-          opacity: 0;
-          animation:
-            codmAccentReveal 0.8s cubic-bezier(
-              0.16,
-              1,
-              0.3,
-              1
-            ) 0.45s forwards;
-        }
-
-
-        /* =====================================================
-           IMAGE
-           ===================================================== */
-
-        .codm-industry-image-wrapper {
-          opacity: 0;
-          transform: translateX(30px);
-          animation: codmImageWrapper 1s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) 0.2s forwards;
-        }
 
         .codm-industry-image-container {
           transition:
-            transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 800ms ease;
           animation: codmIdleFloat 6s ease-in-out infinite;
         }
 
-        .codm-industry-card:hover
-        .codm-industry-image-container {
+        .codm-industry-card:hover .codm-industry-image-container {
           transform: scale(0.985);
           animation-play-state: paused;
         }
 
         .codm-industry-image {
-          opacity: 0;
-          transform: scale(1.055);
-          animation: codmIndustryImage 1.2s cubic-bezier(
-            0.16,
-            1,
-            0.3,
-            1
-          ) 0.35s forwards;
-
           transition:
-            transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
             filter 700ms ease;
         }
 
@@ -454,62 +360,47 @@ export default function Industries() {
           transform: scale(1.025);
         }
 
-
         /* =====================================================
-           IMAGE GLOW
+           AMBIENT GLOWS (untouched)
            ===================================================== */
 
         .codm-industry-image-glow {
-          background:
-            radial-gradient(
-              circle,
-              rgba(114, 92, 255, 0.24),
-              transparent 70%
-            );
-
+          background: radial-gradient(
+            circle,
+            rgba(114, 92, 255, 0.24),
+            transparent 70%
+          );
           filter: blur(55px);
           opacity: 0.8;
-
           animation: codmImageGlow 7s ease-in-out infinite;
         }
 
         .codm-industries-glow {
-          background:
-            radial-gradient(
-              circle,
-              rgba(114, 92, 255, 0.11),
-              transparent 70%
-            );
-
+          background: radial-gradient(
+            circle,
+            rgba(114, 92, 255, 0.11),
+            transparent 70%
+          );
           filter: blur(120px);
           opacity: 0.8;
-
           animation: codmMainGlow 12s ease-in-out infinite;
         }
 
         .codm-industries-glow-secondary {
-          background:
-            radial-gradient(
-              circle,
-              rgba(79, 70, 229, 0.06),
-              transparent 70%
-            );
-
+          background: radial-gradient(
+            circle,
+            rgba(79, 70, 229, 0.06),
+            transparent 70%
+          );
           filter: blur(100px);
-
           animation: codmSecondaryGlow 10s ease-in-out infinite;
         }
-
-
-        /* =====================================================
-           VIEW ALL
-           ===================================================== */
 
         .codm-industry-view-link {
           position: relative;
           transition:
             color 300ms ease,
-            transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+            transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .codm-industry-view-link:hover {
@@ -519,89 +410,11 @@ export default function Industries() {
 
         .codm-industry-arrow {
           display: inline-block;
-          transition:
-            transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+          transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .codm-industry-view-link:hover .codm-industry-arrow {
           transform: translateX(5px);
-        }
-
-
-        /* =====================================================
-           KEYFRAMES
-           ===================================================== */
-
-        @keyframes codmIndustriesHeading {
-          from {
-            opacity: 0;
-            transform: translateY(35px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes codmIndustryCard {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes codmCardContent {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes codmImageWrapper {
-          from {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes codmIndustryImage {
-          from {
-            opacity: 0;
-            transform: scale(1.055);
-          }
-
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes codmAccentReveal {
-          from {
-            width: 0;
-            opacity: 0;
-          }
-
-          to {
-            width: 40px;
-            opacity: 1;
-          }
         }
 
         @keyframes codmImageGlow {
@@ -610,7 +423,6 @@ export default function Industries() {
             transform: translate(-50%, -50%) scale(0.9);
             opacity: 0.55;
           }
-
           50% {
             transform: translate(-50%, -50%) scale(1.08);
             opacity: 0.85;
@@ -623,7 +435,6 @@ export default function Industries() {
             transform: translateX(-50%) scale(0.95);
             opacity: 0.6;
           }
-
           50% {
             transform: translateX(-50%) scale(1.08);
             opacity: 1;
@@ -635,7 +446,6 @@ export default function Industries() {
           100% {
             transform: translate(0, 0);
           }
-
           50% {
             transform: translate(50px, -30px);
           }
@@ -646,19 +456,12 @@ export default function Industries() {
           100% {
             transform: translateY(0);
           }
-
           50% {
             transform: translateY(-8px);
           }
         }
 
-
-        /* =====================================================
-           MOBILE
-           ===================================================== */
-
         @media (max-width: 767px) {
-
           .codm-industries-section {
             padding-top: 80px;
             padding-bottom: 80px;
@@ -668,8 +471,7 @@ export default function Industries() {
             transform: none;
           }
 
-          .codm-industry-card:hover
-          .codm-industry-image-container {
+          .codm-industry-card:hover .codm-industry-image-container {
             transform: none;
           }
 
@@ -686,23 +488,15 @@ export default function Industries() {
             padding-left: 5px;
             padding-right: 5px;
           }
-
         }
 
-
-        /* =====================================================
-           REDUCED MOTION
-           ===================================================== */
-
         @media (prefers-reduced-motion: reduce) {
-
           .codm-industries-heading,
-          .codm-industry-card,
           .codm-industry-card-content,
-          .codm-industry-image-wrapper,
-          .codm-industry-image,
+          .codm-industry-card,
           .codm-industry-image-container,
-          .codm-industry-accent {
+          .codm-industry-image {
+            transition: none !important;
             animation: none !important;
             opacity: 1 !important;
             transform: none !important;
@@ -713,9 +507,7 @@ export default function Industries() {
           .codm-industry-image-glow {
             animation: none !important;
           }
-
         }
-
       `}</style>
     </>
   );
