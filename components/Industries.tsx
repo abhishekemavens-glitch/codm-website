@@ -34,11 +34,14 @@ export default function Industries() {
     useParallax<HTMLDivElement>(0.06);
 
   const [titleVisible, setTitleVisible] = useState(false);
+  const [contentVisible, setContentVisible] = useState(false);
 
   useEffect(() => {
     setTitleVisible(false);
+    setContentVisible(false);
     const frame = window.requestAnimationFrame(() => {
       setTitleVisible(true);
+      setContentVisible(true);
     });
     return () => window.cancelAnimationFrame(frame);
   }, [active?.id]);
@@ -220,7 +223,12 @@ export default function Industries() {
                     </h3>
 
                     <p
-                      className="mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
+                      className={
+                        "codm-industry-text-reveal mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px] " +
+                        (isVisible && contentVisible
+                          ? "codm-industry-text-reveal-in"
+                          : "")
+                      }
                       dangerouslySetInnerHTML={{
                         __html: active.content || active.excerpt,
                       }}
@@ -228,7 +236,12 @@ export default function Industries() {
 
                     <a
                       href={"/industries/" + active.slug}
-                      className="codm-industry-view-link mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
+                      className={
+                        "codm-industry-view-link codm-industry-link-reveal mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] " +
+                        (isVisible && contentVisible
+                          ? "codm-industry-link-reveal-in"
+                          : "")
+                      }
                     >
                       <span>View all</span>
                       <span className="codm-industry-arrow">{"\u2192"}</span>
@@ -241,7 +254,7 @@ export default function Industries() {
                   style={imageWrapperStyle}
                   className={
                     "codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 " +
-                    (isVisible ? "codm-media-loaded" : "")
+                    (isVisible && contentVisible ? "codm-media-loaded" : "")
                   }
                 >
                   <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
@@ -311,6 +324,43 @@ export default function Industries() {
         .codm-industry-content-in {
           opacity: 1;
           transform: translateY(0);
+        }
+
+        /* =====================================================
+           DESCRIPTION + "VIEW ALL" LINK — blur-reveal, staggered
+           after the title's word-stagger finishes, and replayed
+           every time the active industry changes (via
+           contentVisible), not just on first scroll-in.
+           ===================================================== */
+
+        .codm-industry-text-reveal {
+          opacity: 0;
+          transform: translateY(16px);
+          filter: blur(4px);
+          transition:
+            opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+            filter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+          will-change: opacity, transform, filter;
+        }
+
+        .codm-industry-text-reveal-in {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+
+        .codm-industry-link-reveal {
+          opacity: 0;
+          filter: blur(4px);
+          translate: 0 14px;
+          will-change: opacity, translate, filter;
+        }
+
+        .codm-industry-link-reveal-in {
+          opacity: 1;
+          filter: blur(0);
+          translate: 0 0;
         }
 
         .codm-industry-card {
@@ -404,7 +454,10 @@ export default function Industries() {
           position: relative;
           transition:
             color 300ms ease,
-            transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+            transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
+            filter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
+            translate 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
         }
 
         .codm-industry-view-link:hover {
@@ -498,6 +551,9 @@ export default function Industries() {
           .codm-industries-heading,
           .codm-section-heading-reveal,
           .codm-industry-card-content,
+          .codm-industry-text-reveal,
+          .codm-industry-link-reveal,
+          .codm-industry-view-link,
           .codm-industry-card,
           .codm-industry-image-container,
           .codm-industry-image {
@@ -505,6 +561,7 @@ export default function Industries() {
             animation: none !important;
             opacity: 1 !important;
             transform: none !important;
+            translate: none !important;
             filter: none !important;
           }
 
