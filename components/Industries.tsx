@@ -109,14 +109,28 @@ export default function Industries() {
     loadIndustries();
   }, []);
 
+  const cardStyle: React.CSSProperties & {
+    "--spot-x"?: string;
+    "--spot-y"?: string;
+  } = {
+    transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+    "--spot-x": `${spotlight.x}%`,
+    "--spot-y": `${spotlight.y}%`,
+  };
+
+  const imageWrapperStyle: React.CSSProperties = {
+    transform: `translate3d(0, ${imageOffset}px, 0)`,
+  };
+
   return (
     <>
       <section
         id="industries"
         ref={sectionRef}
-        className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-          isVisible ? "codm-industries-visible codm-visible" : ""
-        }`}
+        className={
+          "codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 " +
+          (isVisible ? "codm-industries-visible codm-visible" : "")
+        }
       >
         <div
           aria-hidden="true"
@@ -128,11 +142,11 @@ export default function Industries() {
         />
 
         <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
-          {/* HEADING — matches Hero's description timing/easing (0.9s, cubic-bezier(0.22,1,0.36,1), 22px) */}
           <div
-            className={`codm-industries-heading ${
-              isVisible ? "codm-industries-heading-in" : ""
-            }`}
+            className={
+              "codm-industries-heading " +
+              (isVisible ? "codm-industries-heading-in" : "")
+            }
           >
             <SectionHeading
               eyebrow="Industries We Serve"
@@ -142,7 +156,6 @@ export default function Industries() {
             />
           </div>
 
-          {/* PILLS — unchanged */}
           <div className="codm-industries-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
@@ -151,22 +164,24 @@ export default function Industries() {
             ) : (
               industries.map((industry, index) => {
                 const isActive = index === activeIndustry;
+                const pillStyle: React.CSSProperties & {
+                  "--pill-delay"?: string;
+                } = {
+                  "--pill-delay": `${index * 70}ms`,
+                };
 
                 return (
                   <button
                     key={industry.id}
                     type="button"
                     onClick={() => setActiveIndustry(index)}
-                    style={
-                      {
-                        "--pill-delay": `${index * 70}ms`,
-                      } as React.CSSProperties
-                    }
-                    className={`codm-industry-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium ${
-                      isActive
+                    style={pillStyle}
+                    className={
+                      "codm-industry-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium " +
+                      (isActive
                         ? "codm-industry-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
-                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]"
-                    }`}
+                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]")
+                    }
                   >
                     {industry.title}
                   </button>
@@ -175,37 +190,31 @@ export default function Industries() {
             )}
           </div>
 
-          {/* FEATURED CARD */}
           {active && (
             <div
               key={active.id}
               onMouseMove={handleCardMouseMove}
               onMouseLeave={handleCardMouseLeave}
-              style={
-                {
-                  transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                  "--spot-x": `${spotlight.x}%`,
-                  "--spot-y": `${spotlight.y}%`,
-                } as React.CSSProperties
-              }
+              style={cardStyle}
               className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
             >
               <div aria-hidden="true" className="codm-industry-spotlight" />
 
               <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
-                {/* CONTENT — matches Hero's buttons timing (0.9s, 20px, 0.15s delay) */}
                 <div
-                  className={`codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16 ${
-                    isVisible ? "codm-industry-content-in" : ""
-                  }`}
+                  className={
+                    "codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16 " +
+                    (isVisible ? "codm-industry-content-in" : "")
+                  }
                 >
                   <div className="max-w-[500px]">
                     <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
                     <h3
-                      className={`codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl ${
-                        titleVisible ? "codm-industry-title-visible" : ""
-                      }`}
+                      className={
+                        "codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl " +
+                        (titleVisible ? "codm-industry-title-visible" : "")
+                      }
                     >
                       {splitWords(active.title)}
                     </h3>
@@ -217,25 +226,23 @@ export default function Industries() {
                       }}
                     />
 
-                    
-                      href={`/industries/${active.slug}`}
+                    <a
+                      href={"/industries/" + active.slug}
                       className="codm-industry-view-link mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)]"
                     >
                       <span>View all</span>
-                      <span className="codm-industry-arrow">→</span>
+                      <span className="codm-industry-arrow">{"\u2192"}</span>
                     </a>
                   </div>
                 </div>
 
-                {/* IMAGE — reuses Hero's OWN classes directly: .codm-hero-media-scale / .codm-media-loaded */}
                 <div
                   ref={imageParallaxRef}
-                  style={{
-                    transform: `translate3d(0, ${imageOffset}px, 0)`,
-                  }}
-                  className={`codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 ${
-                    isVisible ? "codm-media-loaded" : ""
-                  }`}
+                  style={imageWrapperStyle}
+                  className={
+                    "codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 " +
+                    (isVisible ? "codm-media-loaded" : "")
+                  }
                 >
                   <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
                     <div
@@ -246,7 +253,9 @@ export default function Industries() {
                     {active.featuredImage?.node?.sourceUrl && (
                       <img
                         src={active.featuredImage.node.sourceUrl}
-                        alt={active.featuredImage.node.altText || active.title}
+                        alt={
+                          active.featuredImage.node.altText || active.title
+                        }
                         className="codm-industry-image relative h-full w-full object-contain p-5 md:p-8"
                       />
                     )}
@@ -259,14 +268,6 @@ export default function Industries() {
       </section>
 
       <style jsx>{`
-        /* =====================================================
-           REVEAL — same easing/duration/distance as Hero's
-           description + buttons keyframes (codmHeroDescription,
-           codmHeroButtons), just triggered by scroll (isVisible)
-           instead of unconditional on-mount, since this section
-           is below the fold.
-           ===================================================== */
-
         .codm-industries-heading {
           opacity: 0;
           transform: translateY(22px);
@@ -294,10 +295,6 @@ export default function Industries() {
           opacity: 1;
           transform: translateY(0);
         }
-
-        /* =====================================================
-           CARD (hover interaction — untouched)
-           ===================================================== */
 
         .codm-industry-card {
           position: relative;
@@ -332,12 +329,6 @@ export default function Industries() {
           opacity: 1;
         }
 
-        /* =====================================================
-           IMAGE (idle float / hover — untouched;
-           entrance now comes from Hero's global
-           .codm-hero-media-scale / .codm-media-loaded)
-           ===================================================== */
-
         .codm-industry-image-container {
           transition:
             transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -359,10 +350,6 @@ export default function Industries() {
         .codm-industry-card:hover .codm-industry-image {
           transform: scale(1.025);
         }
-
-        /* =====================================================
-           AMBIENT GLOWS (untouched)
-           ===================================================== */
 
         .codm-industry-image-glow {
           background: radial-gradient(
