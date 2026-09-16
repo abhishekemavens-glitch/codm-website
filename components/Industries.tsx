@@ -396,15 +396,52 @@ export default function Industries() {
           opacity: 1;
         }
 
+        /* =====================================================
+           IMAGE HOVER — dedicated to the image itself (not
+           dependent on the card-wide mousemove tilt): shadow
+           lift, stronger zoom, brightness bump, idle-float and
+           glow-pulse pause, plus a light sweep across the frame.
+           ===================================================== */
+
         .codm-industry-image-container {
+          position: relative;
+          box-shadow: 0 0 0 rgba(114, 92, 255, 0);
           transition:
             transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
-            box-shadow 800ms ease;
+            box-shadow 500ms ease;
           animation: codmIdleFloat 6s ease-in-out infinite;
         }
 
-        .codm-industry-card:hover .codm-industry-image-container {
+        .codm-industry-image-container::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -60%;
+          width: 45%;
+          height: 100%;
+          background: linear-gradient(
+            100deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.35) 50%,
+            transparent 100%
+          );
+          transform: skewX(-20deg);
+          pointer-events: none;
+          z-index: 3;
+          transition: left 700ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .codm-industry-image-container:hover {
           transform: scale(0.985);
+          box-shadow: 0 25px 60px rgba(114, 92, 255, 0.18);
+          animation-play-state: paused;
+        }
+
+        .codm-industry-image-container:hover::after {
+          left: 130%;
+        }
+
+        .codm-industry-image-container:hover .codm-industry-image-glow {
           animation-play-state: paused;
         }
 
@@ -414,8 +451,9 @@ export default function Industries() {
             filter 700ms ease;
         }
 
-        .codm-industry-card:hover .codm-industry-image {
-          transform: scale(1.025);
+        .codm-industry-image-container:hover .codm-industry-image {
+          transform: scale(1.06);
+          filter: brightness(1.03) saturate(1.06);
         }
 
         .codm-industry-image-glow {
@@ -528,12 +566,18 @@ export default function Industries() {
             transform: none;
           }
 
-          .codm-industry-card:hover .codm-industry-image-container {
+          .codm-industry-image-container:hover {
             transform: none;
+            box-shadow: none;
           }
 
-          .codm-industry-card:hover .codm-industry-image {
+          .codm-industry-image-container:hover::after {
+            left: -60%;
+          }
+
+          .codm-industry-image-container:hover .codm-industry-image {
             transform: scale(1);
+            filter: none;
           }
 
           .codm-industries-glow {
@@ -569,6 +613,11 @@ export default function Industries() {
           .codm-industries-glow-secondary,
           .codm-industry-image-glow {
             animation: none !important;
+          }
+
+          .codm-industry-image-container::after {
+            transition: none !important;
+            display: none !important;
           }
         }
       `}</style>
