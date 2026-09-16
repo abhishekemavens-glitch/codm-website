@@ -58,7 +58,6 @@ button {
   --accent-secondary: #8c7cff;
 }
 
-
 /* =========================================================
    DARK MODE
    Works with both .dark and data-theme="dark"
@@ -310,8 +309,6 @@ header > div > div:last-child > a:hover {
   flex-shrink: 0;
 }
 
-
-
 /* =========================================================
    HEADER CTA BUTTON
    ========================================================= */
@@ -358,7 +355,6 @@ header > div > div:last-child > a:hover {
     background-color 0.3s ease;
 }
 
-
 /* ---------------------------------------------------------
    BUTTON TEXT
    --------------------------------------------------------- */
@@ -367,7 +363,6 @@ header > div > div:last-child > a:hover {
   position: relative;
   z-index: 3;
 }
-
 
 /* ---------------------------------------------------------
    ARROW
@@ -387,7 +382,6 @@ header > div > div:last-child > a:hover {
   transition:
     transform 0.3s ease;
 }
-
 
 /* ---------------------------------------------------------
    SHINE EFFECT
@@ -2037,8 +2031,6 @@ header a {
 
 }
 
-
-
 /* =========================================================
    ANNOUNCEMENT BAR
    ========================================================= */
@@ -2137,7 +2129,6 @@ header a {
   line-height: 1;
 }
 
-
 /* =========================================================
    DARK MODE
    ========================================================= */
@@ -2164,7 +2155,6 @@ header a {
   border-color: #639cff;
   color: #ffffff;
 }
-
 
 /* =========================================================
    MOBILE
@@ -2243,13 +2233,9 @@ header a {
     box-shadow 0.3s ease !important;
 }
 
-
 /* =========================================================
    SHINE — COMPLETELY CONTAINED INSIDE BUTTON
    ========================================================= */
-
-
-
 
 /* =========================================================
    BUTTON CONTENT
@@ -2259,7 +2245,6 @@ header a {
   position: relative !important;
   z-index: 3 !important;
 }
-
 
 /* =========================================================
    ARROW
@@ -2287,7 +2272,6 @@ header a {
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
-
 .codm-header-cta:hover {
   transform: translateY(-2px) !important;
 
@@ -2300,16 +2284,13 @@ header a {
     0 8px 24px rgba(115, 92, 255, 0.28) !important;
 }
 
-
 .codm-header-cta:hover .codm-header-cta-arrow {
   transform: translateX(4px) !important;
 }
 
-
 .codm-header-cta:active {
   transform: translateY(0) scale(0.98) !important;
 }
-
 
 /* =========================================================
    DARK MODE
@@ -2326,7 +2307,6 @@ header a {
   border-color: #735cff !important;
 }
 
-
 /* =========================================================
    VERY IMPORTANT:
    PREVENT OTHER CSS FROM TURNING PSEUDO ELEMENT
@@ -2338,7 +2318,6 @@ header a {
   box-sizing: border-box !important;
   pointer-events: none !important;
 }
-
 
 /* =========================================================
    MOBILE
@@ -2357,7 +2336,6 @@ header a {
   }
 }
 
-
 @media (max-width: 480px) {
   .codm-header-cta {
     height: 38px !important;
@@ -2365,7 +2343,6 @@ header a {
     font-size: 11px !important;
   }
 }
-
 
 /* =========================================================
    LIGHT MODE — ANNOUNCEMENT BAR
@@ -2402,7 +2379,6 @@ header a {
   border-radius: 999px;
 }
 
-
 /* =========================================
    HERO / MAIN HEADING
    ========================================= */
@@ -2431,7 +2407,6 @@ header a {
   }
 }
 
-
 /* =========================================================
    STICKY ANNOUNCEMENT BAR
    ========================================================= */
@@ -2454,7 +2429,6 @@ header a {
 
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
-
 
 /* Announcement content */
 
@@ -2517,7 +2491,6 @@ header a {
   margin-left: 4px !important;
 }
 
-
 /* =========================================================
    STICKY MAIN HEADER
    ========================================================= */
@@ -2544,7 +2517,6 @@ header a {
   -webkit-backdrop-filter: blur(18px) !important;
 }
 
-
 /* =========================================================
    PAGE OFFSET
    Announcement 44px + Header 72px = 116px
@@ -2561,7 +2533,6 @@ header a {
 .codm-header + .codm-hero {
   padding-top: 116px !important;
 }
-
 
 /* =========================================================
    DARK MODE
@@ -2587,7 +2558,6 @@ html.dark .codm-announcement-link {
   background: #4A8CFF !important;
   color: #ffffff !important;
 }
-
 
 /* =========================================================
    MOBILE
@@ -2628,7 +2598,6 @@ html.dark .codm-announcement-link {
   }
 }
 
-
 #hero {
 	margin: 5% 0 0;
 }
@@ -2656,7 +2625,6 @@ html.dark .codm-announcement-link {
   color: transparent !important;
 }
 
-
 /* =========================================================
    SALESFORCE SOLUTIONS — LIGHT MODE
    ========================================================= */
@@ -2679,7 +2647,6 @@ html[data-theme="light"] .codm-highlight,
   color: transparent !important;
 }
 
-
 .codm-hero-description {
   font-family: "Inter", sans-serif !important;
   font-weight: 400 !important;
@@ -2698,11 +2665,9 @@ html[data-theme="light"] .codm-hero-description,
   color: #6B7388 !important;
 }
 
-
 /* =========================================================
    HERO BUTTONS
    ========================================================= */
-
 
 /* =========================================================
    PRIMARY — BOOK A CONSULTATION
@@ -2759,13 +2724,11 @@ html[data-theme="light"] .codm-hero-description,
   opacity: 0.9 !important;
 }
 
-
 /* =========================================================
    SECONDARY — EXPLORE SERVICES
    ========================================================= */
 
 #hero .codm-hero-secondary-button {
-
 
   display: inline-flex !important;
   align-items: center !important;
@@ -2800,7 +2763,6 @@ html[data-theme="light"] .codm-hero-description,
     opacity 0.3s ease !important;
 }
 
-
 /* =========================================================
    SECONDARY — DARK MODE
    ========================================================= */
@@ -2811,7 +2773,6 @@ html.dark #hero .codm-hero-secondary-button,
 .dark #hero .codm-hero-secondary-button {
   color: #FFFFFF !important;
 }
-
 
 /* =========================================================
    SECONDARY — HOVER
@@ -2830,7 +2791,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   color: #FFFFFF !important;
 }
 
-
 /* =========================================================
    CODM HERO — PREMIUM SMOOTH ANIMATIONS
    ========================================================= */
@@ -2845,7 +2805,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   will-change: transform, opacity;
 }
 
-
 /* ---------------------------------------------------------
    HERO DESCRIPTION
    --------------------------------------------------------- */
@@ -2855,7 +2814,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   animation: codmHeroDescription 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
   will-change: transform, opacity;
 }
-
 
 /* ---------------------------------------------------------
    HERO BUTTONS
@@ -2867,7 +2825,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   will-change: transform, opacity;
 }
 
-
 /* ---------------------------------------------------------
    HERO LOGOS
    --------------------------------------------------------- */
@@ -2877,7 +2834,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   animation: codmHeroLogos 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
   will-change: transform, opacity;
 }
-
 
 /* ---------------------------------------------------------
    INDIVIDUAL LOGOS
@@ -2903,7 +2859,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-hero-logos img:nth-child(4) {
   animation: codmHeroLogoItem 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
 }
-
 
 /* =========================================================
    HERO MEDIA — FLUPER STYLE SCROLL REVEAL
@@ -2970,7 +2925,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   transform: translateX(-50%) scale(1);
 }
 
-
 /* ---------------------------------------------------------
    IMAGE FRAME
    --------------------------------------------------------- */
@@ -2983,7 +2937,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
     box-shadow 0.6s ease;
 }
 
-
 /*
    Very subtle hover effect
 */
@@ -2991,7 +2944,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-hero-image-frame:hover {
   transform: translateY(-5px) scale(1.005);
 }
-
 
 /* ---------------------------------------------------------
    IMAGE ITSELF
@@ -3008,7 +2960,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   transform: scale(1.01);
 }
 
-
 /* =========================================================
    IMAGE GLOW
    ========================================================= */
@@ -3022,7 +2973,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   animation: codmHeroGlow 5s ease-in-out 1.8s infinite;
   will-change: opacity, transform;
 }
-
 
 /* =========================================================
    KEYFRAMES
@@ -3042,7 +2992,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeroDescription {
 
   0% {
@@ -3056,7 +3005,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   }
 
 }
-
 
 @keyframes codmHeroButtons {
 
@@ -3072,7 +3020,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeroLogos {
 
   0% {
@@ -3087,7 +3034,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeroLogoItem {
 
   0% {
@@ -3101,7 +3047,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   }
 
 }
-
 
 /* ---------------------------------------------------------
    DASHBOARD IMAGE REVEAL
@@ -3124,7 +3069,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   }
 
 }
-
 
 /* ---------------------------------------------------------
    GLOW BREATHING
@@ -3149,7 +3093,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 /* =========================================================
    PREMIUM BUTTON HOVER
    ========================================================= */
@@ -3165,14 +3108,12 @@ html.dark #hero .codm-hero-secondary-button:hover,
   transform: translateY(-2px);
 }
 
-
 /* Primary button */
 
 .codm-hero-primary-button {
   position: relative;
   overflow: hidden;
 }
-
 
 /*
    Soft light sweep across primary button
@@ -3198,7 +3139,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-hero-primary-button:hover::after {
   left: 140%;
 }
-
 
 /* =========================================================
    REDUCED MOTION
@@ -3226,12 +3166,9 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
-
 .codm-hero-image-section {
 	margin: 50px 0px 0px;
 }
-
 
 /* =========================================================
    CODM HEADER — PREMIUM / ADCHITECTS-STYLE MOTION
@@ -3239,7 +3176,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
    No Framer Motion
    No TSX changes required
    ========================================================= */
-
 
 /* =========================================================
    MAIN HEADER
@@ -3265,7 +3201,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
     both;
 }
 
-
 /* =========================================================
    HEADER INNER
    ========================================================= */
@@ -3280,7 +3215,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   transition:
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 
 /* =========================================================
    LOGO
@@ -3303,11 +3237,9 @@ html.dark #hero .codm-hero-secondary-button:hover,
   will-change: transform, opacity;
 }
 
-
 .codm-header-logo-link:hover {
   transform: translateY(-2px);
 }
-
 
 /* =========================================================
    LOGO IMAGE
@@ -3319,7 +3251,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
     opacity 0.4s ease;
 }
 
-
 /* =========================================================
    NAVIGATION
    ========================================================= */
@@ -3328,7 +3259,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   display: flex;
   align-items: center;
 }
-
 
 /* =========================================================
    NAV LINKS — STAGGERED ENTRANCE
@@ -3353,7 +3283,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   will-change: transform, opacity;
 }
 
-
 /* Stagger */
 
 .codm-header-nav-link:nth-child(1) {
@@ -3376,7 +3305,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   animation-delay: 0.53s;
 }
 
-
 /* =========================================================
    NAV LINK HOVER
    ========================================================= */
@@ -3384,7 +3312,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 .codm-header-nav-link:hover {
   transform: translateY(-2px);
 }
-
 
 /* Elegant underline */
 
@@ -3413,7 +3340,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
 .codm-header-nav-link:hover::after {
   transform:
     translateX(-50%)
@@ -3421,7 +3347,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
   transform-origin: left center;
 }
-
 
 /* =========================================================
    RIGHT SIDE
@@ -3442,9 +3367,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
   will-change: transform, opacity;
 }
-
-
-
 
 /* =========================================================
    CTA
@@ -3472,14 +3394,12 @@ html.dark #hero .codm-hero-secondary-button:hover,
   will-change: transform, opacity;
 }
 
-
 .codm-header-cta:hover {
   transform: translateY(-3px);
 
   box-shadow:
     0 12px 35px rgba(79, 70, 229, 0.25);
 }
-
 
 /* =========================================================
    CTA LIGHT SWEEP
@@ -3512,11 +3432,9 @@ html.dark #hero .codm-hero-secondary-button:hover,
   pointer-events: none;
 }
 
-
 .codm-header-cta:hover::before {
   left: 140%;
 }
-
 
 /* =========================================================
    CTA ARROW
@@ -3529,11 +3447,9 @@ html.dark #hero .codm-hero-secondary-button:hover,
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
 .codm-header-cta:hover .codm-header-cta-arrow {
   transform: translateX(5px);
 }
-
 
 /* =========================================================
    ANNOUNCEMENT BAR
@@ -3549,7 +3465,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
     both;
 }
 
-
 .codm-announcement-inner {
   animation:
     codmAnnouncementContentIn
@@ -3559,18 +3474,15 @@ html.dark #hero .codm-hero-secondary-button:hover,
     both;
 }
 
-
 .codm-announcement-link {
   transition:
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.3s ease;
 }
 
-
 .codm-announcement-link:hover {
   transform: translateX(4px);
 }
-
 
 .codm-announcement-arrow {
   display: inline-block;
@@ -3579,11 +3491,9 @@ html.dark #hero .codm-hero-secondary-button:hover,
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
 .codm-announcement-link:hover .codm-announcement-arrow {
   transform: translateX(4px);
 }
-
 
 /* =========================================================
    INITIAL LOAD KEYFRAMES
@@ -3607,7 +3517,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeaderLogoIn {
 
   from {
@@ -3628,7 +3537,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeaderNavIn {
 
   from {
@@ -3647,7 +3555,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmHeaderRightIn {
 
   from {
@@ -3665,7 +3572,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   }
 
 }
-
 
 @keyframes codmHeaderCTAIn {
 
@@ -3687,7 +3593,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmAnnouncementIn {
 
   from {
@@ -3706,7 +3611,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 @keyframes codmAnnouncementContentIn {
 
   from {
@@ -3724,7 +3628,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
   }
 
 }
-
 
 /* =========================================================
    SCROLL-DRIVEN PREMIUM HEADER
@@ -3751,7 +3654,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
       backdrop-filter,
       box-shadow;
   }
-
 
   @keyframes codmHeaderScrollState {
 
@@ -3788,7 +3690,6 @@ html.dark #hero .codm-hero-secondary-button:hover,
 
 }
 
-
 /* =========================================================
    LIGHT MODE
    ========================================================= */
@@ -3800,7 +3701,6 @@ html[data-theme="light"] .codm-header,
   color: var(--foreground);
 }
 
-
 @supports (animation-timeline: scroll()) {
 
   html.light .codm-header,
@@ -3811,7 +3711,6 @@ html[data-theme="light"] .codm-header,
     animation-name:
       codmHeaderScrollStateLight;
   }
-
 
   @keyframes codmHeaderScrollStateLight {
 
@@ -3849,7 +3748,6 @@ html[data-theme="light"] .codm-header,
 
 }
 
-
 /* =========================================================
    MOBILE
    ========================================================= */
@@ -3879,7 +3777,6 @@ html[data-theme="light"] .codm-header,
   }
 
 }
-
 
 /* =========================================================
    REDUCED MOTION
@@ -3913,10 +3810,6 @@ html[data-theme="light"] .codm-header,
   }
 
 }
-
-
-
-
 
 .codm-industries-pills {
 	justify-content: start;
@@ -3957,9 +3850,6 @@ html[data-theme="light"] .codm-header,
   }
 }
 
-
-
-
 /* ---------- HEADER NAV ---------- */
 
 .codm-header-nav-link {
@@ -3982,7 +3872,6 @@ html[data-theme="light"] .codm-header-nav-link:hover {
   color: #6f63ff !important;
 }
 
-
 /* =========================================================
    LOGOS
    ========================================================= */
@@ -4002,7 +3891,6 @@ html[data-theme="dark"] .codm-logo-light {
 html[data-theme="dark"] .codm-logo-dark {
   display: block !important;
 }
-
 
 /* =========================================================
    THEME TOGGLE
@@ -4187,9 +4075,6 @@ html[data-theme="dark"] .codm-logo-dark {
   }
 }
 
-
-
-
 /* =========================================================
    FIX HERO HEADING INITIAL POSITION
    ========================================================= */
@@ -4219,9 +4104,6 @@ html[data-theme="dark"] .codm-logo-dark {
   animation: none !important;
   opacity: 1 !important;
 }
-
-
-
 
 /* =========================================================
    HERO MEDIA — SCROLL SCALE
