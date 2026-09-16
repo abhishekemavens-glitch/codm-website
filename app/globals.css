@@ -2608,9 +2608,16 @@ html.dark .codm-announcement-link {
   }
 }
 
+[data-theme="light"] body {
+	background: radial-gradient( ellipse 75% 40% at 50% 100%, #ffffff 0%, #f5eaff 20%, #e4dcfa 50%, rgba(225, 218, 248, 0) 80% ), linear-gradient( 180deg, #edf0fa 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% );
+}
+[data-theme="light"] #hero {
+	background: radial-gradient(70% 45% at 50% 100%,#f5eaff 0%,#eee5ff 25%,#e5defb 45%,#0000 75%),linear-gradient(#eef1fb 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%);
+	margin: 8% 0 0;
+}
+
 #hero {
 	margin: 8% 0 0;
-	background: radial-gradient( ellipse 70% 45% at 50% 100%, #f5eaff 0%, #eee5ff 25%, #e5defb 45%, transparent 75% ), linear-gradient( 180deg, #eef1fb 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% );
 }
 #hero .md\:text-\[64px\] {
 	font-size: 72px;
