@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { useInViewOnce, useParallax } from "@/lib/codm-animations";
+import { useInViewOnce, useParallax, splitWords } from "@/lib/codm-animations";
 // If you don't have the "@/" path alias set up in tsconfig.json,
 // use a relative path instead, e.g. "../SectionHeading" or "./SectionHeading"
 
