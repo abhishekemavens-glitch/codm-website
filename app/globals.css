@@ -188,13 +188,13 @@ header > div > div:last-child > a:hover {
 }
 
 .codm-header-logo {
-  display: block;
-  width: 105px;
-  height: 28px;
-  max-width: 105px;
-  object-fit: contain;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  max-height: 50px;
+	object-fit: contain;
+	width: 130px;
+	max-width: 130px;
+	height: 45px;
+	max-height: 45px;
+	transition: opacity .3s,transform .3s;
+	display: block;
 }
 
 .codm-header-logo-link:hover .codm-header-logo {
@@ -242,7 +242,7 @@ header > div > div:last-child > a:hover {
   height: 100%;
   padding: 0;
   font-family: "Inter", sans-serif !important;
-  font-size: 17px !important;
+  font-size: 18px !important;
   font-weight: 400 !important;
   line-height: 1.4 !important;
   color: #8A96A8 !important;
