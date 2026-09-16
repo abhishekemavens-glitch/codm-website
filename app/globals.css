@@ -85,14 +85,18 @@ html[data-theme="dark"] {
 }
 
 [data-theme="light"] .codm-header {
-	box-shadow: 0 4px 20px #1014240a;
-	background: #ffffffeb !important;
-	border: 1px solid#D9E1EA !important;
+	background: radial-gradient( ellipse 70% 45% at 50% 100%, #f5eaff 0%, #eee5ff 25%, #e5defb 45%, transparent 75% ), linear-gradient( 180deg, #eef1fb 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% ) !important;
+	height: auto !important;
+}
+[data-theme="light"] .codm-header .codm-header-inner {
+	background: transparent !important;
+	border: 1px solid #d9e1ea !important;
+	width: auto !important;
 	margin: 20px 30px !important;
 	border-radius: 40px;
-	width: auto !important;
+	height: auto !important;
+	padding: 10px 40px;
 }
-
 [data-theme="light"] .codm-header-cta {
   background: #101424;
   color: #ffffff;
@@ -2606,6 +2610,7 @@ html.dark .codm-announcement-link {
 
 #hero {
 	margin: 5% 0 0;
+	background: radial-gradient( ellipse 70% 45% at 50% 100%, #f5eaff 0%, #eee5ff 25%, #e5defb 45%, transparent 75% ), linear-gradient( 180deg, #eef1fb 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% );
 }
 #hero .md\:text-\[64px\] {
 	font-size: 72px;
