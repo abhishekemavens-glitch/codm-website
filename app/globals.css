@@ -531,9 +531,12 @@ header > div > div:last-child > a:hover {
 }
 
 [data-theme="dark"] .codm-header {
-  background: rgba(6, 7, 18, 0.78);
-  border-bottom-color: rgba(255, 255, 255, 0.09);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02);
+	background: #060712c7;
+	box-shadow: 0 1px #ffffff05;
+	border: 1px solid #1B2038 !important;
+	width: auto !important;
+	margin: 20px 30px !important;
+	border-radius: 40px;
 }
 
 [data-theme="dark"] .codm-header-nav-link {
