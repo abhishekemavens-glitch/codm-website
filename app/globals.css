@@ -85,9 +85,12 @@ html[data-theme="dark"] {
 }
 
 [data-theme="light"] .codm-header {
-	background: #ffffffeb !important;
-	border-bottom-color: #10142414 !important;
 	box-shadow: 0 4px 20px #1014240a;
+	background: #ffffffeb !important;
+	border: 1px solid#D9E1EA !important;
+	margin: 20px 30px !important;
+	border-radius: 40px;
+	width: auto !important;
 }
 
 [data-theme="light"] .codm-header-cta {
