@@ -269,27 +269,34 @@ export default function Industries() {
 
       <style jsx>{`
         /* =====================================================
-           SECTION HEADING REVEAL — matches Hero's REAL title
-           keyframe (codmHeroTitle: 32px, 1s, cubic-bezier(0.22,1,0.36,1),
-           0.15s delay) exactly, just gated by scroll (isVisible)
-           instead of firing unconditionally on mount, since this
-           heading is below the fold. Reusable on any other
-           section heading — drop codm-section-heading-reveal /
-           codm-section-heading-reveal-in on the wrapper.
+           SECTION HEADING REVEAL — blur-in, matching the working
+           .codm-why-heading-in pattern already in globals.css
+           (blur(4px)->0, translateY(35px)->0, 0.9s,
+           cubic-bezier(0.22,1,0.36,1)). Hero's own title has
+           animation:none forced on it further down globals.css,
+           so it doesn't actually do this — this is the real
+           "blur on load, reveals after a moment" effect that
+           already exists and works elsewhere on the site.
+           Reusable on any other section heading — drop
+           codm-section-heading-reveal / codm-section-heading-reveal-in
+           on the wrapper.
            ===================================================== */
 
         .codm-section-heading-reveal {
           opacity: 0;
-          transform: translateY(32px);
+          transform: translateY(35px);
+          filter: blur(4px);
           transition:
-            opacity 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
-            transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
-          will-change: opacity, transform;
+            opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+            filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+          will-change: opacity, transform, filter;
         }
 
         .codm-section-heading-reveal-in {
           opacity: 1;
           transform: translateY(0);
+          filter: blur(0);
         }
 
         .codm-industry-card-content {
@@ -489,6 +496,7 @@ export default function Industries() {
 
         @media (prefers-reduced-motion: reduce) {
           .codm-industries-heading,
+          .codm-section-heading-reveal,
           .codm-industry-card-content,
           .codm-industry-card,
           .codm-industry-image-container,
@@ -497,6 +505,7 @@ export default function Industries() {
             animation: none !important;
             opacity: 1 !important;
             transform: none !important;
+            filter: none !important;
           }
 
           .codm-industries-glow,
