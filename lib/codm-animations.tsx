@@ -1094,7 +1094,7 @@ export function useTilt(
 
    Usage:
 
-   const heroMediaRef = useScrollScale<HTMLDivElement>();
+   const heroMediaRef = useScrollScale();
 
    <div
      ref={heroMediaRef}
