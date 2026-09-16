@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
+import { useStickyNavState } from "@/lib/codm-animations";
 
 type HeaderData = {
   mainLogoLight: string;
