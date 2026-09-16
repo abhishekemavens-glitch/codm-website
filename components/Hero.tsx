@@ -409,84 +409,71 @@ export default function Hero() {
             "
           >
 
-                     {/* PRIMARY */}
+                   {/* PRIMARY */}
 
-            {hero.button1Text && (
-              
-                ref={
-                  primaryButtonRef as Ref<HTMLAnchorElement>
-                }
-                href={
-                  hero.button1Url ||
-                  "/contact"
-                }
-                className="
-                  codm-hero-primary-button
-                  codm-magnetic
-                  codm-press
-                  inline-flex
-                  h-[53px]
-                  min-w-[227px]
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-transparent
-                  px-5
-                  text-center
-                  font-['Plus_Jakarta_Sans']
-                  text-[18px]
-                  font-medium
-                  leading-none
-                  text-white
-                  transition-all
-                  duration-300
-                  hover:opacity-90
-                "
-              >
-                {hero.button1Text}
-              </a>
-            )}
+{hero.button1Text && (
+  <a
+    ref={primaryButtonRef as Ref<HTMLAnchorElement>}
+    href={hero.button1Url || "/contact"}
+    className="
+      codm-hero-primary-button
+      codm-magnetic
+      codm-press
+      inline-flex
+      h-[53px]
+      min-w-[227px]
+      items-center
+      justify-center
+      rounded-full
+      border
+      border-transparent
+      px-5
+      text-center
+      font-['Plus_Jakarta_Sans']
+      text-[18px]
+      font-medium
+      leading-none
+      text-white
+      transition-all
+      duration-300
+      hover:opacity-90
+    "
+  >
+    {hero.button1Text}
+  </a>
+)}
 
-            {/* SECONDARY */}
+{/* SECONDARY */}
 
-            {hero.button2Text && (
-              
-                ref={
-                  secondaryButtonRef as Ref<HTMLAnchorElement>
-                }
-                href={
-                  hero.button2Url ||
-                  "/services"
-                }
-                className="
-                  codm-hero-secondary-button
-                  codm-magnetic
-                  codm-press
-                  inline-flex
-                  h-[53px]
-                  min-w-[177px]
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  px-5
-                  text-center
-                  font-['Google_Sans_Flex']
-                  text-[18px]
-                  font-medium
-                  leading-none
-                  transition-all
-                  duration-300
-                  hover:scale-[1.02]
-                "
-              >
-                {hero.button2Text}
-              </a>
-            )}
-
-          </div>
-        )}
+{hero.button2Text && (
+  <a
+    ref={secondaryButtonRef as Ref<HTMLAnchorElement>}
+    href={hero.button2Url || "/services"}
+    className="
+      codm-hero-secondary-button
+      codm-magnetic
+      codm-press
+      inline-flex
+      h-[53px]
+      min-w-[177px]
+      items-center
+      justify-center
+      rounded-full
+      border
+      px-5
+      text-center
+      font-['Google_Sans_Flex']
+      text-[18px]
+      font-medium
+      leading-none
+      transition-all
+      duration-300
+      hover:scale-[1.02]
+    "
+  >
+    {hero.button2Text}
+  </a>
+)}
 
 
         {/* =========================================
