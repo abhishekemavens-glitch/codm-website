@@ -4174,3 +4174,97 @@ html[data-theme="dark"] .codm-logo-dark {
 .max-w-\[700px\] {
 	max-width: 700px;
 }
+
+
+
+
+
+/* =========================================================
+   WHY CODM — SCROLL-GATED ENTRANCE ANIMATIONS
+   Replaces the old fire-on-mount version. Find and delete the
+   old ".codm-why-heading-in" / ".codm-why-card-in" blocks (and
+   the dead "#why-codm .codm-reveal-heading, .codm-card-reveal"
+   fallback rule right above them — it targets classnames that
+   aren't actually used anywhere and can be removed) in
+   globals.css, then paste this in their place.
+
+   Same blur amount, same distances, same easing/duration as
+   before — only the trigger changed, from "animation: ...
+   forwards" firing on page load, to "transition:" toggled by
+   isVisible (scroll-into-view) in WhyCodm.tsx.
+   ========================================================= */
+
+.codm-why-heading-in {
+  opacity: 0;
+  transform: translateY(35px);
+  filter: blur(4px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+  will-change: opacity, transform, filter;
+}
+
+.codm-why-heading-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.codm-why-card-in {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  filter: blur(4px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+      calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+      calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+      calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+    background-color 0.4s ease,
+    background-image 0.4s ease;
+  will-change: opacity, transform, filter;
+}
+
+.codm-why-card-in-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Hover effect — unchanged */
+
+.codm-why-card-in:hover {
+  background-image:
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(74, 55, 255, 0.95) 0%,
+      rgba(52, 38, 180, 0.65) 38%,
+      rgba(13, 16, 32, 0.98) 78%
+    );
+}
+
+.codm-why-card-in:hover h3 {
+  color: #ffffff;
+}
+
+.codm-why-card-in:hover .mt-2 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-why-heading-in,
+  .codm-why-heading-in-visible,
+  .codm-why-card-in,
+  .codm-why-card-in-visible {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
