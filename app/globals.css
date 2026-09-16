@@ -86,18 +86,20 @@ html[data-theme="dark"] {
 
 
 [data-theme="light"] .codm-header .codm-header-inner {
-	background: transparent !important;
-	border: 1px solid #d9e1ea !important;
-	width: auto !important;
-	margin: 20px 30px !important;
-	border-radius: 40px;
-	height: auto !important;
-	padding: 10px 40px;
+  background: transparent !important;
+  border: 1px solid #d9e1ea !important;
+  width: auto !important;
+  margin: 20px 30px !important;
+  border-radius: 40px;
+  height: auto !important;
+  padding: 10px 40px;
 }
-html[data-theme="light"] .codm-header, [data-theme="light"] .codm-header-scrolled .codm-header-inner {
-	margin: 0 !important;
-	background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
-	border: none !important;
+
+html[data-theme="light"] .codm-header-scrolled,
+[data-theme="light"] .codm-header-scrolled .codm-header-inner {
+  margin: 0 !important;
+  background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
+  border: none !important;
 }
 [data-theme="light"] .codm-header-cta {
   background: #101424;
