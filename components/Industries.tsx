@@ -22,7 +22,6 @@ type Industry = {
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
-
 export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
