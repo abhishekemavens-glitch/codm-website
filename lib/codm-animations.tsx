@@ -110,12 +110,14 @@ export function splitLetters(text: string) {
 export function useInViewOnce<T extends HTMLElement = HTMLDivElement>(
   threshold = 0.12
 ) {
-  const ref = useRef<T | null>(null);
+  const [element, setElement] = useState<T | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const element = ref.current;
+  const ref = useCallback((node: T | null) => {
+    setElement(node);
+  }, []);
 
+  useEffect(() => {
     if (!element) return;
 
     /*
@@ -143,14 +145,13 @@ export function useInViewOnce<T extends HTMLElement = HTMLDivElement>(
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [threshold]);
+  }, [element, threshold]);
 
   return {
     ref,
     isVisible,
   };
 }
-
 
 /* =============================================================
    4. useInView
