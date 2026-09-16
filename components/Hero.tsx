@@ -42,7 +42,7 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 export default function Hero() {
-  const heroMediaRef = useScrollScale<HTMLDivElement>();
+  const heroMediaRef = useScrollScale();
 
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
