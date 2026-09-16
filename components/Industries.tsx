@@ -28,11 +28,34 @@ export default function Industries() {
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
 
+ const active = industries[activeIndustry];
+  
   const { ref: sectionRef, isVisible } =
     useInViewOnce<HTMLElement>(0.12);
 
   const { ref: imageParallaxRef, offset: imageOffset } =
     useParallax<HTMLDivElement>(0.06);
+
+
+    const { ref: sectionRef, isVisible } =
+    useInViewOnce<HTMLElement>(0.12);
+
+  const { ref: imageParallaxRef, offset: imageOffset } =
+    useParallax<HTMLDivElement>(0.06);
+
+  const [titleVisible, setTitleVisible] = useState(false);
+
+  useEffect(() => {
+    setTitleVisible(false);
+    const frame = window.requestAnimationFrame(() => {
+      setTitleVisible(true);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [active?.id]);
+
+  // PREMIUM: tilt + spotlight state for the featured card
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
 
   // PREMIUM: tilt + spotlight state for the featured card
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -102,7 +125,7 @@ export default function Industries() {
     loadIndustries();
   }, []);
 
-  const active = industries[activeIndustry];
+  
 
   return (
     <>
