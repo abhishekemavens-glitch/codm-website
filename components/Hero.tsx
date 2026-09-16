@@ -1,9 +1,11 @@
-```tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Ref } from "react";
-import { useMagneticButton, useScrollScale } from "@/lib/codm-animations";
+import {
+  useMagneticButton,
+  useScrollScale,
+} from "@/lib/codm-animations";
 
 type HeroData = {
   id: string;
@@ -68,25 +70,19 @@ export default function Hero() {
                     id
                     databaseId
                     title
-
                     mainHeading
                     description
                     highlight
-
                     button1Text
                     button1Url
-
                     button2Text
                     button2Url
-
                     logo1
                     logo2
                     logo3
                     logo4
-
                     videoId
                     videoUrl
-
                     featuredImage {
                       node {
                         sourceUrl
@@ -487,8 +483,6 @@ export default function Hero() {
 
         {/* =========================================
             HERO MEDIA
-            VIDEO FIRST
-            FEATURED IMAGE = FALLBACK / POSTER
             ========================================= */}
 
         {(hero.videoUrl ||
@@ -544,7 +538,6 @@ export default function Hero() {
                 shadow-[0_30px_100px_rgba(0,0,0,0.20)]
               "
             >
-
               <div
                 className="
                   codm-hero-image-inner
@@ -554,7 +547,7 @@ export default function Hero() {
               >
 
                 {/* =====================================
-                    VIDEO / FEATURED IMAGE
+                    VIDEO / IMAGE
                     ===================================== */}
 
                 {hero.videoUrl ? (
@@ -583,10 +576,6 @@ export default function Hero() {
                   />
                 ) : (
                   <>
-                    {/* ===================================
-                        FEATURED IMAGE FALLBACK
-                        =================================== */}
-
                     {hero.featuredImage?.node?.sourceUrl && (
                       <img
                         src={
@@ -618,20 +607,3 @@ export default function Hero() {
     </section>
   );
 }
-```
-
-This version fixes the duplicated video block and restores the missing `</div>`, `</section>`, and conditional closures. The original uploaded file currently ends inside the media section without those final structural closures.
-
-**After pasting:**
-
-1. Save `components/Hero.tsx`
-2. Run:
-
-```bash
-npm run build
-```
-
-3. If it passes, commit and push to GitHub.
-4. Vercel will automatically redeploy.
-
-The `unrs-resolver` `npm warn` is **not** the cause of the build failure. The issue is the malformed JSX in `Hero.tsx`.
