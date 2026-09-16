@@ -270,13 +270,11 @@ export default function Hero() {
         }}
       />
 
-      <div
+            <div
         className="
           relative
           mx-auto
-          max-w-[1200px]
           px-5
-          sm:px-8
         "
       >
 
@@ -487,7 +485,7 @@ export default function Hero() {
 
         {(hero.videoUrl ||
           hero.featuredImage?.node?.sourceUrl) && (
-          <div
+                   <div
             ref={
               heroMediaRef as Ref<HTMLDivElement>
             }
@@ -498,7 +496,6 @@ export default function Hero() {
               mx-auto
               mt-12
               w-full
-              max-w-[1100px]
             "
           >
 
