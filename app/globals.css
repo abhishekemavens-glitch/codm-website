@@ -95,11 +95,11 @@ html[data-theme="dark"] {
   padding: 10px 40px;
 }
 
-html[data-theme="light"] .codm-header-scrolled,
-[data-theme="light"] .codm-header-scrolled .codm-header-inner {
-  margin: 0 !important;
-  background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
-  border: none !important;
+html[data-theme="light"] .codm-header-scrolled, [data-theme="light"] .codm-header-scrolled .codm-header-inner {
+	background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
+	border: none !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
 }
 [data-theme="light"] .codm-header-cta {
   background: #101424;
