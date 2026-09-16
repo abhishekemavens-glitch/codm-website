@@ -144,8 +144,8 @@ export default function Industries() {
         <div className="relative mx-auto max-w-[1250px] px-5 sm:px-8">
           <div
             className={
-              "codm-industries-heading " +
-              (isVisible ? "codm-industries-heading-in" : "")
+              "codm-industries-heading codm-section-heading-reveal " +
+              (isVisible ? "codm-section-heading-reveal-in" : "")
             }
           >
             <SectionHeading
@@ -268,16 +268,26 @@ export default function Industries() {
       </section>
 
       <style jsx>{`
-        .codm-industries-heading {
+        /* =====================================================
+           SECTION HEADING REVEAL — matches Hero's REAL title
+           keyframe (codmHeroTitle: 32px, 1s, cubic-bezier(0.22,1,0.36,1),
+           0.15s delay) exactly, just gated by scroll (isVisible)
+           instead of firing unconditionally on mount, since this
+           heading is below the fold. Reusable on any other
+           section heading — drop codm-section-heading-reveal /
+           codm-section-heading-reveal-in on the wrapper.
+           ===================================================== */
+
+        .codm-section-heading-reveal {
           opacity: 0;
-          transform: translateY(22px);
+          transform: translateY(32px);
           transition:
-            opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+            opacity 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+            transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
           will-change: opacity, transform;
         }
 
-        .codm-industries-heading-in {
+        .codm-section-heading-reveal-in {
           opacity: 1;
           transform: translateY(0);
         }
