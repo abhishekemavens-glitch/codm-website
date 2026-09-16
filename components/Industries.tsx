@@ -1,7 +1,7 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
+import { useInViewOnce, useParallax } from "@/lib/codm-animations";
 // If you don't have the "@/" path alias set up in tsconfig.json,
 // use a relative path instead, e.g. "../SectionHeading" or "./SectionHeading"
 
@@ -27,7 +27,12 @@ export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
+
+  const { ref: sectionRef, isVisible } =
+    useInViewOnce<HTMLElement>(0.12);
+
+  const { ref: imageParallaxRef, offset: imageOffset } =
+    useParallax<HTMLDivElement>(0.06);
 
   // PREMIUM: tilt + spotlight state for the featured card
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -46,29 +51,6 @@ export default function Industries() {
     setTilt({ x: 0, y: 0 });
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: 0.12,
-      }
-    );
-
-    const section = document.getElementById("industries");
-
-    if (section) {
-      observer.observe(section);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     async function loadIndustries() {
@@ -124,10 +106,11 @@ export default function Industries() {
 
   return (
     <>
-     <section
+        <section
   id="industries"
+  ref={sectionRef}
   className={`codm-industries-section relative overflow-hidden bg-[var(--background)] py-24 transition-colors duration-500 md:py-32 ${
-    isVisible ? "codm-industries-visible" : ""
+    isVisible ? "codm-industries-visible codm-visible" : ""
   }`}
 >
         {/* =====================================================
@@ -234,8 +217,8 @@ export default function Industries() {
 
                     <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
-                    <h3 className="text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
-                      {active.title}
+                     <h3 className="codm-word-stagger text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
+                      {splitWords(active.title)}
                     </h3>
 
                     <p
@@ -265,10 +248,15 @@ export default function Industries() {
                     IMAGE
                     ================================================= */}
 
-                <div className="codm-industry-image-wrapper order-1 p-4 md:p-5 lg:order-2 lg:p-5">
+                               <div
+                  ref={imageParallaxRef}
+                  style={{
+                    transform: `translate3d(0, ${imageOffset}px, 0)`,
+                  }}
+                  className="codm-industry-image-wrapper order-1 p-4 md:p-5 lg:order-2 lg:p-5"
+                >
 
                   <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
-
                     <div
                       aria-hidden="true"
                       className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full"
