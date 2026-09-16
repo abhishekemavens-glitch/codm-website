@@ -46,7 +46,7 @@ export default function Hero() {
   const heroMediaRef = useScrollScale();
 
 const { ref: heroRevealRef, isVisible: heroVisible } =
-  useRevealSequence<HTMLDivElement>(0.1);
+  useRevealSequence<HTMLDivElement>(0);
 
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
