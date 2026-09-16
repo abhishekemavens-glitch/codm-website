@@ -288,18 +288,21 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
             ========================================= */}
 
         {logos.length > 0 && (
-          <div
-            className="
-              codm-hero-logos
-              mb-8
-              flex
-              flex-wrap
-              items-center
-              justify-center
-              gap-5
-              md:gap-7
-            "
-          >
+  <div
+    className={`
+      codm-hero-logos
+      codm-reveal
+      ${heroVisible ? "codm-visible" : ""}
+      mb-8
+      flex
+      flex-wrap
+      items-center
+      justify-center
+      gap-5
+      md:gap-7
+    `}
+    style={{ transitionDelay: "0.05s" }}
+  >
             {logos.map((logo, index) => (
               <div
                 key={`${logo}-${index}`}
@@ -330,20 +333,23 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
             HEADING
             ========================================= */}
 
-        <h1
-          className="
-            codm-hero-title
-            mx-auto
-            max-w-[950px]
-            text-center
-            text-[44px]
-            font-medium
-            leading-[1.03]
-            tracking-[-0.055em]
-            text-[var(--foreground)]
-            md:text-[64px]
-          "
-        >
+       <h1
+  className={`
+    codm-hero-title
+    codm-reveal-heading
+    ${heroVisible ? "codm-visible" : ""}
+    mx-auto
+    max-w-[950px]
+    text-center
+    text-[44px]
+    font-medium
+    leading-[1.03]
+    tracking-[-0.055em]
+    text-[var(--foreground)]
+    md:text-[64px]
+  `}
+  style={{ transitionDelay: "0.15s" }}
+>
           {mainHeading && (
             <span className="block">
               {mainHeading}
@@ -369,23 +375,26 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
             ========================================= */}
 
         {description && (
-          <p
-            className="
-              codm-hero-description
-              mx-auto
-              mt-5
-              max-w-[900px]
-              text-center
-              font-['Inter']
-              text-[20px]
-              font-normal
-              leading-[28px]
-              text-[#9AA3B8]
-            "
-          >
-            {description}
-          </p>
-        )}
+  <p
+    className={`
+      codm-hero-description
+      codm-reveal
+      ${heroVisible ? "codm-visible" : ""}
+      mx-auto
+      mt-5
+      max-w-[900px]
+      text-center
+      font-['Inter']
+      text-[20px]
+      font-normal
+      leading-[28px]
+      text-[#9AA3B8]
+    `}
+    style={{ transitionDelay: "0.3s" }}
+  >
+    {description}
+  </p>
+)}
 
         {/* =========================================
             BUTTONS
@@ -394,16 +403,19 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
         {(hero.button1Text ||
           hero.button2Text) && (
           <div
-            className="
-              codm-hero-buttons
-              mt-8
-              flex
-              flex-wrap
-              items-center
-              justify-center
-              gap-3
-            "
-          >
+  className={`
+    codm-hero-buttons
+    codm-reveal
+    ${heroVisible ? "codm-visible" : ""}
+    mt-8
+    flex
+    flex-wrap
+    items-center
+    justify-center
+    gap-3
+  `}
+  style={{ transitionDelay: "0.42s" }}
+>
 
             {/* PRIMARY */}
 
