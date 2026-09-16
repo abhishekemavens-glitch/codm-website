@@ -1082,15 +1082,14 @@ export function useTilt(
 
 
 
-
 /* =============================================================
    18. useScrollScale
    =============================================================
    Scroll-driven scale for hero media / video frames.
 
    Writes --scroll-progress (0 → 1) onto the element as it
-   moves up through the viewport. Drive transform, opacity,
-   and border-radius from that variable in CSS.
+   moves up through the viewport, and adds "codm-media-loaded"
+   one frame after mount to trigger an entrance transition.
 
    Usage:
 
@@ -1126,8 +1125,17 @@ export function useScrollScale(
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       element.style.setProperty("--scroll-progress", "1");
+      element.classList.add("codm-media-loaded");
       return;
     }
+
+    /*
+     * Trigger the entrance transition one frame after mount,
+     * so the browser paints the initial (hidden) state first.
+     */
+    const loadFrame = window.requestAnimationFrame(() => {
+      element.classList.add("codm-media-loaded");
+    });
 
     let frame = 0;
 
@@ -1158,6 +1166,7 @@ export function useScrollScale(
     window.addEventListener("resize", handleScroll);
 
     return () => {
+      window.cancelAnimationFrame(loadFrame);
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
