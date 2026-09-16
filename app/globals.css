@@ -4126,3 +4126,39 @@ html[data-theme="dark"] .codm-logo-dark {
   opacity: var(--scroll-progress);
   transition: opacity 0.3s ease;
 }
+
+
+
+/* =========================================================
+   INDUSTRY CARD TITLE — PER-SWITCH WORD REVEAL
+   Independent of the section's persistent .codm-visible,
+   so the stagger replays every time the active industry changes.
+   ========================================================= */
+
+.codm-industry-title-reveal .codm-word {
+  opacity: 0;
+  transform: translateY(60%);
+  filter: blur(4px);
+
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+  transition-delay: calc(var(--word-index) * 45ms);
+}
+
+.codm-industry-title-reveal.codm-industry-title-visible .codm-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-industry-title-reveal .codm-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
