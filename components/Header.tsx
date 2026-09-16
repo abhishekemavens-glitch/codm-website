@@ -72,6 +72,8 @@ function parseLink(value: string = "") {
 }
 
 export default function Header() {
+  const scrolled = useStickyNavState(20);
+
   const [header, setHeader] =
     useState<HeaderData | null>(null);
 
@@ -379,7 +381,11 @@ export default function Header() {
           MAIN HEADER
       ===================================================== */}
 
-      <header className="codm-header codm-site-header">
+    <header
+  className={`codm-header codm-site-header codm-header-sticky ${
+    scrolled ? "codm-header-scrolled" : ""
+  }`}
+>
 
         <div className="codm-header-inner">
 
