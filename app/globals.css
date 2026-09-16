@@ -84,10 +84,7 @@ html[data-theme="dark"] {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
 }
 
-[data-theme="light"] .codm-header {
-	background: radial-gradient( ellipse 70% 45% at 50% 100%, #f5eaff 0%, #eee5ff 25%, #e5defb 45%, transparent 75% ), linear-gradient( 180deg, #eef1fb 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% ) !important;
-	height: auto !important;
-}
+
 [data-theme="light"] .codm-header .codm-header-inner {
 	background: transparent !important;
 	border: 1px solid #d9e1ea !important;
