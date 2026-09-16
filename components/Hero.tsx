@@ -274,14 +274,16 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
         }}
       />
 
-            <div
-  ref={heroRevealRef}
+         <div
   className="
     relative
     mx-auto
     px-5
   "
 >
+
+  <div ref={heroRevealRef}>
+           
 
         {/* =========================================
             LOGOS
@@ -496,6 +498,9 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
           </div>
         )}
 
+
+ </div>
+    
         {/* =========================================
             HERO MEDIA
             ========================================= */}
