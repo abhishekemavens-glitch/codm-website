@@ -2609,7 +2609,7 @@ html.dark .codm-announcement-link {
 }
 
 #hero {
-	margin: 5% 0 0;
+	margin: 8% 0 0;
 	background: radial-gradient( ellipse 70% 45% at 50% 100%, #f5eaff 0%, #eee5ff 25%, #e5defb 45%, transparent 75% ), linear-gradient( 180deg, #eef1fb 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% );
 }
 #hero .md\:text-\[64px\] {
