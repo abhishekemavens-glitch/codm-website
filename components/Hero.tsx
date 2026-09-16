@@ -384,7 +384,7 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
       ${heroVisible ? "codm-visible" : ""}
       mx-auto
       mt-5
-      max-w-[900px]
+      max-w-[700px]
       text-center
       font-['Inter']
       text-[20px]
