@@ -217,9 +217,13 @@ export default function Industries() {
 
                     <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
-                     <h3 className="codm-word-stagger text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl">
-                      {splitWords(active.title)}
-                    </h3>
+                    <h3
+  className={`codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl ${
+    titleVisible ? "codm-industry-title-visible" : ""
+  }`}
+>
+  {splitWords(active.title)}
+</h3>
 
                     <p
                       className="mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px]"
