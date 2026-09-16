@@ -224,7 +224,10 @@ header > div > div:last-child > a:hover {
 [data-theme="dark"] .codm-logo-dark {
   display: block !important;
 }
-
+html[data-theme="light"] .codm-header {
+	background: transparent !important;
+	height: auto !important;
+}
 .codm-header-nav {
   grid-column: 2;
   display: flex;
