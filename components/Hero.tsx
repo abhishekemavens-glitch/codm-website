@@ -5,6 +5,7 @@ import type { Ref } from "react";
 import {
   useMagneticButton,
   useScrollScale,
+  useRevealSequence,
 } from "@/lib/codm-animations";
 
 type HeroData = {
@@ -43,6 +44,9 @@ const WORDPRESS_GRAPHQL_URL =
 
 export default function Hero() {
   const heroMediaRef = useScrollScale();
+
+const { ref: heroRevealRef, isVisible: heroVisible } =
+  useRevealSequence<HTMLDivElement>(0.1);
 
   const [hero, setHero] = useState<HeroData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -271,12 +275,13 @@ export default function Hero() {
       />
 
             <div
-        className="
-          relative
-          mx-auto
-          px-5
-        "
-      >
+  ref={heroRevealRef}
+  className="
+    relative
+    mx-auto
+    px-5
+  "
+>
 
         {/* =========================================
             LOGOS
