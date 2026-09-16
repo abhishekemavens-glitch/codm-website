@@ -4165,3 +4165,9 @@ html[data-theme="dark"] .codm-logo-dark {
     transition: none !important;
   }
 }
+
+
+
+.max-w-\[700px\] {
+	max-width: 700px;
+}
