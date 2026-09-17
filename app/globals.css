@@ -591,7 +591,6 @@ html[data-theme="light"] .codm-header {
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   animation: codmHeaderFadeIn 0.7s ease-out both;
   max-width: 100%;
-  overflow: hidden;
   font-family: "Inter", sans-serif;
 }
 
