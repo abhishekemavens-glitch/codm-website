@@ -4287,3 +4287,132 @@ html[data-theme="dark"] .codm-logo-dark {
     filter: none !important;
   }
 }
+
+
+.codm-header-nav-item-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.codm-megamenu {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 900px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+  padding: 28px;
+  z-index: 200;
+}
+
+.codm-megamenu-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.codm-megamenu-column-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.codm-megamenu-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+
+.codm-megamenu-column-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--foreground);
+}
+
+.codm-megamenu-column-description {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.codm-megamenu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.codm-megamenu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  font-size: 13px;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.codm-megamenu-link:hover {
+  color: var(--accent);
+}
+
+.codm-megamenu-banner {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.codm-megamenu-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.codm-megamenu-banner-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.codm-megamenu-banner-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.codm-megamenu-banner-description {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.codm-megamenu-banner-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .codm-megamenu-columns {
+    grid-template-columns: 1fr;
+  }
+}
