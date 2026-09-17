@@ -26,7 +26,10 @@ function parseMegaMenuLinks(value: string = "") {
       const pipeIndex = line.indexOf("|");
 
       if (pipeIndex === -1) {
-        return { label: line, url: "#" };
+        return {
+          label: line,
+          url: "#",
+        };
       }
 
       return {
@@ -45,13 +48,22 @@ const ICONS: Record<string, string> = {
   support: "◎",
 };
 
-export default function MegaMenu({ data }: { data: MegaMenuData }) {
+export default function MegaMenu({
+  data,
+}: {
+  data: MegaMenuData;
+}) {
   if (!data.enabled) {
     return null;
   }
 
   return (
     <div className="codm-megamenu">
+
+      {/* =====================================================
+          MEGA MENU COLUMNS
+      ===================================================== */}
+
       <div className="codm-megamenu-columns">
         {data.columns.map((col, index) => {
           if (!col.title) return null;
@@ -59,8 +71,15 @@ export default function MegaMenu({ data }: { data: MegaMenuData }) {
           const links = parseMegaMenuLinks(col.links);
 
           return (
-            <div key={index} className="codm-megamenu-column">
+            <div
+              key={index}
+              className="codm-megamenu-column"
+            >
+
+              {/* COLUMN HEADER */}
+
               <div className="codm-megamenu-column-header">
+
                 <span className="codm-megamenu-icon">
                   {ICONS[col.icon] || "•"}
                 </span>
@@ -76,26 +95,45 @@ export default function MegaMenu({ data }: { data: MegaMenuData }) {
                     </div>
                   )}
                 </div>
+
               </div>
+
+              {/* COLUMN LINKS */}
 
               <ul className="codm-megamenu-links">
                 {links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <a href={link.url} className="codm-megamenu-link">
+                    <a
+                      href={link.url}
+                      className="codm-megamenu-link"
+                    >
                       <span>{link.label}</span>
-                      <span className="codm-megamenu-link-arrow">›</span>
+
+                      <span
+                        className="codm-megamenu-link-arrow"
+                        aria-hidden="true"
+                      >
+                        ›
+                      </span>
                     </a>
                   </li>
                 ))}
               </ul>
+
             </div>
           );
         })}
       </div>
 
+      {/* =====================================================
+          BOTTOM BANNER
+      ===================================================== */}
+
       {data.bannerTitle && (
         <div className="codm-megamenu-banner">
+
           <div className="codm-megamenu-banner-left">
+
             {data.bannerLabel && (
               <span className="codm-megamenu-banner-label">
                 {data.bannerLabel}
@@ -111,19 +149,29 @@ export default function MegaMenu({ data }: { data: MegaMenuData }) {
                 {data.bannerDescription}
               </span>
             )}
+
           </div>
 
+          {/* BANNER BUTTON */}
+
           {data.bannerButtonText && (
-            
+            <a
               href={data.bannerButtonUrl || "#"}
               className="codm-megamenu-banner-button"
             >
-              {data.bannerButtonText}
-              <span aria-hidden="true">→</span>
+              <span>
+                {data.bannerButtonText}
+              </span>
+
+              <span aria-hidden="true">
+                →
+              </span>
             </a>
           )}
+
         </div>
       )}
+
     </div>
   );
 }
