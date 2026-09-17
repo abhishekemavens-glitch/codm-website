@@ -469,7 +469,7 @@ export default function Header() {
             aria-label="Main navigation"
           >
 
-                     {services.label && (
+                    {services.label && (
   <div
     className="codm-header-nav-item-wrap"
     onMouseEnter={() => setServicesMenuOpen(true)}
@@ -478,6 +478,9 @@ export default function Header() {
     <a
       href={services.url}
       className="codm-header-nav-link"
+      onFocus={() => setServicesMenuOpen(true)}
+      aria-haspopup="true"
+      aria-expanded={servicesMenuOpen}
     >
       {services.label}
     </a>
@@ -486,7 +489,6 @@ export default function Header() {
       <MegaMenu
         data={{
           enabled: header.megaMenuEnabled,
-
           columns: [
             {
               icon: header.megaMenuCol1Icon,
@@ -507,7 +509,6 @@ export default function Header() {
               links: header.megaMenuCol3Links,
             },
           ],
-
           bannerLabel: header.megaMenuBannerLabel,
           bannerTitle: header.megaMenuBannerTitle,
           bannerDescription: header.megaMenuBannerDescription,
