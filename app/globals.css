@@ -4449,12 +4449,9 @@ html[data-theme="dark"] .codm-logo-dark {
 
 .codm-megamenu-column-description {
   font-size: 13px;
-
   line-height: 1.55;
-
   color: var(--muted, #666666);
-
-  max-width: 310px;
+  max-width: 100%;
 }
 
 
