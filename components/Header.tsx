@@ -17,6 +17,25 @@ type HeaderData = {
 
   buttonText: string;
   buttonUrl: string;
+
+  megaMenuEnabled: boolean;
+  megaMenuCol1Icon: string;
+  megaMenuCol1Title: string;
+  megaMenuCol1Description: string;
+  megaMenuCol1Links: string;
+  megaMenuCol2Icon: string;
+  megaMenuCol2Title: string;
+  megaMenuCol2Description: string;
+  megaMenuCol2Links: string;
+  megaMenuCol3Icon: string;
+  megaMenuCol3Title: string;
+  megaMenuCol3Description: string;
+  megaMenuCol3Links: string;
+  megaMenuBannerLabel: string;
+  megaMenuBannerTitle: string;
+  megaMenuBannerDescription: string;
+  megaMenuBannerButtonText: string;
+  megaMenuBannerButtonUrl: string;
 };
 
 type AnnouncementData = {
@@ -85,6 +104,8 @@ export default function Header() {
       announcementButtonUrl: "#",
     });
 
+  const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+
   useEffect(() => {
     let mounted = true;
 
@@ -112,29 +133,48 @@ export default function Header() {
             },
 
             body: JSON.stringify({
-              query: `
-                query Header {
-                  codmHeaders {
-                    nodes {
-                      id
-                      title
+  query: `
+    query Header {
+      codmHeaders {
+        nodes {
+          id
+          title
 
-                      mainLogoLight
-                      mainLogoDark
+          mainLogoLight
+          mainLogoDark
 
-                      services
-                      industries
-                      caseStudies
-                      about
-                      insights
+          services
+          industries
+          caseStudies
+          about
+          insights
 
-                      buttonText
-                      buttonUrl
-                    }
-                  }
-                }
-              `,
-            }),
+          buttonText
+          buttonUrl
+
+          megaMenuEnabled
+          megaMenuCol1Icon
+          megaMenuCol1Title
+          megaMenuCol1Description
+          megaMenuCol1Links
+          megaMenuCol2Icon
+          megaMenuCol2Title
+          megaMenuCol2Description
+          megaMenuCol2Links
+          megaMenuCol3Icon
+          megaMenuCol3Title
+          megaMenuCol3Description
+          megaMenuCol3Links
+          megaMenuBannerLabel
+          megaMenuBannerTitle
+          megaMenuBannerDescription
+          megaMenuBannerButtonText
+          megaMenuBannerButtonUrl
+        }
+      }
+    }
+  `,
+}),
           }
         );
 
@@ -429,14 +469,55 @@ export default function Header() {
             aria-label="Main navigation"
           >
 
-            {services.label && (
-              <a
-                href={services.url}
-                className="codm-header-nav-link"
-              >
-                {services.label}
-              </a>
-            )}
+                     {services.label && (
+  <div
+    className="codm-header-nav-item-wrap"
+    onMouseEnter={() => setServicesMenuOpen(true)}
+    onMouseLeave={() => setServicesMenuOpen(false)}
+  >
+    <a
+      href={services.url}
+      className="codm-header-nav-link"
+    >
+      {services.label}
+    </a>
+
+    {servicesMenuOpen && header.megaMenuEnabled && (
+      <MegaMenu
+        data={{
+          enabled: header.megaMenuEnabled,
+
+          columns: [
+            {
+              icon: header.megaMenuCol1Icon,
+              title: header.megaMenuCol1Title,
+              description: header.megaMenuCol1Description,
+              links: header.megaMenuCol1Links,
+            },
+            {
+              icon: header.megaMenuCol2Icon,
+              title: header.megaMenuCol2Title,
+              description: header.megaMenuCol2Description,
+              links: header.megaMenuCol2Links,
+            },
+            {
+              icon: header.megaMenuCol3Icon,
+              title: header.megaMenuCol3Title,
+              description: header.megaMenuCol3Description,
+              links: header.megaMenuCol3Links,
+            },
+          ],
+
+          bannerLabel: header.megaMenuBannerLabel,
+          bannerTitle: header.megaMenuBannerTitle,
+          bannerDescription: header.megaMenuBannerDescription,
+          bannerButtonText: header.megaMenuBannerButtonText,
+          bannerButtonUrl: header.megaMenuBannerButtonUrl,
+        }}
+      />
+    )}
+  </div>
+)}
 
             {industries.label && (
               <a
