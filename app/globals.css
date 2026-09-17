@@ -4310,7 +4310,7 @@ html[data-theme="dark"] .codm-logo-dark {
     Announcement bar + header.
     Adjust this only if your header height changes.
   */
-  top: 100px;
+  top: calc(100% + 12px);
 
   left: 50%;
 
