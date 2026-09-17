@@ -4783,3 +4783,10 @@ html[data-theme="dark"] .codm-logo-dark {
     width: 100%;
   }
 }
+
+
+[data-theme="dark"] .codm-header-scrolled {
+	margin: 0 !important;
+	border-radius: 0;
+	background: #050612 !important;
+}
