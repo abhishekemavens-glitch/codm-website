@@ -4304,7 +4304,7 @@ html[data-theme="dark"] .codm-logo-dark {
 ========================================================= */
 
 .codm-megamenu {
-  position: fixed;
+  position: absolute;
 
   /*
     Announcement bar + header.
