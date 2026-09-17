@@ -4288,130 +4288,498 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 
+/* =========================================================
+   SERVICES NAV ITEM
+========================================================= */
+
 .codm-header-nav-item-wrap {
   position: relative;
   display: inline-flex;
+  align-items: center;
 }
 
+
+/* =========================================================
+   MEGA MENU
+========================================================= */
+
 .codm-megamenu {
-  position: absolute;
-  top: calc(100% + 20px);
+  position: fixed;
+
+  /*
+    Announcement bar + header.
+    Adjust this only if your header height changes.
+  */
+  top: 250px;
+
   left: 50%;
+
   transform: translateX(-50%);
-  width: min(90vw, 900px);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
-  padding: 28px;
-  z-index: 200;
+
+  width: min(1180px, calc(100vw - 40px));
+
+  background: var(--surface, #ffffff);
+
+  border: 1px solid var(--border, #e5e5e5);
+
+  border-radius: 0 0 20px 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 8px 25px rgba(0, 0, 0, 0.06);
+
+  padding: 30px;
+
+  z-index: 99999;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   THREE COLUMNS
+========================================================= */
 
 .codm-megamenu-columns {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+
+  grid-template-columns:
+    1.45fr
+    1fr
+    1fr;
+
+  gap: 0;
+
+  width: 100%;
 }
+
+
+/* =========================================================
+   COLUMN
+========================================================= */
+
+.codm-megamenu-column {
+  min-width: 0;
+
+  padding: 0 28px;
+}
+
+.codm-megamenu-column:first-child {
+  padding-left: 0;
+}
+
+.codm-megamenu-column:last-child {
+  padding-right: 0;
+}
+
+
+/* Vertical separators */
+
+.codm-megamenu-column + .codm-megamenu-column {
+  border-left: 1px solid var(--border, #e5e5e5);
+}
+
+
+/* =========================================================
+   COLUMN HEADER
+========================================================= */
 
 .codm-megamenu-column-header {
   display: flex;
+
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 14px;
+
+  gap: 12px;
+
+  margin-bottom: 22px;
 }
+
+
+/* =========================================================
+   ICON
+========================================================= */
 
 .codm-megamenu-icon {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+
+  width: 42px;
+  height: 42px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  color: var(--accent);
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(80, 70, 200, 0.25);
+
+  color: var(--accent, #5146e5);
+
+  background: rgba(80, 70, 200, 0.03);
+
+  font-size: 20px;
+
+  line-height: 1;
 }
+
+
+/* =========================================================
+   COLUMN TITLE
+========================================================= */
 
 .codm-megamenu-column-title {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--foreground);
+  font-weight: 650;
+
+  font-size: 17px;
+
+  line-height: 1.3;
+
+  color: var(--foreground, #171717);
+
+  margin-bottom: 5px;
 }
 
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
 .codm-megamenu-column-description {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
+  font-size: 13px;
+
+  line-height: 1.55;
+
+  color: var(--muted, #666666);
+
+  max-width: 310px;
 }
+
+
+/* =========================================================
+   LINKS
+========================================================= */
 
 .codm-megamenu-links {
   list-style: none;
+
   margin: 0;
+
   padding: 0;
 }
 
+
+/* =========================================================
+   LINK
+========================================================= */
+
 .codm-megamenu-link {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
-  padding: 7px 0;
-  font-size: 13px;
-  color: var(--muted);
-  transition: color 0.2s ease;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 9px 0;
+
+  color: var(--muted, #555555);
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
+
+
+/* =========================================================
+   LINK HOVER
+========================================================= */
 
 .codm-megamenu-link:hover {
-  color: var(--accent);
+  color: var(--accent, #5146e5);
+
+  transform: translateX(3px);
 }
 
-.codm-megamenu-banner {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+
+/* =========================================================
+   LINK ARROW
+========================================================= */
+
+.codm-megamenu-link-arrow {
+  flex-shrink: 0;
+
+  font-size: 20px;
+
+  line-height: 1;
+
+  color: var(--accent, #5146e5);
+
+  opacity: 0;
+
+  transform: translateX(-4px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
+
+.codm-megamenu-link:hover .codm-megamenu-link-arrow {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================================
+   BOTTOM BANNER
+========================================================= */
+
+.codm-megamenu-banner {
+  margin-top: 30px;
+
+  padding: 22px 24px;
+
+  border: 1px solid var(--border, #e5e5e5);
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(110, 90, 255, 0.04),
+      rgba(160, 140, 255, 0.10)
+    );
+}
+
+
+/* =========================================================
+   BANNER LEFT
+========================================================= */
 
 .codm-megamenu-banner-left {
   display: flex;
+
   flex-direction: column;
-  gap: 2px;
+
+  gap: 3px;
+
+  min-width: 0;
 }
+
+
+/* =========================================================
+   BANNER LABEL
+========================================================= */
 
 .codm-megamenu-banner-label {
   font-size: 11px;
-  color: var(--muted);
+
+  line-height: 1.3;
+
+  color: var(--muted, #666666);
 }
+
+
+/* =========================================================
+   BANNER TITLE
+========================================================= */
 
 .codm-megamenu-banner-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  font-size: 17px;
+
+  line-height: 1.35;
+
+  font-weight: 650;
+
+  color: var(--foreground, #171717);
 }
 
+
+/* =========================================================
+   BANNER DESCRIPTION
+========================================================= */
+
 .codm-megamenu-banner-description {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: var(--muted, #666666);
 }
+
+
+/* =========================================================
+   BANNER BUTTON
+========================================================= */
 
 .codm-megamenu-banner-button {
   flex-shrink: 0;
+
   display: inline-flex;
+
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 11px 18px;
+
   border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
+
+  background: var(--accent, #5146e5);
+
+  color: #ffffff;
+
+  text-decoration: none;
+
   font-size: 13px;
-  font-weight: 500;
+
+  font-weight: 600;
+
   white-space: nowrap;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
+.codm-megamenu-banner-button:hover {
+  opacity: 0.9;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   KEEP MENU ABOVE PAGE CONTENT
+========================================================= */
+
+.codm-header,
+.codm-site-header {
+  position: relative;
+
+  z-index: 10000;
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 901px) {
+  .codm-megamenu {
+    min-height: 390px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .codm-megamenu {
+    width: calc(100vw - 30px);
+
+    padding: 24px;
+  }
+
+  .codm-megamenu-column {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .codm-megamenu-column:first-child {
+    padding-left: 0;
+  }
+
+  .codm-megamenu-column:last-child {
+    padding-right: 0;
+  }
+
+  .codm-megamenu-column-title {
+    font-size: 15px;
+  }
+
+  .codm-megamenu-column-description {
+    font-size: 12px;
+  }
+
+  .codm-megamenu-link {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 900px) {
+  .codm-megamenu {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    max-height: 100vh;
+
+    transform: none;
+
+    border-radius: 0;
+
+    overflow-y: auto;
+
+    padding: 24px;
+  }
+
   .codm-megamenu-columns {
     grid-template-columns: 1fr;
+
+    gap: 25px;
+  }
+
+  .codm-megamenu-column {
+    padding: 0;
+  }
+
+  .codm-megamenu-column + .codm-megamenu-column {
+    border-left: 0;
+
+    border-top: 1px solid var(--border, #e5e5e5);
+
+    padding-top: 25px;
+  }
+
+  .codm-megamenu-banner {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .codm-megamenu-banner-button {
+    width: 100%;
   }
 }
