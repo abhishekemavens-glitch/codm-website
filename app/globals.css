@@ -4412,6 +4412,7 @@ html[data-theme="dark"] .codm-logo-dark {
   line-height: 1.55;
   color: var(--muted, #666666);
   max-width: 100%;
+  min-width: 0;
   overflow-wrap: break-word;
   word-break: normal;
 }
@@ -4486,12 +4487,17 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 .codm-megamenu-links-split {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(6, auto);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 24px;
-  row-gap: 0;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.codm-megamenu-links-split > .codm-megamenu-links {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
 }
 
 .codm-megamenu-link {
