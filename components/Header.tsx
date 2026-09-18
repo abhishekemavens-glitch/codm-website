@@ -578,7 +578,59 @@ export default function Header() {
             )}
 
           </nav>
+{mobileMenuOpen && (
+            <div className="codm-mobile-menu">
+              {services.label && (
+                
+                  href={services.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {services.label}
+                </a>
+              )}
 
+              {industries.label && (
+                
+                  href={industries.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {industries.label}
+                </a>
+              )}
+
+              {caseStudies.label && (
+                
+                  href={caseStudies.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {caseStudies.label}
+                </a>
+              )}
+
+              {about.label && (
+                
+                  href={about.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {about.label}
+                </a>
+              )}
+
+              {insights.label && (
+                
+                  href={insights.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {insights.label}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* =================================================
               RIGHT SIDE
@@ -586,6 +638,20 @@ export default function Header() {
 
           <div className="codm-header-right">
 
+
+            <button
+    type="button"
+    className={`codm-mobile-toggle ${
+      mobileMenuOpen ? "codm-mobile-toggle-open" : ""
+    }`}
+    onClick={() => setMobileMenuOpen((open) => !open)}
+    aria-label="Toggle menu"
+    aria-expanded={mobileMenuOpen}
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   <ThemeToggle />
 
   {header.buttonText && (
