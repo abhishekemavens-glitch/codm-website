@@ -65,6 +65,14 @@ export default function MegaMenu({
 
           const links = parseMegaMenuLinks(col.links);
 
+const splitLinks =
+  links.length > 6
+    ? [
+        links.slice(0, Math.ceil(links.length / 2)),
+        links.slice(Math.ceil(links.length / 2)),
+      ]
+    : [links];
+
           return (
             <div
               key={index}
@@ -88,36 +96,68 @@ export default function MegaMenu({
                 </div>
               </div>
 
-              <ul
-  className={`codm-megamenu-links ${
-    links.length > 6 ? "codm-megamenu-links-split" : ""
-  }`}
->
-  {links.map((link, linkIndex) => (
-  <li key={linkIndex}>
-    <a
-      href={link.url}
-      className="codm-megamenu-link"
-    >
-      <span
-        className="codm-megamenu-link-dot"
-        aria-hidden="true"
-      />
-
-      <span className="codm-megamenu-link-text">
-        {link.label}
-      </span>
-
-      <span
-        className="codm-megamenu-link-arrow"
-        aria-hidden="true"
+              {links.length > 6 ? (
+  <div className="codm-megamenu-links-split">
+    {splitLinks.map((columnLinks, columnIndex) => (
+      <ul
+        key={columnIndex}
+        className="codm-megamenu-links"
       >
-        ›
-      </span>
-    </a>
-  </li>
-))}
-</ul>
+        {columnLinks.map((link, linkIndex) => (
+          <li key={linkIndex}>
+            <a
+              href={link.url}
+              className="codm-megamenu-link"
+            >
+              <span
+                className="codm-megamenu-link-dot"
+                aria-hidden="true"
+              />
+
+              <span className="codm-megamenu-link-text">
+                {link.label}
+              </span>
+
+              <span
+                className="codm-megamenu-link-arrow"
+                aria-hidden="true"
+              >
+                ›
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+) : (
+  <ul className="codm-megamenu-links">
+    {links.map((link, linkIndex) => (
+      <li key={linkIndex}>
+        <a
+          href={link.url}
+          className="codm-megamenu-link"
+        >
+          <span
+            className="codm-megamenu-link-dot"
+            aria-hidden="true"
+          />
+
+          <span className="codm-megamenu-link-text">
+            {link.label}
+          </span>
+
+          <span
+            className="codm-megamenu-link-arrow"
+            aria-hidden="true"
+          >
+            ›
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
             </div>
           );
         })}
