@@ -88,25 +88,30 @@ export default function MegaMenu({
                 </div>
               </div>
 
-              <ul className="codm-megamenu-links">
-                {links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <a
-                      href={link.url}
-                      className="codm-megamenu-link"
-                    >
-                      <span>{link.label}</span>
+              <ul
+  className={`codm-megamenu-links ${
+    links.length > 6 ? "codm-megamenu-links-split" : ""
+  }`}
+>
+  {links.map((link, linkIndex) => (
+    <li key={linkIndex}>
+      
+        href={link.url}
+        className="codm-megamenu-link"
+      >
+        <span className="codm-megamenu-link-dot" aria-hidden="true" />
+        <span className="codm-megamenu-link-text">{link.label}</span>
 
-                      <span
-                        className="codm-megamenu-link-arrow"
-                        aria-hidden="true"
-                      >
-                        ›
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+        <span
+          className="codm-megamenu-link-arrow"
+          aria-hidden="true"
+        >
+          ›
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>
             </div>
           );
         })}
