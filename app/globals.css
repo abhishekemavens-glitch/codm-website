@@ -4367,8 +4367,9 @@ html[data-theme="dark"] .codm-logo-dark {
 
 .codm-megamenu-column {
   min-width: 0;
-
+  width: 100%;
   padding: 0 28px;
+  overflow: hidden;
 }
 
 .codm-megamenu-column:first-child {
@@ -4393,12 +4394,26 @@ html[data-theme="dark"] .codm-logo-dark {
 
 .codm-megamenu-column-header {
   display: flex;
-
   align-items: flex-start;
-
   gap: 12px;
-
   margin-bottom: 22px;
+  width: 100%;
+  min-width: 0;
+}
+
+.codm-megamenu-column-header > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.codm-megamenu-column-description {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted, #666666);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 
@@ -4472,8 +4487,11 @@ html[data-theme="dark"] .codm-logo-dark {
 
 .codm-megamenu-links-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(6, auto);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 24px;
+  row-gap: 0;
 }
 
 .codm-megamenu-link {
