@@ -4351,12 +4351,11 @@ html[data-theme="dark"] .codm-logo-dark {
   display: grid;
 
   grid-template-columns:
-    1.45fr
+    1.35fr
     1fr
     1fr;
 
   gap: 0;
-
   width: 100%;
 }
 
@@ -4402,7 +4401,7 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 .codm-megamenu-column-header > div {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-width: 0;
   max-width: 100%;
 }
@@ -4411,12 +4410,13 @@ html[data-theme="dark"] .codm-logo-dark {
   font-size: 13px;
   line-height: 1.55;
   color: var(--muted, #666666);
+  width: 100%;
   max-width: 100%;
   min-width: 0;
-  overflow-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: normal;
 }
-
 
 /* =========================================================
    ICON
