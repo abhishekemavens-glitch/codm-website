@@ -4317,7 +4317,13 @@ html[data-theme="dark"] .codm-logo-dark {
 
   width: min(1180px, calc(100vw - 40px));
 
-  background: var(--surface, #ffffff);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(120, 100, 255, 0.03),
+      rgba(120, 100, 255, 0.06)
+    ),
+    var(--surface, #ffffff);
 
   border: 1px solid var(--border, #e5e5e5);
 
@@ -4458,12 +4464,58 @@ html[data-theme="dark"] .codm-logo-dark {
    LINKS
 ========================================================= */
 
-.codm-megamenu-links {
-  list-style: none;
+.codm-megamenu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  margin: 0 -12px;
+  border-radius: 10px;
+  color: var(--muted, #555555);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.4;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
 
-  margin: 0;
+.codm-megamenu-link:hover {
+  background: rgba(80, 70, 200, 0.08);
+  color: var(--accent, #5146e5);
+  transform: none;
+}
 
-  padding: 0;
+.codm-megamenu-link-dot {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.codm-megamenu-link-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.codm-megamenu-link-arrow {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.codm-megamenu-link:hover .codm-megamenu-link-arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 
