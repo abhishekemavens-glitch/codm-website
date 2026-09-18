@@ -4834,3 +4834,82 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-nav-dropdown-icon-open {
   transform: rotate(180deg);
 }
+
+
+/* =========================================================
+   MOBILE HAMBURGER TOGGLE
+========================================================= */
+
+.codm-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.codm-mobile-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--foreground);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.codm-mobile-toggle-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.codm-mobile-toggle-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.codm-mobile-toggle-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =========================================================
+   MOBILE MENU PANEL
+========================================================= */
+
+.codm-mobile-menu {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .codm-mobile-toggle {
+    display: flex;
+  }
+
+  .codm-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    z-index: 9998;
+  }
+
+  .codm-mobile-menu-link {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--foreground);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .codm-mobile-menu-link:last-child {
+    border-bottom: none;
+  }
+}
