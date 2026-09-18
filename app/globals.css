@@ -4305,35 +4305,30 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-megamenu {
   position: absolute;
 
-  /*
-    Announcement bar + header.
-    Adjust this only if your header height changes.
-  */
   top: calc(100% + 12px);
 
   left: 50%;
 
   transform: translateX(-50%);
 
-  width: min(1180px, calc(100vw - 40px));
+  width: min(1240px, calc(100vw - 190px));
 
   background:
     linear-gradient(
-      180deg,
-      rgba(120, 100, 255, 0.03),
-      rgba(120, 100, 255, 0.06)
-    ),
-    var(--surface, #ffffff);
+      135deg,
+      #f1f0ff 0%,
+      #e4e0ff 100%
+    );
 
-  border: 1px solid var(--border, #e5e5e5);
+  border: 1px solid rgba(111, 88, 255, 0.15);
 
-  border-radius: 0 0 20px 20px;
+  border-radius: 28px;
 
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.12),
-    0 8px 25px rgba(0, 0, 0, 0.06);
+    0 24px 60px rgba(35, 31, 70, 0.16),
+    0 8px 25px rgba(35, 31, 70, 0.06);
 
-  padding: 30px;
+  padding: 40px 22px 0;
 
   z-index: 99999;
 
@@ -4356,6 +4351,7 @@ html[data-theme="dark"] .codm-logo-dark {
     1fr;
 
   gap: 0;
+
   width: 100%;
 }
 
@@ -4367,7 +4363,7 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-megamenu-column {
   min-width: 0;
   width: 100%;
-  padding: 0 28px;
+  padding: 0 22px 36px;
   overflow: hidden;
 }
 
@@ -4383,7 +4379,7 @@ html[data-theme="dark"] .codm-logo-dark {
 /* Vertical separators */
 
 .codm-megamenu-column + .codm-megamenu-column {
-  border-left: 1px solid var(--border, #e5e5e5);
+  border-left: 1px solid rgba(111, 88, 255, 0.18);
 }
 
 
@@ -4394,8 +4390,8 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-megamenu-column-header {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 22px;
+  gap: 18px;
+  margin-bottom: 30px;
   width: 100%;
   min-width: 0;
 }
@@ -4425,23 +4421,23 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-megamenu-icon {
   flex-shrink: 0;
 
-  width: 42px;
-  height: 42px;
+  width: 60px;
+  height: 60px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: 12px;
 
-  border: 1px solid rgba(80, 70, 200, 0.25);
+  border: 1px solid #725cff;
 
-  color: var(--accent, #5146e5);
+  color: #725cff;
 
-  background: rgba(80, 70, 200, 0.03);
+  background: rgba(255, 255, 255, 0.15);
 
-  font-size: 20px;
+  font-size: 28px;
 
   line-height: 1;
 }
@@ -4452,15 +4448,15 @@ html[data-theme="dark"] .codm-logo-dark {
 ========================================================= */
 
 .codm-megamenu-column-title {
-  font-weight: 650;
+  font-weight: 500;
 
-  font-size: 17px;
+  font-size: 20px;
 
-  line-height: 1.3;
+  line-height: 1.2;
 
-  color: var(--foreground, #171717);
+  color: #171827;
 
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 
@@ -4501,34 +4497,56 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 .codm-megamenu-link {
+  position: relative;
+
   display: flex;
+
   align-items: center;
+
   gap: 10px;
+
   width: 100%;
-  padding: 9px 12px;
-  margin: 0 -12px;
-  border-radius: 10px;
-  color: var(--muted, #555555);
+
+  min-height: 46px;
+
+  padding: 0 8px;
+
+  margin: 0;
+
+  border-radius: 7px;
+
+  color: #171827;
+
   text-decoration: none;
-  font-size: 14px;
+
+  font-size: 16px;
+
   line-height: 1.4;
+
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
 }
 
 .codm-megamenu-link:hover {
-  background: rgba(80, 70, 200, 0.08);
-  color: var(--accent, #5146e5);
-}
+  background: rgba(114, 92, 255, 0.10);
 
+  color: #171827;
+}
 .codm-megamenu-link-dot {
   flex-shrink: 0;
-  width: 5px;
-  height: 5px;
+
+  width: 8px;
+  height: 8px;
+
   border-radius: 50%;
-  background: currentColor;
-  opacity: 0.5;
+
+  background: #725cff;
+
+  box-shadow:
+    0 0 8px rgba(114, 92, 255, 0.55);
+
+  opacity: 1;
 }
 
 .codm-megamenu-link-text {
