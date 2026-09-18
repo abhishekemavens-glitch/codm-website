@@ -4464,6 +4464,18 @@ html[data-theme="dark"] .codm-logo-dark {
    LINKS
 ========================================================= */
 
+.codm-megamenu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.codm-megamenu-links-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+}
+
 .codm-megamenu-link {
   display: flex;
   align-items: center;
@@ -4484,7 +4496,6 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-megamenu-link:hover {
   background: rgba(80, 70, 200, 0.08);
   color: var(--accent, #5146e5);
-  transform: none;
 }
 
 .codm-megamenu-link-dot {
@@ -4517,78 +4528,6 @@ html[data-theme="dark"] .codm-logo-dark {
   opacity: 1;
   transform: translateX(0);
 }
-
-
-/* =========================================================
-   LINK
-========================================================= */
-
-.codm-megamenu-link {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 12px;
-
-  width: 100%;
-
-  padding: 9px 0;
-
-  color: var(--muted, #555555);
-
-  text-decoration: none;
-
-  font-size: 14px;
-
-  line-height: 1.4;
-
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-
-/* =========================================================
-   LINK HOVER
-========================================================= */
-
-.codm-megamenu-link:hover {
-  color: var(--accent, #5146e5);
-
-  transform: translateX(3px);
-}
-
-
-/* =========================================================
-   LINK ARROW
-========================================================= */
-
-.codm-megamenu-link-arrow {
-  flex-shrink: 0;
-
-  font-size: 20px;
-
-  line-height: 1;
-
-  color: var(--accent, #5146e5);
-
-  opacity: 0;
-
-  transform: translateX(-4px);
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
-.codm-megamenu-link:hover .codm-megamenu-link-arrow {
-  opacity: 1;
-
-  transform: translateX(0);
-}
-
 
 /* =========================================================
    BOTTOM BANNER
