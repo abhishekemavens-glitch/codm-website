@@ -5110,6 +5110,10 @@ html[data-theme="dark"] .codm-logo-dark {
 	margin: 15% 0 0;
 }
 
+#hero .codm-hero-title {
+	font-size: 30px !important;
+	line-height: normal !important;
+}
 
 
 
@@ -5796,5 +5800,142 @@ html[data-theme="dark"] .codm-logo-dark {
 @media (min-width: 901px) and (max-height: 560px) {
   .codm-megamenu-banner-description {
     display: none !important;
+  }
+}
+
+
+
+
+
+/* =========================================================
+   MOBILE — SERVICES ACCORDION (replaces desktop mega menu < 900px)
+   Paste at the VERY END of globals.css
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  /* The open accordion is long, so the whole menu panel scrolls */
+  .codm-mobile-menu {
+    max-height: calc(100vh - 116px) !important;
+    max-height: calc(100dvh - 116px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ---------- Services row ---------- */
+  .codm-mobile-services {
+    width: 100%;
+    border-bottom: 1px solid var(--border, #e5e5e5);
+  }
+
+  .codm-mobile-menu .codm-mobile-services > summary.codm-mobile-services-summary {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0 !important;
+    cursor: pointer;
+    list-style: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .codm-mobile-services-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .codm-mobile-services-summary::marker {
+    content: "";
+  }
+
+  /* Chevron */
+  .codm-mobile-services-summary::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .codm-mobile-services[open] > .codm-mobile-services-summary::after {
+    transform: rotate(225deg);
+  }
+
+  .codm-mobile-services[open] > .codm-mobile-services-summary {
+    color: var(--accent, #725cff) !important;
+  }
+
+  /* ---------- Expanded panel ---------- */
+  .codm-mobile-services-panel {
+    margin: 0 0 14px;
+    padding: 6px 16px 14px;
+    border-radius: 14px;
+    background: rgba(114, 92, 255, 0.06);
+    border: 1px solid rgba(114, 92, 255, 0.14);
+  }
+
+  .codm-mobile-services-all {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent, #725cff);
+  }
+
+  .codm-mobile-services-group + .codm-mobile-services-group {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(114, 92, 255, 0.14);
+  }
+
+  .codm-mobile-services-group-title {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--foreground, #111111);
+  }
+
+  .codm-mobile-services-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .codm-mobile-services-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--foreground, #111111);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Same purple dot as the desktop menu */
+  .codm-mobile-services-link::before {
+    content: "";
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent, #725cff);
+  }
+
+  .codm-mobile-services-link:active {
+    color: var(--accent, #725cff);
+  }
+}
+
+/* Larger phones / small tablets: two columns of links */
+@media (min-width: 560px) and (max-width: 900px) {
+  .codm-mobile-services-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
   }
 }
