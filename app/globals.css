@@ -5108,51 +5108,39 @@ html[data-theme="dark"] .codm-logo-dark {
      MEGA MENU CONTAINER
      ------------------------------------------------------- */
 
+ @media (min-width: 901px) {
+
+  /* Make the header the positioning reference */
+  .codm-header-inner {
+    position: relative !important;
+  }
+
+  /* Mega menu */
   .codm-megamenu {
     position: absolute !important;
 
-    /*
-      Center against the viewport instead of the Services
-      navigation item.
-    */
-    left: 50vw !important;
+    left: 50% !important;
+    right: auto !important;
 
-    top: calc(100% + 12px) !important;
+    top: 100% !important;
 
     transform: translateX(-50%) !important;
 
-    /*
-      Reference design:
-      centered container with comfortable side spacing.
-    */
     width: min(1120px, calc(100vw - 80px)) !important;
-
     max-width: 1120px !important;
-
-    padding: 24px !important;
 
     box-sizing: border-box !important;
 
+    margin: 0 !important;
+
     border-radius: 20px !important;
-
-    border: 1px solid rgba(120, 100, 255, 0.16) !important;
-
-    background:
-      linear-gradient(
-        180deg,
-        rgba(120, 100, 255, 0.035),
-        rgba(120, 100, 255, 0.075)
-      ),
-      #ffffff !important;
-
-    box-shadow:
-      0 24px 60px rgba(35, 25, 90, 0.14),
-      0 8px 24px rgba(35, 25, 90, 0.08) !important;
 
     overflow: hidden !important;
 
     z-index: 99999 !important;
   }
+
+}
 
 
   /* -------------------------------------------------------
