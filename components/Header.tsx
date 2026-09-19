@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu from "./MegaMenu";
