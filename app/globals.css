@@ -1,3 +1,5353 @@
+Thursday 4:26 PM
+Pasted text(20260917-104832).txt
+Document
+Megamenu.tsx is already fixed pls check "use client";
+
+type MegaMenuColumn = {
+  icon: string;
+  title: string;
+  description: string;
+  links: string;
+};
+
+type MegaMenuData = {
+  enabled: boolean;
+  columns: MegaMenuColumn[];
+  bannerLabel: string;
+  bannerTitle: string;
+  bannerDescription: string;
+  bannerButtonText: string;
+  bannerButtonUrl: string;
+};
+
+function parseMegaMenuLinks(value: string = "") {
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const pipeIndex = line.indexOf("|");
+
+      if (pipeIndex === -1) {
+        return {
+          label: line,
+          url: "#",
+        };
+      }
+
+      return {
+        label: line.substring(0, pipeIndex).trim(),
+        url: line.substring(pipeIndex + 1).trim() || "#",
+      };
+    });
+}
+
+const ICONS: Record<string, string> = {
+  cloud: "☁",
+  sparkle: "✦",
+  code: "</>",
+  database: "🗄",
+  integration: "⇄",
+  support: "◎",
+};
+
+export default function MegaMenu({
+  data,
+}: {
+  data: MegaMenuData;
+}) {
+  if (!data.enabled) {
+    return null;
+  }
+
+  return (
+    <div className="codm-megamenu">
+      <div className="codm-megamenu-columns">
+        {data.columns.map((col, index) => {
+          if (!col.title) return null;
+
+          const links = parseMegaMenuLinks(col.links);
+
+          return (
+            <div
+              key={index}
+              className="codm-megamenu-column"
+            >
+              <div className="codm-megamenu-column-header">
+                <span className="codm-megamenu-icon">
+                  {ICONS[col.icon] || "•"}
+                </span>
+
+                <div>
+                  <div className="codm-megamenu-column-title">
+                    {col.title}
+                  </div>
+
+                  {col.description && (
+                    <div className="codm-megamenu-column-description">
+                      {col.description}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <ul className="codm-megamenu-links">
+                {links.map((link, linkIndex) => (
+                  <li key={linkIndex}>
+                    <a
+                      href={link.url}
+                      className="codm-megamenu-link"
+                    >
+                      <span>{link.label}</span>
+
+                      <span
+                        className="codm-megamenu-link-arrow"
+                        aria-hidden="true"
+                      >
+                        ›
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+
+      {data.bannerTitle && (
+        <div className="codm-megamenu-banner">
+          <div className="codm-megamenu-banner-left">
+            {data.bannerLabel && (
+              <span className="codm-megamenu-banner-label">
+                {data.bannerLabel}
+              </span>
+            )}
+
+            <span className="codm-megamenu-banner-title">
+              {data.bannerTitle}
+            </span>
+
+            {data.bannerDescription && (
+              <span className="codm-megamenu-banner-description">
+                {data.bannerDescription}
+              </span>
+            )}
+          </div>
+
+          {data.bannerButtonText && (
+            <a
+              href={data.bannerButtonUrl || "#"}
+              className="codm-megamenu-banner-button"
+            >
+              <span>{data.bannerButtonText}</span>
+
+              <span aria-hidden="true">
+                →
+              </span>
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  );
+} But now i want to fix header.tsx now pls check
+
+Today 1:10 AM
+Pasted text(20260918-193207).txt
+Document
+
+Pasted text(20260918-193241).txt
+Document
+
+Today 4:34 PM
+Pasted text(20260919-105544).txt
+Document
+Pls fix error 
+
+Pasted text(20260919-110242).txt
+Document
+Why this is giving error 
+
+Yes. I checked the current globals.css you provided. There is no JavaScript/JSX syntax error in this CSS, so it is not the cause of the Expected a semicolon error from MegaMenu.tsx/Header.tsx.
+
+However, I found an important CSS issue that can affect your MegaMenu.
+1. You have duplicate MegaMenu CSS
+
+The current globals.css contains MegaMenu rules more than once. For example, .codm-megamenu is defined with different configurations in different sections.
+
+One version uses:
+
+.codm-megamenu {
+  position: absolute;
+  top: calc(100% + 28px);
+  ...
+}
+
+while an older version uses:
+
+.codm-megamenu {
+  position: fixed;
+  top: 250px;
+  ...
+}
+
+Because CSS uses the later rule, these conflicting blocks can override each other.
+2. The latest MegaMenu CSS appears to be the one we want
+
+Your current version has:
+
+.codm-header-nav-item-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+and:
+
+.codm-megamenu {
+  position: absolute;
+  top: calc(100% + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1240px, calc(100vw - 190px));
+  ...
+}
+
+That is appropriate for the MegaMenu being positioned relative to the Services navigation item.
+3. But there is a conflict later in the CSS
+
+You also have a mobile rule:
+
+@media (max-width: 900px) {
+  .codm-megamenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    ...
+  }
+}
+
+That is okay if you intentionally want the MegaMenu to become a full-screen mobile menu.
+4. The CSS is NOT what is causing your current build failure
+
+Your previous Vercel error was:
+
+./components/MegaMenu.tsx:118:25
+Error: Expected a semicolon
+
+That is a TypeScript/JSX parsing error, not CSS.
+
+Your corrected MegaMenu now has the proper:
+
+<a
+  href={data.bannerButtonUrl || "#"}
+  className="codm-megamenu-banner-button"
+>
+
+so don't change that file again based on the old error.
+What I recommend now
+
+Before changing any more CSS, let's keep the files clean:
+
+MegaMenu.tsx → React/TSX only
+Header.tsx → React/TSX only
+globals.css → CSS only
+
+Your globals.css does need cleanup because of the duplicate/conflicting MegaMenu rules, but that is a styling/behavior issue, not the compilation error.
+
+If you want, I can now take your full current globals.css and give you one cleaned MegaMenu CSS section to replace all the duplicate MegaMenu CSS, without touching the rest of your 97 KB stylesheet.
+
+1. You have duplicate MegaMenu CSS
+So let me know what to do
+
+Yes. Since you specifically mean the duplicate MegaMenu CSS, here is what I recommend:
+Do NOT change the whole globals.css
+
+Your CSS file is large, and the problem is only that the MegaMenu styles appear in multiple places. We should clean only those MegaMenu rules.
+Step 1 — Search in globals.css
+
+Use Ctrl + F and search:
+
+.codm-megamenu {
+
+You will find more than one occurrence.
+
+Also search:
+
+.codm-megamenu-columns
+
+and:
+
+.codm-megamenu-banner
+
+Step 2 — Keep the newer MegaMenu section
+
+Keep the version that starts with:
+
+.codm-header-nav-item-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.codm-megamenu {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 900px);
+
+That is the MegaMenu CSS we were working with.
+Step 3 — Delete the OLD duplicate MegaMenu section
+
+Delete the older block that starts with:
+
+.codm-megamenu {
+  position: fixed;
+
+and its associated MegaMenu rules.
+
+Do not delete unrelated header, mobile menu, footer, button, or animation CSS.
+Step 4 — Make sure there is only ONE definition of each
+
+After cleanup, Ctrl+F should show only one main definition for:
+
+.codm-megamenu {
+.codm-megamenu-columns {
+.codm-megamenu-column-header {
+.codm-megamenu-icon {
+.codm-megamenu-column-title {
+.codm-megamenu-column-description {
+.codm-megamenu-links {
+.codm-megamenu-link {
+.codm-megamenu-banner {
+.codm-megamenu-banner-left {
+.codm-megamenu-banner-label {
+.codm-megamenu-banner-title {
+.codm-megamenu-banner-description {
+.codm-megamenu-banner-button {
+
+You can still have responsive overrides for these classes inside @media blocks. Those are not duplicates that need deleting.
+Step 5 — Don't touch MegaMenu.tsx
+
+Your current MegaMenu.tsx is correctly formed:
+
+<a
+  href={data.bannerButtonUrl || "#"}
+  className="codm-megamenu-banner-button"
+>
+
+So leave it alone.
+Step 6 — Then build
+
+Run:
+
+npm run build
+
+If the build succeeds, push:
+
+git add .
+git commit -m "Clean MegaMenu styles"
+git push origin main
+
+Important: the duplicate CSS will affect how the MegaMenu looks/positions, but it is not the cause of the previous Expected a semicolon TypeScript error. That error was from malformed TSX. The CSS cleanup is for the MegaMenu styling conflict.
+
+Pasted text(20260919-110558).txt
+Document
+Pls check and suggest name and lines what to remove
+
+Yes. I checked the latest globals.css file. The current file is about 96,990 bytes, and I found the MegaMenu CSS section we should keep.
+
+There is one important correction to my previous advice: do not delete the newer MegaMenu section. The latest file contains the intended, more complete design.
+Keep this section
+
+Keep the section beginning with:
+
+/* =========================================================
+   SERVICES NAV ITEM
+========================================================= */
+
+.codm-header-nav-item-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+and then:
+
+/* =========================================================
+   MEGA MENU
+========================================================= */
+
+.codm-megamenu {
+  position: absolute;
+  top: calc(100% + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1240px, calc(100vw - 190px));
+
+This is your current/new MegaMenu design.
+Remove the OLD MegaMenu block
+
+The old block is the one beginning with:
+
+/* =========================================================
+   SERVICES NAV ITEM
+========================================================= */
+
+.codm-header-nav-item-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   MEGA MENU
+========================================================= */
+
+.codm-megamenu {
+  position: fixed;
+
+  top: 250px;
+
+That is the old version. It uses:
+
+position: fixed;
+top: 250px;
+
+and a completely different width/background/border configuration.
+What exactly to remove
+
+In your globals.css, search:
+
+position: fixed;
+
+top: 250px;
+
+When you find that MegaMenu block, remove the entire old MegaMenu section, starting from:
+
+/* =========================================================
+   SERVICES NAV ITEM
+========================================================= */
+
+immediately above that position: fixed rule, through the end of its MegaMenu responsive rules.
+Do NOT remove this newer block
+
+Keep the block containing:
+
+position: absolute;
+top: calc(100% + 28px);
+width: min(1240px, calc(100vw - 190px));
+
+That is the version we want.
+After removal
+
+There should be only one desktop .codm-megamenu definition.
+
+You can still have this responsive override:
+
+@media (max-width: 900px) {
+  .codm-megamenu {
+    position: fixed;
+    ...
+  }
+}
+
+Keep that. It is intentionally changing the menu behavior on mobile.
+One more thing
+
+I see that the latest globals.css appears to contain the same large CSS content in multiple pasted versions/files, but the actual current file itself is the Pasted text(20260919-110242).txt / 20260919-105544 content. So don't start deleting every repeated-looking CSS selector globally.
+
+Only remove the old MegaMenu block containing position: fixed; top: 250px.
+
+After that, save globals.css and run:
+
+npm run build
+
+If you want, I can next give you the exact start and end text of the old block to delete, so you can select it safely without accidentally removing other CSS.
+
+
+/* =========================================================
+FONT IMPORTS
+========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+@import "./codm-animations.css";
+@import "tailwindcss";
+
+/* =========================================================
+GLOBAL RESET & BASE
+========================================================= */
+
+    {
+    box-sizing: border-box;
+    }
+
+html {
+scroll-behavior: smooth;
+}
+
+body {
+margin: 0;
+background: var(--background);
+color: var(--foreground);
+font-family: Arial, Helvetica, sans-serif;
+transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+a {
+text-decoration: none;
+}
+
+button {
+font: inherit;
+}
+
+::selection {
+background: var(--accent);
+color: white;
+}
+
+/* =========================================================
+THEME VARIABLES
+========================================================= */
+
+/* =========================================================
+THEME VARIABLES
+LIGHT MODE = DEFAULT
+========================================================= */
+
+{
+--background: #f7f7f5;
+--surface: #ffffff;
+--surface-secondary: #eeeeeb;
+--foreground: #111111;
+--muted: #666666;
+--border: rgba(0, 0, 0, 0.1);
+--accent: #725cff;
+--accent-secondary: #8c7cff;
+}
+
+/* =========================================================
+DARK MODE
+Works with both .dark and data-theme="dark"
+========================================================= */
+
+html.dark,
+html[data-theme="dark"] {
+--background: #070812;
+--surface: #0d1020;
+--surface-secondary: #111526;
+--foreground: #ffffff;
+--muted: #a7b0c2;
+--border: #ffffff1f;
+--accent: #806cff;
+--accent-secondary: #a394ff;
+}
+/* =========================================================
+HEADER
+========================================================= */
+
+.codm-header.scrolled {
+background: rgba(5, 6, 18, 0.96);
+border-bottom-color: rgba(255, 255, 255, 0.1);
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] .codm-header .codm-header-inner {
+background: transparent !important;
+border: 1px solid #d9e1ea !important;
+width: auto !important;
+margin: 20px 30px !important;
+border-radius: 40px;
+height: auto !important;
+padding: 10px 40px;
+}
+
+html[data-theme="light"] .codm-header-scrolled, [data-theme="light"] .codm-header-scrolled .codm-header-inner {
+background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
+border: none !important;
+margin: 0 !important;
+border-radius: 0 !important;
+}
+[data-theme="light"] .codm-header-cta {
+background: #101424;
+color: #ffffff;
+box-shadow: 0 5px 18px rgba(16, 20, 36, 0.12);
+}
+
+[data-theme="light"] .codm-header-cta {
+background: #101424;
+color: #ffffff;
+box-shadow: 0 10px 28px rgba(16, 20, 36, 0.18);
+}
+
+.codm-header-nav-link,
+.codm-header-cta,
+.codm-header-logo-link {
+outline: 2px solid #8A7CFF;
+outline-offset: 4px;
+}
+
+.codm-header,
+.codm-header-inner {
+max-width: 100%;
+box-sizing: border-box;
+}
+
+.codm-header * {
+box-sizing: border-box;
+}
+
+[data-theme="light"] .codm-logo-dark {
+display: none !important;
+}
+
+[data-theme="light"] .codm-logo-light {
+display: block !important;
+}
+
+[data-theme="light"] .codm-header-nav-link {
+color: #101424 !important;
+}
+
+[data-theme="light"] .codm-header-nav-link {
+color: #6f63ff !important;
+}
+
+.codm-header,
+.codm-header-inner,
+.codm-header-logo-link,
+.codm-header-right {
+box-sizing: border-box;
+}
+
+header nav,
+header nav a {
+font-family: "Inter", sans-serif;
+}
+
+header {
+transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+header nav a {
+color: var(--foreground);
+font-size: 13px;
+font-weight: 500;
+line-height: 1;
+white-space: nowrap;
+transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+header nav a {
+opacity: 0.55;
+}
+
+header > div > div > a {
+transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+header > div > div > a {
+opacity: 0.9;
+transform: translateY(-1px) scale(1.02);
+}
+
+.codm-header-inner {
+position: relative;
+width: 100%;
+max-width: 100%;
+height: 72px;
+margin: 0 auto;
+padding: 0 40px;
+box-sizing: border-box;
+display: flex;
+grid-template-columns: 1fr auto 1fr;
+align-items: center;
+justify-content: space-between;
+}
+
+.codm-header-logo {
+object-fit: contain;
+width: 130px;
+max-width: 130px;
+height: 45px;
+max-height: 45px;
+transition: opacity .3s,transform .3s;
+display: block;
+}
+
+.codm-header-logo-link .codm-header-logo {
+transform: scale(1.03);
+}
+
+.codm-header-logo {
+opacity: 0.92;
+}
+
+.codm-logo-light {
+display: block;
+}
+
+.codm-logo-dark {
+display: none;
+}
+
+[data-theme="dark"] .codm-logo-light {
+display: none !important;
+}
+
+[data-theme="dark"] .codm-logo-dark {
+display: block !important;
+}
+html[data-theme="light"] .codm-header {
+background: transparent !important;
+height: auto !important;
+}
+.codm-header-nav {
+grid-column: 2;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 31px;
+white-space: nowrap;
+margin: 0;
+padding: 0;
+font-family: "Inter", sans-serif;
+animation: codmHeaderNavEnter 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+height: 100%;
+}
+
+.codm-header-nav-link {
+position: relative;
+display: inline-flex;
+align-items: center;
+height: 100%;
+padding: 0;
+font-family: "Inter", sans-serif !important;
+font-size: 18px !important;
+font-weight: 400 !important;
+line-height: 1.4 !important;
+color: #8A96A8 !important;
+text-decoration: none !important;
+white-space: nowrap;
+transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+animation: codmNavIn 0.55s ease-out both;
+}
+
+.codm-header-nav-link(1) {
+animation-delay: 0.15s;
+}
+
+.codm-header-nav-link(2) {
+animation-delay: 0.20s;
+}
+
+.codm-header-nav-link(3) {
+animation-delay: 0.25s;
+}
+
+.codm-header-nav-link(4) {
+animation-delay: 0.30s;
+}
+
+.codm-header-nav-link(5) {
+animation-delay: 0.35s;
+}
+
+.codm-header-nav-link::after {
+content: "";
+position: absolute;
+left: 0;
+bottom: -7px;
+width: 100%;
+height: 1px;
+background: currentColor;
+transform: scaleX(0);
+transform-origin: right;
+transition: transform 0.3s ease;
+}
+
+.codm-header-nav-link {
+color: #ffffff !important;
+transform: translateY(-1px);
+opacity: 1 !important;
+}
+
+.codm-header-nav-link:hover::after {
+transform: scaleX(1);
+transform-origin: left;
+}
+
+.codm-header-right {
+grid-column: 3;
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 14px;
+min-width: 0;
+position: relative;
+z-index: 2;
+animation: codmRightIn 0.65s ease-out 0.25s both;
+flex-shrink: 0;
+}
+
+/* =========================================================
+HEADER CTA BUTTON
+========================================================= */
+
+.codm-header-cta {
+position: relative;
+isolation: isolate;
+
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+
+height: 44px;
+min-width: 130px;
+
+padding: 0 20px;
+
+border-radius: 999px;
+
+background: #ffffff;
+color: #101424;
+
+font-family: "Plus Jakarta Sans", sans-serif;
+font-size: 16px;
+font-weight: 700;
+font-style: normal;
+line-height: 22px;
+letter-spacing: 0;
+
+text-decoration: none;
+white-space: nowrap;
+
+overflow: hidden;
+
+border: 1px solid rgba(255, 255, 255, 0.15);
+
+box-shadow:
+0 4px 18px rgba(0, 0, 0, 0.12);
+
+transition:
+transform 0.3s ease,
+box-shadow 0.3s ease,
+background-color 0.3s ease;
+}
+
+/* ---------------------------------------------------------
+BUTTON TEXT
+--------------------------------------------------------- */
+
+.codm-header-cta > span {
+position: relative;
+z-index: 3;
+}
+
+/* ---------------------------------------------------------
+ARROW
+--------------------------------------------------------- */
+
+.codm-header-cta-arrow {
+position: relative;
+z-index: 3;
+
+display: inline-flex;
+align-items: center;
+justify-content: center;
+
+font-size: 18px;
+line-height: 1;
+
+transition:
+transform 0.3s ease;
+}
+
+/* ---------------------------------------------------------
+SHINE EFFECT
+--------------------------------------------------------- */
+
+/* ---------------------------------------------------------
+CTA SHINE EFFECT — FIXED INSIDE BUTTON
+--------------------------------------------------------- */
+
+.codm-header-cta {
+position: relative !important;
+isolation: isolate !important;
+overflow: hidden !important;
+clip-path: inset(0 round 999px) !important;
+}
+
+/* Shine is completely contained inside CTA /
+/ =========================================================
+CTA SHINE EFFECT — BUTTON ONLY
+========================================================= */
+
+/* =========================================================
+HEADER CTA — WHITE BUTTON + SHINE ANIMATION
+========================================================= */
+
+.codm-header-cta {
+position: relative !important;
+isolation: isolate !important;
+overflow: hidden !important;
+
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+
+height: 44px !important;
+padding: 0 22px !important;
+
+border-radius: 999px !important;
+
+background-color: #ffffff !important;
+
+/*
+
+    Shine is contained inside the button.
+
+    It cannot appear outside the CTA.
+    */
+    background-image:
+    linear-gradient(
+    110deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(115, 92, 255, 0.16) 50%,
+    transparent 62%,
+    transparent 100%
+    ) !important;
+
+background-size: 250% 100% !important;
+background-position: 100% 0 !important;
+
+color: #101424 !important;
+
+transition:
+transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+box-shadow 0.3s ease,
+background-position 0.65s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Keep text and arrow above the background shine */
+.codm-header-cta > span {
+position: relative !important;
+z-index: 2 !important;
+}
+
+/* Hover */
+.codm-header-cta {
+background-color: #ffffff !important;
+
+background-position: 0% 0 !important;
+
+transform: translateY(-2px) !important;
+
+box-shadow:
+0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Arrow */
+.codm-header-cta-arrow {
+display: inline-block !important;
+
+transition:
+transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.codm-header-cta .codm-header-cta-arrow {
+transform: translateX(4px) !important;
+}
+
+/* Keep text and arrow above the button background */
+.codm-header-cta > span {
+position: relative !important;
+z-index: 2 !important;
+}
+
+.codm-header-cta-arrow {
+position: relative !important;
+z-index: 3 !important;
+
+display: inline-flex;
+align-items: center;
+justify-content: center;
+
+font-family: "Inter", sans-serif !important;
+font-size: 15px;
+line-height: 1;
+
+transition:
+transform 0.25s ease !important;
+}
+
+.codm-header-cta .codm-header-cta-arrow {
+transform: translateX(4px) !important;
+}
+.codm-header-cta span {
+z-index: 1;
+position: relative;
+font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+.codm-header-cta-arrow {
+/* opacity: 0; /
+/ width: 0; */
+font-family: Inter,sans-serif;
+font-size: 15px;
+line-height: 1;
+transition: opacity .25s,width .25s,transform .25s;
+display: inline-block;
+transform: translate(-4px);
+}
+
+.codm-header-cta .codm-header-cta-arrow {
+transform: translateX(4px);
+width: 12px;
+opacity: 1;
+}
+
+[data-theme="dark"] .codm-header {
+background: #060712c7;
+box-shadow: 0 1px #ffffff05;
+border: 1px solid #1B2038 !important;
+width: auto !important;
+margin: 20px 30px !important;
+border-radius: 40px;
+}
+
+[data-theme="dark"] .codm-header-nav-link {
+color: #f2f3f8;
+}
+
+[data-theme="dark"] .codm-header-nav-link {
+color: #8b7cff;
+}
+
+[data-theme="dark"] .codm-header-cta {
+background: #ffffff;
+color: #0a0b13;
+border-color: rgba(255, 255, 255, 0.08);
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .codm-header-cta {
+background: #735cff;
+color: #ffffff;
+border-color: #735cff;
+}
+
+.codm-logo-light,
+.codm-logo-dark {
+transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.codm-header {
+position: fixed;
+top: 45px;
+left: 0;
+width: 100%;
+height: 72px;
+z-index: 9999;
+background: rgba(255, 255, 255, 0.82);
+border-bottom: 1px solid rgba(20, 24, 40, 0.08);
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+box-sizing: border-box;
+transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+animation: codmHeaderFadeIn 0.7s ease-out both;
+max-width: 100%;
+font-family: "Inter", sans-serif;
+}
+
+.codm-header-logo-link {
+display: flex;
+align-items: center;
+justify-content: center;
+width: fit-content;
+text-decoration: none;
+position: relative;
+z-index: 2;
+animation: codmLogoIn 0.8s ease-out 0.1s both;
+flex-shrink: 0;
+transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.codm-header-logo-link {
+opacity: 0.8;
+transform: translateY(-1px);
+}
+
+/* =========================================================
+TYPOGRAPHY DEFAULTS
+========================================================= */
+
+/* =========================================
+GLOBAL FONT SYSTEM
+========================================= */
+
+body,
+p,
+li {
+font-family: "Inter", sans-serif !important;
+}
+
+/* Navigation */
+nav,
+nav a,
+header nav,
+header nav a,
+.codm-header-nav,
+.codm-header-nav a,
+.codm-header-nav-link {
+font-family: "Inter", sans-serif !important;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+/* Buttons */
+button,
+.btn,
+a.button,
+.codm-header-cta,
+.codm-announcement-link {
+font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+/* Don't force Inter onto every span */
+span {
+font-family: inherit;
+}
+
+/* =========================================================
+WHY CODM CARDS
+========================================================= */
+
+.why-codm-card {
+background: var(--surface);
+transition: background 0.3s ease;
+}
+
+.why-codm-card {
+background: radial-gradient(circle at 100% 100%, rgba(74, 55, 255, 0.95) 0%, rgba(52, 38, 180, 0.65) 38%, rgba(13, 16, 32, 0.98) 78%);
+}
+
+/* =========================================================
+TESTIMONIALS
+========================================================= */
+
+.codm-testimonials {
+position: relative;
+width: 100%;
+padding: 88px 20px 78px;
+background: var(--background);
+color: var(--foreground);
+overflow: hidden;
+transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+.codm-testimonials-container {
+width: min(1100px, 100%);
+margin: 0 auto;
+}
+
+.codm-testimonials-eyebrow {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.codm-testimonials-eyebrow > span,
+.codm-testimonials-eyebrow > span {
+width: 42px;
+height: 1px;
+display: block;
+background: linear-gradient(90deg, transparent, rgba(114, 92, 255, 0.45));
+}
+
+.codm-testimonials-eyebrow > span {
+background: linear-gradient(90deg, rgba(114, 92, 255, 0.45), transparent);
+}
+
+.codm-testimonials-eyebrow-text {
+width: auto !important;
+height: auto !important;
+color: #7b8394;
+font-size: 10px;
+line-height: 1;
+font-weight: 500;
+letter-spacing: 1.4px;
+text-transform: uppercase;
+}
+
+.codm-testimonials-heading-wrap {
+text-align: center;
+}
+
+.codm-testimonials-heading-wrap h2 {
+margin: 0;
+color: #111525;
+font-size: clamp(38px, 4vw, 54px);
+line-height: 1.04;
+font-weight: 400;
+letter-spacing: -2.4px;
+}
+
+.codm-testimonials-heading-wrap h2 span {
+display: block;
+background: linear-gradient(90deg, #7568ff, #7562ea);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.codm-testimonial-card {
+position: relative;
+width: 100%;
+margin-top: 38px;
+overflow: hidden;
+border: 1px solid rgba(92, 105, 133, 0.14);
+border-radius: 12px;
+background: linear-gradient(135deg, #ffffff 0%, #f9fbff 62%, #f1efff 100%);
+box-shadow: 0 14px 40px rgba(40, 53, 84, 0.06);
+transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.codm-testimonial-glow {
+position: absolute;
+top: -150px;
+right: -130px;
+width: 430px;
+height: 430px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(114, 92, 255, 0.16), transparent 70%);
+filter: blur(42px);
+pointer-events: none;
+}
+
+.codm-testimonial-line {
+position: absolute;
+top: 30px;
+right: -120px;
+width: 320px;
+height: 520px;
+transform: rotate(35deg);
+border-left: 1px solid rgba(114, 92, 255, 0.08);
+pointer-events: none;
+}
+
+.codm-testimonial-line-two {
+right: -165px;
+border-left-color: rgba(114, 92, 255, 0.05);
+}
+
+.codm-testimonial-layout {
+position: relative;
+z-index: 1;
+display: grid;
+grid-template-columns: 275px minmax(0, 1fr);
+min-height: 320px;
+}
+
+.codm-testimonial-image-wrap {
+padding: 10px;
+}
+
+.codm-testimonial-image {
+position: relative;
+width: 100%;
+height: 100%;
+min-height: 300px;
+overflow: hidden;
+border-radius: 9px;
+background: #ececf5;
+}
+
+.codm-testimonial-image img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.codm-testimonial-no-image {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+min-height: 300px;
+color: #7d8698;
+font-size: 13px;
+}
+
+.codm-testimonial-content {
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: center;
+min-width: 0;
+padding: 46px 48px 44px;
+}
+
+.codm-testimonial-opening-quote,
+.codm-testimonial-closing-quote {
+position: absolute;
+font-family: Georgia, serif;
+color: rgba(114, 92, 255, 0.13);
+line-height: 1;
+pointer-events: none;
+}
+
+.codm-testimonial-opening-quote {
+top: 12px;
+left: 38px;
+font-size: 74px;
+}
+
+.codm-testimonial-closing-quote {
+right: 28px;
+bottom: -10px;
+font-size: 86px;
+}
+
+.codm-testimonial-text {
+position: relative;
+z-index: 2;
+max-width: 590px;
+color: #707b8e;
+font-size: 14px;
+line-height: 1.72;
+}
+
+.codm-testimonial-text p {
+margin: 0 0 12px;
+}
+
+.codm-testimonial-text p {
+margin-bottom: 0;
+}
+
+.codm-testimonial-client {
+position: relative;
+z-index: 2;
+margin-top: 22px;
+}
+
+.codm-testimonial-client h3 {
+margin: 0;
+color: #1b2334;
+font-size: 15px;
+line-height: 1.3;
+font-weight: 600;
+}
+
+.codm-testimonial-navigation {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-top: 22px;
+}
+
+.codm-testimonial-nav-button {
+width: 30px;
+height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0;
+border: 1px solid #d6dbe5;
+border-radius: 50%;
+background: #ffffff;
+color: #343b4d;
+font-size: 13px;
+cursor: pointer;
+transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.codm-testimonial-nav-button {
+background: #7567ef;
+border-color: #7567ef;
+color: #ffffff;
+transform: translateY(-1px);
+}
+
+.codm-testimonial-dots {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.codm-testimonial-dot {
+width: 6px;
+height: 6px;
+padding: 0;
+border: 0;
+border-radius: 50%;
+background: #ccd2de;
+cursor: pointer;
+transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.codm-testimonial-dot.is-active {
+width: 17px;
+border-radius: 999px;
+background: #7567ef;
+}
+
+[data-theme="dark"] .codm-testimonials-heading-wrap h2 {
+color: #f5f6fb;
+}
+
+[data-theme="dark"] .codm-testimonial-card {
+background: #101126;
+border-color: rgba(130, 130, 180, 0.10);
+box-shadow: none;
+}
+
+[data-theme="dark"] .codm-testimonial-image {
+background: var(--surface-secondary);
+}
+
+[data-theme="dark"] .codm-testimonial-text {
+color: #aab0c4;
+}
+
+[data-theme="dark"] .codm-testimonial-client h3 {
+color: #f5f6fb;
+}
+
+[data-theme="dark"] .codm-testimonial-nav-button {
+background: #15182c;
+border-color: #343952;
+color: #ffffff;
+}
+
+[data-theme="dark"] .codm-testimonial-dot {
+background: #41465e;
+}
+
+[data-theme="dark"] .codm-testimonial-dot.is-active {
+background: #8172ff;
+}
+
+/* =========================================================
+LATEST BLOGS
+========================================================= */
+
+.latest-blogs {
+width: 100%;
+padding: 78px 7% 82px;
+background: #edf3f9;
+color: #101424;
+transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+.latest-blogs-header {
+text-align: center;
+max-width: 760px;
+margin: 0 auto 38px;
+}
+
+.latest-blogs .section-label {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-bottom: 20px;
+font-size: 10px;
+letter-spacing: 1.4px;
+color: #6e778b;
+text-transform: uppercase;
+font-weight: 500;
+}
+
+.latest-blogs .section-label span {
+width: 42px;
+height: 1px;
+background: linear-gradient(90deg, transparent, #8a7cff);
+}
+
+.latest-blogs .section-label span {
+background: linear-gradient(90deg, #8a7cff, transparent);
+}
+
+.latest-blogs-header h2 {
+margin: 0;
+font-size: clamp(34px, 4vw, 52px);
+line-height: 1.05;
+font-weight: 400;
+letter-spacing: -2px;
+color: #111525;
+}
+
+.latest-blogs-header h2 strong {
+font-weight: 400;
+background: linear-gradient(90deg, #7668ff, #7562ea);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.latest-blogs-header p {
+color: #7c8699;
+max-width: 620px;
+margin: 16px auto 0;
+font-size: 18px;
+line-height: 1.5;
+font-family: Inter,sans-serif !important;
+}
+
+.latest-blogs-grid {
+width: min(1180px, 100%);
+margin: 0 auto;
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 14px;
+}
+
+.latest-blogs .blog-card {
+background: #f8fbff;
+border: 1px solid rgba(99, 113, 142, 0.12);
+border-radius: 10px;
+padding: 16px;
+min-height: 0;
+display: flex;
+flex-direction: column;
+box-shadow: 0 8px 24px rgba(42, 57, 89, 0.045);
+transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+min-width: 0;
+}
+
+.latest-blogs .blog-card {
+transform: translateY(-4px);
+border-color: rgba(114, 92, 255, 0.24);
+box-shadow: 0 14px 32px rgba(42, 57, 89, 0.08);
+}
+
+.latest-blogs .blog-categories {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+min-height: auto;
+margin-bottom: 12px;
+}
+
+.latest-blogs .blog-categories span {
+border: 1px solid #dce1e9;
+background: #ffffff;
+color: #7a8394;
+padding: 5px 8px;
+font-size: 10px;
+line-height: 1;
+border-radius: 3px;
+display: inline-flex;
+align-items: center;
+}
+
+.latest-blogs .blog-image {
+width: 100%;
+height: 158px;
+overflow: hidden;
+border-radius: 7px;
+margin-bottom: 14px;
+}
+
+.latest-blogs .blog-image img {
+width: 100%;
+height: 100%;
+display: block;
+object-fit: cover;
+transition: transform 0.4s ease;
+}
+
+.latest-blogs .blog-card .blog-image img {
+transform: scale(1.04);
+}
+
+.latest-blogs .blog-card h3 {
+margin: 0;
+color: #252c3d;
+font-size: 15px;
+line-height: 1.4;
+font-weight: 500;
+}
+
+.latest-blogs .blog-card a {
+margin-top: 16px;
+padding-top: 0;
+text-decoration: none;
+color: #7168d0;
+font-size: 12px;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: color 0.2s ease;
+}
+
+.latest-blogs .blog-card a {
+color: #5748d8;
+}
+
+.latest-blogs .blog-card a span {
+font-size: 17px;
+}
+
+[data-theme="dark"] .latest-blogs {
+background: #070918;
+color: #ffffff;
+}
+
+[data-theme="dark"] .latest-blogs-header h2 {
+color: #f5f6fb;
+}
+
+[data-theme="dark"] .latest-blogs-header p {
+color: #a7adbf;
+}
+
+[data-theme="dark"] .latest-blogs .blog-card {
+background: #15182c;
+border-color: rgba(130, 130, 180, 0.08);
+box-shadow: none;
+}
+
+[data-theme="dark"] .latest-blogs .blog-categories span {
+border-color: #424762;
+background: transparent;
+color: #9da5bb;
+}
+
+[data-theme="dark"] .latest-blogs .blog-card h3 {
+color: #d5d8e4;
+}
+
+[data-theme="dark"] .latest-blogs .blog-card a {
+color: #8a80dd;
+}
+
+/* =========================================================
+CONTACT CTA
+========================================================= */
+
+button,
+.btn,
+a.button,
+.contact-cta-button,
+header a {
+font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.contact-cta {
+position: relative;
+width: 100%;
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+background: radial-gradient(circle at 50% -20%, rgba(126, 104, 255, 0.18), transparent 48%), linear-gradient(180deg, #eaf1f7 0%, #e3edf6 100%);
+color: #11182b;
+transition: background 0.35s ease, color 0.35s ease;
+}
+
+.contact-cta::before {
+content: "";
+position: absolute;
+inset: 0;
+background: repeating-linear-gradient(0deg, transparent 0, transparent 71px, rgba(85, 104, 137, 0.035) 72px), repeating-linear-gradient(90deg, transparent 0, transparent 71px, rgba(85, 104, 137, 0.035) 72px);
+pointer-events: none;
+}
+
+.contact-cta-glow {
+position: absolute;
+top: -180px;
+left: 50%;
+transform: translateX(-50%);
+width: 720px;
+height: 350px;
+border-radius: 50%;
+background: radial-gradient(ellipse, rgba(122, 98, 255, 0.23) 0%, rgba(122, 98, 255, 0.09) 42%, transparent 74%);
+filter: blur(25px);
+pointer-events: none;
+}
+
+.contact-cta-content {
+position: relative;
+z-index: 1;
+width: 100%;
+max-width: 900px;
+padding: 78px 30px;
+text-align: center;
+}
+
+.contact-cta-label {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.contact-cta-label span {
+width: 44px;
+height: 1px;
+background: linear-gradient(90deg, transparent, #8b7cff);
+}
+
+.contact-cta-label span {
+background: linear-gradient(90deg, #8b7cff, transparent);
+}
+
+.contact-cta-label p {
+margin: 0;
+color: #6e788b;
+font-size: 10px;
+font-weight: 500;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+}
+
+.contact-cta h2 {
+margin: 0;
+color: #11182b;
+font-size: clamp(45px, 5.2vw, 68px);
+line-height: 1;
+font-weight: 400;
+letter-spacing: -3px;
+}
+
+.contact-cta h2 strong {
+font-weight: 400;
+background: linear-gradient(90deg, #7365ff 0%, #7669ef 45%, #6477ed 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.contact-cta-description {
+margin: 24px auto 0;
+max-width: 700px;
+color: #7a8598;
+font-size: 14px;
+line-height: 1.55;
+}
+
+.contact-cta-button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+margin-top: 28px;
+padding: 12px 22px;
+border-radius: 999px;
+background: linear-gradient(135deg, #8475ff, #7564ed);
+color: #ffffff;
+font-size: 18px;
+font-weight: 500;
+text-decoration: none;
+box-shadow: 0 8px 22px rgba(111, 87, 255, 0.21);
+transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-cta-button {
+transform: translateY(-2px);
+box-shadow: 0 12px 28px rgba(111, 87, 255, 0.30);
+}
+
+.contact-cta-button span {
+font-size: 17px;
+line-height: 1;
+}
+
+[data-theme="dark"] .contact-cta {
+background: linear-gradient(rgba(8, 10, 27, 0.92), rgba(5, 7, 20, 0.98)), repeating-linear-gradient(0deg, transparent 0, transparent 71px, rgba(255, 255, 255, 0.055) 72px), repeating-linear-gradient(90deg, transparent 0, transparent 71px, rgba(255, 255, 255, 0.055) 72px);
+color: #ffffff;
+}
+
+[data-theme="dark"] .contact-cta-label p {
+color: #c7c9dc;
+}
+
+[data-theme="dark"] .contact-cta h2 {
+color: #f5f5fa;
+}
+
+[data-theme="dark"] .contact-cta-description {
+color: #aab0c4;
+}
+
+/* =========================================================
+FOOTER
+========================================================= */
+
+.codm-footer {
+position: relative;
+width: 100%;
+overflow: hidden;
+background: #080a10;
+color: #ffffff;
+transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+[data-theme="dark"] .codm-footer {
+background: #080a10;
+color: #ffffff;
+}
+
+.codm-footer-main {
+width: min(1240px, 100%);
+margin: 0 auto;
+padding: 70px 40px 55px;
+display: grid;
+grid-template-columns: minmax(280px, 1.35fr) repeat(3, minmax(160px, 1fr)) minmax(150px, 0.9fr);
+gap: 55px;
+}
+
+.codm-footer-brand {
+min-width: 0;
+}
+
+.codm-footer-logo {
+display: flex;
+align-items: center;
+width: 150px;
+height: auto;
+margin-bottom: 30px;
+}
+
+.codm-footer-main-logo {
+display: block;
+width: 150px;
+height: auto;
+max-width: 100%;
+object-fit: contain;
+}
+
+.codm-footer-social {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 32px;
+}
+
+.codm-footer-social a {
+width: 42px;
+height: 42px;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 1px solid rgba(255, 255, 255, 0.28);
+border-radius: 50%;
+color: #ffffff;
+font-size: 18px;
+transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.codm-footer-social a {
+border-color: #8273ff;
+background: rgba(114, 92, 255, 0.14);
+transform: translateY(-2px);
+}
+
+.codm-footer-description {
+max-width: 350px;
+margin: 0 0 34px;
+color: rgba(255, 255, 255, 0.82);
+font-size: 18px;
+line-height: 1.65;
+}
+
+.codm-footer-left-logos {
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 18px;
+}
+
+.codm-footer-left-logo {
+max-width: 125px;
+max-height: 45px;
+width: auto;
+height: auto;
+object-fit: contain;
+opacity: 0.85;
+filter: brightness(1.05);
+transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.codm-footer-left-logo {
+opacity: 1;
+transform: translateY(-2px);
+}
+
+.codm-footer-column {
+min-width: 0;
+}
+
+.codm-footer-column-title {
+margin: 0 0 28px;
+color: #ffffff;
+font-size: 16px;
+line-height: 1.3;
+font-weight: 600;
+}
+
+.codm-footer-links {
+list-style: none;
+padding: 0;
+margin: 0;
+display: flex;
+flex-direction: column;
+gap: 18px;
+}
+
+.codm-footer-links li {
+margin: 0;
+padding: 0;
+}
+
+.codm-footer-links a {
+display: inline-block;
+color: rgba(255, 255, 255, 0.72);
+font-size: 15px;
+line-height: 1.45;
+transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.codm-footer-links a {
+color: #ffffff;
+transform: translateX(2px);
+}
+
+.codm-footer-subheading {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-top: 26px;
+margin-bottom: 18px;
+color: #ffffff;
+font-size: 15px;
+font-weight: 600;
+}
+
+.codm-footer-subheading span {
+color: rgba(255, 255, 255, 0.8);
+font-size: 14px;
+}
+
+.codm-footer-certifications {
+width: min(1240px, 100%);
+margin: 0 auto;
+padding: 25px 40px 10px;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+}
+
+.codm-footer-certification-list {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+.codm-footer-certification-logo {
+width: auto;
+max-width: 82px;
+height: 65px;
+object-fit: contain;
+opacity: 0.95;
+transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.codm-footer-certification-logo {
+opacity: 1;
+transform: translateY(-3px);
+}
+
+.codm-footer-bottom {
+width: min(1240px, 100%);
+margin: 0 auto;
+padding: 35px 40px 22px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-top: 1px solid rgba(255, 255, 255, 0.04);
+color: rgba(255, 255, 255, 0.55);
+font-size: 13px;
+line-height: 1.5;
+}
+
+.codm-footer-bottom p {
+margin: 0;
+}
+
+/* =========================================================
+ANIMATIONS
+========================================================= */
+
+@keyframes codmHeaderEnter {
+0% {
+opacity: 0;
+transform: translateY(-14px);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes codmHeaderLogoEnter {
+0% {
+opacity: 0;
+transform: translateX(-15px);
+}
+100% {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes codmHeaderNavEnter {
+0% {
+opacity: 0;
+transform: translateY(-8px);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes codmHeaderRightEnter {
+0% {
+opacity: 0;
+transform: translateX(15px);
+}
+100% {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes codmHeaderFadeIn {
+from {
+opacity: 0;
+transform: translateY(-12px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes codmLogoIn {
+from {
+opacity: 0;
+transform: translateX(-12px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes codmNavIn {
+from {
+opacity: 0;
+transform: translateY(-7px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes codmRightIn {
+from {
+opacity: 0;
+transform: translateX(12px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+/* =========================================================
+RESPONSIVE BREAKPOINTS
+========================================================= */
+
+@media (max-width: 1100px) {
+
+.codm-footer-main {
+grid-template-columns: 1.3fr repeat(2, 1fr);
+gap: 45px;
+}
+
+.codm-footer-brand {
+grid-column: 1 / -1;
+}
+
+.codm-footer-description {
+max-width: 520px;
+}
+
+.codm-footer-certifications {
+justify-content: flex-start;
+}
+
+.codm-footer-certification-list {
+justify-content: flex-start;
+}
+
+.codm-header-inner {
+padding-left: 22px;
+padding-right: 22px;
+padding: 0 28px;
+}
+
+.codm-header-nav {
+gap: 22px;
+margin-right: 24px;
+}
+
+.codm-header-nav-link {
+font-size: 16px !important;
+}
+
+.codm-header-cta {
+min-width: 120px;
+padding: 0 17px;
+font-size: 12px;
+}
+
+}
+
+@media (max-width: 1024px) {
+
+header nav {
+gap: 22px;
+}
+
+header nav a {
+font-size: 12px;
+}
+
+}
+
+@media (max-width: 900px) {
+
+.contact-cta-description {
+font-size: 15px;
+}
+
+.latest-blogs {
+padding: 70px 5%;
+}
+
+.latest-blogs-grid {
+grid-template-columns: 1fr;
+max-width: 600px;
+}
+
+.contact-cta {
+min-height: 390px;
+}
+
+.contact-cta-content {
+padding: 70px 25px;
+}
+
+.contact-cta h2 {
+letter-spacing: -2.5px;
+}
+
+.codm-header {
+height: 68px;
+}
+
+.codm-header-inner {
+height: 68px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 20px;
+width: calc(100% - 36px);
+}
+
+.codm-header-nav {
+display: none;
+}
+
+.codm-header-right {
+margin-left: auto;
+gap: 10px;
+}
+
+.codm-header-logo {
+height: 26px;
+max-width: 125px;
+max-height: 38px;
+}
+
+.codm-header-cta {
+height: 40px;
+min-width: 0;
+padding: 0 17px;
+font-size: 12px;
+min-height: 42px;
+}
+
+.codm-header-cta-arrow {
+display: none;
+}
+
+}
+
+@media (max-width: 800px) {
+
+.codm-testimonials {
+padding: 72px 18px;
+}
+
+.codm-testimonial-layout {
+grid-template-columns: 1fr;
+}
+
+.codm-testimonial-image-wrap {
+padding: 10px 10px 0;
+}
+
+.codm-testimonial-image {
+min-height: 300px;
+max-height: 340px;
+}
+
+.codm-testimonial-content {
+min-height: 300px;
+padding: 42px 30px 40px;
+}
+
+}
+
+@media (max-width: 767px) {
+
+header nav {
+display: none;
+}
+
+}
+
+@media (max-width: 700px) {
+
+.codm-footer-main {
+display: grid;
+grid-template-columns: 1fr;
+padding: 55px 22px 35px;
+gap: 40px;
+}
+
+.codm-footer-brand {
+grid-column: auto;
+}
+
+.codm-footer-logo {
+width: 130px;
+margin-bottom: 25px;
+}
+
+.codm-footer-main-logo {
+width: 130px;
+}
+
+.codm-footer-description {
+max-width: 100%;
+font-size: 16px;
+}
+
+.codm-footer-column-title {
+margin-bottom: 20px;
+}
+
+.codm-footer-links {
+gap: 14px;
+}
+
+.codm-footer-certifications {
+padding: 25px 22px 10px;
+justify-content: flex-start;
+}
+
+.codm-footer-certification-list {
+justify-content: flex-start;
+gap: 15px;
+}
+
+.codm-footer-certification-logo {
+max-width: 70px;
+height: 55px;
+}
+
+.codm-footer-bottom {
+padding: 25px 22px 20px;
+}
+
+}
+
+@media (max-width: 600px) {
+
+.codm-header {
+height: 64px;
+}
+
+.codm-header-inner {
+height: 64px;
+padding: 0 15px;
+width: calc(100% - 28px);
+}
+
+.codm-header-logo {
+height: 32px;
+max-width: 110px;
+max-height: 34px;
+}
+
+.codm-header-right {
+gap: 8px;
+}
+
+.codm-header-cta {
+height: 40px;
+padding: 0 16px;
+font-size: 13px;
+min-height: 40px;
+}
+
+.codm-header-cta-arrow {
+display: none;
+}
+
+.codm-testimonials {
+padding: 62px 16px 66px;
+}
+
+.codm-testimonials-heading-wrap h2 {
+font-size: 36px;
+letter-spacing: -1.6px;
+}
+
+.codm-testimonial-card {
+margin-top: 30px;
+border-radius: 10px;
+}
+
+.codm-testimonial-image {
+min-height: 250px;
+}
+
+.codm-testimonial-content {
+padding: 38px 22px 34px;
+}
+
+.codm-testimonial-opening-quote {
+left: 20px;
+top: 8px;
+font-size: 58px;
+}
+
+.codm-testimonial-closing-quote {
+right: 18px;
+bottom: -7px;
+font-size: 68px;
+}
+
+.codm-testimonial-text {
+font-size: 13px;
+line-height: 1.65;
+}
+
+.latest-blogs {
+padding: 58px 20px 64px;
+}
+
+.latest-blogs-header {
+margin-bottom: 30px;
+}
+
+.latest-blogs-header h2 {
+font-size: 37px;
+letter-spacing: -1.5px;
+}
+
+.latest-blogs-header p {
+font-size: 14px;
+}
+
+.latest-blogs .blog-card {
+padding: 14px;
+}
+
+.latest-blogs .blog-image {
+height: 190px;
+}
+
+.contact-cta {
+min-height: 400px;
+}
+
+.contact-cta-content {
+padding: 62px 20px;
+}
+
+.contact-cta-label span {
+width: 32px;
+}
+
+.contact-cta-label p {
+font-size: 9px;
+}
+
+.contact-cta h2 {
+font-size: 40px;
+line-height: 1.02;
+letter-spacing: -2px;
+}
+
+.contact-cta-description {
+margin-top: 20px;
+font-size: 13px;
+}
+
+.contact-cta-description br {
+display: none;
+}
+
+.contact-cta-button {
+margin-top: 26px;
+padding: 11px 20px;
+font-size: 12px;
+}
+
+}
+
+@media (max-width: 480px) {
+
+.codm-header-inner {
+padding: 0 15px;
+}
+
+.codm-header-logo {
+max-width: 95px;
+height: 24px;
+}
+
+.codm-header-cta {
+height: 38px;
+padding: 0 15px;
+font-size: 11px;
+}
+
+}
+
+@media (max-width: 400px) {
+
+.codm-header-inner {
+padding: 0 12px;
+width: calc(100% - 20px);
+}
+
+.codm-header-logo {
+height: 30px;
+max-width: 100px;
+}
+
+.codm-header-cta {
+padding: 0 14px;
+font-size: 11px;
+}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+.codm-header,
+.codm-header-logo-link,
+.codm-header-nav,
+.codm-header-right,
+.codm-header-nav-link,
+.codm-header-cta,
+.codm-header-cta-arrow,
+.codm-header-logo {
+animation: none !important;
+transition: none !important;
+}
+
+.codm-header,
+.codm-header-logo-link,
+.codm-header-nav-link,
+.codm-header-right {
+animation: none !important;
+}
+
+.codm-header-nav-link,
+.codm-header-nav-link::after,
+.codm-header-cta,
+.codm-header-cta::before,
+.codm-header-cta-arrow,
+.codm-header-logo-link {
+transition: none !important;
+}
+
+}
+
+/* =========================================================
+ANNOUNCEMENT BAR
+========================================================= */
+
+.codm-announcement-bar {
+width: 100%;
+height: 44px;
+background: #f5f7fa;
+border-bottom: 1px solid #d9dee8;
+
+color: #10182b;
+
+font-family: "Inter", sans-serif;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+letter-spacing: 0;
+
+box-sizing: border-box;
+}
+
+.codm-announcement-inner {
+width: 100%;
+height: 100%;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+gap: 12px;
+
+padding: 0 20px;
+box-sizing: border-box;
+}
+
+.codm-announcement-text {
+color: #10182b;
+
+font-family: "Inter", sans-serif;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+letter-spacing: 0;
+
+white-space: nowrap;
+}
+
+.codm-announcement-link {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+
+gap: 4px;
+
+min-width: 76px;
+height: 20px;
+
+padding: 0 8px;
+
+box-sizing: border-box;
+
+border: 1px solid #dce4ef;
+border-radius: 999px;
+
+background: #e9eef6;
+color: #68758a;
+
+font-family: "Google Sans Flex", sans-serif;
+font-weight: 500;
+font-size: 8px;
+line-height: 100%;
+letter-spacing: 0;
+
+text-align: center;
+text-transform: uppercase;
+
+text-decoration: none;
+
+white-space: nowrap;
+
+transition:
+background-color 0.25s ease,
+color 0.25s ease,
+transform 0.25s ease;
+}
+
+.codm-announcement-link {
+background: #dfe7f3;
+color: #4a5870;
+transform: translateY(-1px);
+}
+
+.codm-announcement-arrow {
+font-family: "Inter", sans-serif;
+font-size: 9px;
+line-height: 1;
+}
+
+/* =========================================================
+DARK MODE
+========================================================= */
+
+[data-theme="dark"] .codm-announcement-bar {
+background: #1b2038;
+border-bottom: 1px solid #1b2038;
+
+color: #4a8cff;
+}
+
+[data-theme="dark"] .codm-announcement-text {
+color: #4a8cff;
+}
+
+[data-theme="dark"] .codm-announcement-link {
+background: #4a8cff;
+border-color: #4a8cff;
+color: #ffffff;
+}
+
+[data-theme="dark"] .codm-announcement-link {
+background: #639cff;
+border-color: #639cff;
+color: #ffffff;
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+.codm-announcement-bar {
+height: 42px;
+}
+
+.codm-announcement-inner {
+gap: 8px;
+padding: 0 12px;
+}
+
+.codm-announcement-text {
+font-size: 13px;
+line-height: 18px;
+}
+
+.codm-announcement-link {
+min-width: 70px;
+height: 19px;
+
+padding: 0 7px;
+
+font-size: 7px;
+
+}
+
+}
+/* =========================================================
+FINAL CODM HEADER CTA FIX
+Put this at the VERY END of the CSS file
+========================================================= */
+
+.codm-header-cta {
+position: relative !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+overflow: hidden !important;
+isolation: isolate !important;
+
+min-width: 130px !important;
+height: 44px !important;
+padding: 0 22px !important;
+
+box-sizing: border-box !important;
+border-radius: 999px !important;
+
+background: #ffffff !important;
+color: #101424 !important;
+
+font-family: "Plus Jakarta Sans", sans-serif !important;
+font-size: 16px !important;
+font-weight: 700 !important;
+font-style: normal !important;
+line-height: 22px !important;
+letter-spacing: 0 !important;
+
+text-decoration: none !important;
+white-space: nowrap !important;
+
+border: 1px solid rgba(20, 24, 40, 0.08) !important;
+
+box-shadow:
+0 4px 18px rgba(0, 0, 0, 0.12) !important;
+
+transform: translateY(0);
+transition:
+transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+background-color 0.3s ease,
+color 0.3s ease,
+box-shadow 0.3s ease !important;
+}
+
+/* =========================================================
+SHINE — COMPLETELY CONTAINED INSIDE BUTTON
+========================================================= */
+
+/* =========================================================
+BUTTON CONTENT
+========================================================= */
+
+.codm-header-cta > span {
+position: relative !important;
+z-index: 3 !important;
+}
+
+/* =========================================================
+ARROW
+========================================================= */
+
+.codm-header-cta-arrow {
+position: relative !important;
+z-index: 3 !important;
+
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+width: 12px !important;
+
+font-family: "Inter", sans-serif !important;
+font-size: 15px !important;
+line-height: 1 !important;
+
+opacity: 1 !important;
+
+transform: translateX(0) !important;
+
+transition:
+transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.codm-header-cta {
+transform: translateY(-2px) !important;
+
+background: #735cff !important;
+color: #ffffff !important;
+
+border-color: #735cff !important;
+
+box-shadow:
+0 8px 24px rgba(115, 92, 255, 0.28) !important;
+}
+
+.codm-header-cta .codm-header-cta-arrow {
+transform: translateX(4px) !important;
+}
+
+.codm-header-cta {
+transform: translateY(0) scale(0.98) !important;
+}
+
+/* =========================================================
+DARK MODE
+========================================================= */
+
+[data-theme="dark"] .codm-header-cta {
+background: #ffffff !important;
+color: #101424 !important;
+}
+
+[data-theme="dark"] .codm-header-cta {
+background: #735cff !important;
+color: #ffffff !important;
+border-color: #735cff !important;
+}
+
+/* =========================================================
+VERY IMPORTANT:
+PREVENT OTHER CSS FROM TURNING PSEUDO ELEMENT
+INTO A FLEX ITEM
+========================================================= */
+
+.codm-header-cta::before,
+.codm-header-cta::after {
+box-sizing: border-box !important;
+pointer-events: none !important;
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+.codm-header-cta {
+min-width: 0 !important;
+height: 40px !important;
+padding: 0 17px !important;
+font-size: 12px !important;
+}
+
+.codm-header-cta-arrow {
+display: none !important;
+}
+}
+
+@media (max-width: 480px) {
+.codm-header-cta {
+height: 38px !important;
+padding: 0 15px !important;
+font-size: 11px !important;
+}
+}
+
+/* =========================================================
+LIGHT MODE — ANNOUNCEMENT BAR
+========================================================= */
+
+.codm-announcement-bar {
+background: #F5F7FA;
+color: #10182B;
+border-bottom: 1px solid #D9DEE8;
+}
+
+.codm-announcement-text {
+color: #10182B;
+font-family: "Inter", sans-serif;
+font-weight: 500;
+font-size: 16px;
+line-height: 22px;
+letter-spacing: 0;
+}
+
+.codm-announcement-link {
+background: #E8EEF7;
+color: #68758A;
+
+font-family: "Google Sans Flex", sans-serif;
+font-weight: 500;
+font-size: 8px;
+line-height: 100%;
+letter-spacing: 0;
+text-align: center;
+text-transform: uppercase;
+
+border: 1px solid #DCE3EE;
+border-radius: 999px;
+}
+
+/* =========================================
+HERO / MAIN HEADING
+========================================= */
+
+.codm-hero h1,
+.codm-hero-title,
+.codm-hero-heading {
+font-family: "Plus Jakarta Sans", sans-serif !important;
+font-weight: 500 !important;
+font-style: normal !important;
+font-size: 72px !important;
+line-height: 74px !important;
+letter-spacing: -2% !important;
+text-align: center !important;
+margin: 0 auto !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+.codm-hero h1,
+.codm-hero-title,
+.codm-hero-heading {
+font-size: 42px !important;
+line-height: 46px !important;
+letter-spacing: -2% !important;
+}
+}
+
+/* =========================================================
+STICKY ANNOUNCEMENT BAR
+========================================================= */
+
+.codm-announcement-bar {
+position: fixed !important;
+top: 0 !important;
+left: 0 !important;
+right: 0 !important;
+
+width: 100% !important;
+height: 44px !important;
+
+z-index: 10000 !important;
+
+box-sizing: border-box !important;
+
+background: #F4F6F9 !important;
+color: #111827 !important;
+
+border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Announcement content */
+
+.codm-announcement-inner {
+width: 100% !important;
+height: 100% !important;
+
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+gap: 14px !important;
+
+padding: 0 20px !important;
+box-sizing: border-box !important;
+}
+
+.codm-announcement-text {
+font-family: "Inter", sans-serif !important;
+font-size: 16px !important;
+font-weight: 500 !important;
+line-height: 22px !important;
+
+color: #4A8CFF !important;
+}
+
+.codm-announcement-link {
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+height: 22px !important;
+padding: 0 9px !important;
+
+border-radius: 4px !important;
+
+background: #4A8CFF !important;
+color: #ffffff !important;
+
+font-family: "Google Sans Flex", sans-serif !important;
+font-size: 8px !important;
+font-weight: 500 !important;
+line-height: 100% !important;
+
+text-align: center !important;
+text-transform: uppercase !important;
+text-decoration: none !important;
+
+transition:
+transform 0.25s ease,
+opacity 0.25s ease !important;
+}
+
+.codm-announcement-link {
+transform: translateY(-1px) !important;
+opacity: 0.9 !important;
+}
+
+.codm-announcement-arrow {
+margin-left: 4px !important;
+}
+
+/* =========================================================
+STICKY MAIN HEADER
+========================================================= */
+
+.codm-header {
+position: fixed !important;
+
+top: 44px !important;
+left: 0 !important;
+right: 0 !important;
+
+width: 100% !important;
+height: 72px !important;
+
+z-index: 9999 !important;
+
+box-sizing: border-box !important;
+
+background: rgba(5, 6, 18, 0.94) !important;
+
+border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+backdrop-filter: blur(18px) !important;
+-webkit-backdrop-filter: blur(18px) !important;
+}
+
+/* =========================================================
+PAGE OFFSET
+Announcement 44px + Header 72px = 116px
+========================================================= */
+
+.codm-header + main {
+padding-top: 116px !important;
+}
+
+.codm-header ~ main {
+padding-top: 116px !important;
+}
+
+.codm-header + .codm-hero {
+padding-top: 116px !important;
+}
+
+/* =========================================================
+DARK MODE
+========================================================= */
+
+.dark .codm-announcement-bar,
+[data-theme="dark"] .codm-announcement-bar,
+html.dark .codm-announcement-bar {
+background: #1B2038 !important;
+color: #4A8CFF !important;
+border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .codm-announcement-text,
+[data-theme="dark"] .codm-announcement-text,
+html.dark .codm-announcement-text {
+color: #4A8CFF !important;
+}
+
+.dark .codm-announcement-link,
+[data-theme="dark"] .codm-announcement-link,
+html.dark .codm-announcement-link {
+background: #4A8CFF !important;
+color: #ffffff !important;
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+.codm-announcement-bar {
+height: 40px !important;
+}
+
+.codm-announcement-inner {
+gap: 8px !important;
+padding: 0 10px !important;
+}
+
+.codm-announcement-text {
+font-size: 12px !important;
+line-height: 16px !important;
+text-align: center !important;
+}
+
+.codm-announcement-link {
+height: 20px !important;
+padding: 0 7px !important;
+font-size: 7px !important;
+}
+
+.codm-header {
+top: 40px !important;
+height: 64px !important;
+}
+
+.codm-header + main,
+.codm-header ~ main,
+.codm-header + .codm-hero {
+padding-top: 104px !important;
+}
+}
+
+[data-theme="light"] body {
+background: radial-gradient( ellipse 75% 40% at 50% 100%, #ffffff 0%, #f5eaff 20%, #e4dcfa 50%, rgba(225, 218, 248, 0) 80% ), linear-gradient( 180deg, #edf0fa 0%, #f8f8fc 45%, #f4f1fc 75%, #e5ddfa 100% );
+}
+[data-theme="light"] #hero {
+background: radial-gradient(70% 45% at 50% 100%,#f5eaff 0%,#eee5ff 25%,#e5defb 45%,#0000 75%),linear-gradient(#eef1fb 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%);
+margin: 8% 0 0;
+}
+
+#hero {
+margin: 8% 0 0;
+}
+#hero .md:text-[64px] {
+font-size: 72px;
+line-height: 74px;
+font-weight: 500;
+font-family: Plus Jakarta Sans,sans-serif !important;
+letter-spacing: -2%;
+}
+
+/* =========================================================
+SALESFORCE SOLUTIONS — DARK MODE
+========================================================= */
+
+.codm-highlight {
+display: block;
+
+background: linear-gradient(100deg, #2563EB 11.16%, #6366F1 49.17%, #A78BFA 93.16%) !important;
+
+-webkit-background-clip: text !important;
+background-clip: text !important;
+
+-webkit-text-fill-color: transparent !important;
+color: transparent !important;
+}
+
+/* =========================================================
+SALESFORCE SOLUTIONS — LIGHT MODE
+========================================================= */
+
+html.light .codm-highlight,
+html[data-theme="light"] .codm-highlight,
+[data-theme="light"] .codm-highlight,
+.light .codm-highlight {
+background: linear-gradient(
+100deg,
+#2563EB 11.16%,
+#6366F1 49.17%,
+#A78BFA 93.16%
+) !important;
+
+-webkit-background-clip: text !important;
+background-clip: text !important;
+
+-webkit-text-fill-color: transparent !important;
+color: transparent !important;
+}
+
+.codm-hero-description {
+font-family: "Inter", sans-serif !important;
+font-weight: 400 !important;
+font-style: normal !important;
+font-size: 20px !important;
+line-height: 28px !important;
+letter-spacing: 0 !important;
+text-align: center !important;
+color: #9AA3B8 !important;
+}
+
+html.light .codm-hero-description,
+html[data-theme="light"] .codm-hero-description,
+[data-theme="light"] .codm-hero-description,
+.light .codm-hero-description {
+color: #6B7388 !important;
+}
+
+/* =========================================================
+HERO BUTTONS
+========================================================= */
+
+/* =========================================================
+PRIMARY — BOOK A CONSULTATION
+========================================================= */
+
+#hero .codm-hero-primary-button {
+width: 227px !important;
+height: 53px !important;
+
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+box-sizing: border-box !important;
+
+padding: 14px 20px !important;
+
+gap: 6px !important;
+
+border-radius: 30px !important;
+border: 1px solid transparent !important;
+
+background: linear-gradient(
+90deg,
+#8B5CF6 0%,
+#4F46E5 100%
+) !important;
+
+color: #FFFFFF !important;
+
+font-family: "Plus Jakarta Sans", sans-serif !important;
+font-weight: 500 !important;
+font-style: normal !important;
+font-size: 18px !important;
+line-height: 100% !important;
+letter-spacing: 0 !important;
+
+text-align: center !important;
+
+text-decoration: none !important;
+
+transition: opacity 0.3s ease !important;
+}
+
+#hero .codm-hero-primary-button {
+background: linear-gradient(
+90deg,
+#8B5CF6 0%,
+#4F46E5 100%
+) !important;
+
+color: #FFFFFF !important;
+
+opacity: 0.9 !important;
+}
+
+/* =========================================================
+SECONDARY — EXPLORE SERVICES
+========================================================= */
+
+#hero .codm-hero-secondary-button {
+
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+
+box-sizing: border-box !important;
+
+padding: 14px 20px !important;
+
+gap: 6px !important;
+
+border-radius: 30px !important;
+border: 1px solid #E8EDF2 !important;
+
+background: transparent !important;
+
+color: #475569 !important;
+
+font-family: "Google Sans Flex", sans-serif !important;
+font-weight: 500 !important;
+font-style: normal !important;
+font-size: 18px !important;
+line-height: 100% !important;
+letter-spacing: 0 !important;
+
+text-align: center !important;
+
+text-decoration: none !important;
+
+transition:
+border-color 0.3s ease,
+opacity 0.3s ease !important;
+}
+
+/* =========================================================
+SECONDARY — DARK MODE
+========================================================= */
+
+html[data-theme="dark"] #hero .codm-hero-secondary-button,
+html.dark #hero .codm-hero-secondary-button,
+[data-theme="dark"] #hero .codm-hero-secondary-button,
+.dark #hero .codm-hero-secondary-button {
+color: #FFFFFF !important;
+}
+
+/* =========================================================
+SECONDARY — HOVER
+========================================================= */
+
+#hero .codm-hero-secondary-button {
+color: #475569 !important;
+border-color: #E8EDF2 !important;
+opacity: 0.9 !important;
+}
+
+html[data-theme="dark"] #hero .codm-hero-secondary-button,
+html.dark #hero .codm-hero-secondary-button,
+[data-theme="dark"] #hero .codm-hero-secondary-button,
+.dark #hero .codm-hero-secondary-button {
+color: #FFFFFF !important;
+}
+
+/* =========================================================
+CODM HERO — PREMIUM SMOOTH ANIMATIONS
+========================================================= */
+
+/* ---------------------------------------------------------
+HERO HEADING
+--------------------------------------------------------- */
+
+.codm-hero-title {
+opacity: 0;
+animation: codmHeroTitle 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+will-change: transform, opacity;
+}
+
+/* ---------------------------------------------------------
+HERO DESCRIPTION
+--------------------------------------------------------- */
+
+.codm-hero-description {
+opacity: 0;
+animation: codmHeroDescription 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+will-change: transform, opacity;
+}
+
+/* ---------------------------------------------------------
+HERO BUTTONS
+--------------------------------------------------------- */
+
+.codm-hero-buttons {
+opacity: 0;
+animation: codmHeroButtons 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+will-change: transform, opacity;
+}
+
+/* ---------------------------------------------------------
+HERO LOGOS
+--------------------------------------------------------- */
+
+.codm-hero-logos {
+opacity: 0;
+animation: codmHeroLogos 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+will-change: transform, opacity;
+}
+
+/* ---------------------------------------------------------
+INDIVIDUAL LOGOS
+--------------------------------------------------------- */
+
+.codm-hero-logos img {
+opacity: 0;
+will-change: transform, opacity;
+}
+
+.codm-hero-logos img(1) {
+animation: codmHeroLogoItem 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards;
+}
+
+.codm-hero-logos img(2) {
+animation: codmHeroLogoItem 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+}
+
+.codm-hero-logos img(3) {
+animation: codmHeroLogoItem 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards;
+}
+
+.codm-hero-logos img(4) {
+animation: codmHeroLogoItem 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+}
+
+/* =========================================================
+HERO MEDIA — FLUPER STYLE SCROLL REVEAL
+========================================================= */
+
+
+#hero .codm-hero-image-section.translate-y-0 {
+opacity: 1;
+transform: translateY(0) scale(1);
+filter: blur(0);
+}
+
+/* Make sure the actual video itself is NEVER hidden */
+#hero .codm-hero-video {
+display: block;
+width: 100%;
+height: auto;
+opacity: 1 !important;
+visibility: visible !important;
+}
+
+/* Same behaviour if Featured Image is used */
+#hero .codm-hero-image {
+display: block;
+width: 100%;
+height: auto;
+opacity: 1 !important;
+visibility: visible !important;
+transform: none;
+animation: none !important;
+}
+
+/* Frame */
+#hero .codm-hero-image-frame {
+position: relative;
+transform: translateZ(0);
+}
+
+/* Glow */
+#hero .codm-hero-image-glow {
+opacity: 0;
+transform: translateX(-50%) scale(0.7);
+
+transition:
+opacity 1.2s ease,
+transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#hero .codm-hero-image-section.translate-y-0
+.codm-hero-image-glow {
+opacity: 1;
+transform: translateX(-50%) scale(1);
+}
+
+/* ---------------------------------------------------------
+IMAGE FRAME
+--------------------------------------------------------- */
+
+.codm-hero-image-frame {
+position: relative;
+transform: translateZ(0);
+transition:
+transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+box-shadow 0.6s ease;
+}
+
+/*
+Very subtle hover effect
+*/
+
+.codm-hero-image-frame {
+transform: translateY(-5px) scale(1.005);
+}
+
+/* ---------------------------------------------------------
+IMAGE ITSELF
+--------------------------------------------------------- */
+
+.codm-hero-image-frame img {
+display: block;
+transform: scale(1);
+transition:
+transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-hero-image-frame img {
+transform: scale(1.01);
+}
+
+/* =========================================================
+IMAGE GLOW
+========================================================= */
+
+/*
+Add class:
+codm-hero-image-glow
+*/
+
+.codm-hero-image-glow {
+animation: codmHeroGlow 5s ease-in-out 1.8s infinite;
+will-change: opacity, transform;
+}
+
+/* =========================================================
+KEYFRAMES
+========================================================= */
+
+@keyframes codmHeroTitle {
+
+0% {
+opacity: 0;
+transform: translateY(32px);
+}
+
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+
+}
+
+@keyframes codmHeroDescription {
+
+0% {
+opacity: 0;
+transform: translateY(22px);
+}
+
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+
+}
+
+@keyframes codmHeroButtons {
+
+0% {
+opacity: 0;
+transform: translateY(20px);
+}
+
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+
+}
+
+@keyframes codmHeroLogos {
+
+0% {
+opacity: 0;
+transform: translateY(18px);
+}
+
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+
+}
+
+@keyframes codmHeroLogoItem {
+
+0% {
+opacity: 0;
+transform: translateY(14px) scale(0.96);
+}
+
+100% {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+
+}
+
+/* ---------------------------------------------------------
+DASHBOARD IMAGE REVEAL
+--------------------------------------------------------- */
+
+@keyframes codmHeroImageReveal {
+
+0% {
+opacity: 0;
+transform: translateY(45px) scale(0.96);
+}
+
+60% {
+opacity: 1;
+}
+
+100% {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+
+}
+
+/* ---------------------------------------------------------
+GLOW BREATHING
+--------------------------------------------------------- */
+
+@keyframes codmHeroGlow {
+
+0% {
+opacity: 0.35;
+transform: translateX(-50%) scale(0.95);
+}
+
+50% {
+opacity: 0.55;
+transform: translateX(-50%) scale(1.05);
+}
+
+100% {
+opacity: 0.35;
+transform: translateX(-50%) scale(0.95);
+}
+
+}
+
+/* =========================================================
+PREMIUM BUTTON HOVER
+========================================================= */
+
+.codm-hero-buttons a {
+transition:
+transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.35s ease,
+box-shadow 0.35s ease;
+}
+
+.codm-hero-buttons a {
+transform: translateY(-2px);
+}
+
+/* Primary button */
+
+.codm-hero-primary-button {
+position: relative;
+overflow: hidden;
+}
+
+/*
+Soft light sweep across primary button
+*/
+
+.codm-hero-primary-button::after {
+content: "";
+position: absolute;
+top: 0;
+left: -120%;
+width: 70%;
+height: 100%;
+background: linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,0.18),
+transparent
+);
+transform: skewX(-20deg);
+transition: left 0.7s ease;
+}
+
+.codm-hero-primary-button:hover::after {
+left: 140%;
+}
+
+/* =========================================================
+REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+.codm-hero-title,
+.codm-hero-description,
+.codm-hero-buttons,
+.codm-hero-logos,
+.codm-hero-logos img,
+.codm-hero-image,
+.codm-hero-image-glow {
+animation: none !important;
+opacity: 1 !important;
+transform: none !important;
+}
+
+.codm-hero-image-frame,
+.codm-hero-image-frame img,
+.codm-hero-buttons a {
+transition: none !important;
+}
+
+}
+
+.codm-hero-image-section {
+margin: 50px 0px 0px;
+}
+
+/* =========================================================
+CODM HEADER — PREMIUM / ADCHITECTS-STYLE MOTION
+Works with the CURRENT Header.tsx
+No Framer Motion
+No TSX changes required
+========================================================= */
+
+/* =========================================================
+MAIN HEADER
+========================================================= */
+
+.codm-header {
+position: relative;
+z-index: 1000;
+
+width: 100%;
+
+background: transparent;
+
+transition:
+background-color 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+backdrop-filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+animation:
+codmHeaderEntrance
+1s
+cubic-bezier(0.16, 1, 0.3, 1)
+both;
+}
+
+/* =========================================================
+HEADER INNER
+========================================================= */
+
+.codm-header-inner {
+position: relative;
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+transition:
+transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =========================================================
+LOGO
+========================================================= */
+
+.codm-header-logo-link {
+opacity: 0;
+
+animation:
+codmHeaderLogoIn
+0.9s
+cubic-bezier(0.16, 1, 0.3, 1)
+0.15s
+forwards;
+
+transition:
+transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.4s ease;
+
+will-change: transform, opacity;
+}
+
+.codm-header-logo-link {
+transform: translateY(-2px);
+}
+
+/* =========================================================
+LOGO IMAGE
+========================================================= */
+
+.codm-header-logo-link img {
+transition:
+transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.4s ease;
+}
+
+/* =========================================================
+NAVIGATION
+========================================================= */
+
+.codm-header-nav {
+display: flex;
+align-items: center;
+}
+
+/* =========================================================
+NAV LINKS — STAGGERED ENTRANCE
+========================================================= */
+
+.codm-header-nav-link {
+position: relative;
+
+opacity: 0;
+
+animation:
+codmHeaderNavIn
+0.75s
+cubic-bezier(0.16, 1, 0.3, 1)
+forwards;
+
+transition:
+color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.45s ease,
+transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+will-change: transform, opacity;
+}
+
+/* Stagger */
+
+.codm-header-nav-link(1) {
+animation-delay: 0.25s;
+}
+
+.codm-header-nav-link(2) {
+animation-delay: 0.32s;
+}
+
+.codm-header-nav-link(3) {
+animation-delay: 0.39s;
+}
+
+.codm-header-nav-link(4) {
+animation-delay: 0.46s;
+}
+
+.codm-header-nav-link(5) {
+animation-delay: 0.53s;
+}
+
+/* =========================================================
+NAV LINK HOVER
+========================================================= */
+
+.codm-header-nav-link {
+transform: translateY(-2px);
+}
+
+/* Elegant underline */
+
+.codm-header-nav-link::after {
+content: "";
+
+position: absolute;
+
+left: 50%;
+bottom: -5px;
+
+width: 100%;
+height: 1px;
+
+background: currentColor;
+
+transform:
+translateX(-50%)
+scaleX(0);
+
+transform-origin: right center;
+
+opacity: 0.65;
+
+transition:
+transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-header-nav-link:hover::after {
+transform:
+translateX(-50%)
+scaleX(1);
+
+transform-origin: left center;
+}
+
+/* =========================================================
+RIGHT SIDE
+========================================================= */
+
+.codm-header-right {
+display: flex;
+align-items: center;
+
+opacity: 0;
+
+animation:
+codmHeaderRightIn
+0.85s
+cubic-bezier(0.16, 1, 0.3, 1)
+0.35s
+forwards;
+
+will-change: transform, opacity;
+}
+
+/* =========================================================
+CTA
+========================================================= */
+
+.codm-header-cta {
+position: relative;
+
+overflow: hidden;
+
+opacity: 0;
+
+animation:
+codmHeaderCTAIn
+0.85s
+cubic-bezier(0.16, 1, 0.3, 1)
+0.48s
+forwards;
+
+transition:
+transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.35s ease;
+
+will-change: transform, opacity;
+}
+
+.codm-header-cta {
+transform: translateY(-3px);
+
+box-shadow:
+0 12px 35px rgba(79, 70, 229, 0.25);
+}
+
+/* =========================================================
+CTA LIGHT SWEEP
+========================================================= */
+
+.codm-header-cta::before {
+content: "";
+
+position: absolute;
+
+top: 0;
+left: -130%;
+
+width: 75%;
+height: 100%;
+
+background:
+linear-gradient(
+105deg,
+transparent 0%,
+rgba(255, 255, 255, 0.20) 50%,
+transparent 100%
+);
+
+transform: skewX(-20deg);
+
+transition:
+left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+
+pointer-events: none;
+}
+
+.codm-header-cta:hover::before {
+left: 140%;
+}
+
+/* =========================================================
+CTA ARROW
+========================================================= */
+
+.codm-header-cta-arrow {
+display: inline-block;
+
+transition:
+transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-header-cta .codm-header-cta-arrow {
+transform: translateX(5px);
+}
+
+/* =========================================================
+ANNOUNCEMENT BAR
+========================================================= */
+
+.codm-announcement-bar {
+opacity: 0;
+
+animation:
+codmAnnouncementIn
+0.8s
+cubic-bezier(0.16, 1, 0.3, 1)
+both;
+}
+
+.codm-announcement-inner {
+animation:
+codmAnnouncementContentIn
+0.8s
+cubic-bezier(0.16, 1, 0.3, 1)
+0.1s
+both;
+}
+
+.codm-announcement-link {
+transition:
+transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+opacity 0.3s ease;
+}
+
+.codm-announcement-link {
+transform: translateX(4px);
+}
+
+.codm-announcement-arrow {
+display: inline-block;
+
+transition:
+transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-announcement-link .codm-announcement-arrow {
+transform: translateX(4px);
+}
+
+/* =========================================================
+INITIAL LOAD KEYFRAMES
+========================================================= */
+
+@keyframes codmHeaderEntrance {
+
+from {
+opacity: 0;
+
+transform:
+  translateY(-18px);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateY(0);
+
+}
+
+}
+
+@keyframes codmHeaderLogoIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateX(-20px)
+  scale(0.97);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateX(0)
+  scale(1);
+
+}
+
+}
+
+@keyframes codmHeaderNavIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateY(-12px);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateY(0);
+
+}
+
+}
+
+@keyframes codmHeaderRightIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateX(18px);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateX(0);
+
+}
+
+}
+
+@keyframes codmHeaderCTAIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateX(18px)
+  scale(0.97);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateX(0)
+  scale(1);
+
+}
+
+}
+
+@keyframes codmAnnouncementIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateY(-12px);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateY(0);
+
+}
+
+}
+
+@keyframes codmAnnouncementContentIn {
+
+from {
+opacity: 0;
+
+transform:
+  translateY(-5px);
+
+}
+
+to {
+opacity: 1;
+
+transform:
+  translateY(0);
+
+}
+
+}
+
+/* =========================================================
+SCROLL-DRIVEN PREMIUM HEADER
+========================================================= */
+
+/*
+Modern browsers:
+Header gradually becomes glassier as the user scrolls.
+*/
+
+@supports (animation-timeline: scroll()) {
+
+.codm-header {
+animation:
+codmHeaderScrollState
+linear
+both;
+
+animation-timeline: scroll(root);
+animation-range: 0px 140px;
+
+will-change:
+  background-color,
+  backdrop-filter,
+  box-shadow;
+
+}
+
+@keyframes codmHeaderScrollState {
+
+from {
+  background-color: transparent;
+
+  backdrop-filter:
+    blur(0px);
+
+  -webkit-backdrop-filter:
+    blur(0px);
+
+  box-shadow:
+    0 0 0 rgba(0, 0, 0, 0);
+}
+
+to {
+  background-color:
+    rgba(5, 7, 20, 0.72);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(140%);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.16);
+}
+
+}
+
+}
+
+/* =========================================================
+LIGHT MODE
+========================================================= */
+
+html.light .codm-header,
+html[data-theme="light"] .codm-header,
+[data-theme="light"] .codm-header,
+.light .codm-header {
+color: var(--foreground);
+}
+
+@supports (animation-timeline: scroll()) {
+
+html.light .codm-header,
+html[data-theme="light"] .codm-header,
+[data-theme="light"] .codm-header,
+.light .codm-header {
+
+animation-name:
+  codmHeaderScrollStateLight;
+
+}
+
+@keyframes codmHeaderScrollStateLight {
+
+from {
+  background-color:
+    transparent;
+
+  backdrop-filter:
+    blur(0px);
+
+  -webkit-backdrop-filter:
+    blur(0px);
+
+  box-shadow:
+    0 0 0 rgba(15, 23, 42, 0);
+}
+
+to {
+  background-color:
+    rgba(255, 255, 255, 0.76);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(140%);
+
+  box-shadow:
+    0 10px 40px rgba(15, 23, 42, 0.08);
+}
+
+}
+
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+.codm-header-nav-link {
+animation: none;
+opacity: 1;
+transform: none;
+}
+
+.codm-header-nav-link::after {
+display: none;
+}
+
+.codm-header-right {
+animation-delay: 0.2s;
+}
+
+.codm-header-cta {
+animation-delay: 0.25s;
+}
+
+.codm-header-logo-link {
+animation-delay: 0.1s;
+}
+
+}
+
+/* =========================================================
+REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+.codm-header,
+.codm-header-inner,
+.codm-header-logo-link,
+.codm-header-nav-link,
+.codm-header-right,
+.codm-header-cta,
+.codm-announcement-bar,
+.codm-announcement-inner {
+animation: none !important;
+
+animation-timeline: auto !important;
+
+opacity: 1 !important;
+
+transform: none !important;
+
+}
+
+.codm-header,
+.codm-header-logo-link,
+.codm-header-nav-link,
+.codm-header-right,
+.codm-header-cta {
+transition: none !important;
+}
+
+}
+
+.codm-industries-pills {
+justify-content: start;
+}
+.codm-industries-pills .codm-industry-pill {
+font-size: 18px;
+line-height: 24px;
+font-weight: 500;
+}
+.codm-industry-card-content .codm-industry-accent {
+display: none;
+}
+.codm-industry-card-content .font-semibold {
+font-size: 40px;
+line-height: 48px;
+font-weight: 700;
+letter-spacing: -2%;
+}
+.codm-industry-card-content .text-sm {
+color: #9aa3b8;
+font-size: 18px;
+font-weight: 400;
+line-height: 24px;
+}
+
+.heading-codm-title-gradient {
+background-size: 200% 100%;
+animation: headingCodmShimmer 6s ease-in-out infinite;
+}
+
+@keyframes headingCodmShimmer {
+0%, 100% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+.heading-codm-title-gradient {
+animation: none !important;
+}
+}
+
+/* ---------- HEADER NAV ---------- */
+
+.codm-header-nav-link {
+color: #202637 !important;
+
+transition:
+color 0.3s ease,
+opacity 0.3s ease;
+}
+
+html[data-theme="dark"] .codm-header-nav-link {
+color: #a7b0c2 !important;
+}
+
+html[data-theme="dark"] .codm-header-nav-link {
+color: #ffffff !important;
+}
+
+html[data-theme="light"] .codm-header-nav-link {
+color: #6f63ff !important;
+}
+
+/* =========================================================
+LOGOS
+========================================================= */
+
+.codm-logo-light {
+display: block !important;
+}
+
+.codm-logo-dark {
+display: none !important;
+}
+
+html[data-theme="dark"] .codm-logo-light {
+display: none !important;
+}
+
+html[data-theme="dark"] .codm-logo-dark {
+display: block !important;
+}
+
+/* =========================================================
+THEME TOGGLE
+========================================================= */
+
+.codm-theme-toggle-button {
+position: relative;
+width: 76px;
+height: 40px;
+padding: 4px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-shrink: 0;
+border: 1px solid var(--border);
+border-radius: 999px;
+background: var(--surface);
+color: var(--foreground);
+cursor: pointer;
+appearance: none;
+-webkit-appearance: none;
+outline: none;
+transition:
+background-color 0.3s ease,
+border-color 0.3s ease,
+color 0.3s ease;
+}
+
+.codm-theme-toggle-button {
+border-color: var(--accent);
+}
+
+.codm-theme-toggle-icons {
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 10px;
+pointer-events: none;
+font-size: 12px;
+opacity: 0.4;
+}
+
+.codm-theme-toggle-knob {
+position: absolute;
+top: 4px;
+left: 4px;
+z-index: 2;
+
+width: 30px;
+height: 30px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+border-radius: 50%;
+background: var(--foreground);
+color: var(--background);
+
+font-size: 14px;
+line-height: 1;
+
+pointer-events: none;
+
+transition:
+transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+background-color 0.3s ease,
+color 0.3s ease;
+}
+
+.codm-theme-toggle-knob-light {
+transform: translateX(0);
+}
+
+.codm-theme-toggle-knob-dark {
+transform: translateX(36px);
+}
+
+/* =========================================================
+HEADING — INLINE GRADIENT VARIANT
+Add this near your other .heading-codm-title-gradient rules
+in globals.css. Used when SectionHeading is given inline={true},
+e.g. "Our Latest Blogs" instead of stacking on two lines.
+========================================================= */
+
+.heading-codm-title-gradient-inline {
+display: inline !important;
+}
+
+#why-codm .codm-reveal-heading,
+#why-codm .codm-card-reveal {
+animation: whyCodmRevealFallback 0.01s 1.5s forwards;
+}
+
+@keyframes whyCodmRevealFallback {
+to {
+opacity: 1;
+transform: none;
+filter: none;
+}
+}
+
+/* =========================================================
+WHY CODM — UNCONDITIONAL ENTRANCE ANIMATIONS
+Fires automatically on mount/page-load. No IntersectionObserver,
+no isVisible/codm-visible class needed. Add this to globals.css.
+These class names (codm-why-heading-in, codm-why-card-in) are
+new and don't collide with any existing rules in the file.
+========================================================= */
+
+.codm-why-heading-in {
+opacity: 0;
+transform: translateY(35px);
+filter: blur(4px);
+
+animation: codmWhyHeadingIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.codm-why-card-in {
+opacity: 0;
+transform: translateY(40px) scale(0.97);
+filter: blur(4px);
+
+animation: codmWhyCardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+animation-delay: calc(0.2s + (var(--why-card-index, 0) * 90ms));
+
+transition:
+background-color 0.4s ease,
+background-image 0.4s ease;
+}
+
+@keyframes codmWhyHeadingIn {
+to {
+opacity: 1;
+transform: translateY(0);
+filter: blur(0);
+}
+}
+
+@keyframes codmWhyCardIn {
+to {
+opacity: 1;
+transform: translateY(0) scale(1);
+filter: blur(0);
+}
+}
+
+/* Hover effect on the card (unchanged behavior, just re-scoped
+to the new class name) */
+
+.codm-why-card-in {
+background-image:
+radial-gradient(
+circle at 100% 100%,
+rgba(74, 55, 255, 0.95) 0%,
+rgba(52, 38, 180, 0.65) 38%,
+rgba(13, 16, 32, 0.98) 78%
+);
+}
+
+.codm-why-card-in h3 {
+color: #ffffff;
+}
+
+.codm-why-card-in .mt-2 {
+color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================================
+REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+.codm-why-heading-in,
+.codm-why-card-in {
+animation: none !important;
+opacity: 1 !important;
+transform: none !important;
+filter: none !important;
+}
+}
+
+/* =========================================================
+FIX HERO HEADING INITIAL POSITION
+========================================================= */
+
+#hero .codm-hero-title {
+position: relative !important;
+transform: none !important;
+animation: none !important;
+opacity: 1 !important;
+}
+
+#hero .codm-hero-title > span {
+position: relative !important;
+display: block !important;
+transform: none !important;
+animation: none !important;
+opacity: 1 !important;
+}
+
+#hero .codm-hero-title .codm-highlight {
+position: relative !important;
+top: auto !important;
+left: auto !important;
+right: auto !important;
+bottom: auto !important;
+transform: none !important;
+animation: none !important;
+opacity: 1 !important;
+}
+
+.codm-hero-media-scale {
+--scroll-progress: 0;
+
+opacity: 0;
+transform: translateY(60px) scale(0.9);
+filter: blur(6px);
+
+transition:
+opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+
+will-change: transform, opacity, filter;
+}
+
+.codm-hero-media-scale.codm-media-loaded {
+opacity: calc(0.45 + (0.55 * var(--scroll-progress)));
+filter: blur(0);
+transform:
+scale(calc(0.78 + (0.22 * var(--scroll-progress))))
+translate3d(0, calc(40px - (40px * var(--scroll-progress))), 0);
+}
+
+.codm-hero-media-scale .codm-hero-image-frame {
+border-radius: calc(44px - (22px * var(--scroll-progress)));
+transition: border-radius 0.1s linear;
+}
+
+.codm-hero-media-scale .codm-hero-image-glow {
+opacity: var(--scroll-progress);
+transition: opacity 0.3s ease;
+}
+
+
+/* =========================================================
+INDUSTRY CARD TITLE — PER-SWITCH WORD REVEAL
+Independent of the section's persistent .codm-visible,
+so the stagger replays every time the active industry changes.
+========================================================= */
+
+.codm-industry-title-reveal .codm-word {
+opacity: 0;
+transform: translateY(60%);
+filter: blur(4px);
+
+transition:
+opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+transition-delay: calc(var(--word-index) * 45ms);
+}
+
+.codm-industry-title-reveal.codm-industry-title-visible .codm-word {
+opacity: 1;
+transform: translateY(0);
+filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+.codm-industry-title-reveal .codm-word {
+opacity: 1 !important;
+transform: none !important;
+filter: none !important;
+transition: none !important;
+}
+}
+
+
+.max-w-[700px] {
+max-width: 700px;
+}
+
+
+
+/* =========================================================
+WHY CODM — SCROLL-GATED ENTRANCE ANIMATIONS
+Replaces the old fire-on-mount version. Find and delete the
+old ".codm-why-heading-in" / ".codm-why-card-in" blocks (and
+the dead "#why-codm .codm-reveal-heading, .codm-card-reveal"
+fallback rule right above them — it targets classnames that
+aren't actually used anywhere and can be removed) in
+globals.css, then paste this in their place.
+
+Same blur amount, same distances, same easing/duration as
+before — only the trigger changed, from "animation: ...
+forwards" firing on page load, to "transition:" toggled by
+isVisible (scroll-into-view) in WhyCodm.tsx.
+========================================================= */
+
+.codm-why-heading-in {
+opacity: 0;
+transform: translateY(35px);
+filter: blur(4px);
+transition:
+opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+will-change: opacity, transform, filter;
+}
+
+.codm-why-heading-in-visible {
+opacity: 1;
+transform: translateY(0);
+filter: blur(0);
+}
+
+.codm-why-card-in {
+opacity: 0;
+transform: translateY(40px) scale(0.97);
+filter: blur(4px);
+transition:
+opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+filter 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+calc(0.2s + (var(--why-card-index, 0) * 90ms)),
+background-color 0.4s ease,
+background-image 0.4s ease;
+will-change: opacity, transform, filter;
+}
+
+.codm-why-card-in-visible {
+opacity: 1;
+transform: translateY(0) scale(1);
+filter: blur(0);
+}
+
+/* Hover effect — unchanged */
+
+.codm-why-card-in {
+background-image:
+radial-gradient(
+circle at 100% 100%,
+rgba(74, 55, 255, 0.95) 0%,
+rgba(52, 38, 180, 0.65) 38%,
+rgba(13, 16, 32, 0.98) 78%
+);
+}
+
+.codm-why-card-in h3 {
+color: #ffffff;
+}
+
+.codm-why-card-in .mt-2 {
+color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================================
+REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+.codm-why-heading-in,
+.codm-why-heading-in-visible,
+.codm-why-card-in,
+.codm-why-card-in-visible {
+transition: none !important;
+opacity: 1 !important;
+transform: none !important;
+filter: none !important;
+}
+}
+
+/* =========================================================
+SERVICES NAV ITEM
+========================================================= */
+
+.codm-header-nav-item-wrap {
+display: inline-flex;
+align-items: center;
+}
+
+/* =========================================================
+MEGA MENU
+========================================================= */
+
+
+/* =========================================================
+THREE COLUMNS
+========================================================= */
+
+.codm-megamenu-columns {
+display: grid;
+
+grid-template-columns:
+1.35fr
+1fr
+1fr;
+
+gap: 0;
+
+width: 100%;
+}
+
+/* =========================================================
+COLUMN
+========================================================= */
+
+.codm-megamenu-column {
+min-width: 0;
+width: 100%;
+padding: 0 22px 36px;
+overflow: hidden;
+}
+
+.codm-megamenu-column {
+padding-left: 0;
+}
+
+.codm-megamenu-column {
+padding-right: 0;
+}
+
+/* Vertical separators */
+
+.codm-megamenu-column + .codm-megamenu-column {
+border-left: 1px solid rgba(111, 88, 255, 0.18);
+}
+
+/* =========================================================
+COLUMN HEADER
+========================================================= */
+
+.codm-megamenu-column-header {
+display: flex;
+align-items: flex-start;
+gap: 18px;
+margin-bottom: 30px;
+width: 100%;
+min-width: 0;
+}
+
+.codm-megamenu-column-header > div {
+flex: 1 1 0;
+min-width: 0;
+max-width: 100%;
+}
+
+.codm-megamenu-column-description {
+font-size: 13px;
+line-height: 1.55;
+color: var(--muted, #666666);
+width: 100%;
+max-width: 100%;
+min-width: 0;
+white-space: normal;
+overflow-wrap: anywhere;
+word-break: normal;
+}
+
+/* =========================================================
+ICON
+========================================================= */
+
+.codm-megamenu-icon {
+flex-shrink: 0;
+
+width: 60px;
+height: 60px;
+
+display: flex;
+
+align-items: center;
+justify-content: center;
+
+border-radius: 12px;
+
+border: 1px solid #725cff;
+
+color: #725cff;
+
+background: rgba(255, 255, 255, 0.15);
+
+font-size: 28px;
+
+line-height: 1;
+}
+
+/* =========================================================
+COLUMN TITLE
+========================================================= */
+
+.codm-megamenu-column-title {
+font-weight: 500;
+
+font-size: 20px;
+
+line-height: 1.2;
+
+color: #171827;
+
+margin-bottom: 4px;
+}
+
+/* =========================================================
+DESCRIPTION
+========================================================= */
+
+.codm-megamenu-column-description {
+font-size: 13px;
+line-height: 1.55;
+color: var(--muted, #666666);
+max-width: 100%;
+}
+
+/* =========================================================
+LINKS
+========================================================= */
+
+.codm-megamenu-links {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+
+.codm-megamenu-links-split {
+display: flex;
+width: 100%;
+min-width: 0;
+gap: 24px;
+align-items: flex-start;
+}
+
+.codm-megamenu-links-split > .codm-megamenu-links {
+flex: 1 1 0;
+width: 0;
+min-width: 0;
+}
+
+.codm-megamenu-link {
+position: relative;
+
+display: flex;
+
+align-items: center;
+
+gap: 10px;
+
+width: 100%;
+
+min-height: 46px;
+
+padding: 0 8px;
+
+margin: 0;
+
+border-radius: 7px;
+
+color: #171827;
+
+text-decoration: none;
+
+font-size: 16px;
+
+line-height: 1.4;
+
+transition:
+background-color 0.2s ease,
+color 0.2s ease;
+}
+
+.codm-megamenu-link {
+background: rgba(114, 92, 255, 0.10);
+
+color: #171827;
+}
+.codm-megamenu-link-dot {
+flex-shrink: 0;
+
+width: 8px;
+height: 8px;
+
+border-radius: 50%;
+
+background: #725cff;
+
+box-shadow:
+0 0 8px rgba(114, 92, 255, 0.55);
+
+opacity: 1;
+}
+
+.codm-megamenu-link-text {
+flex: 1;
+min-width: 0;
+}
+
+.codm-megamenu-link-arrow {
+flex-shrink: 0;
+margin-left: auto;
+font-size: 18px;
+line-height: 1;
+opacity: 0;
+transform: translateX(-4px);
+transition:
+opacity 0.2s ease,
+transform 0.2s ease;
+}
+
+.codm-megamenu-link .codm-megamenu-link-arrow {
+opacity: 1;
+transform: translateX(0);
+}
+
+/* =========================================================
+BOTTOM BANNER
+========================================================= */
+
+.codm-megamenu-banner {
+margin-top: 30px;
+
+padding: 22px 24px;
+
+border: 1px solid var(--border, #e5e5e5);
+
+border-radius: 14px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-between;
+
+gap: 30px;
+
+background:
+linear-gradient(
+135deg,
+rgba(110, 90, 255, 0.04),
+rgba(160, 140, 255, 0.10)
+);
+}
+
+/* =========================================================
+BANNER LEFT
+========================================================= */
+
+.codm-megamenu-banner-left {
+display: flex;
+
+flex-direction: column;
+
+gap: 3px;
+
+min-width: 0;
+}
+
+/* =========================================================
+BANNER LABEL
+========================================================= */
+
+.codm-megamenu-banner-label {
+font-size: 11px;
+
+line-height: 1.3;
+
+color: var(--muted, #666666);
+}
+
+/* =========================================================
+BANNER TITLE
+========================================================= */
+
+.codm-megamenu-banner-title {
+font-size: 17px;
+
+line-height: 1.35;
+
+font-weight: 650;
+
+color: var(--foreground, #171717);
+}
+
+/* =========================================================
+BANNER DESCRIPTION
+========================================================= */
+
+.codm-megamenu-banner-description {
+font-size: 13px;
+
+line-height: 1.5;
+
+color: var(--muted, #666666);
+}
+
+/* =========================================================
+BANNER BUTTON
+========================================================= */
+
+.codm-megamenu-banner-button {
+flex-shrink: 0;
+
+display: inline-flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 9px;
+
+padding: 11px 18px;
+
+border-radius: 999px;
+
+background: var(--accent, #5146e5);
+
+color: #ffffff;
+
+text-decoration: none;
+
+font-size: 13px;
+
+font-weight: 600;
+
+white-space: nowrap;
+
+transition:
+transform 0.2s ease,
+opacity 0.2s ease;
+}
+
+.codm-megamenu-banner-button {
+opacity: 0.9;
+
+transform: translateX(2px);
+}
+
+/* =========================================================
+KEEP MENU ABOVE PAGE CONTENT
+========================================================= */
+
+.codm-header,
+.codm-site-header {
+position: relative;
+
+z-index: 10000;
+}
+
+/* =========================================================
+DESKTOP
+========================================================= */
+
+@media (min-width: 901px) {
+.codm-megamenu {
+min-height: 390px;
+}
+}
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+.codm-megamenu {
+width: calc(100vw - 30px);
+
+padding: 24px;
+
+}
+
+.codm-megamenu-column {
+padding-left: 18px;
+padding-right: 18px;
+}
+
+.codm-megamenu-column {
+padding-left: 0;
+}
+
+.codm-megamenu-column {
+padding-right: 0;
+}
+
+.codm-megamenu-column-title {
+font-size: 15px;
+}
+
+.codm-megamenu-column-description {
+font-size: 12px;
+}
+
+.codm-megamenu-link {
+font-size: 13px;
+}
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+.codm-megamenu {
+position: fixed;
+
+top: 0;
+left: 0;
+
+width: 100vw;
+max-height: 100vh;
+
+transform: none;
+
+border-radius: 0;
+
+overflow-y: auto;
+
+padding: 24px;
+
+}
+
+.codm-megamenu-columns {
+grid-template-columns: 1fr;
+
+gap: 25px;
+
+}
+
+.codm-megamenu-column {
+padding: 0;
+}
+
+.codm-megamenu-column + .codm-megamenu-column {
+border-left: 0;
+
+border-top: 1px solid var(--border, #e5e5e5);
+
+padding-top: 25px;
+
+}
+
+.codm-megamenu-banner {
+flex-direction: column;
+
+align-items: flex-start;
+
+}
+
+.codm-megamenu-banner-button {
+width: 100%;
+}
+}
+
+[data-theme="dark"] .codm-header-scrolled {
+margin: 0 !important;
+border-radius: 0;
+background: #050612 !important;
+}
+
+/* =========================================================
+NAV DROPDOWN ICON
+========================================================= */
+
+.codm-nav-dropdown-icon {
+display: inline-block;
+margin-left: 5px;
+vertical-align: middle;
+transition: transform 0.25s ease;
+}
+
+.codm-nav-dropdown-icon-open {
+transform: rotate(180deg);
+}
+
+/* =========================================================
+MOBILE HAMBURGER TOGGLE
+========================================================= */
+
+.codm-mobile-toggle {
+display: none;
+flex-direction: column;
+justify-content: center;
+gap: 5px;
+width: 32px;
+height: 32px;
+padding: 0;
+border: none;
+background: transparent;
+cursor: pointer;
+}
+
+.codm-mobile-toggle span {
+display: block;
+width: 22px;
+height: 2px;
+background: var(--foreground);
+border-radius: 2px;
+transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.codm-mobile-toggle-open span(1) {
+transform: translateY(7px) rotate(45deg);
+}
+
+.codm-mobile-toggle-open span(2) {
+opacity: 0;
+}
+
+.codm-mobile-toggle-open span(3) {
+transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =========================================================
+MOBILE MENU PANEL
+========================================================= */
+
+.codm-mobile-menu {
+display: none;
+}
+
+@media (max-width: 900px) {
+.codm-mobile-toggle {
+display: flex;
+}
+
+.codm-mobile-menu {
+display: flex;
+flex-direction: column;
+position: absolute;
+top: 100%;
+left: 0;
+right: 0;
+background: var(--surface);
+border-bottom: 1px solid var(--border);
+padding: 10px 20px 20px;
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+z-index: 9998;
+}
+
+.codm-mobile-menu-link {
+padding: 14px 0;
+border-bottom: 1px solid var(--border);
+color: var(--foreground);
+font-size: 16px;
+font-weight: 500;
+}
+
+.codm-mobile-menu-link {
+border-bottom: none;
+}
+}
+Close
 /* =========================================================
    FONT IMPORTS
    ========================================================= */
