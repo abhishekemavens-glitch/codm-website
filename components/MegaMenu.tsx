@@ -17,7 +17,7 @@ type MegaMenuData = {
   bannerButtonUrl: string;
 };
 
-function parseMegaMenuLinks(value: string = "") {
+export function parseMegaMenuLinks(value: string = "") {
   return value
     .split("\n")
     .map((line) => line.trim())
