@@ -1,7 +1,4 @@
-Thursday 4:26 PM
-Pasted text(20260917-104832).txt
-Document
-Megamenu.tsx is already fixed pls check "use client";
+"use client";
 
 type MegaMenuColumn = {
   icon: string;
