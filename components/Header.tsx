@@ -592,58 +592,60 @@ export default function Header() {
                   </nav>
 
           {mobileMenuOpen && (
-            <div className="codm-mobile-menu">
-              {services.label && (
-                
-                  href={services.url}
-                  className="codm-mobile-menu-link"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {services.label}
-                </a>
-              )}
+  <div className="codm-mobile-menu">
 
-              {industries.label && (
-                
-                  href={industries.url}
-                  className="codm-mobile-menu-link"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {industries.label}
-                </a>
-              )}
+    {services.label && (
+      <a
+        href={services.url}
+        className="codm-mobile-menu-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {services.label}
+      </a>
+    )}
 
-              {caseStudies.label && (
-                
-                  href={caseStudies.url}
-                  className="codm-mobile-menu-link"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {caseStudies.label}
-                </a>
-              )}
+    {industries.label && (
+      <a
+        href={industries.url}
+        className="codm-mobile-menu-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {industries.label}
+      </a>
+    )}
 
-              {about.label && (
-                
-                  href={about.url}
-                  className="codm-mobile-menu-link"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {about.label}
-                </a>
-              )}
+    {caseStudies.label && (
+      <a
+        href={caseStudies.url}
+        className="codm-mobile-menu-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {caseStudies.label}
+      </a>
+    )}
 
-              {insights.label && (
-                
-                  href={insights.url}
-                  className="codm-mobile-menu-link"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {insights.label}
-                </a>
-              )}
-            </div>
-          )}
+    {about.label && (
+      <a
+        href={about.url}
+        className="codm-mobile-menu-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {about.label}
+      </a>
+    )}
+
+    {insights.label && (
+      <a
+        href={insights.url}
+        className="codm-mobile-menu-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {insights.label}
+      </a>
+    )}
+
+  </div>
+)}
 
           {/* =================================================
               RIGHT SIDE
