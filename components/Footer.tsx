@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 type FooterData = {
   mainLogo: string;
@@ -50,8 +50,63 @@ function parseLinks(value: string) {
     });
 }
 
+/*
+ * One footer link column.
+ *  - Desktop: looks like a normal heading, always expanded (CSS).
+ *  - Mobile (<= 700px): heading becomes a toggle, list is collapsed
+ *    until tapped (CSS + isOpen).
+ */
+function FooterAccordion({
+  id,
+  title,
+  isOpen,
+  onToggle,
+  children,
+}: {
+  id: string;
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={`codm-footer-column codm-footer-accordion${
+        isOpen ? " is-open" : ""
+      }`}
+    >
+      <h3 className="codm-footer-column-title">
+        <button
+          type="button"
+          className="codm-footer-accordion-trigger"
+          aria-expanded={isOpen}
+          aria-controls={`footer-panel-${id}`}
+          onClick={onToggle}
+        >
+          <span>{title}</span>
+
+          <span
+            className="codm-footer-accordion-chevron"
+            aria-hidden="true"
+          />
+        </button>
+      </h3>
+
+      <div
+        id={`footer-panel-${id}`}
+        className="codm-footer-accordion-panel"
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function Footer() {
   const [footer, setFooter] = useState<FooterData | null>(null);
+
+  /* Which mobile sections are open. Empty = all closed. */
+  const [openSections, setOpenSections] = useState<string[]>([]);
 
   useEffect(() => {
     async function loadFooter() {
@@ -118,6 +173,13 @@ export default function Footer() {
   if (!footer) {
     return null;
   }
+
+  const toggleSection = (id: string) =>
+    setOpenSections((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id]
+    );
 
   const services = parseLinks(footer.services);
   const aiLlm = parseLinks(footer.aiLlm);
@@ -216,12 +278,12 @@ export default function Footer() {
 
 
         {/* SERVICES */}
-        <div className="codm-footer-column">
-
-          <h3 className="codm-footer-column-title">
-            Services
-          </h3>
-
+        <FooterAccordion
+          id="services"
+          title="Services"
+          isOpen={openSections.includes("services")}
+          onToggle={() => toggleSection("services")}
+        >
           <ul className="codm-footer-links">
 
             {services.map((item, index) => (
@@ -233,17 +295,16 @@ export default function Footer() {
             ))}
 
           </ul>
-
-        </div>
+        </FooterAccordion>
 
 
         {/* AI & LLM */}
-        <div className="codm-footer-column">
-
-          <h3 className="codm-footer-column-title">
-            AI &amp; LLM Overview
-          </h3>
-
+        <FooterAccordion
+          id="ai-llm"
+          title="AI & LLM Overview"
+          isOpen={openSections.includes("ai-llm")}
+          onToggle={() => toggleSection("ai-llm")}
+        >
           <ul className="codm-footer-links">
 
             {aiLlm.slice(0, 2).map((item, index) => (
@@ -280,17 +341,16 @@ export default function Footer() {
               </ul>
             </>
           )}
-
-        </div>
+        </FooterAccordion>
 
 
         {/* INDUSTRIES */}
-        <div className="codm-footer-column">
-
-          <h3 className="codm-footer-column-title">
-            Industries
-          </h3>
-
+        <FooterAccordion
+          id="industries"
+          title="Industries"
+          isOpen={openSections.includes("industries")}
+          onToggle={() => toggleSection("industries")}
+        >
           <ul className="codm-footer-links">
 
             {industries.map((item, index) => (
@@ -302,17 +362,16 @@ export default function Footer() {
             ))}
 
           </ul>
-
-        </div>
+        </FooterAccordion>
 
 
         {/* COMPANY */}
-        <div className="codm-footer-column">
-
-          <h3 className="codm-footer-column-title">
-            Company
-          </h3>
-
+        <FooterAccordion
+          id="company"
+          title="Company"
+          isOpen={openSections.includes("company")}
+          onToggle={() => toggleSection("company")}
+        >
           <ul className="codm-footer-links">
 
             {company.map((item, index) => (
@@ -324,8 +383,7 @@ export default function Footer() {
             ))}
 
           </ul>
-
-        </div>
+        </FooterAccordion>
 
       </div>
 
