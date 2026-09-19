@@ -4687,16 +4687,27 @@ html[data-theme="dark"] .codm-logo-dark {
 ========================================================= */
 
 @media (max-width: 1100px) {
-  .codm-megamenu {
-    width: calc(100vw - 30px);
+ /* =========================================================
+   TABLET
+========================================================= */
 
-    padding: 24px;
+@media (max-width: 1100px) and (min-width: 901px) {
+  .codm-megamenu {
+    width: 900px !important;
+    max-width: calc(100vw - 40px) !important;
+
+    left: 50% !important;
+    right: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    padding: 24px !important;
   }
 
   .codm-megamenu-column {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding: 0 18px;
   }
+}
 
   .codm-megamenu-column:first-child {
     padding-left: 0;
