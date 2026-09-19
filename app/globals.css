@@ -245,7 +245,7 @@ html[data-theme="light"] .codm-header {
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  animation: codmHeaderNavEnter 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-fill-mode: backwards !important;
   height: 100%;
 }
 
