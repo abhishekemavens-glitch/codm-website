@@ -479,40 +479,45 @@ export default function Header() {
     onMouseLeave={() => setServicesMenuOpen(false)}
   >
     <a
-      href={services.url}
+      href={services.url || "#"}
       className="codm-header-nav-link"
       onFocus={() => setServicesMenuOpen(true)}
-      aria-haspopup="true"
-      aria-expanded={servicesMenuOpen}
+      aria-haspopup={header.megaMenuEnabled ? "true" : undefined}
+      aria-expanded={
+        header.megaMenuEnabled ? servicesMenuOpen : undefined
+      }
     >
       {services.label}
 
-       <svg
-    className={`codm-nav-dropdown-icon ${
-      servicesMenuOpen ? "codm-nav-dropdown-icon-open" : ""
-    }`}
-    width="10"
-    height="6"
-    viewBox="0 0 10 6"
-    fill="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M1 1L5 5L9 1"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-
-      
+      {header.megaMenuEnabled && (
+        <svg
+          className={`codm-nav-dropdown-icon ${
+            servicesMenuOpen
+              ? "codm-nav-dropdown-icon-open"
+              : ""
+          }`}
+          width="10"
+          height="6"
+          viewBox="0 0 10 6"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M1 1L5 5L9 1"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
     </a>
 
-    {servicesMenuOpen && header.megaMenuEnabled && (
+    {header.megaMenuEnabled && servicesMenuOpen && (
       <MegaMenu
         data={{
-          enabled: header.megaMenuEnabled,
+          enabled: true,
+
           columns: [
             {
               icon: header.megaMenuCol1Icon,
@@ -533,11 +538,15 @@ export default function Header() {
               links: header.megaMenuCol3Links,
             },
           ],
+
           bannerLabel: header.megaMenuBannerLabel,
           bannerTitle: header.megaMenuBannerTitle,
-          bannerDescription: header.megaMenuBannerDescription,
-          bannerButtonText: header.megaMenuBannerButtonText,
-          bannerButtonUrl: header.megaMenuBannerButtonUrl,
+          bannerDescription:
+            header.megaMenuBannerDescription,
+          bannerButtonText:
+            header.megaMenuBannerButtonText,
+          bannerButtonUrl:
+            header.megaMenuBannerButtonUrl,
         }}
       />
     )}
@@ -580,62 +589,61 @@ export default function Header() {
               </a>
             )}
 
-          </nav>
-{mobileMenuOpen && (
-  <div className="codm-mobile-menu">
+                  </nav>
 
-    {services.label && (
-      <a
-        href={services.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {services.label}
-      </a>
-    )}
+          {mobileMenuOpen && (
+            <div className="codm-mobile-menu">
+              {services.label && (
+                
+                  href={services.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {services.label}
+                </a>
+              )}
 
-    {industries.label && (
-      <a
-        href={industries.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {industries.label}
-      </a>
-    )}
+              {industries.label && (
+                
+                  href={industries.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {industries.label}
+                </a>
+              )}
 
-    {caseStudies.label && (
-      <a
-        href={caseStudies.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {caseStudies.label}
-      </a>
-    )}
+              {caseStudies.label && (
+                
+                  href={caseStudies.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {caseStudies.label}
+                </a>
+              )}
 
-    {about.label && (
-      <a
-        href={about.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {about.label}
-      </a>
-    )}
+              {about.label && (
+                
+                  href={about.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {about.label}
+                </a>
+              )}
 
-    {insights.label && (
-      <a
-        href={insights.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {insights.label}
-      </a>
-    )}
-
-  </div>
-)}
+              {insights.label && (
+                
+                  href={insights.url}
+                  className="codm-mobile-menu-link"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {insights.label}
+                </a>
+              )}
+            </div>
+          )}
 
           {/* =================================================
               RIGHT SIDE
