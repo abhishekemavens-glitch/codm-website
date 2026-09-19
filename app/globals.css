@@ -5095,3 +5095,329 @@ html[data-theme="dark"] .codm-logo-dark {
 
 
 }
+
+
+
+/* =========================================================
+   DESKTOP MEGA MENU — FINAL ALIGNMENT
+   ========================================================= */
+
+@media (min-width: 901px) {
+
+  /* -------------------------------------------------------
+     MEGA MENU CONTAINER
+     ------------------------------------------------------- */
+
+  .codm-megamenu {
+    position: absolute !important;
+
+    /*
+      Center against the viewport instead of the Services
+      navigation item.
+    */
+    left: 50vw !important;
+
+    top: calc(100% + 12px) !important;
+
+    transform: translateX(-50%) !important;
+
+    /*
+      Reference design:
+      centered container with comfortable side spacing.
+    */
+    width: min(1120px, calc(100vw - 80px)) !important;
+
+    max-width: 1120px !important;
+
+    padding: 24px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 20px !important;
+
+    border: 1px solid rgba(120, 100, 255, 0.16) !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(120, 100, 255, 0.035),
+        rgba(120, 100, 255, 0.075)
+      ),
+      #ffffff !important;
+
+    box-shadow:
+      0 24px 60px rgba(35, 25, 90, 0.14),
+      0 8px 24px rgba(35, 25, 90, 0.08) !important;
+
+    overflow: hidden !important;
+
+    z-index: 99999 !important;
+  }
+
+
+  /* -------------------------------------------------------
+     THREE COLUMNS
+     ------------------------------------------------------- */
+
+  .codm-megamenu-columns {
+    display: grid !important;
+
+    grid-template-columns:
+      1.35fr
+      1fr
+      1fr !important;
+
+    gap: 0 !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+  }
+
+
+  /* -------------------------------------------------------
+     COLUMNS
+     ------------------------------------------------------- */
+
+  .codm-megamenu-column {
+    min-width: 0 !important;
+
+    padding:
+      0 24px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .codm-megamenu-column:first-child {
+    padding-left: 0 !important;
+  }
+
+  .codm-megamenu-column:last-child {
+    padding-right: 0 !important;
+  }
+
+
+  /* Vertical separators */
+
+  .codm-megamenu-column + .codm-megamenu-column {
+    border-left: 1px solid rgba(100, 90, 180, 0.16) !important;
+  }
+
+
+  /* -------------------------------------------------------
+     COLUMN HEADER
+     ------------------------------------------------------- */
+
+  .codm-megamenu-column-header {
+    display: flex !important;
+
+    align-items: flex-start !important;
+
+    gap: 12px !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin-bottom: 20px !important;
+  }
+
+
+  /* Important:
+     Allows the title/description area to shrink and wrap
+     instead of overflowing into the next column.
+  */
+
+  .codm-megamenu-column-header > div {
+    min-width: 0 !important;
+
+    flex: 1 1 auto !important;
+  }
+
+
+  /* -------------------------------------------------------
+     ICON
+     ------------------------------------------------------- */
+
+  .codm-megamenu-icon {
+    flex: 0 0 42px !important;
+
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+    min-height: 42px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* -------------------------------------------------------
+     TITLE
+     ------------------------------------------------------- */
+
+  .codm-megamenu-column-title {
+    font-size: 17px !important;
+
+    line-height: 1.3 !important;
+
+    font-weight: 650 !important;
+
+    margin: 0 0 5px !important;
+
+    white-space: normal !important;
+
+    overflow-wrap: break-word !important;
+  }
+
+
+  /* -------------------------------------------------------
+     DESCRIPTION
+     ------------------------------------------------------- */
+
+  .codm-megamenu-column-description {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    font-size: 13px !important;
+
+    line-height: 1.45 !important;
+
+    white-space: normal !important;
+
+    overflow-wrap: break-word !important;
+
+    word-break: normal !important;
+  }
+
+
+  /* -------------------------------------------------------
+     LINKS
+     ------------------------------------------------------- */
+
+  .codm-megamenu-links {
+    min-width: 0 !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+  }
+
+
+  .codm-megamenu-links-split {
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr) !important;
+
+    column-gap: 18px !important;
+
+    min-width: 0 !important;
+  }
+
+
+  .codm-megamenu-link {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    padding:
+      8px 10px !important;
+
+    margin:
+      0 -10px !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.4 !important;
+
+    white-space: normal !important;
+  }
+
+
+  .codm-megamenu-link-text {
+    min-width: 0 !important;
+
+    overflow-wrap: break-word !important;
+  }
+
+
+  /* -------------------------------------------------------
+     BOTTOM BANNER
+     ------------------------------------------------------- */
+
+  .codm-megamenu-banner {
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    margin-top: 26px !important;
+
+    padding:
+      18px 20px !important;
+
+    border-radius: 14px !important;
+
+    gap: 24px !important;
+
+    min-width: 0 !important;
+  }
+
+
+  .codm-megamenu-banner-left {
+    min-width: 0 !important;
+
+    flex: 1 1 auto !important;
+  }
+
+
+  .codm-megamenu-banner-title,
+  .codm-megamenu-banner-description {
+    max-width: 100% !important;
+
+    white-space: normal !important;
+
+    overflow-wrap: break-word !important;
+  }
+
+
+  .codm-megamenu-banner-button {
+    flex: 0 0 auto !important;
+
+    white-space: nowrap !important;
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+  .codm-megamenu {
+    width: min(1120px, calc(100vw - 120px)) !important;
+  }
+
+}
+
+
+/* =========================================================
+   DESKTOP — VERY LARGE SCREENS
+   ========================================================= */
+
+@media (min-width: 1700px) {
+
+  .codm-megamenu {
+    width: 1120px !important;
+  }
+
+}
