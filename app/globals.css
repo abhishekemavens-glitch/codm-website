@@ -4871,3 +4871,25 @@ html[data-theme="dark"] .codm-logo-dark {
     border-bottom: none;
   }
 }
+
+
+
+
+
+@media (max-width: 767px) {
+
+
+
+[data-theme="light"] .codm-header .codm-header-inner {
+	margin: 0 !important;
+	padding: 10px 10px;
+	border: none !important;
+}
+[data-theme="light"] #hero {
+	margin: 15% 0 0;
+}
+
+
+
+
+}
