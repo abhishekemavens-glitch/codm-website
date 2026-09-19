@@ -5939,3 +5939,90 @@ html[data-theme="dark"] .codm-logo-dark {
     column-gap: 16px;
   }
 }
+
+
+
+
+/* =========================================================
+   FOOTER — COLLAPSIBLE LINK SECTIONS ON MOBILE
+   Paste at the VERY END of globals.css
+   ========================================================= */
+
+/* Desktop / tablet: the toggle looks like the normal heading
+   and is not clickable. The list is always visible. */
+.codm-footer-accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  pointer-events: none;
+}
+
+.codm-footer-accordion-chevron {
+  display: none;
+}
+
+/* Mobile: tap the heading to open/close */
+@media (max-width: 700px) {
+
+  .codm-footer-main {
+    gap: 0;
+  }
+
+  .codm-footer-brand {
+    margin-bottom: 32px;
+  }
+
+  .codm-footer-brand + .codm-footer-accordion {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .codm-footer-accordion {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .codm-footer-accordion .codm-footer-column-title {
+    margin: 0;
+  }
+
+  .codm-footer-accordion-trigger {
+    padding: 18px 0;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .codm-footer-accordion-chevron {
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.8;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .codm-footer-accordion.is-open .codm-footer-accordion-chevron {
+    transform: rotate(225deg);
+  }
+
+  /* Collapsed by default */
+  .codm-footer-accordion-panel {
+    display: none;
+    padding-bottom: 18px;
+  }
+
+  .codm-footer-accordion.is-open .codm-footer-accordion-panel {
+    display: block;
+  }
+}
