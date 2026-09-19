@@ -5410,20 +5410,12 @@ html[data-theme="dark"] .codm-logo-dark {
 
 }
 
-
 /* =========================================================
-   FINAL DESKTOP MEGA MENU FIX
+   CODM MEGA MENU - FINAL DESKTOP OVERRIDE
+   This must be the LAST CSS in globals.css
    ========================================================= */
 
-@media (min-width: 1101px) {
-
-  .codm-header-inner {
-    position: relative !important;
-  }
-
-  .codm-header-nav-item-wrap {
-    position: static !important;
-  }
+@media (min-width: 901px) {
 
   .codm-megamenu {
     position: absolute !important;
@@ -5435,15 +5427,16 @@ html[data-theme="dark"] .codm-logo-dark {
 
     transform: translateX(-50%) !important;
 
+    /* FIX: force the actual desktop width */
     width: 1120px !important;
-    max-width: calc(100vw - 80px) !important;
-    min-width: 0 !important;
+    max-width: 1120px !important;
+    min-width: 1120px !important;
+
+    box-sizing: border-box !important;
 
     margin: 0 !important;
 
     padding: 24px !important;
-
-    box-sizing: border-box !important;
 
     border-radius: 20px !important;
 
@@ -5452,22 +5445,31 @@ html[data-theme="dark"] .codm-logo-dark {
     z-index: 99999 !important;
   }
 
+  /* Keep the columns inside the fixed menu */
   .codm-megamenu-columns {
     width: 100% !important;
+    max-width: 100% !important;
+
+    display: grid !important;
 
     grid-template-columns:
       1.35fr
       1fr
       1fr !important;
+
+    gap: 0 !important;
+
+    box-sizing: border-box !important;
   }
 
   .codm-megamenu-column {
     min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
 
     padding-left: 22px !important;
     padding-right: 22px !important;
-
-    box-sizing: border-box !important;
   }
 
   .codm-megamenu-column:first-child {
@@ -5480,20 +5482,28 @@ html[data-theme="dark"] .codm-logo-dark {
 
   .codm-megamenu-column-header {
     min-width: 0 !important;
+    max-width: 100% !important;
   }
 
   .codm-megamenu-column-header > div {
     min-width: 0 !important;
+    max-width: 100% !important;
+
     flex: 1 1 auto !important;
   }
 
   .codm-megamenu-column-description {
+    width: 100% !important;
     max-width: 100% !important;
+
+    white-space: normal !important;
     overflow-wrap: break-word !important;
   }
 
   .codm-megamenu-banner {
     width: 100% !important;
+    max-width: 100% !important;
+
     box-sizing: border-box !important;
   }
 }
