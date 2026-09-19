@@ -5409,3 +5409,91 @@ html[data-theme="dark"] .codm-logo-dark {
   }
 
 }
+
+
+/* =========================================================
+   FINAL DESKTOP MEGA MENU FIX
+   ========================================================= */
+
+@media (min-width: 1101px) {
+
+  .codm-header-inner {
+    position: relative !important;
+  }
+
+  .codm-header-nav-item-wrap {
+    position: static !important;
+  }
+
+  .codm-megamenu {
+    position: absolute !important;
+
+    top: calc(100% + 12px) !important;
+
+    left: 50% !important;
+    right: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    width: 1120px !important;
+    max-width: calc(100vw - 80px) !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    padding: 24px !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 20px !important;
+
+    overflow: hidden !important;
+
+    z-index: 99999 !important;
+  }
+
+  .codm-megamenu-columns {
+    width: 100% !important;
+
+    grid-template-columns:
+      1.35fr
+      1fr
+      1fr !important;
+  }
+
+  .codm-megamenu-column {
+    min-width: 0 !important;
+
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .codm-megamenu-column:first-child {
+    padding-left: 0 !important;
+  }
+
+  .codm-megamenu-column:last-child {
+    padding-right: 0 !important;
+  }
+
+  .codm-megamenu-column-header {
+    min-width: 0 !important;
+  }
+
+  .codm-megamenu-column-header > div {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  .codm-megamenu-column-description {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .codm-megamenu-banner {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
