@@ -3,7 +3,8 @@
 
 import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
-import MegaMenu from "./MegaMenu";
+import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
+import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
 import { useStickyNavState } from "@/lib/codm-animations";
 
 type HeaderData = {
@@ -376,6 +377,34 @@ export default function Header() {
 
 
   /*
+   * CHANGE 2 of 3
+   * Same WordPress data and same parser the desktop mega menu uses,
+   * converted for the mobile Services accordion.
+   */
+
+  const toServiceLinks = (raw: string) =>
+    parseMegaMenuLinks(raw).map((link) => ({
+      label: link.label,
+      href: link.url,
+    }));
+
+  const serviceGroups: ServiceGroup[] = [
+    {
+      title: header.megaMenuCol1Title,
+      links: toServiceLinks(header.megaMenuCol1Links),
+    },
+    {
+      title: header.megaMenuCol2Title,
+      links: toServiceLinks(header.megaMenuCol2Links),
+    },
+    {
+      title: header.megaMenuCol3Title,
+      links: toServiceLinks(header.megaMenuCol3Links),
+    },
+  ].filter((group) => group.title && group.links.length > 0);
+
+
+  /*
    * =========================================================
    * RENDER
    * =========================================================
@@ -594,15 +623,24 @@ export default function Header() {
         {mobileMenuOpen && (
   <div className="codm-mobile-menu">
 
-    {services.label && (
-      <a
-        href={services.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {services.label}
-      </a>
-    )}
+    {/* CHANGE 3 of 3: Services becomes an accordion when the mega menu is on */}
+    {services.label &&
+      (header.megaMenuEnabled && serviceGroups.length > 0 ? (
+        <MobileServicesMenu
+          groups={serviceGroups}
+          label={services.label}
+          servicesHref={services.url}
+          onNavigate={() => setMobileMenuOpen(false)}
+        />
+      ) : (
+        <a
+          href={services.url}
+          className="codm-mobile-menu-link"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          {services.label}
+        </a>
+      ))}
 
     {industries.label && (
       <a
