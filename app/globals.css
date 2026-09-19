@@ -4675,12 +4675,20 @@ html[data-theme="dark"] .codm-logo-dark {
    DESKTOP
 ========================================================= */
 
-@media (min-width: 901px) {
+@media (min-width: 1101px) {
   .codm-megamenu {
+    width: 1120px !important;
+    max-width: 1120px !important;
+    min-width: 1120px !important;
+
+    left: 50% !important;
+    right: auto !important;
+
+    transform: translateX(-50%) !important;
+
     min-height: 390px;
   }
 }
-
 
 /* =========================================================
    TABLET
@@ -5113,8 +5121,7 @@ html[data-theme="dark"] .codm-logo-dark {
    DESKTOP MEGA MENU — FINAL ALIGNMENT
    ========================================================= */
 
-@media (min-width: 901px) {
-
+@media (min-width: 1101px) {
   /* -------------------------------------------------------
      MEGA MENU CONTAINER
      ------------------------------------------------------- */
@@ -5426,7 +5433,7 @@ html[data-theme="dark"] .codm-logo-dark {
    This must be the LAST CSS in globals.css
    ========================================================= */
 
-@media (min-width: 901px) {
+@media (min-width: 1101px) {
 
   .codm-megamenu {
     position: absolute !important;
