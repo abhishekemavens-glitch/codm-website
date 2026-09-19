@@ -4293,6 +4293,7 @@ html[data-theme="dark"] .codm-logo-dark {
 ========================================================= */
 
 .codm-header-nav-item-wrap {
+  position: static;
   display: inline-flex;
   align-items: center;
 }
