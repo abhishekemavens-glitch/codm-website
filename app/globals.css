@@ -4288,54 +4288,7 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 
-/* =========================================================
-   SERVICES NAV ITEM
-========================================================= */
 
-.codm-header-nav-item-wrap {
-  display: inline-flex;
-  align-items: center;
-}
-
-
-/* =========================================================
-   MEGA MENU
-========================================================= */
-
-.codm-megamenu {
-  position: absolute;
-
-  top: calc(100% + 28px);
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  width: min(1240px, calc(100vw - 190px));
-
-  background:
-    linear-gradient(
-      135deg,
-      #f1f0ff 0%,
-      #e4e0ff 100%
-    );
-
-  border: 1px solid rgba(111, 88, 255, 0.15);
-
-  border-radius: 28px;
-
-  box-shadow:
-    0 24px 60px rgba(35, 31, 70, 0.16),
-    0 8px 25px rgba(35, 31, 70, 0.06);
-
-  padding: 40px 22px 0;
-
-  z-index: 99999;
-
-  box-sizing: border-box;
-
-  overflow: hidden;
-}
 
 
 /* =========================================================
