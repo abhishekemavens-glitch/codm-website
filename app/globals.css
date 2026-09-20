@@ -6078,3 +6078,13 @@ html[data-theme="dark"] .codm-logo-dark {
 [data-theme="light"] .codm-why-card-in:hover .mt-2 {
   color: var(--muted);
 }
+/* Keep icons visible on the light hover */
+[data-theme="light"] .codm-why-card-in:hover svg,
+[data-theme="light"] .codm-why-card-in:hover svg * {
+  color: var(--accent) !important;
+  stroke: var(--accent) !important;
+}
+
+[data-theme="light"] .codm-why-card-in:hover img {
+  filter: none !important;
+}
