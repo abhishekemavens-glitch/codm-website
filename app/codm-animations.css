@@ -3500,6 +3500,7 @@ html:not(.dark) .heading-codm-title-gradient {
   white-space: nowrap;
   opacity: 0;
   transform: translateY(12px);
+  text-transform: uppercase;   
 }
 
 .dark .heading-codm-eyebrow {
