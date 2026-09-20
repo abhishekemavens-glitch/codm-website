@@ -6088,3 +6088,184 @@ html[data-theme="dark"] .codm-logo-dark {
 [data-theme="light"] .codm-why-card-in:hover img {
   filter: none !important;
 }
+/* =========================================================
+   TESTIMONIALS — MATCH DESIGN
+   Paste at the VERY END of globals.css
+   Colours are scoped to light mode; dark mode keeps its
+   existing look.
+   ========================================================= */
+
+/* ---------- Section background (cool white, like the design) ---------- */
+[data-theme="light"] .codm-testimonials {
+  background: #f8fafc;
+}
+
+/* ---------- Card: narrower, softer, rounder ---------- */
+.codm-testimonial-card {
+  max-width: 810px;
+  margin: 44px auto 0;
+  border-radius: 30px;
+}
+
+[data-theme="light"] .codm-testimonial-card {
+  background: linear-gradient(120deg, #f9f8ff 0%, #fcfcff 45%, #f1eefe 100%);
+  border: 1px solid rgba(114, 92, 255, 0.14);
+  box-shadow: 0 18px 50px rgba(70, 60, 150, 0.07);
+}
+
+/* Photo: bigger corner radius */
+.codm-testimonial-image {
+  border-radius: 24px;
+}
+
+/* ---------- Client name (now above the quote) ---------- */
+.codm-testimonial-client {
+  margin: 0 0 6px;
+}
+
+.codm-testimonial-client h3 {
+  font-size: 17px;
+  font-weight: 500;
+  color: #3d465c;
+}
+
+[data-theme="dark"] .codm-testimonial-client h3 {
+  color: #f5f6fb;
+}
+
+/* ---------- Quote text ---------- */
+.codm-testimonial-text {
+  max-width: 430px;
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: #7b8396;
+}
+
+[data-theme="dark"] .codm-testimonial-text {
+  color: #aab0c4;
+}
+
+/* ---------- Company row: logo + name + tagline ---------- */
+.codm-testimonial-company {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px -40px 0 0;      /* divider runs to the card edge */
+  padding: 14px 40px 0 0;
+  border-top: 1px solid rgba(114, 92, 255, 0.14);
+}
+
+.codm-testimonial-company-logo {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.codm-testimonial-company-text {
+  min-width: 0;
+}
+
+.codm-testimonial-company-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #2b3245;
+}
+
+.codm-testimonial-company-tagline {
+  margin: 2px 0 0;
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: #7b8396;
+}
+
+[data-theme="dark"] .codm-testimonial-company-name {
+  color: #f5f6fb;
+}
+
+[data-theme="dark"] .codm-testimonial-company-tagline {
+  color: #aab0c4;
+}
+
+[data-theme="dark"] .codm-testimonial-company {
+  border-top-color: rgba(138, 124, 255, 0.2);
+}
+
+/* ---------- Navigation: two round buttons, no dots ---------- */
+.codm-testimonial-navigation {
+  gap: 14px;
+  margin-top: 42px;
+}
+
+.codm-testimonial-dots {
+  display: none;
+}
+
+.codm-testimonial-nav-button {
+  width: 36px;
+  height: 36px;
+}
+
+[data-theme="light"] .codm-testimonial-nav-button {
+  border-color: transparent;
+  color: #ffffff;
+}
+
+[data-theme="light"] .codm-testimonial-nav-prev {
+  background: #1b1b3f;
+}
+
+[data-theme="light"] .codm-testimonial-nav-next {
+  background: #8b7cf6;
+}
+
+[data-theme="light"] .codm-testimonial-nav-prev:hover {
+  background: #2c2c5e;
+  border-color: transparent;
+  box-shadow: 0 8px 18px rgba(27, 27, 63, 0.25);
+}
+
+[data-theme="light"] .codm-testimonial-nav-next:hover {
+  background: #7565ee;
+  border-color: transparent;
+  box-shadow: 0 8px 18px rgba(117, 101, 238, 0.35);
+}
+
+/* ---------- Desktop layout (stacked layout below 800px is untouched) ---------- */
+@media (min-width: 801px) {
+
+  .codm-testimonial-layout {
+    grid-template-columns: 292px minmax(0, 1fr);
+    min-height: 336px;
+  }
+
+  .codm-testimonial-image-wrap {
+    padding: 9px;
+  }
+
+  .codm-testimonial-image {
+    min-height: 318px;
+  }
+
+  /* Content sits low, leaving room for the big quote mark above */
+  .codm-testimonial-content {
+    justify-content: flex-end;
+    padding: 0 40px 64px 25px;
+  }
+
+  .codm-testimonial-opening-quote {
+    top: 16px;
+    left: 22px;
+    font-size: 140px;
+  }
+
+  .codm-testimonial-closing-quote {
+    right: 26px;
+    bottom: -10px;
+    font-size: 140px;
+  }
+}
