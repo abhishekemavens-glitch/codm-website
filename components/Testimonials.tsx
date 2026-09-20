@@ -14,7 +14,24 @@ type Testimonial = {
       altText: string;
     } | null;
   } | null;
+
+  /*
+   * OPTIONAL — only filled once these fields exist in WordPress
+   * GraphQL. The card looks fine without them (the company row
+   * simply doesn't show).
+   */
+  clientCompany?: string | null;
+  clientCompanyTagline?: string | null;
+  clientCompanyLogo?: string | null;
 };
+
+type TestimonialExtra = Pick<
+  Testimonial,
+  | "databaseId"
+  | "clientCompany"
+  | "clientCompanyTagline"
+  | "clientCompanyLogo"
+>;
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -25,6 +42,62 @@ export default function Testimonials() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    /*
+     * Company name / tagline / logo come from a SEPARATE query,
+     * so a field that doesn't exist yet can never break the
+     * testimonials themselves (same pattern as the header
+     * announcement).
+     */
+    async function loadExtras() {
+      try {
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query TestimonialExtras {
+                testimonials(first: 20) {
+                  nodes {
+                    databaseId
+                    clientCompany
+                    clientCompanyTagline
+                    clientCompanyLogo
+                  }
+                }
+              }
+            `,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors) {
+          console.warn(
+            "Testimonial company fields are not available in WordPress GraphQL yet:",
+            result.errors
+          );
+          return;
+        }
+
+        const extras: TestimonialExtra[] =
+          result?.data?.testimonials?.nodes ?? [];
+
+        setTestimonials((current) =>
+          current.map((item) => {
+            const extra = extras.find(
+              (entry) => entry.databaseId === item.databaseId
+            );
+
+            return extra ? { ...item, ...extra } : item;
+          })
+        );
+      } catch (error) {
+        console.warn("Testimonial extras could not be loaded:", error);
+      }
+    }
+
     async function loadTestimonials() {
       try {
         const response = await fetch(WORDPRESS_GRAPHQL_URL, {
@@ -79,6 +152,9 @@ export default function Testimonials() {
           result?.data?.testimonials?.nodes ?? [];
 
         setTestimonials(data);
+
+        /* Not awaited: the section shows right away. */
+        void loadExtras();
       } catch (error) {
         console.error(
           "Failed to load testimonials:",
@@ -122,6 +198,10 @@ export default function Testimonials() {
   const testimonial =
     testimonials[activeIndex];
 
+  const hasCompany =
+    testimonial.clientCompany ||
+    testimonial.clientCompanyLogo;
+
   /* =====================================================
      RENDER
      ===================================================== */
@@ -135,8 +215,6 @@ export default function Testimonials() {
 
         {/* =================================================
             SECTION HEADING
-            Uses the shared SectionHeading component so this
-            matches Industries, Why CODM, and What We Do.
             ================================================= */}
 
         <SectionHeading
@@ -171,12 +249,11 @@ export default function Testimonials() {
             aria-hidden="true"
           />
 
-
-          {/* =================================================
-              IMAGE
-              ================================================= */}
-
           <div className="codm-testimonial-layout">
+
+            {/* =============================================
+                IMAGE
+                ============================================= */}
 
             <div className="codm-testimonial-image-wrap">
 
@@ -208,9 +285,9 @@ export default function Testimonials() {
             </div>
 
 
-            {/* =================================================
+            {/* =============================================
                 CONTENT
-                ================================================= */}
+                ============================================= */}
 
             <div className="codm-testimonial-content">
 
@@ -224,6 +301,17 @@ export default function Testimonials() {
               </div>
 
 
+              {/* Client name (WordPress post title) — now ABOVE the quote */}
+
+              <div className="codm-testimonial-client">
+
+                <h3>
+                  {testimonial.title}
+                </h3>
+
+              </div>
+
+
               {/* Testimonial */}
 
               <div
@@ -234,15 +322,37 @@ export default function Testimonials() {
               />
 
 
-              {/* Client */}
+              {/* Company row (logo, name, tagline) */}
 
-              <div className="codm-testimonial-client">
+              {hasCompany && (
+                <div className="codm-testimonial-company">
 
-                <h3>
-                  {testimonial.title}
-                </h3>
+                  {testimonial.clientCompanyLogo && (
+                    <img
+                      src={testimonial.clientCompanyLogo}
+                      alt=""
+                      className="codm-testimonial-company-logo"
+                    />
+                  )}
 
-              </div>
+                  <div className="codm-testimonial-company-text">
+
+                    {testimonial.clientCompany && (
+                      <p className="codm-testimonial-company-name">
+                        {testimonial.clientCompany}
+                      </p>
+                    )}
+
+                    {testimonial.clientCompanyTagline && (
+                      <p className="codm-testimonial-company-tagline">
+                        {testimonial.clientCompanyTagline}
+                      </p>
+                    )}
+
+                  </div>
+
+                </div>
+              )}
 
 
               {/* Closing quote */}
@@ -262,7 +372,7 @@ export default function Testimonials() {
 
 
         {/* =================================================
-            NAVIGATION
+            NAVIGATION — two round buttons, like the design
             ================================================= */}
 
         {testimonials.length > 1 && (
@@ -278,37 +388,24 @@ export default function Testimonials() {
                     : activeIndex - 1
                 );
               }}
-              className="codm-testimonial-nav-button"
+              className="codm-testimonial-nav-button codm-testimonial-nav-prev"
             >
-              ←
-            </button>
-
-
-            <div className="codm-testimonial-dots">
-
-              {testimonials.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  aria-label={`Go to testimonial ${
-                    index + 1
-                  }`}
-                  aria-current={
-                    index === activeIndex
-                  }
-                  onClick={() =>
-                    setActiveIndex(index)
-                  }
-                  className={`codm-testimonial-dot ${
-                    index === activeIndex
-                      ? "is-active"
-                      : ""
-                  }`}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 3L5 8l5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
-              ))}
-
-            </div>
-
+              </svg>
+            </button>
 
             <button
               type="button"
@@ -321,9 +418,23 @@ export default function Testimonials() {
                     : activeIndex + 1
                 );
               }}
-              className="codm-testimonial-nav-button"
+              className="codm-testimonial-nav-button codm-testimonial-nav-next"
             >
-              →
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 3l5 5-5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
 
           </div>
