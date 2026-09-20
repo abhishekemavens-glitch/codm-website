@@ -6269,3 +6269,39 @@ html[data-theme="dark"] .codm-logo-dark {
     font-size: 140px;
   }
 }
+
+
+/* =========================================================
+   TESTIMONIALS — FINAL TWEAKS
+   Paste at the VERY END of globals.css (below the previous
+   testimonials block).
+   ========================================================= */
+
+/* Wider text box so the quote wraps to 2 lines, even if the
+   fallback font is a little wider than Plus Jakarta Sans */
+.codm-testimonial-text {
+  max-width: 480px;
+}
+
+/* Paler quote marks, like the design */
+.codm-testimonial-opening-quote,
+.codm-testimonial-closing-quote {
+  color: rgba(114, 92, 255, 0.11);
+}
+
+@media (min-width: 801px) {
+
+  /* Bigger opening mark, a bit lower */
+  .codm-testimonial-opening-quote {
+    top: 23px;
+    left: 20px;
+    font-size: 200px;
+  }
+
+  /* Bigger closing mark, sitting BELOW the divider line */
+  .codm-testimonial-closing-quote {
+    right: 22px;
+    bottom: -77px;
+    font-size: 200px;
+  }
+}
