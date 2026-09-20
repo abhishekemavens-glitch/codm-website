@@ -6026,3 +6026,55 @@ html[data-theme="dark"] .codm-logo-dark {
     display: block;
   }
 }
+
+
+
+/* =========================================================
+   WHY CODM — MATCH DESIGN
+   Paste at the VERY END of globals.css
+   Dark mode is left untouched.
+   ========================================================= */
+
+/* ---------- Section background: cool white like the design ---------- */
+[data-theme="light"] #why-codm {
+  background: #f8fafc;
+}
+
+/* ---------- Heading: Plus Jakarta, medium weight, navy ---------- */
+#why-codm h2 {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(32px, 3.75vw, 52px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+}
+
+[data-theme="light"] #why-codm h2 {
+  color: #0f1530;
+}
+
+/* ---------- Descriptions wrap onto two short lines like the design ---------- */
+#why-codm .codm-why-card-in .mt-2 {
+  max-width: 265px;
+}
+
+/* ---------- Light-mode hover: soft lavender, dark text ----------
+   (the dark navy hover stays for dark mode) */
+[data-theme="light"] .why-codm-card:hover,
+[data-theme="light"] .codm-why-card-in:hover {
+  background: radial-gradient(
+    circle at 100% 100%,
+    #d3c9fa 0%,
+    #e4defc 36%,
+    #f4f1ff 72%,
+    #fbfaff 100%
+  ) !important;
+}
+
+[data-theme="light"] .codm-why-card-in:hover h3 {
+  color: var(--foreground);
+}
+
+[data-theme="light"] .codm-why-card-in:hover .mt-2 {
+  color: var(--muted);
+}
