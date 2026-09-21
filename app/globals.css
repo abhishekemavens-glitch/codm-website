@@ -6768,3 +6768,144 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
 [data-theme="light"] #why-codm article:hover > div:last-child {
   color: #475569 !important;
 }
+
+
+/* =========================================================
+   FOOTER — MATCH DESIGN
+   Paste at the VERY END of globals.css
+   Measurements and colours come from the design frame.
+   The mobile accordion (footer-accordion.css) is untouched.
+   ========================================================= */
+
+/* ---------- Background: near-black with a soft glow on the right ---------- */
+footer.codm-footer.codm-footer {
+  background:
+    radial-gradient(
+      60% 90% at 100% 50%,
+      rgba(50, 50, 110, 0.22) 0%,
+      transparent 70%
+    ),
+    #090c10;
+}
+
+/* ---------- Brand column ---------- */
+
+/* The logo <img> carries the same class as its wrapper, so the 30px
+   bottom margin was applied twice. Remove it from the image. */
+.codm-footer-logo img.codm-footer-logo,
+img.codm-footer-logo {
+  margin-bottom: 0 !important;
+}
+
+.codm-footer-social {
+  gap: 12px;
+  margin-bottom: 33px;
+}
+
+.codm-footer-social a {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.codm-footer-social a svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.codm-footer-description {
+  max-width: 330px;
+  margin-bottom: 30px;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Logos in one row with thin purple dividers between them */
+.codm-footer-left-logos {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.codm-footer-left-logo {
+  box-sizing: content-box;
+  max-height: 38px;
+  max-width: 130px;
+  padding: 3px 12px;
+  opacity: 1;
+  filter: none;
+}
+
+.codm-footer-left-logo:first-child {
+  padding-left: 10px;
+}
+
+.codm-footer-left-logo + .codm-footer-left-logo {
+  border-left: 1px solid #453f80;
+}
+
+/* ---------- Link columns ---------- */
+.codm-footer-column-title {
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+.codm-footer-links {
+  gap: 15px;
+}
+
+.codm-footer-links a {
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.codm-footer-subheading {
+  margin-top: 30px;
+  margin-bottom: 18px;
+}
+
+.codm-footer-subheading span:first-child {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+/* ---------- Certifications ---------- */
+.codm-footer-certifications {
+  padding: 20px 0 0;
+}
+
+.codm-footer-certification-list {
+  gap: 30px;
+}
+
+.codm-footer-certification-logo {
+  height: 66px;
+  max-width: 70px;
+}
+
+/* ---------- Copyright ---------- */
+.codm-footer-bottom {
+  padding: 30px 0 25px;
+  border-top: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+/* ---------- Desktop proportions (5 columns like the design) ---------- */
+@media (min-width: 1101px) {
+
+  .codm-footer-main {
+    grid-template-columns: 443fr 215fr 221fr 215fr 156fr;
+    gap: 0;
+    padding: 40px 5px 32px;
+  }
+
+  /* right padding makes long links wrap like the design */
+  .codm-footer-column:not(:last-child) {
+    padding-right: 45px;
+  }
+}
