@@ -154,7 +154,7 @@ export default function Industries() {
             <SectionHeading
               eyebrow="Industries We Serve"
               title="Engineering the systems that run"
-              gradientText="modern enterprises."
+              gradientText="Modern enterprises."
               description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
             />
           </div>
