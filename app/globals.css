@@ -6274,3 +6274,63 @@ html[data-theme="dark"] .codm-logo-dark {
 .codm-header-cta:hover::after {
 	left: 140%;
 }
+
+
+/* =========================================================
+   HEADER CTA — "Get in touch ↗" (match design)
+   Paste at the VERY END of globals.css
+   ========================================================= */
+
+html .codm-header .codm-header-cta {
+  gap: 10px !important;
+  padding: 0 22px !important;
+
+  background: linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 6px 18px rgba(99, 78, 235, 0.25) !important;
+
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+/* Hover keeps the gradient (older rules turned it flat purple/white) */
+html .codm-header .codm-header-cta:hover {
+  background: linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 10px 26px rgba(99, 78, 235, 0.38) !important;
+  opacity: 0.95;
+}
+
+/* The arrow icon: fixed size, always spaced from the text */
+html .codm-header .codm-header-cta-arrow {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px !important;
+  height: 14px;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.codm-header-cta-arrow svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+/* Up-right arrow nudges diagonally on hover */
+html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
+  transform: translate(2px, -2px) !important;
+}
+
+/* Mobile keeps the arrow hidden, like before */
+@media (max-width: 900px) {
+  html .codm-header .codm-header-cta-arrow {
+    display: none !important;
+  }
+}
