@@ -6847,8 +6847,9 @@ img.codm-footer-logo {
 
 /* ---------- Link columns ---------- */
 .codm-footer-column-title {
-  margin-bottom: 25px;
-  font-size: 18px;
+	margin-bottom: 25px;
+	font-size: 20px;
+	font-weight: 500;
 }
 
 .codm-footer-links {
@@ -6908,4 +6909,43 @@ img.codm-footer-logo {
   .codm-footer-column:not(:last-child) {
     padding-right: 45px;
   }
+}
+
+
+
+
+
+/* =========================================================
+   FOOTER — FIXES (after footer-match-design.css)
+   Paste at the VERY END of globals.css
+   ========================================================= */
+
+/* Left logos: the row now shrinks to fit the brand column instead of
+   running into the Services links. With 3 logos they keep full size;
+   with 4 they scale down evenly. */
+.codm-footer-left-logos {
+  width: 100%;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.codm-footer-left-logo {
+  flex: 0 1 auto;
+  min-width: 0;
+  width: auto;
+  height: auto;
+  max-height: 38px;
+  padding: 3px 10px;
+  object-fit: contain;   /* never stretches a logo, only scales it */
+}
+
+.codm-footer-left-logo:first-child {
+  padding-left: 10px;
+}
+
+/* Column headings: explicit semi-bold white
+   (they looked regular weight in the screenshot) */
+.codm-footer-accordion-trigger {
+  font-weight: 600;
+  color: #ffffff;
 }
