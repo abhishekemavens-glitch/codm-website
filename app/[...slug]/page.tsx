@@ -152,7 +152,10 @@ export default async function WordPressPage({
     notFound();
   }
 
-  const image = page.featuredImage?.node;
+   const image = page.featuredImage?.node;
+
+  /* only render the WordPress body if it has real text in it */
+  const hasContent = Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
 
   /* true only for pages listed in PAGES_WITH_HOME_SECTIONS (e.g. /about) */
   const showHomeSections =
@@ -160,24 +163,17 @@ export default async function WordPressPage({
 
   return (
     <PageShell>
-      {showHomeSections ? (
-        <AboutHero />
-      ) : (
-        <article className="mx-auto max-w-[1000px] px-6 pb-24">
-          <h1 className="text-[clamp(32px,4vw,56px)] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--foreground)]">
-            {page.title}
-          </h1>
+      <AboutHero
+        pageTitle={page.title}
+        hero={page.aboutHero}
+        imageUrl={image?.sourceUrl}
+        imageAlt={image?.altText}
+      />
 
-          {image?.sourceUrl && (
-            <img
-              src={image.sourceUrl}
-              alt={image.altText || page.title}
-              className="mt-10 w-full rounded-[24px]"
-            />
-          )}
-
+      {hasContent && (
+        <article className="mx-auto max-w-[1000px] px-6 py-16">
           <div
-            className="codm-wp-content mt-10"
+            className="codm-wp-content"
             dangerouslySetInnerHTML={{
               __html: fixLinks(page.content ?? ""),
             }}
