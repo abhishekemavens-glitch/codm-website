@@ -1339,11 +1339,10 @@ header a {
 }
 
 .codm-footer-description {
-  max-width: 350px;
-  margin: 0 0 34px;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 18px;
-  line-height: 1.65;
+	color: #fff;
+	margin-bottom: 30px;
+	font-size: 18px;
+	line-height: 30px;
 }
 
 .codm-footer-left-logos {
