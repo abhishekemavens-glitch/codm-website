@@ -2192,47 +2192,6 @@ header a {
    Put this at the VERY END of the CSS file
    ========================================================= */
 
-.codm-header-cta {
-  position: relative !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  overflow: hidden !important;
-  isolation: isolate !important;
-
-  min-width: 130px !important;
-  height: 44px !important;
-  padding: 0 22px !important;
-
-  box-sizing: border-box !important;
-  border-radius: 999px !important;
-
-  background: #ffffff !important;
-  color: #101424 !important;
-
-  font-family: "Plus Jakarta Sans", sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  font-style: normal !important;
-  line-height: 22px !important;
-  letter-spacing: 0 !important;
-
-  text-decoration: none !important;
-  white-space: nowrap !important;
-
-  border: 1px solid rgba(20, 24, 40, 0.08) !important;
-
-  box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.12) !important;
-
-  transform: translateY(0);
-  transition:
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease !important;
-}
 
 /* =========================================================
    SHINE — COMPLETELY CONTAINED INSIDE BUTTON
