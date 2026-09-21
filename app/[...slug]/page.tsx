@@ -37,8 +37,15 @@ type WpPage = {
       altText: string;
     } | null;
   } | null;
+  aboutHero: {
+    headline: string | null;
+    description: string | null;
+    primaryLabel: string | null;
+    primaryUrl: string | null;
+    secondaryLabel: string | null;
+    secondaryUrl: string | null;
+  } | null;
 };
-
 async function wpFetch<T>(
   query: string,
   variables?: Record<string, unknown>
