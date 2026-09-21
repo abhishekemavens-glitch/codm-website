@@ -6,7 +6,7 @@ import ServicesSection from "@/components/ServicesSection"; // What We Do
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
-
+ 
 /* WordPress slugs that should also show the homepage sections */
 const PAGES_WITH_HOME_SECTIONS = ["about"];
 
