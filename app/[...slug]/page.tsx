@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/PageShell";
-
+import AboutHero from "@/components/AboutHero";
 import ServicesSection from "@/components/ServicesSection"; // What We Do
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
