@@ -104,6 +104,8 @@ async function getPage(slug: string[]): Promise<WpPage | null> {
     { uri: toUri(slug) }
   );
 
+  console.log("ABOUT PAGE DATA:", JSON.stringify(data, null, 2));
+
   return data?.page ?? null;
 }
 
