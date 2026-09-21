@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 
 type Testimonial = {
@@ -15,11 +15,7 @@ type Testimonial = {
     } | null;
   } | null;
 
-  /*
-   * OPTIONAL — only filled once these fields exist in WordPress
-   * GraphQL. The card looks fine without them (the company row
-   * simply doesn't show).
-   */
+  /* Optional company row (filled from the extra query below) */
   clientCompany?: string | null;
   clientCompanyTagline?: string | null;
   clientCompanyLogo?: string | null;
@@ -36,17 +32,29 @@ type TestimonialExtra = Pick<
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
+/*
+ * Autoplay delay in milliseconds.
+ * Set to 0 to turn autoplay off.
+ */
+const AUTOPLAY_MS = 6000;
+
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [paused, setPaused] = useState(false);
+
+  const touchStartX = useRef<number | null>(null);
+
+  /* =====================================================
+     DATA
+     ===================================================== */
 
   useEffect(() => {
     /*
      * Company name / tagline / logo come from a SEPARATE query,
-     * so a field that doesn't exist yet can never break the
-     * testimonials themselves (same pattern as the header
-     * announcement).
+     * so a field that doesn't exist can never break the
+     * testimonials themselves.
      */
     async function loadExtras() {
       try {
@@ -169,6 +177,30 @@ export default function Testimonials() {
   }, []);
 
   /* =====================================================
+     AUTOPLAY
+     Pauses while hovered / touched, skipped for people who
+     prefer reduced motion, restarts after any manual change.
+     ===================================================== */
+
+  useEffect(() => {
+    if (!AUTOPLAY_MS || paused || testimonials.length < 2) {
+      return;
+    }
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % testimonials.length);
+    }, AUTOPLAY_MS);
+
+    return () => window.clearInterval(timer);
+  }, [paused, testimonials.length, activeIndex]);
+
+  /* =====================================================
      LOADING
      ===================================================== */
 
@@ -195,12 +227,38 @@ export default function Testimonials() {
     return null;
   }
 
-  const testimonial =
-    testimonials[activeIndex];
+  const total = testimonials.length;
 
-  const hasCompany =
-    testimonial.clientCompany ||
-    testimonial.clientCompanyLogo;
+  const goPrev = () =>
+    setActiveIndex((current) => (current === 0 ? total - 1 : current - 1));
+
+  const goNext = () =>
+    setActiveIndex((current) => (current === total - 1 ? 0 : current + 1));
+
+  /* Swipe support for touch screens */
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    touchStartX.current = event.touches[0].clientX;
+    setPaused(true);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    if (touchStartX.current !== null) {
+      const distance =
+        event.changedTouches[0].clientX - touchStartX.current;
+
+      if (Math.abs(distance) > 50) {
+        if (distance < 0) {
+          goNext();
+        } else {
+          goPrev();
+        }
+      }
+    }
+
+    touchStartX.current = null;
+    setPaused(false);
+  };
 
   /* =====================================================
      RENDER
@@ -225,169 +283,190 @@ export default function Testimonials() {
 
 
         {/* =================================================
-            TESTIMONIAL CARD
+            SLIDER
             ================================================= */}
 
-        <article className="codm-testimonial-card">
-
-          {/* Decorative glow */}
-
-          <div
-            className="codm-testimonial-glow"
-            aria-hidden="true"
-          />
-
-          {/* Decorative diagonal lines */}
-
-          <div
-            className="codm-testimonial-line codm-testimonial-line-one"
-            aria-hidden="true"
-          />
+        <div
+          className="codm-testimonial-slider"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Client testimonials"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
 
           <div
-            className="codm-testimonial-line codm-testimonial-line-two"
-            aria-hidden="true"
-          />
+            className="codm-testimonial-track"
+            style={{
+              transform: `translateX(-${activeIndex * 100}%)`,
+            }}
+          >
 
-          <div className="codm-testimonial-layout">
+            {testimonials.map((testimonial, index) => {
+              const hasCompany =
+                testimonial.clientCompany ||
+                testimonial.clientCompanyLogo;
 
-            {/* =============================================
-                IMAGE
-                ============================================= */}
+              return (
+                <div
+                  key={testimonial.id}
+                  className="codm-testimonial-slide"
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${index + 1} of ${total}`}
+                  aria-hidden={index !== activeIndex}
+                >
 
-            <div className="codm-testimonial-image-wrap">
+                  <article className="codm-testimonial-card">
 
-              <div className="codm-testimonial-image">
+                    {/* Decorative glow */}
 
-                {testimonial.featuredImage?.node
-                  ?.sourceUrl ? (
-                  <img
-                    src={
-                      testimonial
-                        .featuredImage
-                        .node.sourceUrl
-                    }
-                    alt={
-                      testimonial
-                        .featuredImage
-                        .node.altText ||
-                      testimonial.title
-                    }
-                  />
-                ) : (
-                  <div className="codm-testimonial-no-image">
-                    No image
-                  </div>
-                )}
-
-              </div>
-
-            </div>
-
-
-            {/* =============================================
-                CONTENT
-                ============================================= */}
-
-            <div className="codm-testimonial-content">
-
-              {/* Opening quote */}
-
-              <div
-                className="codm-testimonial-opening-quote"
-                aria-hidden="true"
-              >
-                “
-              </div>
-
-
-              {/* Client name (WordPress post title) — now ABOVE the quote */}
-
-              <div className="codm-testimonial-client">
-
-                <h3>
-                  {testimonial.title}
-                </h3>
-
-              </div>
-
-
-              {/* Testimonial */}
-
-              <div
-                className="codm-testimonial-text"
-                dangerouslySetInnerHTML={{
-                  __html: testimonial.content,
-                }}
-              />
-
-
-              {/* Company row (logo, name, tagline) */}
-
-              {hasCompany && (
-                <div className="codm-testimonial-company">
-
-                  {testimonial.clientCompanyLogo && (
-                    <img
-                      src={testimonial.clientCompanyLogo}
-                      alt=""
-                      className="codm-testimonial-company-logo"
+                    <div
+                      className="codm-testimonial-glow"
+                      aria-hidden="true"
                     />
-                  )}
 
-                  <div className="codm-testimonial-company-text">
+                    {/* Decorative diagonal lines */}
 
-                    {testimonial.clientCompany && (
-                      <p className="codm-testimonial-company-name">
-                        {testimonial.clientCompany}
-                      </p>
-                    )}
+                    <div
+                      className="codm-testimonial-line codm-testimonial-line-one"
+                      aria-hidden="true"
+                    />
 
-                    {testimonial.clientCompanyTagline && (
-                      <p className="codm-testimonial-company-tagline">
-                        {testimonial.clientCompanyTagline}
-                      </p>
-                    )}
+                    <div
+                      className="codm-testimonial-line codm-testimonial-line-two"
+                      aria-hidden="true"
+                    />
 
-                  </div>
+                    <div className="codm-testimonial-layout">
+
+                      {/* ===================================
+                          IMAGE
+                          =================================== */}
+
+                      <div className="codm-testimonial-image-wrap">
+
+                        <div className="codm-testimonial-image">
+
+                          {testimonial.featuredImage?.node
+                            ?.sourceUrl ? (
+                            <img
+                              src={
+                                testimonial
+                                  .featuredImage
+                                  .node.sourceUrl
+                              }
+                              alt={
+                                testimonial
+                                  .featuredImage
+                                  .node.altText ||
+                                testimonial.title
+                              }
+                              draggable={false}
+                            />
+                          ) : (
+                            <div className="codm-testimonial-no-image">
+                              No image
+                            </div>
+                          )}
+
+                        </div>
+
+                      </div>
+
+
+                      {/* ===================================
+                          CONTENT
+                          =================================== */}
+
+                      <div className="codm-testimonial-content">
+
+                        <div
+                          className="codm-testimonial-opening-quote"
+                          aria-hidden="true"
+                        >
+                          “
+                        </div>
+
+                        <div className="codm-testimonial-client">
+                          <h3>
+                            {testimonial.title}
+                          </h3>
+                        </div>
+
+                        <div
+                          className="codm-testimonial-text"
+                          dangerouslySetInnerHTML={{
+                            __html: testimonial.content,
+                          }}
+                        />
+
+                        {hasCompany && (
+                          <div className="codm-testimonial-company">
+
+                            {testimonial.clientCompanyLogo && (
+                              <img
+                                src={testimonial.clientCompanyLogo}
+                                alt=""
+                                className="codm-testimonial-company-logo"
+                                draggable={false}
+                              />
+                            )}
+
+                            <div className="codm-testimonial-company-text">
+
+                              {testimonial.clientCompany && (
+                                <p className="codm-testimonial-company-name">
+                                  {testimonial.clientCompany}
+                                </p>
+                              )}
+
+                              {testimonial.clientCompanyTagline && (
+                                <p className="codm-testimonial-company-tagline">
+                                  {testimonial.clientCompanyTagline}
+                                </p>
+                              )}
+
+                            </div>
+
+                          </div>
+                        )}
+
+                        <div
+                          className="codm-testimonial-closing-quote"
+                          aria-hidden="true"
+                        >
+                          ”
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </article>
 
                 </div>
-              )}
-
-
-              {/* Closing quote */}
-
-              <div
-                className="codm-testimonial-closing-quote"
-                aria-hidden="true"
-              >
-                ”
-              </div>
-
-            </div>
+              );
+            })}
 
           </div>
 
-        </article>
+        </div>
 
 
         {/* =================================================
-            NAVIGATION — two round buttons, like the design
+            NAVIGATION
             ================================================= */}
 
-        {testimonials.length > 1 && (
+        {total > 1 && (
           <div className="codm-testimonial-navigation">
 
             <button
               type="button"
               aria-label="Previous testimonial"
-              onClick={() => {
-                setActiveIndex(
-                  activeIndex === 0
-                    ? testimonials.length - 1
-                    : activeIndex - 1
-                );
-              }}
+              onClick={goPrev}
               className="codm-testimonial-nav-button codm-testimonial-nav-prev"
             >
               <svg
@@ -410,14 +489,7 @@ export default function Testimonials() {
             <button
               type="button"
               aria-label="Next testimonial"
-              onClick={() => {
-                setActiveIndex(
-                  activeIndex ===
-                    testimonials.length - 1
-                    ? 0
-                    : activeIndex + 1
-                );
-              }}
+              onClick={goNext}
               className="codm-testimonial-nav-button codm-testimonial-nav-next"
             >
               <svg
