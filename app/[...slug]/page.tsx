@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/PageShell";
 
+import ServicesSection from "@/components/ServicesSection"; // What We Do
+import Testimonials from "@/components/Testimonials"; // Testimonial
+import LatestBlogs from "@/components/LatestBlogs"; // Blog
+import ContactCTA from "@/components/ContactCTA"; // Let's Build
+
+/* WordPress slugs that should also show the homepage sections */
+const PAGES_WITH_HOME_SECTIONS = ["about"];
+
 /*
  * Save as: app/[...slug]/page.tsx
  *
@@ -139,6 +147,10 @@ export default async function WordPressPage({
 
   const image = page.featuredImage?.node;
 
+  /* true only for pages listed in PAGES_WITH_HOME_SECTIONS (e.g. /about) */
+  const showHomeSections =
+    slug.length === 1 && PAGES_WITH_HOME_SECTIONS.includes(slug[0]);
+
   return (
     <PageShell>
       <article className="mx-auto max-w-[1000px] px-6 pb-24">
@@ -161,6 +173,26 @@ export default async function WordPressPage({
           }}
         />
       </article>
+
+      {showHomeSections && (
+        <>
+          <div className="relative z-10">
+            <ServicesSection />
+          </div>
+
+          <div className="relative z-10">
+            <Testimonials />
+          </div>
+
+          <div className="relative z-10">
+            <LatestBlogs />
+          </div>
+
+          <div className="relative z-10">
+            <ContactCTA />
+          </div>
+        </>
+      )}
     </PageShell>
   );
 }
