@@ -3656,13 +3656,21 @@ html[data-theme="light"] .codm-header,
 
 }
 
+.codm-industries-pills .codm-industry-pill.codm-industry-pill-active {
+	color: #fff;
+	background: linear-gradient(90deg,#8b5cf6 0%,#4f46e5 100%) !important;
+	border: 1px solid #14182814 !important;
+}
+
 .codm-industries-pills {
 	justify-content: start;
 }
 .codm-industries-pills .codm-industry-pill {
 	font-size: 18px;
-	line-height: 24px;
 	font-weight: 500;
+	line-height: 24px;
+	color: #475569;
+	background: transparent;
 }
 .codm-industry-card-content .codm-industry-accent {
 	display: none;
