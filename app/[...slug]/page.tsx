@@ -82,11 +82,21 @@ async function getPage(slug: string[]): Promise<WpPage | null> {
         page(id: $uri, idType: URI) {
           title
           content
+
           featuredImage {
             node {
               sourceUrl
               altText
             }
+          }
+
+          aboutHero {
+            headline
+            description
+            primaryLabel
+            primaryUrl
+            secondaryLabel
+            secondaryUrl
           }
         }
       }
