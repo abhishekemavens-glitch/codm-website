@@ -6923,9 +6923,10 @@ img.codm-footer-logo {
    running into the Services links. With 3 logos they keep full size;
    with 4 they scale down evenly. */
 .codm-footer-left-logos {
-  width: 100%;
-  min-width: 0;
-  flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	width: 100%;
+	min-width: 0;
+	padding-right: 25px;
 }
 
 .codm-footer-left-logo {
