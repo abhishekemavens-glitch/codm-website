@@ -6327,34 +6327,76 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
 
 
 /* =========================================================
-   HEADER CTA — GRADIENT BORDER (fill is NOT a gradient)
-   Paste at the VERY END of globals.css.
-   This replaces the background/border/color/hover rules for
-   .codm-header-cta from header-cta.css (keep the arrow and
-   font rules from that file).
+   HERO LOGO ROW — MATCH DESIGN
+   Paste at the VERY END of globals.css
    ========================================================= */
 
-html .codm-header .codm-header-cta {
-  /* 1.5px transparent border that the gradient shows through */
-  border: 1.5px solid transparent !important;
-
-  /* layer 1 = solid fill inside the border
-     layer 2 = gradient, visible only in the border area */
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) border-box !important;
-
-  color: #101424 !important;
-  box-shadow: 0 6px 18px rgba(99, 78, 235, 0.15) !important;
+/* Row: no flex gap, spacing comes from each logo's padding */
+.codm-hero-logos {
+  gap: 0 !important;
+  row-gap: 20px !important;
 }
 
-/* Hover: fill turns into the gradient, text goes white */
-html .codm-header .codm-header-cta:hover {
-  background:
-    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) padding-box,
-    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) border-box !important;
+/* Each logo cell */
+.codm-hero-logos > div {
+  position: relative;
+  height: 56px;
+  min-width: 0;
+  padding: 0 40px;
+}
 
-  color: #ffffff !important;
-  border-color: transparent !important;
-  box-shadow: 0 10px 26px rgba(99, 78, 235, 0.35) !important;
+/* Bigger logos, like the design */
+.codm-hero-logos img {
+  max-height: 52px !important;
+  max-width: 170px !important;
+  width: auto;
+}
+
+/* Faint vertical divider between logos (drawn in CSS) */
+.codm-hero-logos > div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(114, 92, 255, 0.4) 50%,
+    transparent 100%
+  );
+}
+
+/* Phones: smaller, tighter, no dividers (they look odd when logos wrap) */
+@media (max-width: 767px) {
+  .codm-hero-logos > div {
+    height: 44px;
+    padding: 0 16px;
+  }
+
+  .codm-hero-logos img {
+    max-height: 38px !important;
+    max-width: 120px !important;
+  }
+
+  .codm-hero-logos > div::after {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   STOPGAP — only while the current logo files are still in use.
+   Hides the white box and crops the purple line baked into
+   each image. DELETE THIS BLOCK once you upload transparent
+   logos without the line.
+   ========================================================= */
+
+[data-theme="light"] .codm-hero-logos {
+  will-change: auto !important;   /* lets the blend see the page behind */
+}
+
+[data-theme="light"] .codm-hero-logos img {
+  mix-blend-mode: multiply;
+  clip-path: inset(0 2.5px 0 0);
 }
