@@ -38,7 +38,18 @@ const WORDPRESS_GRAPHQL_URL =
  */
 const AUTOPLAY_MS = 6000;
 
-export default function Testimonials() {
+/*
+ * How many of the NEWEST testimonials to show.
+ * Change this number, or pass a different one where the
+ * component is used, e.g. <Testimonials limit={8} />
+ */
+const DEFAULT_LIMIT = 5;
+
+export default function Testimonials({
+  limit = DEFAULT_LIMIT,
+}: {
+  limit?: number;
+}) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -65,8 +76,11 @@ export default function Testimonials() {
           },
           body: JSON.stringify({
             query: `
-              query TestimonialExtras {
-                testimonials(first: 20) {
+              query TestimonialExtras($first: Int!) {
+                testimonials(
+                  first: $first
+                  where: { orderby: [{ field: DATE, order: DESC }] }
+                ) {
                   nodes {
                     databaseId
                     clientCompany
@@ -76,6 +90,7 @@ export default function Testimonials() {
                 }
               }
             `,
+            variables: { first: limit },
           }),
         });
 
@@ -115,8 +130,11 @@ export default function Testimonials() {
           },
           body: JSON.stringify({
             query: `
-              query GetTestimonials {
-                testimonials(first: 20) {
+              query GetTestimonials($first: Int!) {
+                testimonials(
+                  first: $first
+                  where: { orderby: [{ field: DATE, order: DESC }] }
+                ) {
                   nodes {
                     id
                     databaseId
@@ -132,6 +150,7 @@ export default function Testimonials() {
                 }
               }
             `,
+            variables: { first: limit },
           }),
         });
 
@@ -160,6 +179,7 @@ export default function Testimonials() {
           result?.data?.testimonials?.nodes ?? [];
 
         setTestimonials(data);
+        setActiveIndex(0);
 
         /* Not awaited: the section shows right away. */
         void loadExtras();
@@ -174,7 +194,7 @@ export default function Testimonials() {
     }
 
     loadTestimonials();
-  }, []);
+  }, [limit]);
 
   /* =====================================================
      AUTOPLAY
