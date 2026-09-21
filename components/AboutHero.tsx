@@ -10,34 +10,32 @@ export type AboutHeroData = {
 };
 
 type AboutHeroProps = {
+  pageTitle: string;
   hero?: AboutHeroData | null;
   imageUrl?: string | null;
   imageAlt?: string | null;
 };
 
-/* Shown for any field left empty in WordPress */
-const DEFAULTS = {
-  headline: "Turning complexity into progress.",
-  description:
-    "Turn learner data into personalised experiences, proactive support, and measurable outcomes.",
-  primaryLabel: "Book a Consultation",
-  primaryUrl: "/contact",
-  secondaryLabel: "Explore Services",
-  secondaryUrl: "#services",
-  image: "/about/about-orbit.png",
-};
+export default function AboutHero({
+  pageTitle,
+  hero,
+  imageUrl,
+  imageAlt,
+}: AboutHeroProps) {
+  const headline = hero?.headline || pageTitle;
+  const description = hero?.description;
 
-export default function AboutHero({ hero, imageUrl, imageAlt }: AboutHeroProps) {
-  const headline = hero?.headline || DEFAULTS.headline;
-  const description = hero?.description || DEFAULTS.description;
-  const primaryLabel = hero?.primaryLabel || DEFAULTS.primaryLabel;
-  const primaryUrl = hero?.primaryUrl || DEFAULTS.primaryUrl;
-  const secondaryLabel = hero?.secondaryLabel || DEFAULTS.secondaryLabel;
-  const secondaryUrl = hero?.secondaryUrl || DEFAULTS.secondaryUrl;
+  const showPrimary = Boolean(hero?.primaryLabel && hero?.primaryUrl);
+  const showSecondary = Boolean(hero?.secondaryLabel && hero?.secondaryUrl);
+  const hasImage = Boolean(imageUrl);
 
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eef0fc_0%,#e8e7fb_55%,#dcd5fa_100%)]">
-      <div className="mx-auto grid min-h-[620px] max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] lg:grid-cols-2">
+      <div
+        className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] ${
+          hasImage ? "min-h-[620px] lg:grid-cols-2" : "min-h-[380px]"
+        }`}
+      >
         {/* ---------- Left: text ---------- */}
         <div>
           <nav
@@ -64,7 +62,7 @@ export default function AboutHero({ hero, imageUrl, imageAlt }: AboutHeroProps) 
               <path d="m9 18 6-6-6-6" />
             </svg>
             <span aria-current="page" className="text-[#8b6cf6]">
-              About Us
+              {pageTitle}
             </span>
           </nav>
 
@@ -72,39 +70,46 @@ export default function AboutHero({ hero, imageUrl, imageAlt }: AboutHeroProps) 
             {headline}
           </h1>
 
-          <p className="mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65] text-[#6b7086]">
-            {description}
-          </p>
+          {description && (
+            <p className="mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65] text-[#6b7086]">
+              {description}
+            </p>
+          )}
 
-          <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Link
-              href={primaryUrl}
-              className="inline-flex h-[54px] items-center justify-center rounded-full bg-[linear-gradient(90deg,#8b5cf6_0%,#6d4ff0_100%)] px-8 text-[17px] font-medium text-white shadow-[0_10px_30px_-10px_rgba(109,79,240,0.7)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
-            >
-              {primaryLabel}
-            </Link>
+          {(showPrimary || showSecondary) && (
+            <div className="mt-9 flex flex-wrap items-center gap-4">
+              {showPrimary && (
+                <Link
+                  href={hero!.primaryUrl!}
+                  className="inline-flex h-[54px] items-center justify-center rounded-full bg-[linear-gradient(90deg,#8b5cf6_0%,#6d4ff0_100%)] px-8 text-[17px] font-medium text-white shadow-[0_10px_30px_-10px_rgba(109,79,240,0.7)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+                >
+                  {hero!.primaryLabel}
+                </Link>
+              )}
 
-            <Link
-              href={secondaryUrl}
-              className="inline-flex h-[54px] items-center justify-center rounded-full border border-white/70 bg-white/40 px-7 text-[17px] font-medium text-[#3f4358] backdrop-blur transition-colors hover:bg-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
-            >
-              {secondaryLabel}
-            </Link>
+              {showSecondary && (
+                <Link
+                  href={hero!.secondaryUrl!}
+                  className="inline-flex h-[54px] items-center justify-center rounded-full border border-white/70 bg-white/40 px-7 text-[17px] font-medium text-[#3f4358] backdrop-blur transition-colors hover:bg-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+                >
+                  {hero!.secondaryLabel}
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ---------- Right: image (only if a Featured image is set) ---------- */}
+        {hasImage && (
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src={imageUrl!}
+              alt={imageAlt || pageTitle}
+              className="w-full max-w-[520px] select-none"
+              draggable={false}
+            />
           </div>
-        </div>
-
-        {/* ---------- Right: orbit graphic ---------- */}
-        <div className="flex justify-center lg:justify-end">
-          <img
-            src={imageUrl || DEFAULTS.image}
-            alt={
-              imageAlt ||
-              "CodM at the centre of Salesforce, Agentforce, AI, .NET, Python and automation"
-            }
-            className="w-full max-w-[520px] select-none"
-            draggable={false}
-          />
-        </div>
+        )}
       </div>
     </section>
   );
