@@ -6629,3 +6629,142 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
 [data-theme="light"] #services a[href="/contact"]:hover span {
   color: #0f172a;
 }
+
+
+/* =========================================================
+   WHY CODM — MATCH DESIGN (v2)
+   Sizes and colours are measured from the design frame.
+
+   REPLACES the earlier "WHY CODM — MATCH DESIGN" block AND the
+   small "Keep icons visible on the light hover" block.
+   Delete both, then paste this at the VERY END of globals.css.
+   ========================================================= */
+
+/* ---------- Section ---------- */
+[data-theme="light"] #why-codm {
+  background: #f8fafc !important;
+}
+
+/* Wider container: 1240px of content, like the design */
+#why-codm > div {
+  max-width: 1304px !important;
+}
+
+#why-codm > div > div {
+  max-width: 1240px !important;
+}
+
+/* ---------- Heading ---------- */
+#why-codm h2 {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(32px, 3.75vw, 60px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+}
+
+[data-theme="light"] #why-codm h2 {
+  color: #0f172a;
+}
+
+/* Gradient text: #4263ed to #8f7df6 (rests on the design colours,
+   the shimmer pans to the reverse and back) */
+.heading-codm-title-gradient {
+  background-image: linear-gradient(
+    90deg,
+    #4263ed 0%,
+    #8f7df6 50%,
+    #4263ed 100%
+  ) !important;
+}
+
+/* ---------- Outer card ---------- */
+#why-codm > div > div > div:nth-child(2) {
+  max-width: none !important;
+  border-radius: 30px !important;
+}
+
+[data-theme="light"] #why-codm > div > div > div:nth-child(2) {
+  background: transparent !important;
+  border-color: #e8edf2 !important;
+}
+
+/* ---------- Cells: 218px tall, 42px side padding, no fill ---------- */
+#why-codm article {
+  display: flex;
+  flex-direction: column;
+  min-height: 218px;
+  padding: 37px 42px !important;
+}
+
+@media (max-width: 767px) {
+  #why-codm article {
+    min-height: 0;
+    padding: 28px 24px !important;
+  }
+}
+
+[data-theme="light"] #why-codm article {
+  background: transparent !important;
+  border-color: #e8eef5 !important;
+}
+
+/* ---------- Light-mode hover: lavender, dark text, visible icon ---------- */
+[data-theme="light"] #why-codm article:hover {
+  background: radial-gradient(
+    circle at 100% 100%,
+    #d3c9fa 0%,
+    #e4defc 36%,
+    #f4f1ff 72%,
+    #fbfaff 100%
+  ) !important;
+}
+
+[data-theme="light"] #why-codm article:hover img {
+  filter: none !important;
+}
+
+[data-theme="light"] #why-codm article:hover svg,
+[data-theme="light"] #why-codm article:hover svg * {
+  color: #6366f1 !important;
+  stroke: #6366f1 !important;
+}
+
+/* ---------- Icon (36px, indigo) ---------- */
+#why-codm article > div:first-child {
+  width: 36px !important;
+  height: 36px !important;
+  margin-bottom: 30px !important;
+}
+
+#why-codm article > div:first-child img,
+#why-codm article > div:first-child svg {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* ---------- Title ---------- */
+#why-codm article h3 {
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+}
+
+[data-theme="light"] #why-codm article h3,
+[data-theme="light"] #why-codm article:hover h3 {
+  color: #0f172a !important;
+}
+
+/* ---------- Description (14px, wraps to two short lines) ---------- */
+#why-codm article > div:last-child {
+  max-width: 320px !important;
+  margin-top: 12px !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+
+[data-theme="light"] #why-codm article > div:last-child,
+[data-theme="light"] #why-codm article:hover > div:last-child {
+  color: #475569 !important;
+}
