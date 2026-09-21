@@ -6324,3 +6324,37 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
     display: none !important;
   }
 }
+
+
+/* =========================================================
+   HEADER CTA — GRADIENT BORDER (fill is NOT a gradient)
+   Paste at the VERY END of globals.css.
+   This replaces the background/border/color/hover rules for
+   .codm-header-cta from header-cta.css (keep the arrow and
+   font rules from that file).
+   ========================================================= */
+
+html .codm-header .codm-header-cta {
+  /* 1.5px transparent border that the gradient shows through */
+  border: 1.5px solid transparent !important;
+
+  /* layer 1 = solid fill inside the border
+     layer 2 = gradient, visible only in the border area */
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) border-box !important;
+
+  color: #101424 !important;
+  box-shadow: 0 6px 18px rgba(99, 78, 235, 0.15) !important;
+}
+
+/* Hover: fill turns into the gradient, text goes white */
+html .codm-header .codm-header-cta:hover {
+  background:
+    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) padding-box,
+    linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) border-box !important;
+
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 10px 26px rgba(99, 78, 235, 0.35) !important;
+}
