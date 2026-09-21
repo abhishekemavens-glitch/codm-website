@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/PageShell";
-import AboutHero from "@/components/AboutHero";
+import AboutHero from "@/components/AboutHero"; // Hero
 import ServicesSection from "@/components/ServicesSection"; // What We Do
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
@@ -153,30 +153,34 @@ export default async function WordPressPage({
 
   return (
     <PageShell>
-      <article className="mx-auto max-w-[1000px] px-6 pb-24">
-        <h1 className="text-[clamp(32px,4vw,56px)] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--foreground)]">
-          {page.title}
-        </h1>
+      {showHomeSections ? (
+        <AboutHero />
+      ) : (
+        <article className="mx-auto max-w-[1000px] px-6 pb-24">
+          <h1 className="text-[clamp(32px,4vw,56px)] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--foreground)]">
+            {page.title}
+          </h1>
 
-        {image?.sourceUrl && (
-          <img
-            src={image.sourceUrl}
-            alt={image.altText || page.title}
-            className="mt-10 w-full rounded-[24px]"
+          {image?.sourceUrl && (
+            <img
+              src={image.sourceUrl}
+              alt={image.altText || page.title}
+              className="mt-10 w-full rounded-[24px]"
+            />
+          )}
+
+          <div
+            className="codm-wp-content mt-10"
+            dangerouslySetInnerHTML={{
+              __html: fixLinks(page.content ?? ""),
+            }}
           />
-        )}
-
-        <div
-          className="codm-wp-content mt-10"
-          dangerouslySetInnerHTML={{
-            __html: fixLinks(page.content ?? ""),
-          }}
-        />
-      </article>
+        </article>
+      )}
 
       {showHomeSections && (
         <>
-          <div className="relative z-10">
+          <div id="services" className="relative z-10 scroll-mt-24">
             <ServicesSection />
           </div>
 
