@@ -6478,3 +6478,154 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
   opacity: 1 !important;
   filter: none !important;
 }
+
+
+/* =========================================================
+   WHAT WE DO (SERVICES) — MATCH DESIGN
+   Paste at the VERY END of globals.css
+   Sizes and colours are measured from the design frame.
+   Dark mode keeps its navy hover; light mode gets the
+   lavender hover from the design.
+   ========================================================= */
+
+/* ---------- Section ---------- */
+[data-theme="light"] #services {
+  background: #f8fafc !important;
+}
+
+/* Wider container: 1240px of content, like the design */
+#services > div {
+  max-width: 1288px !important;
+}
+
+/* ---------- Heading ---------- */
+#services h2 {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(32px, 3.75vw, 60px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+}
+
+[data-theme="light"] #services h2 {
+  color: #0f172a;
+}
+
+/* ---------- Grid: 3 columns, 25px between columns, 30px between rows ---------- */
+#services .grid {
+  gap: 30px 25px !important;
+  margin-top: 44px !important;
+}
+
+/* ---------- Cards ---------- */
+#services article {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;          /* content centred in the fixed-height card */
+  padding: 28px 26px !important;
+  border-radius: 28px !important;
+}
+
+[data-theme="light"] #services article {
+  background: transparent !important;
+  border-color: #e8edf2 !important;
+  box-shadow: none !important;
+}
+
+/* Light-mode hover: soft lavender, dark text (the dark-mode navy stays) */
+[data-theme="light"] #services article:hover {
+  background: radial-gradient(
+    circle at 100% 100%,
+    #d3c9fa 0%,
+    #e4defc 36%,
+    #f4f1ff 72%,
+    #fbfaff 100%
+  ) !important;
+  border-color: rgba(114, 92, 255, 0.22) !important;
+  box-shadow: 0 18px 40px rgba(114, 92, 255, 0.10) !important;
+}
+
+@media (min-width: 1024px) {
+  #services article {
+    min-height: 250px;
+    padding: 0 34px !important;
+  }
+}
+
+/* ---------- Icon (bigger, indigo like the design) ---------- */
+#services article > div:first-child {
+  width: 36px !important;
+  height: 36px !important;
+  margin-bottom: 22px !important;
+}
+
+#services article > div:first-child img,
+#services article > div:first-child svg {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* ---------- Title ---------- */
+#services article h3 {
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+}
+
+[data-theme="light"] #services article h3,
+[data-theme="light"] #services article:hover h3 {
+  color: #0f172a !important;
+}
+
+/* ---------- Description ---------- */
+#services article > div:last-child {
+  max-width: none !important;
+  margin-top: 10px !important;
+  font-size: 16px !important;
+  line-height: 22px !important;
+}
+
+[data-theme="light"] #services article > div:last-child,
+[data-theme="light"] #services article:hover > div:last-child {
+  color: #475569 !important;
+}
+
+/* ---------- "Discuss your roadmap" pill ---------- */
+#services > div > div:last-child {
+  margin-top: 40px !important;
+}
+
+#services a[href="/contact"] {
+  gap: 10px !important;
+  padding: 15px 28px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.3;
+}
+
+#services a[href="/contact"] span {
+  font-size: 16px !important;
+  font-weight: 700;
+  line-height: 1;
+}
+
+[data-theme="light"] #services a[href="/contact"] {
+  background: #e8eef5 !important;
+  border-color: transparent !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] #services a[href="/contact"]:hover {
+  background: #dde5f1 !important;
+}
+
+[data-theme="light"] #services a[href="/contact"]:hover {
+  background: #8a7bff !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="light"] #services a[href="/contact"]:hover span {
+  color: #0f172a;
+}
