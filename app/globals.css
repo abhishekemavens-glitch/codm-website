@@ -1063,14 +1063,14 @@ span {
 }
 
 .latest-blogs .blog-categories span {
-  border: 1px solid #dce1e9;
-  color: #7a8394;
-  padding: 5px 8px;
-  font-size: 10px;
-  line-height: 1;
-  border-radius: 3px;
-  display: inline-flex;
-  align-items: center;
+	color: #9AA3B8;
+	border: 1px solid #dce1e9;
+	border-radius: 3px;
+	align-items: center;
+	padding: 5px 8px;
+	font-size: 14px;
+	line-height: 1;
+	display: inline-flex;
 }
 
 .latest-blogs .blog-image {
@@ -1094,23 +1094,25 @@ span {
 }
 
 .latest-blogs .blog-card h3 {
-  margin: 0;
-  color: #252c3d;
-  font-size: 15px;
-  line-height: 1.4;
-  font-weight: 500;
+	color: #475569;
+	margin: 0;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 26px;
+	font-family: Inter,sans-serif !important;
 }
-
 .latest-blogs .blog-card a {
-  margin-top: 16px;
-  padding-top: 0;
-  text-decoration: none;
-  color: #7168d0;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
+	color: #6B7388;
+	align-items: center;
+	gap: 6px;
+	margin-top: 16px;
+	padding-top: 0;
+	font-size: 16px;
+	text-decoration: none;
+	transition: color .2s;
+	display: flex;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	font-weight: 400;
 }
 
 .latest-blogs .blog-card a:hover {
