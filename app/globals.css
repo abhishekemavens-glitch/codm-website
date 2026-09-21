@@ -328,45 +328,28 @@ html[data-theme="light"] .codm-header {
    ========================================================= */
 
 .codm-header-cta {
-  position: relative;
-  isolation: isolate;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-
-  height: 44px;
-  min-width: 130px;
-
-  padding: 0 20px;
-
-  border-radius: 999px;
-
-  background: #ffffff;
-  color: #101424;
-
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  font-style: normal;
-  line-height: 22px;
-  letter-spacing: 0;
-
-  text-decoration: none;
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.12);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
+	transform: translateY(0);
+	isolation: isolate !important;
+	box-sizing: border-box !important;
+	color: #fff !important;
+	letter-spacing: 0 !important;
+	white-space: nowrap !important;
+	background: linear-gradient(90deg,#8b5cf6 0%,#4f46e5 100%) !important;
+	border: 1px solid #14182814 !important;
+	border-radius: 999px !important;
+	justify-content: center !important;
+	align-items: center !important;
+	padding: 14px 20px !important;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	font-size: 18px !important;
+	font-weight: 500 !important;
+	line-height: 100% !important;
+	text-decoration: none !important;
+	transition: transform .3s cubic-bezier(.22,1,.36,1),background-color .3s,color .3s,box-shadow .3s !important;
+	display: inline-flex !important;
+	position: relative !important;
+	overflow: hidden !important;
+	box-shadow: 0 4px 18px #0000001f !important;
 }
 
 /* ---------------------------------------------------------
@@ -6355,4 +6338,19 @@ html[data-theme="dark"] .codm-logo-dark {
   .codm-testimonial-track {
     transition: none;
   }
+}
+
+.codm-header-cta::after {
+	content: "";
+	background: linear-gradient(90deg,#0000,#ffffff2e,#0000);
+	width: 70%;
+	height: 100%;
+	transition: left .7s;
+	position: absolute;
+	top: 0;
+	left: -120%;
+	transform: skew(-20deg);
+}
+.codm-header-cta:hover::after {
+	left: 140%;
 }
