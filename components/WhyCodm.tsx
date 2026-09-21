@@ -206,7 +206,7 @@ export default function WhyCodm() {
             <SectionHeading
               eyebrow="Why CODM"
               title="A partner enterprise boards are"
-              gradientText="comfortable signing off."
+              gradientText="Comfortable signing off."
             />
           </div>
 
