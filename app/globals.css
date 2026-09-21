@@ -6283,16 +6283,6 @@ html[data-theme="dark"] .codm-logo-dark {
 
 html .codm-header .codm-header-cta {
   gap: 10px !important;
-  padding: 0 22px !important;
-
-  background: linear-gradient(90deg, #8b5cf6 0%, #4f46e5 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid transparent !important;
-  box-shadow: 0 6px 18px rgba(99, 78, 235, 0.25) !important;
-
-  font-family: "Plus Jakarta Sans", sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
 }
 
 /* Hover keeps the gradient (older rules turned it flat purple/white) */
