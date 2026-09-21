@@ -6337,3 +6337,144 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
   mix-blend-mode: multiply;
   clip-path: inset(0 2.5px 0 0);
 }
+
+
+
+
+/* =========================================================
+   INDUSTRIES — MATCH DESIGN
+   Paste at the VERY END of globals.css
+   Colours come straight from the design frame.
+   The ACTIVE pill (purple gradient) is not touched.
+   ========================================================= */
+
+/* ---------- Section background ---------- */
+[data-theme="light"] #industries {
+  background: #f1f5f9 !important;
+}
+
+/* ---------- Heading ---------- */
+#industries h2 {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(32px, 3.75vw, 60px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+}
+
+[data-theme="light"] #industries h2 {
+  color: #0f172a;
+}
+
+/* ---------- Pills: full width, left aligned, design spacing ---------- */
+.codm-industries-pills {
+  max-width: 100% !important;
+  gap: 20px 16px !important;        /* row 20px, column 16px */
+}
+
+/* Inactive pills: transparent with a thin blue-grey border */
+[data-theme="light"] .codm-industry-pill:not(.codm-industry-pill-active) {
+  background: transparent !important;
+  border-color: #d9e1ea !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .codm-industry-pill:not(.codm-industry-pill-active):hover {
+  border-color: #8b5cf6 !important;
+  color: #0f172a !important;
+}
+
+/* ---------- Card: no fill, thin border, rounder ---------- */
+.codm-industry-card {
+  border-radius: 28px !important;
+}
+
+[data-theme="light"] .codm-industry-card {
+  background: transparent !important;
+  border-color: #d9e1ea !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .codm-industry-card:hover {
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+}
+
+/* ---------- Text side ---------- */
+.codm-industry-card-content > div {
+  max-width: 560px !important;
+}
+
+.codm-industry-card .codm-industry-card-content h3 {
+  font-size: clamp(30px, 2.75vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+[data-theme="light"] .codm-industry-card .codm-industry-card-content h3 {
+  color: #0f172a;
+}
+
+.codm-industry-view-link {
+  font-size: 16px;
+}
+
+[data-theme="light"] .codm-industry-view-link {
+  color: #6b7388;
+}
+
+[data-theme="light"] .codm-industry-view-link:hover {
+  color: var(--accent);
+}
+
+/* ---------- Desktop proportions (text column wider than image) ---------- */
+@media (min-width: 1024px) {
+
+  .codm-industry-card > .grid {
+    grid-template-columns: 1.267fr 1fr !important;
+  }
+
+  .codm-industry-card-content {
+    padding: 48px 40px 48px 36px !important;
+  }
+
+  .codm-industry-card .codm-hero-media-scale {
+    padding: 24px 24px 24px 0 !important;
+  }
+}
+
+/* ---------- Image plate: fades from page colour to lavender ---------- */
+.codm-industry-image-container {
+  aspect-ratio: 1.4 / 1 !important;
+  border-radius: 28px !important;
+}
+
+[data-theme="light"] .codm-industry-image-container {
+  background: linear-gradient(
+    180deg,
+    #f1f5f9 0%,
+    #e1e4eb 31%,
+    #d6d8e7 52%,
+    #d0d1e9 68%,
+    #ccccee 84%,
+    #cac9f4 100%
+  ) !important;
+}
+
+[data-theme="dark"] .codm-industry-image-container {
+  background: linear-gradient(180deg, #0d1020 0%, #1c1c4d 100%) !important;
+}
+
+/* Image nearly fills the plate (12px frame, like the design) */
+.codm-industry-image {
+  padding: 12px !important;
+}
+
+/* ---------- Fix: washed-out image ----------
+   The image wrapper reuses the hero's scroll-reveal class, whose
+   progress variable never updates in this section, so it stayed at
+   45% opacity. Force it fully visible once loaded. */
+.codm-industry-card .codm-hero-media-scale.codm-media-loaded {
+  opacity: 1 !important;
+  filter: none !important;
+}
