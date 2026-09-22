@@ -4143,6 +4143,10 @@ html[data-theme="dark"] .codm-logo-dark {
 ========================================================= */
 
 
+.codm-menu-wrapper {
+  position: relative;
+}
+
 .codm-megamenu {
   position: absolute;
 
