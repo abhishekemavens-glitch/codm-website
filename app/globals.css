@@ -4142,9 +4142,6 @@ html[data-theme="dark"] .codm-logo-dark {
    MEGA MENU
 ========================================================= */
 
-.codm-nav-item {
-  position: relative; /* anchor for megamenu */
-}
 
 .codm-megamenu {
   position: absolute;
@@ -4153,7 +4150,8 @@ html[data-theme="dark"] .codm-logo-dark {
     Announcement bar + header.
     Adjust this only if your header height changes.
   */
-  top: calc(100% + 0px);
+  
+  top: 100%;
 
   left: 50%;
 
@@ -4183,7 +4181,7 @@ html[data-theme="dark"] .codm-logo-dark {
 
   box-sizing: border-box;
 
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
 .codm-nav-item:hover .codm-megamenu,
