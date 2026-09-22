@@ -6,9 +6,10 @@ import ServicesSection from "@/components/ServicesSection"; // What We Do
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
- 
+
 /* WordPress slugs that should also show the homepage sections */
 const PAGES_WITH_HOME_SECTIONS = ["about", "services"];
+
 /*
  * Save as: app/[...slug]/page.tsx
  *
@@ -45,6 +46,7 @@ type WpPage = {
     secondaryUrl: string | null;
   } | null;
 };
+
 async function wpFetch<T>(
   query: string,
   variables?: Record<string, unknown>
@@ -74,36 +76,80 @@ function toUri(slug: string[]) {
   return `/${slug.join("/")}/`;
 }
 
+const PAGE_FIELDS = `
+  title
+  content
+  featuredImage {
+    node {
+      sourceUrl
+      altText
+    }
+  }
+  aboutHero {
+    headline
+    description
+    primaryLabel
+    primaryUrl
+    secondaryLabel
+    secondaryUrl
+  }
+`;
+
 async function getPage(slug: string[]): Promise<WpPage | null> {
   const data = await wpFetch<{ page: WpPage | null }>(
     `
       query GetPage($uri: ID!) {
         page(id: $uri, idType: URI) {
-          title
-          content
-
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
-          }
-
-          aboutHero {
-            headline
-            description
-            primaryLabel
-            primaryUrl
-            secondaryLabel
-            secondaryUrl
-          }
+          ${PAGE_FIELDS}
         }
       }
     `,
     { uri: toUri(slug) }
   );
 
-  console.log("ABOUT PAGE DATA:", JSON.stringify(data, null, 2));
+  if (data?.page) {
+    return data.page;
+  }
+
+  /* URI lookup can fail when another content type shares the same slug
+     (a plugin-registered rewrite rule, for example). Fall back to
+     finding the page's database ID from the full page list, then
+     fetch it by ID, which is unaffected by the URI conflict. */
+  return getPageByFallback(slug);
+}
+
+async function getPageByFallback(slug: string[]): Promise<WpPage | null> {
+  const targetUri = toUri(slug);
+
+  const list = await wpFetch<{
+    pages: { nodes: { databaseId: number; uri: string }[] };
+  }>(`
+    query AllPageUris {
+      pages(first: 200) {
+        nodes {
+          databaseId
+          uri
+        }
+      }
+    }
+  `);
+
+  const match = list?.pages.nodes.find((node) => node.uri === targetUri);
+
+  if (!match) {
+    return null;
+  }
+
+  const data = await wpFetch<{ page: WpPage | null }>(
+    `
+      query GetPageById($id: ID!) {
+        page(id: $id, idType: DATABASE_ID) {
+          ${PAGE_FIELDS}
+        }
+      }
+    `,
+    { id: String(match.databaseId) }
+  );
 
   return data?.page ?? null;
 }
@@ -163,7 +209,7 @@ export default async function WordPressPage({
     notFound();
   }
 
-   const image = page.featuredImage?.node;
+  const image = page.featuredImage?.node;
 
   /* only render the WordPress body if it has real text in it */
   const hasContent = Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
