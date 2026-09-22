@@ -4149,7 +4149,7 @@ html[data-theme="dark"] .codm-logo-dark {
     Announcement bar + header.
     Adjust this only if your header height changes.
   */
-  top: calc(100% + 0px);
+  top: calc(100% + 12px);
 
   left: 50%;
 
@@ -4179,7 +4179,7 @@ html[data-theme="dark"] .codm-logo-dark {
 
   box-sizing: border-box;
 
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 
