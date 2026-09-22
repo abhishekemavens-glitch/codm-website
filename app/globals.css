@@ -4148,17 +4148,42 @@ html[data-theme="dark"] .codm-logo-dark {
 
 .codm-megamenu {
   position: absolute;
-  top: calc(100% + 0px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1180px, calc(100vw - 40px));
-  /* ...your existing styles... */
 
-  /* hide by default, no display:none (kills transitions & causes flicker) */
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
+  /*
+    Announcement bar + header.
+    Adjust this only if your header height changes.
+  */
+  top: calc(100% + 0px);
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: min(1180px, calc(100vw - 40px));
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(120, 100, 255, 0.03),
+      rgba(120, 100, 255, 0.06)
+    ),
+    var(--surface, #ffffff);
+
+  border: 1px solid var(--border, #e5e5e5);
+
+  border-radius: 0 0 20px 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 8px 25px rgba(0, 0, 0, 0.06);
+
+  padding: 30px;
+
+  z-index: 99999;
+
+  box-sizing: border-box;
+
+  overflow: visible !important;
 }
 
 .codm-nav-item:hover .codm-megamenu,
