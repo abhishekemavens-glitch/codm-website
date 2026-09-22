@@ -98,7 +98,7 @@ export default function AboutHero({
             </div>
           )}
         </div>
-
+ 
         {/* ---------- Right: image (only if a Featured image is set) ---------- */}
         {hasImage && (
           <div className="flex justify-center lg:justify-end">
