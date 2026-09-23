@@ -7192,14 +7192,12 @@ img.codm-footer-logo {
   display: flex;
   align-items: center;
   gap: 14px;
-  border-right: 1px solid #c3cce0;
 }
 .codm-story-badge:first-child {
   padding-left: 0;
 }
 .codm-story-badge:last-child {
   padding-right: 0;
-  border-right: none;
 } /* Icons */
 .codm-story-badge-icon {
   width: 48px;
@@ -7227,7 +7225,7 @@ img.codm-footer-logo {
   }
 } /* ========================================================= MOBILE ========================================================= */
 @media (max-width: 800px) {
-  .codm-story-badges {
+ .codm-story-badges {
     width: calc(100% - 30px);
     margin-top: 35px;
     padding-bottom: 30px;
@@ -7239,8 +7237,6 @@ img.codm-footer-logo {
     height: auto;
     min-height: 65px;
     padding: 15px 0;
-    border-right: none;
-    border-bottom: 1px solid #cbd3e1;
   }
   .codm-story-badge:last-child {
     border-bottom: none;
