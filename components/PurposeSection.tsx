@@ -3,9 +3,12 @@
  *
  * "Our Purpose" section with Vision and Mission cards. Fetches its own
  * content from the "Our Purpose" custom post type in WordPress, the
- * same way CodmStory / ServicesSection fetch their own data. Renders
- * identically wherever it's placed (Home, About, Services, ...).
+ * same way CodmStory / ServicesSection fetch their own data. Uses the
+ * shared SectionHeading component for the eyebrow + title, so it
+ * matches the eyebrow/heading style used across the rest of the site.
  */
+
+import SectionHeading from "@/components/SectionHeading";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -67,7 +70,7 @@ export default async function PurposeSection() {
   const missionTitle = data?.missionTitle;
   const missionText = data?.missionText;
 
-  const hasHeading = Boolean(eyebrow || heading1 || heading2);
+  const hasHeading = Boolean(eyebrow && heading1 && heading2);
   const hasVision = Boolean(visionTitle || visionText);
   const hasMission = Boolean(missionTitle || missionText);
 
@@ -80,25 +83,11 @@ export default async function PurposeSection() {
     <section className="bg-[#f7f8fb] px-6 py-24">
       <div className="mx-auto max-w-[1100px]">
         {hasHeading && (
-          <div className="text-center">
-            {eyebrow && (
-              <div className="flex items-center justify-center gap-3 text-[13px] font-medium tracking-[0.14em] text-[#6b7086]">
-                <span className="h-px w-10 bg-[#c7c2f5]" aria-hidden="true" />
-                {eyebrow}
-                <span className="h-px w-10 bg-[#c7c2f5]" aria-hidden="true" />
-              </div>
-            )}
-
-            {(heading1 || heading2) && (
-              <h2 className="mx-auto mt-5 max-w-[760px] text-[clamp(32px,4vw,44px)] font-normal leading-[1.15] tracking-[-0.02em] text-[var(--foreground)]">
-                {heading1}
-                {heading1 && heading2 && <br />}
-                {heading2 && (
-                  <span className="text-[#7c6cf0]">{heading2}</span>
-                )}
-              </h2>
-            )}
-          </div>
+          <SectionHeading
+            eyebrow={eyebrow!}
+            title={heading1!}
+            gradientText={heading2!}
+          />
         )}
 
         {(hasVision || hasMission) && (
