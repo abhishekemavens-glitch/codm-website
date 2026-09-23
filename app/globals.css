@@ -7206,3 +7206,419 @@ img.codm-footer-logo {
 }
 
 
+/* =========================================================
+   CODM STORY SECTION
+========================================================= */
+
+.codm-story-section {
+  width: 100%;
+  background: #f4f7fb;
+  color: #111827;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIN STORY GRID
+========================================================= */
+
+.codm-story-grid {
+  width: 1200px;
+  max-width: calc(100% - 40px);
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: 620px 1fr;
+
+  column-gap: 36px;
+
+  align-items: start;
+
+  padding: 0;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.codm-story-content {
+  width: 100%;
+  max-width: 620px;
+
+  padding-top: 0;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.codm-story-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 3px 0 25px;
+
+  color: #4f596d;
+
+  font-size: 15px;
+  line-height: 18px;
+
+  font-weight: 400;
+
+  white-space: nowrap;
+}
+
+.codm-story-eyebrow span {
+  display: block;
+
+  width: 64px;
+  height: 1px;
+
+  flex-shrink: 0;
+
+  background: linear-gradient(
+    to right,
+    #b8b0ff,
+    #7468ff
+  );
+}
+
+.codm-story-eyebrow span:first-child {
+  background: linear-gradient(
+    to right,
+    transparent,
+    #8074ff
+  );
+}
+
+.codm-story-eyebrow span:last-child {
+  background: linear-gradient(
+    to right,
+    #8074ff,
+    transparent
+  );
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.codm-story-heading {
+  margin: 0 0 22px;
+
+  max-width: 620px;
+
+  font-size: 44px;
+
+  line-height: 1.25;
+
+  font-weight: 400;
+
+  letter-spacing: -0.035em;
+
+  color: #3268df;
+}
+
+.codm-story-highlight {
+  color: #8270f4;
+}
+
+
+/* =========================================================
+   PARAGRAPHS
+========================================================= */
+
+.codm-story-paragraph {
+  max-width: 620px;
+
+  margin: 0 0 18px;
+
+  color: #607492;
+
+  font-size: 19px;
+
+  line-height: 1.58;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.codm-story-image-wrap {
+  width: 100%;
+
+  max-width: 544px;
+
+  margin: 0 0 0 auto;
+}
+
+.codm-story-image {
+  width: 100%;
+
+  height: 492px;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 15px;
+}
+
+.codm-story-image-caption {
+  width: 100%;
+
+  max-width: 544px;
+
+  margin: 12px 0 0;
+
+  color: #65728a;
+
+  font-size: 15px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.codm-story-badges {
+  width: 1200px;
+  max-width: calc(100% - 40px);
+
+  margin: 43px auto 0;
+
+  padding: 0 0 25px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  background: transparent;
+
+  color: #59657d;
+}
+
+
+/* =========================================================
+   BADGE ITEM
+========================================================= */
+
+.codm-story-badge {
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  border-right: 1px solid #c2cbe0;
+}
+
+.codm-story-badge:first-child {
+  padding-left: 0;
+}
+
+.codm-story-badge:last-child {
+  padding-right: 0;
+
+  border-right: none;
+}
+
+
+/* =========================================================
+   BADGE ICON
+========================================================= */
+
+.codm-story-badge-icon {
+  width: 50px;
+
+  min-width: 50px;
+
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   BADGE TEXT
+========================================================= */
+
+.codm-story-badge-text {
+  min-width: 0;
+}
+
+.codm-story-badge-title {
+  margin-bottom: 4px;
+
+  color: #5b667c;
+
+  font-size: 16px;
+
+  line-height: 1.2;
+
+  font-weight: 600;
+}
+
+.codm-story-badge-subtitle {
+  color: #99a7c0;
+
+  font-size: 13px;
+
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1250px) {
+
+  .codm-story-grid {
+    width: calc(100% - 50px);
+
+    grid-template-columns: minmax(0, 1.14fr) minmax(0, 1fr);
+
+    column-gap: 30px;
+  }
+
+  .codm-story-badges {
+    width: calc(100% - 50px);
+  }
+
+  .codm-story-heading {
+    font-size: 42px;
+  }
+
+  .codm-story-paragraph {
+    font-size: 17px;
+  }
+
+  .codm-story-image {
+    height: auto;
+
+    aspect-ratio: 1.1 / 1;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .codm-story-grid {
+    width: calc(100% - 30px);
+
+    max-width: none;
+
+    grid-template-columns: 1fr;
+
+    column-gap: 0;
+
+    row-gap: 35px;
+  }
+
+  .codm-story-content {
+    max-width: none;
+  }
+
+  .codm-story-eyebrow {
+    margin-top: 30px;
+  }
+
+  .codm-story-heading {
+    max-width: none;
+
+    font-size: 38px;
+
+    line-height: 1.12;
+  }
+
+  .codm-story-paragraph {
+    max-width: none;
+
+    font-size: 16px;
+  }
+
+  .codm-story-image-wrap {
+    max-width: none;
+
+    margin: 0;
+  }
+
+  .codm-story-image {
+    height: auto;
+
+    aspect-ratio: 1.1 / 1;
+  }
+
+  .codm-story-badges {
+    width: calc(100% - 30px);
+
+    max-width: none;
+
+    grid-template-columns: 1fr;
+
+    margin-top: 35px;
+  }
+
+  .codm-story-badge,
+  .codm-story-badge:first-child,
+  .codm-story-badge:last-child {
+    padding: 16px 0;
+
+    border-right: none;
+
+    border-bottom: 1px solid #cbd3e1;
+  }
+
+  .codm-story-badge:last-child {
+    border-bottom: none;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .codm-story-heading {
+    font-size: 32px;
+  }
+
+  .codm-story-paragraph {
+    font-size: 15px;
+  }
+
+  .codm-story-eyebrow {
+    font-size: 13px;
+  }
+
+  .codm-story-eyebrow span {
+    width: 35px;
+  }
+}
