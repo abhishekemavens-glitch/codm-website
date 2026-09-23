@@ -7122,11 +7122,18 @@ img.codm-footer-logo {
 }
 
 .codm-story-heading {
-  font-size: 42px;
-  line-height: 1.15;
-  font-weight: 600;
-  color: var(--foreground);
-  margin: 0 0 24px;
+	color: var(--foreground);
+	margin: 0 0 24px;
+	font-size: 45px;
+	font-weight: 500;
+	line-height: 56px;
+	-webkit-text-fill-color: transparent;
+	color: #0000;
+	background: linear-gradient(100deg,#2563eb,#6366f1,#a78bfa);
+	background-clip: border-box;
+	-webkit-background-clip: text;
+	background-clip: text;
+	letter-spacing: -2%;
 }
 
 .codm-story-highlight {
@@ -7138,12 +7145,12 @@ img.codm-footer-logo {
 }
 
 .codm-story-paragraph {
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 16px;
+	color: #64748B;
+	margin-bottom: 16px;
+	font-size: 20px;
+	line-height: 30;
+	font-weight: 400;
 }
-
 .codm-story-badges {
   display: flex;
   gap: 24px;
