@@ -224,6 +224,9 @@ export default async function WordPressPage({
   const showHomeSections =
     slug.length === 1 && PAGES_WITH_HOME_SECTIONS.includes(slug[0]);
 
+   const showAboutSections =
+    slug.length === 1 && PAGES_WITH_ABOUT_SECTIONS.includes(slug[0]);
+
   return (
     <PageShell>
       <AboutHero
