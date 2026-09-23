@@ -7145,15 +7145,15 @@ img.codm-footer-logo {
 }
 
 .codm-story-paragraph {
-	color: #64748B;
+	color: #64748b;
 	margin-bottom: 16px;
 	font-size: 20px;
-	line-height: 30;
 	font-weight: 400;
+	line-height: 30px;
 }
 .codm-story-badges {
   display: flex;
-  gap: 24px;
+  gap: 10px;
   margin-top: 32px;
   flex-wrap: wrap;
 }
@@ -7169,9 +7169,10 @@ img.codm-footer-logo {
 }
 
 .codm-story-badge-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+	color: #6B7388;
+	font-size: 16px;
+	font-weight: 600;
+	font-family: Plus Jakarta Sans,sans-serif !important;
 }
 
 .codm-story-badge-subtitle {
@@ -7191,9 +7192,11 @@ img.codm-footer-logo {
 }
 
 .codm-story-image-caption {
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--muted);
+	color: #6B7388;
+	margin-top: 12px;
+	font-size: 16px;
+	font-weight: 400;
+	font-family: Inter,sans-serif !important;
 }
 
 @media (max-width: 900px) {
