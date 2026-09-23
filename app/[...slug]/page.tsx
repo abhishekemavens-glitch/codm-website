@@ -5,6 +5,7 @@ import AboutHero from "@/components/AboutHero"; // Hero
 import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection"; // What We Do
+import ExcellenceSection from "@/components/ExcellenceSection";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
@@ -258,6 +259,12 @@ export default async function WordPressPage({
             <ServicesSection />
           </div>
 
+
+          {/* OUR EXCELLENCE */}
+<div className="relative z-10">
+  <ExcellenceSection />
+</div>
+          
           {/* TESTIMONIAL */}
           <div className="relative z-10">
             <Testimonials />
