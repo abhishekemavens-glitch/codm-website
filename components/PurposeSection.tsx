@@ -1,25 +1,64 @@
 /*
  * Save as: components/PurposeSection.tsx
  *
- * "Our Purpose" section with Vision and Mission cards, editable per-page
- * from WordPress (Pages -> [any page] -> "Our Purpose section" box).
+ * "Our Purpose" section with Vision and Mission cards. Fetches its own
+ * content from the "Our Purpose" custom post type in WordPress, the
+ * same way CodmStory / ServicesSection fetch their own data. Renders
+ * identically wherever it's placed (Home, About, Services, ...).
  */
 
-export type PurposeSectionData = {
-  eyebrow?: string | null;
-  heading1?: string | null;
-  heading2?: string | null;
-  visionTitle?: string | null;
-  visionText?: string | null;
-  missionTitle?: string | null;
-  missionText?: string | null;
+const WORDPRESS_GRAPHQL_URL =
+  "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+type PurposeFields = {
+  eyebrow: string | null;
+  heading1: string | null;
+  heading2: string | null;
+  visionTitle: string | null;
+  visionText: string | null;
+  missionTitle: string | null;
+  missionText: string | null;
 };
 
-type PurposeSectionProps = {
-  data?: PurposeSectionData | null;
-};
+async function getPurposeData(): Promise<PurposeFields | null> {
+  try {
+    const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query GetPurpose {
+            purposeEntries(first: 1) {
+              nodes {
+                purposeFields {
+                  eyebrow
+                  heading1
+                  heading2
+                  visionTitle
+                  visionText
+                  missionTitle
+                  missionText
+                }
+              }
+            }
+          }
+        `,
+      }),
+      next: { revalidate: 60 },
+    });
 
-export default function PurposeSection({ data }: PurposeSectionProps) {
+    if (!response.ok) return null;
+
+    const result = await response.json();
+    return result?.data?.purposeEntries?.nodes?.[0]?.purposeFields ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function PurposeSection() {
+  const data = await getPurposeData();
+
   const eyebrow = data?.eyebrow;
   const heading1 = data?.heading1;
   const heading2 = data?.heading2;
@@ -32,8 +71,7 @@ export default function PurposeSection({ data }: PurposeSectionProps) {
   const hasVision = Boolean(visionTitle || visionText);
   const hasMission = Boolean(missionTitle || missionText);
 
-  /* Nothing to show at all: skip the section entirely rather than
-     rendering an empty shell. */
+  /* Nothing published yet in WordPress: skip the section entirely. */
   if (!hasHeading && !hasVision && !hasMission) {
     return null;
   }
