@@ -7246,3 +7246,8 @@ img.codm-footer-logo {
     border-bottom: none;
   }
 }
+
+
+.codm-story-content .heading-codm-eyebrow-wrap {
+	justify-content: start;
+}
