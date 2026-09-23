@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PageShell from "@/components/PageShell";
 import AboutHero from "@/components/AboutHero"; // Hero
 import CodmStory from "@/components/CodmStory";
+import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection"; // What We Do
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
@@ -246,6 +247,11 @@ export default async function WordPressPage({
             <CodmStory />
           </div>
 
+            {/* OUR PURPOSE */}
+    <div className="relative z-10">
+      <PurposeSection data={page.purposeSection} />
+    </div>
+          
           {/* WHAT WE DO */}
           <div id="services" className="relative z-10 scroll-mt-24">
             <ServicesSection />
