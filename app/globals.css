@@ -7183,7 +7183,6 @@ img.codm-footer-logo {
   padding: 0 0 58px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   background: transparent;
 } /* Badge item */
 .codm-story-badge {
