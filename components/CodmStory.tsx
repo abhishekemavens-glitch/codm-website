@@ -273,12 +273,22 @@ export default function CodmStory() {
         <div className="codm-story-content">
 
           {story.eyebrow && (
-            <div className="codm-story-eyebrow">
-              <span />
-              {story.eyebrow}
-              <span />
-            </div>
-          )}
+  <div className="heading-codm-eyebrow-wrap">
+    <span
+      aria-hidden="true"
+      className="heading-codm-eyebrow-line"
+    />
+
+    <span className="heading-codm-eyebrow">
+      {story.eyebrow}
+    </span>
+
+    <span
+      aria-hidden="true"
+      className="heading-codm-eyebrow-line"
+    />
+  </div>
+)}
 
           {story.heading && (
             <h2 className="codm-story-heading">
