@@ -7359,3 +7359,64 @@ img.codm-footer-logo {
   border-color: rgba(255, 255, 255, 0.25);
   color: #d8dbe9;
 }
+
+
+/* =========================================================
+   ABOUT HERO - theme-aware colors
+========================================================= */
+
+.codm-hero-section {
+  background: linear-gradient(180deg, #eef0fc 0%, #e8e7fb 55%, #dcd5fa 100%);
+}
+
+.codm-hero-breadcrumb-link {
+  color: #3f4358;
+}
+.codm-hero-breadcrumb-link:hover {
+  color: #7c5cf0;
+}
+
+.codm-hero-chevron {
+  stroke: #9aa0b4;
+}
+
+.codm-hero-body {
+  color: #6b7086;
+}
+
+.codm-hero-secondary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.4);
+  color: #3f4358;
+}
+.codm-hero-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .codm-hero-section {
+  background: linear-gradient(180deg, #04021c 0%, #070522 55%, #0d0a31 100%);
+}
+
+[data-theme="dark"] .codm-hero-breadcrumb-link {
+  color: #a9afc4;
+}
+[data-theme="dark"] .codm-hero-breadcrumb-link:hover {
+  color: #a78bfa;
+}
+
+[data-theme="dark"] .codm-hero-chevron {
+  stroke: #6b7086;
+}
+
+[data-theme="dark"] .codm-hero-body {
+  color: #a1a4b3;
+}
+
+[data-theme="dark"] .codm-hero-secondary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+[data-theme="dark"] .codm-hero-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
