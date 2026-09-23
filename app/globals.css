@@ -7293,3 +7293,69 @@ img.codm-footer-logo {
 	font-weight: 400;
 	line-height: 28px;
 }
+
+
+
+/* =========================================================
+   OUR PURPOSE + OUR EXCELLENCE - theme-aware colors
+========================================================= */
+
+.codm-alt-section {
+  background: #f7f8fb;
+}
+
+.codm-alt-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.codm-alt-body {
+  color: #6b7086;
+}
+
+.codm-feature-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.codm-feature-title {
+  color: #4a5169;
+}
+
+.codm-feature-icon {
+  color: #9aa3b5;
+}
+
+.codm-feature-plus {
+  border: 1px solid #c7cede;
+  color: #9aa3b5;
+}
+
+[data-theme="dark"] .codm-alt-section {
+  background: #0d1023;
+}
+
+[data-theme="dark"] .codm-alt-card {
+  background: transparent;
+  border: 1px solid #232845;
+}
+
+[data-theme="dark"] .codm-alt-body {
+  color: #a1a4b3;
+}
+
+[data-theme="dark"] .codm-feature-row {
+  border-bottom: 1px solid #2a3050;
+}
+
+[data-theme="dark"] .codm-feature-title {
+  color: #c9cee0;
+}
+
+[data-theme="dark"] .codm-feature-icon {
+  color: #d8dbe9;
+}
+
+[data-theme="dark"] .codm-feature-plus {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #d8dbe9;
+}
