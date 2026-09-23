@@ -2029,10 +2029,10 @@ header a {
 }
 
 .codm-announcement-link {
-	color: #64748B !important;
+	color: #64748b !important;
 	text-align: center !important;
 	text-transform: uppercase !important;
-	background: #F1F5F9 !important;
+	background: #e5ebf4 !important;
 	border-radius: 30px !important;
 	justify-content: center !important;
 	align-items: center !important;
@@ -2044,6 +2044,7 @@ header a {
 	text-decoration: none !important;
 	transition: transform .25s,opacity .25s !important;
 	display: inline-flex !important;
+	border: 1px solid #F1F5F9;
 }
 
 .codm-announcement-link:hover {
