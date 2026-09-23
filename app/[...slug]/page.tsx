@@ -12,6 +12,9 @@ import ContactCTA from "@/components/ContactCTA"; // Let's Build
 
 /* WordPress slugs that should also show the homepage sections */
 const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries"];
+/* WordPress slugs that should show the About-only sections
+   (CODM Story, Our Purpose, What We Do, Our Excellence) */
+const PAGES_WITH_ABOUT_SECTIONS = ["about"];
 
 /*
  * Save as: app/[...slug]/page.tsx
@@ -241,46 +244,48 @@ export default async function WordPressPage({
         </article>
       )}
 
-           {showHomeSections && (
-        <>
-          {/* CODM STORY */}
-          <div className="relative z-10">
-            <CodmStory />
-          </div>
+           {showAboutSections && (
+  <>
+    {/* CODM STORY */}
+    <div className="relative z-10">
+      <CodmStory />
+    </div>
 
-           {/* OUR PURPOSE */}
+    {/* OUR PURPOSE */}
     <div className="relative z-10">
       <PurposeSection />
     </div>
 
-          
-          {/* WHAT WE DO */}
-          <div id="services" className="relative z-10 scroll-mt-24">
-            <ServicesSection />
-          </div>
+    {/* WHAT WE DO */}
+    <div id="services" className="relative z-10 scroll-mt-24">
+      <ServicesSection />
+    </div>
 
+    {/* OUR EXCELLENCE */}
+    <div className="relative z-10">
+      <ExcellenceSection />
+    </div>
+  </>
+)}
 
-          {/* OUR EXCELLENCE */}
-<div className="relative z-10">
-  <ExcellenceSection />
-</div>
-          
-          {/* TESTIMONIAL */}
-          <div className="relative z-10">
-            <Testimonials />
-          </div>
+{showHomeSections && (
+  <>
+    {/* TESTIMONIAL */}
+    <div className="relative z-10">
+      <Testimonials />
+    </div>
 
-          {/* BLOG */}
-          <div className="relative z-10">
-            <LatestBlogs />
-          </div>
+    {/* BLOG */}
+    <div className="relative z-10">
+      <LatestBlogs />
+    </div>
 
-          {/* CONTACT CTA */}
-          <div className="relative z-10">
-            <ContactCTA />
-          </div>
-        </>
-      )}
+    {/* CONTACT CTA */}
+    <div className="relative z-10">
+      <ContactCTA />
+    </div>
+  </>
+)}
     </PageShell>
   );
 }
