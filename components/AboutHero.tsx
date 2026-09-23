@@ -30,7 +30,7 @@ export default function AboutHero({
   const hasImage = Boolean(imageUrl);
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eef0fc_0%,#e8e7fb_55%,#dcd5fa_100%)]">
+    <section className="codm-hero-section relative overflow-hidden">
       <div
         className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] ${
           hasImage ? "min-h-[620px] lg:grid-cols-2" : "min-h-[380px]"
@@ -42,10 +42,7 @@ export default function AboutHero({
             aria-label="Breadcrumb"
             className="flex items-center gap-2 text-[16px]"
           >
-            <Link
-              href="/"
-              className="text-[#3f4358] transition-colors hover:text-[#7c5cf0]"
-            >
+            <Link href="/" className="codm-hero-breadcrumb-link transition-colors">
               Home
             </Link>
             <svg
@@ -53,7 +50,7 @@ export default function AboutHero({
               height="14"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#9aa0b4"
+              className="codm-hero-chevron"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -71,7 +68,7 @@ export default function AboutHero({
           </h1>
 
           {description && (
-            <p className="mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65] text-[#6b7086]">
+            <p className="codm-hero-body mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65]">
               {description}
             </p>
           )}
@@ -90,7 +87,7 @@ export default function AboutHero({
               {showSecondary && (
                 <Link
                   href={hero!.secondaryUrl!}
-                  className="inline-flex h-[54px] items-center justify-center rounded-full border border-white/70 bg-white/40 px-7 text-[17px] font-medium text-[#3f4358] backdrop-blur transition-colors hover:bg-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+                  className="codm-hero-secondary-btn inline-flex h-[54px] items-center justify-center rounded-full px-7 text-[17px] font-medium backdrop-blur transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
                 >
                   {hero!.secondaryLabel}
                 </Link>
@@ -98,7 +95,7 @@ export default function AboutHero({
             </div>
           )}
         </div>
- 
+
         {/* ---------- Right: image (only if a Featured image is set) ---------- */}
         {hasImage && (
           <div className="flex justify-center lg:justify-end">
