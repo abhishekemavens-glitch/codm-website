@@ -45,37 +45,25 @@ function SalesforceIcon() {
         d="M9 27C4 27 0 23.5 0 19C0 14.9 3.2 11.5 7.4 11C9 6.2 13.5 3 18.8 3C24.3 3 29 6.5 30.7 11.3C34.9 11.6 38 15 38 19.1C38 23.5 34.4 27 30 27H9Z"
         fill="#00A1E0"
       />
-    </svg>
-  );
-}
 
-function CertifiedIcon() {
-  return (
-    <svg
-      width="42"
-      height="42"
-      viewBox="0 0 42 42"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
+      {/* Salesforce cloud line */}
       <path
-        d="M21 3.5L35 9V19.5C35 28.2 29.4 35.1 21 38.5C12.6 35.1 7 28.2 7 19.5V9L21 3.5Z"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="M14.5 20L19 24.5L28 15"
-        stroke="#8B7CFF"
-        strokeWidth="2"
+        d="M12 20.5H28"
+        stroke="white"
+        strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
+      />
+
+      <path
+        d="M20 16.5V24.5"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   );
 }
+
 
 function GlobeIcon() {
   return (
@@ -125,6 +113,7 @@ function GlobeIcon() {
   );
 }
 
+
 function CertifiedIcon() {
   return (
     <svg
@@ -135,6 +124,7 @@ function CertifiedIcon() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
+      {/* Shield */}
       <path
         d="M21 3.5L35 9V19.5C35 28.2 29.4 35.1 21 38.5C12.6 35.1 7 28.2 7 19.5V9L21 3.5Z"
         stroke="#8B7CFF"
@@ -142,6 +132,7 @@ function CertifiedIcon() {
         strokeLinejoin="round"
       />
 
+      {/* Person */}
       <circle
         cx="21"
         cy="17"
@@ -157,6 +148,7 @@ function CertifiedIcon() {
         strokeLinecap="round"
       />
 
+      {/* Verification */}
       <path
         d="M29.5 27.5L32 30L36 25.5"
         stroke="#8B7CFF"
@@ -168,28 +160,25 @@ function CertifiedIcon() {
   );
 }
 
+
 function BadgeIcon({ type }: { type: string }) {
   const normalized = type?.toLowerCase().trim();
 
-  if (
-    normalized === "salesforce" ||
-    normalized === "cloud"
-  ) {
-    return <SalesforceIcon />;
-  }
+  switch (normalized) {
+    case "salesforce":
+    case "cloud":
+      return <SalesforceIcon />;
 
-  if (normalized === "globe") {
-    return <GlobeIcon />;
-  }
+    case "globe":
+      return <GlobeIcon />;
 
-  if (
-    normalized === "certified" ||
-    normalized === "shield"
-  ) {
-    return <CertifiedIcon />;
-  }
+    case "certified":
+    case "shield":
+      return <CertifiedIcon />;
 
-  return <GlobeIcon />;
+    default:
+      return <GlobeIcon />;
+  }
 }
 
 /* =========================================================
