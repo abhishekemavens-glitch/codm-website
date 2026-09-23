@@ -93,7 +93,7 @@ export default async function PurposeSection() {
         {(hasVision || hasMission) && (
           <div className="mission-vision mt-14 grid gap-6 md:grid-cols-2">
             {hasVision && (
-              <div className="rounded-[20px] border border-black/[0.06] bg-white/60 p-9">
+              <div className="mission-box rounded-[20px] border border-black/[0.06] bg-white/60 p-9">
                 {visionTitle && (
                   <h3 className="text-[24px] font-normal text-[var(--foreground)]">
                     {visionTitle}
@@ -108,7 +108,7 @@ export default async function PurposeSection() {
             )}
 
             {hasMission && (
-              <div className="rounded-[20px] border border-black/[0.06] bg-white/60 p-9">
+              <div className="mission-box rounded-[20px] border border-black/[0.06] bg-white/60 p-9">
                 {missionTitle && (
                   <h3 className="text-[24px] font-normal text-[var(--foreground)]">
                     {missionTitle}
