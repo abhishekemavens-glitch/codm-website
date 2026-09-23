@@ -33,34 +33,13 @@ const WORDPRESS_GRAPHQL_URL =
 
 function SalesforceIcon() {
   return (
-    <svg
-      width="42"
-      height="42"
-      viewBox="0 0 42 42"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        d="M9 27C4 27 0 23.5 0 19C0 14.9 3.2 11.5 7.4 11C9 6.2 13.5 3 18.8 3C24.3 3 29 6.5 30.7 11.3C34.9 11.6 38 15 38 19.1C38 23.5 34.4 27 30 27H9Z"
-        fill="#00A1E0"
-      />
-
-      {/* Salesforce cloud line */}
-      <path
-        d="M12 20.5H28"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-
-      <path
-        d="M20 16.5V24.5"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
+    <img
+      src="https://lightyellow-echidna-411021.hostingersite.com/wp-content/uploads/2026/08/image-257.png"
+      alt="Salesforce"
+      width={42}
+      height={42}
+      style={{ display: "block", objectFit: "contain" }}
+    />
   );
 }
 
