@@ -1998,8 +1998,6 @@ header a {
 	z-index: 10000 !important;
 	box-sizing: border-box !important;
 	color: #111827 !important;
-	background: #F8FAFC !important;
-	border-bottom: 1px solid #00000014 !important;
 	width: 100% !important;
 	height: 44px !important;
 	position: fixed !important;
@@ -2064,8 +2062,8 @@ header a {
    ========================================================= */
 
 [data-theme="dark"] .codm-announcement-bar {
-  background: #1b2038;
-  border-bottom: 1px solid #1b2038;
+  background: #F8FAFC;
+  border-bottom: none;
 
   color: #4a8cff;
 }
@@ -2237,14 +2235,8 @@ header a {
    LIGHT MODE — ANNOUNCEMENT BAR
    ========================================================= */
 
-.codm-announcement-bar {
-  background: #F5F7FA;
-  color: #10182B;
-  border-bottom: 1px solid #D9DEE8;
-}
 
 .codm-announcement-text {
-  color: #10182B;
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -2298,10 +2290,8 @@ header a {
 
   box-sizing: border-box !important;
 
-  background: #F4F6F9 !important;
   color: #111827 !important;
 
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Announcement content */
@@ -2326,7 +2316,6 @@ header a {
   font-weight: 500 !important;
   line-height: 22px !important;
 
-  color: #4A8CFF !important;
 }
 
 .codm-announcement-link:hover {
