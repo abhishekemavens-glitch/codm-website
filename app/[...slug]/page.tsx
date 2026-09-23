@@ -239,20 +239,29 @@ export default async function WordPressPage({
         </article>
       )}
 
-      {showHomeSections && (
+           {showHomeSections && (
         <>
+          {/* CODM STORY */}
+          <div className="relative z-10">
+            <CodmStory />
+          </div>
+
+          {/* WHAT WE DO */}
           <div id="services" className="relative z-10 scroll-mt-24">
             <ServicesSection />
           </div>
 
+          {/* TESTIMONIAL */}
           <div className="relative z-10">
             <Testimonials />
           </div>
 
+          {/* BLOG */}
           <div className="relative z-10">
             <LatestBlogs />
           </div>
 
+          {/* CONTACT CTA */}
           <div className="relative z-10">
             <ContactCTA />
           </div>
