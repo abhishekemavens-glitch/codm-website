@@ -247,10 +247,11 @@ export default async function WordPressPage({
             <CodmStory />
           </div>
 
-            {/* OUR PURPOSE */}
+           {/* OUR PURPOSE */}
     <div className="relative z-10">
-      <PurposeSection data={page.purposeSection} />
+      <PurposeSection />
     </div>
+
           
           {/* WHAT WE DO */}
           <div id="services" className="relative z-10 scroll-mt-24">
