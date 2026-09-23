@@ -4,8 +4,9 @@
  * "Our Excellence" section: eyebrow + two-line heading (via the shared
  * SectionHeading component), a 3x2 grid of features, and a row of
  * repeated certification badges. Fetches its own content from the
- * "Our Excellence" custom post type, the same way PurposeSection and
- * CodmStory fetch theirs.
+ * "Our Excellence" custom post type. Theme-aware colors live in CSS
+ * via .codm-alt-* / .codm-feature-* classes -- see the
+ * [data-theme="dark"] overrides in the shared stylesheet.
  */
 
 import SectionHeading from "@/components/SectionHeading";
@@ -20,9 +21,6 @@ type ExcellenceFields = {
   description: string | null;
   badgeImage: string | null;
   badgeCount: string | null;
-  [key: `feature${number}Icon`]: string | null;
-  [key: `feature${number}Title`]: string | null;
-} & {
   feature1Icon: string | null;
   feature1Title: string | null;
   feature2Icon: string | null;
@@ -85,8 +83,8 @@ async function getExcellenceData(): Promise<ExcellenceFields | null> {
 }
 
 /* =========================================================
-   ICONS (thin outline style, currentColor so they inherit
-   the muted grey used for the feature titles)
+   ICONS (thin outline style, currentColor so they follow
+   .codm-feature-icon's theme-aware color)
 ========================================================= */
 
 function SalesforceExpertiseIcon() {
@@ -256,10 +254,10 @@ export default async function ExcellenceSection() {
 
   const hasHeading = Boolean(data.eyebrow && data.heading1 && data.heading2);
 
-  const features = [1, 2, 3, 4, 5, 6]
+  const features = ([1, 2, 3, 4, 5, 6] as const)
     .map((n) => ({
-      icon: data[`feature${n}Icon` as keyof ExcellenceFields] as string | null,
-      title: data[`feature${n}Title` as keyof ExcellenceFields] as string | null,
+      icon: data[`feature${n}Icon` as keyof ExcellenceFields],
+      title: data[`feature${n}Title` as keyof ExcellenceFields],
     }))
     .filter((f) => f.title);
 
@@ -273,7 +271,7 @@ export default async function ExcellenceSection() {
   }
 
   return (
-    <section className="bg-[#eef1f8] px-6 py-24">
+    <section className="codm-alt-section px-6 py-24">
       <div className="mx-auto max-w-[1200px]">
         {hasHeading && (
           <SectionHeading
@@ -289,20 +287,20 @@ export default async function ExcellenceSection() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between gap-4 border-b border-black/10 pb-4"
+                className="codm-feature-row flex items-center justify-between gap-4 pb-4"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-[#9aa3b5]">
+                  <span className="codm-feature-icon">
                     <FeatureIcon type={feature.icon} />
                   </span>
-                  <span className="text-[17px] text-[#4a5169]">
+                  <span className="codm-feature-title text-[17px]">
                     {feature.title}
                   </span>
                 </div>
 
                 <span
                   aria-hidden="true"
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#c7cede] text-[#9aa3b5]"
+                  className="codm-feature-plus flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                 >
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path
