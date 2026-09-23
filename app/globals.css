@@ -7247,3 +7247,17 @@ img.codm-footer-logo {
 .codm-story-content .heading-codm-eyebrow-wrap {
 	justify-content: start;
 }
+
+.codm-story-badge {
+  height: 66px;
+  min-height: 66px;
+  padding: 0 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-right: 1px solid #dfe3ee;
+}
+.codm-story-badge:last-child {
+  padding-right: 0;
+  border-right: none;
+}
