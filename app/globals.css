@@ -7276,3 +7276,20 @@ img.codm-footer-logo {
   padding-right: 0;
   border-right: none;
 }
+
+
+.mission-vision .mission-box {
+	background: transparent;
+	border: 1px solid#D9E1EA;
+}
+.mission-vision .mission-box .text-\[24px\] {
+	color: #0F172A;
+	font-size: 32px;
+	font-weight: 500;
+}
+.mission-vision .mission-box .text-\[15px\] {
+	color: #6B7388;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 28px;
+}
