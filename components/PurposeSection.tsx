@@ -80,7 +80,7 @@ export default async function PurposeSection() {
   }
 
   return (
-    <section className="bg-[#f7f8fb] px-6 py-24">
+    <section className="bg-[#F8FAFC] px-6 py-24">
       <div className="mx-auto max-w-[1100px]">
         {hasHeading && (
           <SectionHeading
