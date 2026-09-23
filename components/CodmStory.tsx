@@ -34,28 +34,44 @@ const WORDPRESS_GRAPHQL_URL =
 function SalesforceIcon() {
   return (
     <svg
-      width="58"
-      height="44"
-      viewBox="0 0 58 44"
+      width="42"
+      height="42"
+      viewBox="0 0 42 42"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <path
-        d="M18.5 36.5C10.5 36.5 4 31.2 4 24.7C4 18.7 9.4 13.7 16.5 13C19.1 7.8 24.4 4.5 30.6 4.5C37.4 4.5 43.3 8.6 45.5 14.4C50.6 14.8 54.5 18.8 54.5 23.5C54.5 28.7 50 33 44.5 33H18.5V36.5Z"
-        fill="#0EA5E9"
+        d="M9 27C4 27 0 23.5 0 19C0 14.9 3.2 11.5 7.4 11C9 6.2 13.5 3 18.8 3C24.3 3 29 6.5 30.7 11.3C34.9 11.6 38 15 38 19.1C38 23.5 34.4 27 30 27H9Z"
+        fill="#00A1E0"
       />
+    </svg>
+  );
+}
+
+function CertifiedIcon() {
+  return (
+    <svg
+      width="42"
+      height="42"
+      viewBox="0 0 42 42"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
-        d="M17.5 27.5H40.5"
-        stroke="white"
+        d="M21 3.5L35 9V19.5C35 28.2 29.4 35.1 21 38.5C12.6 35.1 7 28.2 7 19.5V9L21 3.5Z"
+        stroke="#8B7CFF"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+
+      <path
+        d="M14.5 20L19 24.5L28 15"
+        stroke="#8B7CFF"
         strokeWidth="2"
         strokeLinecap="round"
-      />
-      <path
-        d="M29 20V27.5"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
