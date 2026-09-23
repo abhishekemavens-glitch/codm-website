@@ -91,7 +91,7 @@ export default async function PurposeSection() {
         )}
 
         {(hasVision || hasMission) && (
-          <div className="mt-14 grid gap-6 md:grid-cols-2">
+          <div className="mission-vision mt-14 grid gap-6 md:grid-cols-2">
             {hasVision && (
               <div className="rounded-[20px] border border-black/[0.06] bg-white/60 p-9">
                 {visionTitle && (
