@@ -153,7 +153,7 @@ export default function ProductExperience() {
         .codm-experience-image {
           animation: codmExperienceFade 0.4s ease;
         }
-
+ 
         @keyframes codmExperienceFade {
           from {
             opacity: 0;
