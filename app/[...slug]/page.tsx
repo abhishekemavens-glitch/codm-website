@@ -19,7 +19,7 @@ const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries"];
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
 const PAGES_WITH_ABOUT_SECTIONS = ["about"];
-
+ 
 
 
 /* WordPress slugs that should show Services-only sections
