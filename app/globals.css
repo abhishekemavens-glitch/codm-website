@@ -7508,23 +7508,24 @@ img.codm-footer-logo {
 }
 
 .codm-process-step-number {
-  font-family: var(--font-heading, inherit);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--foreground);
-  line-height: 1;
+	color: #1B2038;
+	font-size: 40px;
+	font-weight: 400;
+	line-height: 1;
+	font-family: Plus Jakarta Sans,sans-serif !important;
 }
 
 .codm-process-step-title {
-  margin-top: 14px;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--foreground);
+	color: #0F172A;
+	margin-top: 14px;
+	font-size: 20px;
+	font-weight: 500;
 }
 
 .codm-process-step-description {
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--muted);
+	color: #9AA3B8;
+	margin-top: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
 }
