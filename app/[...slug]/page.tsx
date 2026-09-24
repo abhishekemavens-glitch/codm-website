@@ -7,6 +7,7 @@ import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection"; // What We Do
 import ExcellenceSection from "@/components/ExcellenceSection";
 import KeyCapabilities from "@/components/KeyCapabilities";
+import UseCasesSection from "@/components/UseCasesSection";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
@@ -286,6 +287,11 @@ export default async function WordPressPage({
     {/* KEY CAPABILITIES */}
     <div className="relative z-10">
       <KeyCapabilities />
+    </div>
+
+    {/* USE CASES */}
+    <div className="relative z-10">
+      <UseCasesSection />
     </div>
   </>
 )}
