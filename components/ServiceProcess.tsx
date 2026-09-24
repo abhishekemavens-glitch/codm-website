@@ -7,6 +7,8 @@
  * whichever one actually has process content filled in.
  */
 
+import SectionHeading from "@/components/SectionHeading";
+
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
@@ -114,30 +116,14 @@ export default async function ServiceProcess() {
   return (
     <section className="codm-process-section-wrap">
       <div className="codm-process-inner">
-        {data.processEyebrow && (
-          <div className="codm-process-eyebrow">
-            <span></span>
-            {data.processEyebrow}
-            <span></span>
-          </div>
-        )}
-
-        {data.processHeading && (
-          <h2 className="codm-process-heading">
-            {data.processHeading}{" "}
-            {data.processHighlight && (
-              <span className="codm-process-highlight">
-                {data.processHighlight}
-              </span>
-            )}
-          </h2>
-        )}
-
-        {data.processDescription && (
-          <p className="codm-process-description">
-            {data.processDescription}
-          </p>
-        )}
+       {data.processHeading && (
+  <SectionHeading
+    eyebrow={data.processEyebrow}
+    title={data.processHeading}
+    gradientText={data.processHighlight}
+    description={data.processDescription}
+  />
+)}
 
         {steps.length > 0 && (
           <div className="codm-process-steps">
