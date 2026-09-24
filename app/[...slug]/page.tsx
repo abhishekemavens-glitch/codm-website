@@ -8,6 +8,7 @@ import ServicesSection from "@/components/ServicesSection"; // What We Do
 import ExcellenceSection from "@/components/ExcellenceSection";
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
+import UseCasesSection from "@/components/UseCasesSection";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
