@@ -177,7 +177,7 @@ export default function KeyCapabilities() {
             />
           </div>
 
-        <div className="codm-capabilities-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
+        <div className="codm-capabilities-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap gap-2.5">
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
                 Loading capabilities...
