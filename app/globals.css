@@ -7455,149 +7455,6 @@ img.codm-footer-logo {
   margin: 0 auto;
 }
 
-.codm-process-eyebrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.codm-process-eyebrow span {
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
-  opacity: 0.5;
-}
-
-.codm-process-heading {
-  font-size: 42px;
-  line-height: 1.2;
-  font-weight: 600;
-  color: var(--foreground);
-  margin: 0 0 16px;
-}
-
-.codm-process-highlight {
-  background: linear-gradient(100deg, #2563EB, #6366F1, #A78BFA);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.codm-process-description {
-  color: var(--muted);
-  font-size: 16px;
-  max-width: 600px;
-  margin: 0 auto 48px;
-  line-height: 1.6;
-}
-
-.codm-process-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  background: var(--surface-secondary);
-  border-radius: 24px;
-  overflow: hidden;
-  text-align: left;
-  margin-bottom: 40px;
-}
-
-.codm-process-step {
-  padding: 32px 28px;
-  border-right: 1px solid var(--border);
-}
-
-.codm-process-step:last-child {
-  border-right: none;
-}
-
-.codm-process-step-number {
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--foreground);
-  margin-bottom: 40px;
-}
-
-.codm-process-step-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--foreground);
-  margin-bottom: 8px;
-}
-
-.codm-process-step-description {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.codm-process-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 500;
-  font-size: 15px;
-}
-
-@media (max-width: 900px) {
-  .codm-process-steps {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .codm-process-step {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-@media (max-width: 600px) {
-  .codm-process-steps {
-    grid-template-columns: 1fr;
-  }
-
-  .codm-process-heading {
-    font-size: 32px;
-  }
-}
-
-
- 
-
-
-
-/* =========================================================
- * THE CODM DIFFERENCE — PROCESS SECTION
- * ========================================================= */
-
-.codm-process-section-wrap {
-  position: relative;
-  padding: 96px 20px;
-  background: var(--background);
-}
-
-.codm-process-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-
-
-/* =========================================================
- * STEPS PANEL
- * ========================================================= */
-
 .codm-process-steps {
   display: grid;
   grid-template-columns: 1fr;
@@ -7626,7 +7483,7 @@ img.codm-footer-logo {
 }
 
 .codm-process-step {
-  padding: 32px;
+  padding: 22px 24px;
   border-bottom: 1px solid rgba(124, 108, 240, 0.14);
 }
 
@@ -7652,23 +7509,22 @@ img.codm-footer-logo {
 
 .codm-process-step-number {
   font-family: var(--font-heading, inherit);
-  font-size: 30px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 400;
   color: var(--foreground);
   line-height: 1;
 }
 
 .codm-process-step-title {
-  margin-top: 24px;
-  font-size: 18px;
+  margin-top: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--foreground);
 }
 
 .codm-process-step-description {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.6;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.55;
   color: var(--muted);
 }
-
