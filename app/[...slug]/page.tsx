@@ -19,6 +19,7 @@ const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries"];
 const PAGES_WITH_ABOUT_SECTIONS = ["about"];
 
 
+
 /* WordPress slugs that should show Services-only sections
    (Key Capabilities) */
 const PAGES_WITH_SERVICES_SECTIONS = ["services"];
