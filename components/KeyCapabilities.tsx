@@ -192,20 +192,20 @@ export default function KeyCapabilities() {
                 };
 
                 return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setActiveItem(index)}
-                    "--pill-delay": `${index * 70}ms`
-                    className={
-                      "codm-capability-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium " +
-                      (isActive
-                        ? "codm-capability-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
-                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]")
-                    }
-                  >
-                    {item.title}
-                  </button>
+                 <button
+  key={item.id}
+  type="button"
+  onClick={() => setActiveItem(index)}
+  style={pillStyle}
+  className={
+    "codm-capability-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium " +
+    (isActive
+      ? "codm-capability-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
+      : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]")
+  }
+>
+  {item.title}
+</button>
                 );
               })
             )}
