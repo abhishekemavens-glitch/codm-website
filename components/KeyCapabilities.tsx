@@ -230,7 +230,6 @@ export default function KeyCapabilities() {
                   }
                 >
                   <div className="max-w-[500px]">
-                    <div className="codm-capability-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
 
                     <h3
                       className={
