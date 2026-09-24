@@ -8,6 +8,7 @@ import ServicesSection from "@/components/ServicesSection"; // What We Do
 import ExcellenceSection from "@/components/ExcellenceSection";
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
+import ServiceProcess from "@/components/ServiceProcess";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
@@ -294,6 +295,13 @@ export default async function WordPressPage({
     <div className="relative z-10">
       <UseCasesSection />
     </div>
+
+ {/* Service Process */}
+    <div className="relative z-10">
+      <ServiceProcess />
+    </div>
+
+     
   </>
 )}
        
