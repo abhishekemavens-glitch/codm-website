@@ -11,7 +11,7 @@ import { useInViewOnce } from "@/lib/codm-animations";
  * tab is active. Each tab's screen is an uploaded image (Featured
  * image) on a "Product Experience" entry in WordPress, since each
  * tab shows a genuinely different screen design.
- */
+ */ 
 
 type ExperienceTab = {
   id: string;
