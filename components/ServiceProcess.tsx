@@ -7,9 +7,6 @@
  * in WordPress under:
  *
  * Services → The CODM Difference
- *
- * This component fetches the Services and uses the first Service
- * that has process content filled in.
  */
 
 import SectionHeading from "@/components/SectionHeading";
@@ -94,17 +91,17 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
       result?.data?.services?.nodes ?? [];
 
     /*
-     * Use the first Service that has
+     * Find the Service that contains
      * "The CODM Difference" content.
      */
     return (
       nodes.find(
         (node) =>
-          node.processHeading ||
-          node.processStep1Title ||
-          node.processStep2Title ||
-          node.processStep3Title ||
-          node.processStep4Title
+          Boolean(node.processHeading) ||
+          Boolean(node.processStep1Title) ||
+          Boolean(node.processStep2Title) ||
+          Boolean(node.processStep3Title) ||
+          Boolean(node.processStep4Title)
       ) ?? null
     );
   } catch (error) {
@@ -124,36 +121,40 @@ export default async function ServiceProcess() {
     return null;
   }
 
+  /*
+   * Convert all nullable WordPress values
+   * into safe values for the React component.
+   */
+  const eyebrow = data.processEyebrow ?? "";
+  const heading = data.processHeading ?? "";
+  const highlight = data.processHighlight ?? "";
+  const description = data.processDescription ?? "";
+  const ctaText = data.processCtaText ?? "";
+  const ctaUrl = data.processCtaUrl ?? "/contact";
+
   const steps = [
     {
-      title: data.processStep1Title,
-      description: data.processStep1Description,
+      title: data.processStep1Title ?? "",
+      description: data.processStep1Description ?? "",
     },
     {
-      title: data.processStep2Title,
-      description: data.processStep2Description,
+      title: data.processStep2Title ?? "",
+      description: data.processStep2Description ?? "",
     },
     {
-      title: data.processStep3Title,
-      description: data.processStep3Description,
+      title: data.processStep3Title ?? "",
+      description: data.processStep3Description ?? "",
     },
     {
-      title: data.processStep4Title,
-      description: data.processStep4Description,
+      title: data.processStep4Title ?? "",
+      description: data.processStep4Description ?? "",
     },
-  ].filter(
-    (
-      step
-    ): step is {
-      title: string;
-      description: string | null;
-    } => Boolean(step.title)
-  );
+  ].filter((step) => step.title !== "");
 
   /*
-   * Don't render if there is no actual content.
+   * Don't render an empty section.
    */
-  if (steps.length === 0 && !data.processHeading) {
+  if (steps.length === 0 && heading === "") {
     return null;
   }
 
@@ -162,16 +163,12 @@ export default async function ServiceProcess() {
       <div className="codm-process-inner">
 
         {/* SECTION HEADING */}
-        {data.processHeading && (
+        {heading !== "" && (
           <SectionHeading
-            eyebrow={data.processEyebrow ?? undefined}
-            title={data.processHeading}
-            gradientText={
-              data.processHighlight ?? undefined
-            }
-            description={
-              data.processDescription ?? undefined
-            }
+            eyebrow={eyebrow}
+            title={heading}
+            gradientText={highlight}
+            description={description}
           />
         )}
 
@@ -191,7 +188,7 @@ export default async function ServiceProcess() {
                   {step.title}
                 </div>
 
-                {step.description && (
+                {step.description !== "" && (
                   <div className="codm-process-step-description">
                     {step.description}
                   </div>
@@ -202,12 +199,12 @@ export default async function ServiceProcess() {
         )}
 
         {/* CTA */}
-        {data.processCtaText && (
+        {ctaText !== "" && (
           <a
-            href={data.processCtaUrl || "/contact"}
+            href={ctaUrl}
             className="contact-cta-button"
           >
-            {data.processCtaText}
+            {ctaText}
 
             <span
               className="codm-header-cta-arrow"
