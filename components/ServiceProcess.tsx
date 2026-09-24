@@ -6,7 +6,7 @@
  * screen under Services), so this fetches every Service and uses
  * whichever one actually has process content filled in.
  */
-
+ 
 import SectionHeading from "@/components/SectionHeading";
 
 const WORDPRESS_GRAPHQL_URL =
