@@ -6,6 +6,7 @@ import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection"; // What We Do
 import ExcellenceSection from "@/components/ExcellenceSection";
+import KeyCapabilities from "@/components/KeyCapabilities";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
@@ -15,6 +16,11 @@ const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries"];
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
 const PAGES_WITH_ABOUT_SECTIONS = ["about"];
+
+
+/* WordPress slugs that should show Services-only sections
+   (Key Capabilities) */
+const PAGES_WITH_SERVICES_SECTIONS = ["services"];
 
 /*
  * Save as: app/[...slug]/page.tsx
@@ -227,6 +233,9 @@ export default async function WordPressPage({
    const showAboutSections =
     slug.length === 1 && PAGES_WITH_ABOUT_SECTIONS.includes(slug[0]);
 
+   const showServicesSections =
+  slug.length === 1 && PAGES_WITH_SERVICES_SECTIONS.includes(slug[0]);
+
   return (
     <PageShell>
       <AboutHero
@@ -271,6 +280,16 @@ export default async function WordPressPage({
   </>
 )}
 
+
+{showServicesSections && (
+  <>
+    {/* KEY CAPABILITIES */}
+    <div className="relative z-10">
+      <KeyCapabilities />
+    </div>
+  </>
+)}
+       
 {showHomeSections && (
   <>
     {/* TESTIMONIAL */}
