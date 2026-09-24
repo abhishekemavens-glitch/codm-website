@@ -177,7 +177,7 @@ export default function KeyCapabilities() {
             />
           </div>
 
-          <div className="codm-capabilities-pills codm-industries-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
+        <div className="codm-capabilities-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap justify-center gap-2.5">
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
                 Loading capabilities...
@@ -196,7 +196,7 @@ export default function KeyCapabilities() {
                     key={item.id}
                     type="button"
                     onClick={() => setActiveItem(index)}
-                    style={pillStyle}
+                    "--pill-delay": `${index * 70}ms`
                     className={
                       "codm-capability-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium " +
                       (isActive
