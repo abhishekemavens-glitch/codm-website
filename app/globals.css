@@ -7424,8 +7424,6 @@ img.codm-footer-logo {
 
 /* =====================================================
    KEY CAPABILITIES PILLS
-   Make sure capability tabs become visible when
-   the section enters the viewport.
    ===================================================== */
 
 .codm-capabilities-pills .codm-stagger-item {
@@ -7436,7 +7434,10 @@ img.codm-footer-logo {
     transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.codm-capabilities-visible .codm-capabilities-pills .codm-stagger-item {
+.codm-capabilities-visible
+  .codm-capabilities-pills
+  .codm-stagger-item {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: var(--pill-delay, 0ms);
 }
