@@ -165,7 +165,9 @@ export default async function ServiceProcess() {
             className="codm-process-cta"
           >
             {data.processCtaText}
-            <span aria-hidden="true">↗</span>
+           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
           </a>
         )}
       </div>
