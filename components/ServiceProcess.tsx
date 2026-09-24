@@ -1,12 +1,17 @@
 /*
  * Save as: components/ServiceProcess.tsx
  *
- * "The CODM Difference" process section. The fields for this live on
- * an individual Service entry (see the "The CODM Difference" admin
- * screen under Services), so this fetches every Service and uses
- * whichever one actually has process content filled in.
+ * "The CODM Difference" process section.
+ *
+ * The fields for this section live on an individual Service entry
+ * in WordPress under:
+ *
+ * Services → The CODM Difference
+ *
+ * This component fetches the Services and uses the first Service
+ * that has process content filled in.
  */
- 
+
 import SectionHeading from "@/components/SectionHeading";
 
 const WORDPRESS_GRAPHQL_URL =
@@ -37,7 +42,9 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
   try {
     const response = await fetch(WORDPRESS_GRAPHQL_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         query: `
           query GetServiceProcess {
@@ -49,12 +56,16 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
                 processDescription
                 processCtaText
                 processCtaUrl
+
                 processStep1Title
                 processStep1Description
+
                 processStep2Title
                 processStep2Description
+
                 processStep3Title
                 processStep3Description
+
                 processStep4Title
                 processStep4Description
               }
@@ -65,22 +76,43 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
       next: { revalidate: 60 },
     });
 
-    if (!response.ok) return null;
-
-    const result = await response.json();
-    if (result.errors) {
-      console.error("GraphQL Error (ServiceProcess):", result.errors);
+    if (!response.ok) {
       return null;
     }
 
-    const nodes = result?.data?.services?.nodes ?? [];
+    const result = await response.json();
 
-    /* Use whichever Service entry actually has this section filled in */
+    if (result.errors) {
+      console.error(
+        "GraphQL Error (ServiceProcess):",
+        result.errors
+      );
+      return null;
+    }
+
+    const nodes: ServiceProcessData[] =
+      result?.data?.services?.nodes ?? [];
+
+    /*
+     * Use the first Service that has
+     * "The CODM Difference" content.
+     */
     return (
-      nodes.find((node: ServiceProcessData) => node.processHeading) ?? null
+      nodes.find(
+        (node) =>
+          node.processHeading ||
+          node.processStep1Title ||
+          node.processStep2Title ||
+          node.processStep3Title ||
+          node.processStep4Title
+      ) ?? null
     );
   } catch (error) {
-    console.error("Failed to load service process:", error);
+    console.error(
+      "Failed to load service process:",
+      error
+    );
+
     return null;
   }
 }
@@ -88,7 +120,9 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
 export default async function ServiceProcess() {
   const data = await getServiceProcessData();
 
-  if (!data) return null;
+  if (!data) {
+    return null;
+  }
 
   const steps = [
     {
@@ -107,8 +141,18 @@ export default async function ServiceProcess() {
       title: data.processStep4Title,
       description: data.processStep4Description,
     },
-  ].filter((step) => step.title);
+  ].filter(
+    (
+      step
+    ): step is {
+      title: string;
+      description: string | null;
+    } => Boolean(step.title)
+  );
 
+  /*
+   * Don't render if there is no actual content.
+   */
   if (steps.length === 0 && !data.processHeading) {
     return null;
   }
@@ -116,24 +160,36 @@ export default async function ServiceProcess() {
   return (
     <section className="codm-process-section-wrap">
       <div className="codm-process-inner">
-       {data.processHeading && (
-  <SectionHeading
-    eyebrow={data.processEyebrow}
-    title={data.processHeading}
-    gradientText={data.processHighlight}
-    description={data.processDescription}
-  />
-)}
 
+        {/* SECTION HEADING */}
+        {data.processHeading && (
+          <SectionHeading
+            eyebrow={data.processEyebrow ?? undefined}
+            title={data.processHeading}
+            gradientText={
+              data.processHighlight ?? undefined
+            }
+            description={
+              data.processDescription ?? undefined
+            }
+          />
+        )}
+
+        {/* PROCESS STEPS */}
         {steps.length > 0 && (
           <div className="codm-process-steps">
             {steps.map((step, index) => (
-              <div key={index} className="codm-process-step">
+              <div
+                key={index}
+                className="codm-process-step"
+              >
                 <div className="codm-process-step-number">
                   0{index + 1}
                 </div>
 
-                <div className="codm-process-step-title">{step.title}</div>
+                <div className="codm-process-step-title">
+                  {step.title}
+                </div>
 
                 {step.description && (
                   <div className="codm-process-step-description">
@@ -145,16 +201,36 @@ export default async function ServiceProcess() {
           </div>
         )}
 
-      {data.processCtaText && (
-  <a href={data.processCtaUrl || "/contact"} className="contact-cta-button">
-    {data.processCtaText}
-    <span className="codm-header-cta-arrow" aria-hidden="true">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
-  </a>
-)}
+        {/* CTA */}
+        {data.processCtaText && (
+          <a
+            href={data.processCtaUrl || "/contact"}
+            className="contact-cta-button"
+          >
+            {data.processCtaText}
+
+            <span
+              className="codm-header-cta-arrow"
+              aria-hidden="true"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+              >
+                <path
+                  d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+        )}
+
       </div>
     </section>
   );
