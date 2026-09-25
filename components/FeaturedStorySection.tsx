@@ -189,7 +189,10 @@ export default function FeaturedStorySection() {
   const story = stories[activeIndex];
 
   return (
-    <section className="featured-story-section">
+   <section
+    className="featured-story-section"
+    style={{ backgroundColor: "#F1F5F9" }}
+  >
 
       {/* HEADING */}
       <div className="featured-story-heading">
