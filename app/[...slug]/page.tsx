@@ -361,14 +361,7 @@ const showFeaturedStory =
     <BlogGrid />
   </div>
 )}
-
-
-      {showBlog && (
-        <div className="relative z-10">
-          <LatestBlogs />
-        </div>
-      )}
-
+      
       {showCTA && (
         <div className="relative z-10">
           <ContactCTA />
