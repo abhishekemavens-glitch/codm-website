@@ -13,18 +13,25 @@ import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
+import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
-/* WordPress slugs that should also show the homepage sections */
-const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries","case-studies"];
+/* WordPress slugs that should show Testimonial + Blog sections
+   ("case-studies" removed — it gets its own grid instead) */
+const PAGES_WITH_HOME_SECTIONS = ["about", "services", "industries"];
+
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
 const PAGES_WITH_ABOUT_SECTIONS = ["about"];
- 
-
 
 /* WordPress slugs that should show Services-only sections
    (Key Capabilities) */
 const PAGES_WITH_SERVICES_SECTIONS = ["services"];
+
+/* WordPress slugs that should show the Case Studies grid (12 per page + pagination) */
+const PAGES_WITH_CASE_STUDIES_GRID = ["case-studies"];
+
+/* WordPress slugs that should show the closing CTA ("Let's Build") */
+const PAGES_WITH_CTA = ["about", "services", "industries", "case-studies"];
 
 /*
  * Save as: app/[...slug]/page.tsx
@@ -230,15 +237,22 @@ export default async function WordPressPage({
   /* only render the WordPress body if it has real text in it */
   const hasContent = Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
 
-  /* true only for pages listed in PAGES_WITH_HOME_SECTIONS (e.g. /about) */
+  /* true only for pages listed in PAGES_WITH_HOME_SECTIONS (Testimonial + Blog) */
   const showHomeSections =
     slug.length === 1 && PAGES_WITH_HOME_SECTIONS.includes(slug[0]);
 
-   const showAboutSections =
+  const showAboutSections =
     slug.length === 1 && PAGES_WITH_ABOUT_SECTIONS.includes(slug[0]);
 
-   const showServicesSections =
-  slug.length === 1 && PAGES_WITH_SERVICES_SECTIONS.includes(slug[0]);
+  const showServicesSections =
+    slug.length === 1 && PAGES_WITH_SERVICES_SECTIONS.includes(slug[0]);
+
+  /* true only on /case-studies — shows the paginated grid */
+  const showCaseStudiesGrid =
+    slug.length === 1 && PAGES_WITH_CASE_STUDIES_GRID.includes(slug[0]);
+
+  /* controls the closing "Let's Build" CTA independently of Testimonial/Blog */
+  const showCTA = slug.length === 1 && PAGES_WITH_CTA.includes(slug[0]);
 
   return (
     <PageShell>
@@ -260,74 +274,79 @@ export default async function WordPressPage({
         </article>
       )}
 
-           {showAboutSections && (
-  <>
-    {/* CODM STORY */}
-    <div className="relative z-10">
-      <CodmStory />
-    </div>
+      {showAboutSections && (
+        <>
+          {/* CODM STORY */}
+          <div className="relative z-10">
+            <CodmStory />
+          </div>
 
-    {/* OUR PURPOSE */}
-    <div className="relative z-10">
-      <PurposeSection />
-    </div>
+          {/* OUR PURPOSE */}
+          <div className="relative z-10">
+            <PurposeSection />
+          </div>
 
-    {/* WHAT WE DO */}
-    <div id="services" className="relative z-10 scroll-mt-24">
-      <ServicesSection />
-    </div>
+          {/* WHAT WE DO */}
+          <div id="services" className="relative z-10 scroll-mt-24">
+            <ServicesSection />
+          </div>
 
-    {/* OUR EXCELLENCE */}
-    <div className="relative z-10">
-      <ExcellenceSection />
-    </div>
-  </>
-)}
+          {/* OUR EXCELLENCE */}
+          <div className="relative z-10">
+            <ExcellenceSection />
+          </div>
+        </>
+      )}
 
+      {showServicesSections && (
+        <>
+          {/* KEY CAPABILITIES */}
+          <div className="relative z-10">
+            <KeyCapabilities />
+          </div>
 
-{showServicesSections && (
-  <>
-    {/* KEY CAPABILITIES */}
-    <div className="relative z-10">
-      <KeyCapabilities />
-    </div>
+          {/* USE CASES */}
+          <div className="relative z-10">
+            <UseCasesSection />
+          </div>
 
-    {/* USE CASES */}
-    <div className="relative z-10">
-      <UseCasesSection />
-    </div>
+          {/* Service Process */}
+          <div className="relative z-10">
+            <ServiceProcess />
+          </div>
 
- {/* Service Process */}
-    <div className="relative z-10">
-      <ServiceProcess />
-    </div>
+          {/* PRODUCT EXPERIENCE */}
+          <div className="relative z-10">
+            <ProductExperience />
+          </div>
+        </>
+      )}
 
-      {/* PRODUCT EXPERIENCE */}
-    <div className="relative z-10">
-      <ProductExperience />
-    </div>
-     
-  </>
-)}
-       
-{showHomeSections && (
-  <>
-    {/* TESTIMONIAL */}
-    <div className="relative z-10">
-      <Testimonials />
-    </div>
+      {showHomeSections && (
+        <>
+          {/* TESTIMONIAL */}
+          <div className="relative z-10">
+            <Testimonials />
+          </div>
 
-    {/* BLOG */}
-    <div className="relative z-10">
-      <LatestBlogs />
-    </div>
+          {/* BLOG */}
+          <div className="relative z-10">
+            <LatestBlogs />
+          </div>
+        </>
+      )}
 
-    {/* CONTACT CTA */}
-    <div className="relative z-10">
-      <ContactCTA />
-    </div>
-  </>
-)}
+      {showCaseStudiesGrid && (
+        <div className="relative z-10">
+          <CaseStudiesGrid />
+        </div>
+      )}
+
+      {showCTA && (
+        <div className="relative z-10">
+          <ContactCTA />
+        </div>
+      )}
     </PageShell>
   );
 }
