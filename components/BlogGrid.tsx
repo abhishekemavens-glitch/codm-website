@@ -59,7 +59,7 @@ function stripHtml(html: string) {
     .trim();
 }
 
-function truncateText(text: string, length = 110) {
+function truncateText(text: string, length = 140) {
   if (text.length <= length) return text;
 
   return `${text.slice(0, length).trim()}...`;
@@ -78,12 +78,6 @@ export default function BlogGrid() {
 
   const [endCursor, setEndCursor] =
     useState<string | null>(null);
-
-  /*
-   * =========================================
-   * LOAD INITIAL BLOGS
-   * =========================================
-   */
 
   useEffect(() => {
     async function fetchPosts() {
@@ -186,16 +180,7 @@ export default function BlogGrid() {
     fetchPosts();
   }, []);
 
-  /*
-   * =========================================
-   * LOAD MORE BLOGS
-   * =========================================
-   */
-
   async function loadMoreBlogs() {
-    /*
-     * First reveal posts that are already loaded.
-     */
     if (visibleCount < posts.length) {
       setVisibleCount(
         (previous) =>
@@ -205,9 +190,6 @@ export default function BlogGrid() {
       return;
     }
 
-    /*
-     * Nothing else available.
-     */
     if (!hasNextPage || !endCursor) {
       return;
     }
@@ -322,20 +304,8 @@ export default function BlogGrid() {
     }
   }
 
-  /*
-   * =========================================
-   * VISIBLE POSTS
-   * =========================================
-   */
-
   const visiblePosts =
     posts.slice(0, visibleCount);
-
-  /*
-   * =========================================
-   * LOADING
-   * =========================================
-   */
 
   if (loading) {
     return (
@@ -347,34 +317,20 @@ export default function BlogGrid() {
     );
   }
 
-  /*
-   * =========================================
-   * EMPTY STATE
-   * =========================================
-   */
-
   if (posts.length === 0) {
     return null;
   }
 
-  /*
-   * =========================================
-   * BLOG GRID
-   * =========================================
-   */
-
   return (
     <section className="blog-grid-section">
 
-      {/* =====================================
-          HEADER
-      ===================================== */}
+      {/* HEADER */}
 
       <div className="blog-grid-header">
 
-        <div className="blog-grid-heading">
-          <h2>Latest Blogs</h2>
-        </div>
+        <h2 className="blog-grid-title">
+          Latest Blogs
+        </h2>
 
         <a
           href="/insights"
@@ -386,20 +342,17 @@ export default function BlogGrid() {
 
       </div>
 
-      {/* =====================================
-          BLOG CARDS
-      ===================================== */}
+      {/* GRID */}
 
       <div className="blog-grid">
 
         {visiblePosts.map((post) => {
-
           const image =
             post.featuredImage?.node;
 
           const category =
             post.categories?.nodes?.[0]
-              ?.name || "Insight";
+              ?.name || "Uncategorized";
 
           const excerpt =
             stripHtml(
@@ -418,7 +371,6 @@ export default function BlogGrid() {
                 href={post.uri}
                 className="blog-card-image"
               >
-
                 {image?.sourceUrl ? (
                   <img
                     src={image.sourceUrl}
@@ -430,28 +382,19 @@ export default function BlogGrid() {
                 ) : (
                   <div className="blog-card-image-placeholder" />
                 )}
-
-                <span className="blog-card-category">
-                  {category}
-                </span>
-
               </a>
 
               {/* CONTENT */}
 
               <div className="blog-card-content">
 
-                {/* DATE + READ TIME */}
+                <div className="blog-card-category">
+                  {category}
+                </div>
 
                 <div className="blog-card-meta">
                   {formatDate(post.date)}
-                  <span aria-hidden="true">
-                    {" "}
-                    • 6 min read
-                  </span>
                 </div>
-
-                {/* TITLE */}
 
                 <h3 className="blog-card-title">
                   <a href={post.uri}>
@@ -459,24 +402,18 @@ export default function BlogGrid() {
                   </a>
                 </h3>
 
-                {/* EXCERPT */}
-
                 {excerpt && (
                   <p className="blog-card-excerpt">
-                    {truncateText(
-                      excerpt
-                    )}
+                    {truncateText(excerpt)}
                   </p>
                 )}
-
-                {/* READ MORE */}
 
                 <a
                   href={post.uri}
                   className="blog-card-link"
                 >
                   Read More
-                  <span>→</span>
+                  <span>↗</span>
                 </a>
 
               </div>
@@ -487,9 +424,7 @@ export default function BlogGrid() {
 
       </div>
 
-      {/* =====================================
-          LOAD MORE
-      ===================================== */}
+      {/* LOAD MORE */}
 
       {(visibleCount < posts.length ||
         hasNextPage) && (
