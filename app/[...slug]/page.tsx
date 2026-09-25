@@ -15,9 +15,13 @@ import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
-/* WordPress slugs that should show Testimonial + Blog sections
-   ("case-studies" removed — it gets its own grid instead) */
-const PAGES_WITH_HOME_SECTIONS = ["about", "services", "industries"];
+/* WordPress slugs that should show the Testimonial section
+   (kept off "case-studies") */
+const PAGES_WITH_TESTIMONIALS = ["about", "services", "industries"];
+
+/* WordPress slugs that should show the Blog section
+   ("case-studies" included — it now shows alongside the grid) */
+const PAGES_WITH_BLOG = ["about", "services", "industries", "case-studies"];
 
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
@@ -237,9 +241,10 @@ export default async function WordPressPage({
   /* only render the WordPress body if it has real text in it */
   const hasContent = Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
 
-  /* true only for pages listed in PAGES_WITH_HOME_SECTIONS (Testimonial + Blog) */
-  const showHomeSections =
-    slug.length === 1 && PAGES_WITH_HOME_SECTIONS.includes(slug[0]);
+  const showTestimonials =
+    slug.length === 1 && PAGES_WITH_TESTIMONIALS.includes(slug[0]);
+
+  const showBlog = slug.length === 1 && PAGES_WITH_BLOG.includes(slug[0]);
 
   const showAboutSections =
     slug.length === 1 && PAGES_WITH_ABOUT_SECTIONS.includes(slug[0]);
@@ -322,18 +327,16 @@ export default async function WordPressPage({
         </>
       )}
 
-      {showHomeSections && (
-        <>
-          {/* TESTIMONIAL */}
-          <div className="relative z-10">
-            <Testimonials />
-          </div>
+      {showTestimonials && (
+        <div className="relative z-10">
+          <Testimonials />
+        </div>
+      )}
 
-          {/* BLOG */}
-          <div className="relative z-10">
-            <LatestBlogs />
-          </div>
-        </>
+      {showBlog && (
+        <div className="relative z-10">
+          <LatestBlogs />
+        </div>
       )}
 
       {showCaseStudiesGrid && (
