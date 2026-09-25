@@ -8514,3 +8514,65 @@ img.codm-footer-logo {
 
 
 
+/* =====================================================
+   SECTION HEADING GRADIENT TEXT
+   ===================================================== */
+
+.heading-codm-title-gradient {
+  display: block;
+  color: #7167f8;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Make sure gradient words are never hidden before
+   the parent heading animation becomes visible */
+.heading-codm-title-gradient .codm-word {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(10px);
+  display: inline-block;
+}
+
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    filter 0.7s ease;
+}
+
+/* Stagger the gradient words */
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word:nth-child(1) {
+  transition-delay: 0.25s;
+}
+
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word:nth-child(2) {
+  transition-delay: 0.35s;
+}
+
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word:nth-child(3) {
+  transition-delay: 0.45s;
+}
+
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word:nth-child(4) {
+  transition-delay: 0.55s;
+}
+
+.heading-codm-wrap.codm-visible
+  .heading-codm-title-gradient
+  .codm-word:nth-child(5) {
+  transition-delay: 0.65s;
+}
