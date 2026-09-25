@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SectionHeading from "@/components/SectionHeading";
 
-const INITIAL_COUNT = 9;  
+const INITIAL_COUNT = 9;
 const LOAD_MORE_COUNT = 3;
 
 type BlogPost = {
@@ -71,24 +70,164 @@ export default function BlogGrid() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const [visibleCount, setVisibleCount] =
+    useState(INITIAL_COUNT);
 
-  const [hasNextPage, setHasNextPage] = useState(false);
-  const [endCursor, setEndCursor] = useState<string | null>(null);
+  const [hasNextPage, setHasNextPage] =
+    useState(false);
+
+  const [endCursor, setEndCursor] =
+    useState<string | null>(null);
+
+  /*
+   * =========================================
+   * LOAD INITIAL BLOGS
+   * =========================================
+   */
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await fetch("/api/wordpress", {
+        const response = await fetch(
+          "/api/wordpress",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query LatestBlogs {
+                  posts(
+                    first: 12
+                    where: {
+                      status: PUBLISH
+                      orderby: {
+                        field: DATE
+                        order: DESC
+                      }
+                    }
+                  ) {
+                    nodes {
+                      id
+                      title
+                      uri
+                      date
+                      excerpt
+
+                      featuredImage {
+                        node {
+                          sourceUrl
+                          altText
+                        }
+                      }
+
+                      categories {
+                        nodes {
+                          name
+                        }
+                      }
+                    }
+
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                  }
+                }
+              `,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `WordPress request failed: ${response.status}`
+          );
+        }
+
+        const result: PostsResponse =
+          await response.json();
+
+        if (result.errors) {
+          console.error(
+            "GraphQL Error (Latest Blogs):",
+            result.errors
+          );
+          return;
+        }
+
+        const blogPosts =
+          result.data?.posts;
+
+        if (!blogPosts) {
+          return;
+        }
+
+        setPosts(blogPosts.nodes);
+
+        setHasNextPage(
+          blogPosts.pageInfo.hasNextPage
+        );
+
+        setEndCursor(
+          blogPosts.pageInfo.endCursor
+        );
+      } catch (error) {
+        console.error(
+          "Unable to load latest blogs:",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
+
+  /*
+   * =========================================
+   * LOAD MORE BLOGS
+   * =========================================
+   */
+
+  async function loadMoreBlogs() {
+    /*
+     * First reveal posts that are already loaded.
+     */
+    if (visibleCount < posts.length) {
+      setVisibleCount(
+        (previous) =>
+          previous + LOAD_MORE_COUNT
+      );
+
+      return;
+    }
+
+    /*
+     * Nothing else available.
+     */
+    if (!hasNextPage || !endCursor) {
+      return;
+    }
+
+    setLoadingMore(true);
+
+    try {
+      const response = await fetch(
+        "/api/wordpress",
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             query: `
-              query LatestBlogs {
+              query MoreBlogs($after: String) {
                 posts(
                   first: 12
+                  after: $after
                   where: {
                     status: PUBLISH
                     orderby: {
@@ -125,118 +264,12 @@ export default function BlogGrid() {
                 }
               }
             `,
+            variables: {
+              after: endCursor,
+            },
           }),
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
         }
-
-        const result: PostsResponse = await response.json();
-
-        if (result.errors) {
-          console.error(
-            "GraphQL Error (Latest Blogs):",
-            result.errors
-          );
-          return;
-        }
-
-        const blogPosts = result.data?.posts;
-
-        if (!blogPosts) {
-          return;
-        }
-
-        setPosts(blogPosts.nodes);
-        setHasNextPage(blogPosts.pageInfo.hasNextPage);
-        setEndCursor(blogPosts.pageInfo.endCursor);
-      } catch (error) {
-        console.error(
-          "Unable to load latest blogs:",
-          error
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchPosts();
-  }, []);
-
-  async function loadMoreBlogs() {
-    /*
-     * If we already have more posts locally, simply reveal them.
-     */
-    if (visibleCount < posts.length) {
-      setVisibleCount((previous) => previous + LOAD_MORE_COUNT);
-      return;
-    }
-
-    /*
-     * Otherwise request the next WordPress page.
-     */
-    if (!hasNextPage || !endCursor) {
-      return;
-    }
-
-    setLoadingMore(true);
-
-    try {
-      const response = await fetch("/api/wordpress", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-            query MoreBlogs($after: String) {
-              posts(
-                first: 12
-                after: $after
-                where: {
-                  status: PUBLISH
-                  orderby: {
-                    field: DATE
-                    order: DESC
-                  }
-                }
-              ) {
-                nodes {
-                  id
-                  title
-                  uri
-                  date
-                  excerpt
-
-                  featuredImage {
-                    node {
-                      sourceUrl
-                      altText
-                    }
-                  }
-
-                  categories {
-                    nodes {
-                      name
-                    }
-                  }
-                }
-
-                pageInfo {
-                  hasNextPage
-                  endCursor
-                }
-              }
-            }
-          `,
-          variables: {
-            after: endCursor,
-          },
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -244,7 +277,8 @@ export default function BlogGrid() {
         );
       }
 
-      const result: PostsResponse = await response.json();
+      const result: PostsResponse =
+        await response.json();
 
       if (result.errors) {
         console.error(
@@ -254,7 +288,8 @@ export default function BlogGrid() {
         return;
       }
 
-      const nextPosts = result.data?.posts;
+      const nextPosts =
+        result.data?.posts;
 
       if (!nextPosts) {
         return;
@@ -266,11 +301,17 @@ export default function BlogGrid() {
       ]);
 
       setVisibleCount(
-        (previous) => previous + LOAD_MORE_COUNT
+        (previous) =>
+          previous + LOAD_MORE_COUNT
       );
 
-      setHasNextPage(nextPosts.pageInfo.hasNextPage);
-      setEndCursor(nextPosts.pageInfo.endCursor);
+      setHasNextPage(
+        nextPosts.pageInfo.hasNextPage
+      );
+
+      setEndCursor(
+        nextPosts.pageInfo.endCursor
+      );
     } catch (error) {
       console.error(
         "Unable to load more blogs:",
@@ -281,7 +322,20 @@ export default function BlogGrid() {
     }
   }
 
-  const visiblePosts = posts.slice(0, visibleCount);
+  /*
+   * =========================================
+   * VISIBLE POSTS
+   * =========================================
+   */
+
+  const visiblePosts =
+    posts.slice(0, visibleCount);
+
+  /*
+   * =========================================
+   * LOADING
+   * =========================================
+   */
 
   if (loading) {
     return (
@@ -293,25 +347,33 @@ export default function BlogGrid() {
     );
   }
 
+  /*
+   * =========================================
+   * EMPTY STATE
+   * =========================================
+   */
+
   if (posts.length === 0) {
     return null;
   }
 
+  /*
+   * =========================================
+   * BLOG GRID
+   * =========================================
+   */
+
   return (
     <section className="blog-grid-section">
 
-      {/* =========================================
+      {/* =====================================
           HEADER
-      ========================================= */}
+      ===================================== */}
 
       <div className="blog-grid-header">
 
         <div className="blog-grid-heading">
-          <SectionHeading
-            title=""
-            eyebrow="Latest Blogs"
-            gradientText=""
-          />
+          <h2>Latest Blogs</h2>
         </div>
 
         <a
@@ -324,9 +386,9 @@ export default function BlogGrid() {
 
       </div>
 
-      {/* =========================================
-          BLOG GRID
-      ========================================= */}
+      {/* =====================================
+          BLOG CARDS
+      ===================================== */}
 
       <div className="blog-grid">
 
@@ -336,12 +398,13 @@ export default function BlogGrid() {
             post.featuredImage?.node;
 
           const category =
-            post.categories?.nodes?.[0]?.name ||
-            "Insight";
+            post.categories?.nodes?.[0]
+              ?.name || "Insight";
 
-          const excerpt = stripHtml(
-            post.excerpt ?? ""
-          );
+          const excerpt =
+            stripHtml(
+              post.excerpt ?? ""
+            );
 
           return (
             <article
@@ -378,9 +441,17 @@ export default function BlogGrid() {
 
               <div className="blog-card-content">
 
+                {/* DATE + READ TIME */}
+
                 <div className="blog-card-meta">
                   {formatDate(post.date)}
+                  <span aria-hidden="true">
+                    {" "}
+                    • 6 min read
+                  </span>
                 </div>
+
+                {/* TITLE */}
 
                 <h3 className="blog-card-title">
                   <a href={post.uri}>
@@ -388,11 +459,17 @@ export default function BlogGrid() {
                   </a>
                 </h3>
 
+                {/* EXCERPT */}
+
                 {excerpt && (
                   <p className="blog-card-excerpt">
-                    {truncateText(excerpt)}
+                    {truncateText(
+                      excerpt
+                    )}
                   </p>
                 )}
+
+                {/* READ MORE */}
 
                 <a
                   href={post.uri}
@@ -410,9 +487,9 @@ export default function BlogGrid() {
 
       </div>
 
-      {/* =========================================
+      {/* =====================================
           LOAD MORE
-      ========================================= */}
+      ===================================== */}
 
       {(visibleCount < posts.length ||
         hasNextPage) && (
