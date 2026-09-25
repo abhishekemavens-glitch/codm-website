@@ -126,10 +126,11 @@ export default function CaseStudiesGrid() {
           }
         }
 
-        console.log(
-          "Total Case Studies loaded:",
-          allItems.length
-        );
+        console.log("=================================");
+console.log("CASE STUDIES DEBUG");
+console.log("TOTAL:", allItems.length);
+console.log("ITEMS:", allItems);
+console.log("=================================");
 
         setItems(allItems);
       } catch (error) {
