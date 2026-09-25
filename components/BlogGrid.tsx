@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-const PER_PAGE = 6;
+const INITIAL_COUNT = 9;
+const LOAD_MORE_COUNT = 3;
 
 type BlogPost = {
   id: string;
@@ -19,34 +20,222 @@ type BlogPost = {
   } | null;
 
   categories?: {
-    nodes: { name: string }[];
+    nodes: {
+      name: string;
+    }[];
   } | null;
+};
+
+type PostsResponse = {
+  data?: {
+    posts?: {
+      nodes: BlogPost[];
+      pageInfo: {
+        hasNextPage: boolean;
+        endCursor: string | null;
+      };
+    };
+  };
+  errors?: unknown;
 };
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
+
   return date.toLocaleDateString("en-US", {
-    month: "long",
+    month: "short",
     day: "numeric",
     year: "numeric",
   });
 }
 
-export default function LatestBlogsGrid() {
-  const [items, setItems] = useState<BlogPost[]>([]);
+function stripHtml(html: string) {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&amp;/g, "&")
+    .trim();
+}
+
+function truncateText(text: string, length = 110) {
+  if (text.length <= length) return text;
+
+  return `${text.slice(0, length).trim()}...`;
+}
+
+export default function BlogGrid() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(PER_PAGE);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const [visibleCount, setVisibleCount] =
+    useState(INITIAL_COUNT);
+
+  const [hasNextPage, setHasNextPage] =
+    useState(false);
+
+  const [endCursor, setEndCursor] =
+    useState<string | null>(null);
+
+  /*
+   * =========================================
+   * LOAD INITIAL BLOGS
+   * =========================================
+   */
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await fetch("/api/wordpress", {
+        const response = await fetch(
+          "/api/wordpress",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query LatestBlogs {
+                  posts(
+                    first: 12
+                    where: {
+                      status: PUBLISH
+                      orderby: {
+                        field: DATE
+                        order: DESC
+                      }
+                    }
+                  ) {
+                    nodes {
+                      id
+                      title
+                      uri
+                      date
+                      excerpt
+
+                      featuredImage {
+                        node {
+                          sourceUrl
+                          altText
+                        }
+                      }
+
+                      categories {
+                        nodes {
+                          name
+                        }
+                      }
+                    }
+
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                  }
+                }
+              `,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `WordPress request failed: ${response.status}`
+          );
+        }
+
+        const result: PostsResponse =
+          await response.json();
+
+        if (result.errors) {
+          console.error(
+            "GraphQL Error (Latest Blogs):",
+            result.errors
+          );
+          return;
+        }
+
+        const blogPosts =
+          result.data?.posts;
+
+        if (!blogPosts) {
+          return;
+        }
+
+        setPosts(blogPosts.nodes);
+
+        setHasNextPage(
+          blogPosts.pageInfo.hasNextPage
+        );
+
+        setEndCursor(
+          blogPosts.pageInfo.endCursor
+        );
+      } catch (error) {
+        console.error(
+          "Unable to load latest blogs:",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
+
+  /*
+   * =========================================
+   * LOAD MORE BLOGS
+   * =========================================
+   */
+
+  async function loadMoreBlogs() {
+    /*
+     * First reveal posts that are already loaded.
+     */
+    if (visibleCount < posts.length) {
+      setVisibleCount(
+        (previous) =>
+          previous + LOAD_MORE_COUNT
+      );
+
+      return;
+    }
+
+    /*
+     * Nothing else available.
+     */
+    if (!hasNextPage || !endCursor) {
+      return;
+    }
+
+    setLoadingMore(true);
+
+    try {
+      const response = await fetch(
+        "/api/wordpress",
+        {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             query: `
-              query LatestBlogs {
-                posts(first: 100, where: { status: PUBLISH }) {
+              query MoreBlogs($after: String) {
+                posts(
+                  first: 12
+                  after: $after
+                  where: {
+                    status: PUBLISH
+                    orderby: {
+                      field: DATE
+                      order: DESC
+                    }
+                  }
+                ) {
                   nodes {
                     id
                     title
@@ -67,120 +256,263 @@ export default function LatestBlogsGrid() {
                       }
                     }
                   }
+
+                  pageInfo {
+                    hasNextPage
+                    endCursor
+                  }
                 }
               }
             `,
+            variables: {
+              after: endCursor,
+            },
           }),
-        });
-
-        const result = await response.json();
-
-        if (result.errors) {
-          console.error("GraphQL Error:", result.errors);
-          return;
         }
+      );
 
-        setItems(result.data?.posts?.nodes ?? []);
-      } catch (error) {
-        console.error("Unable to load posts:", error);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(
+          `WordPress request failed: ${response.status}`
+        );
       }
+
+      const result: PostsResponse =
+        await response.json();
+
+      if (result.errors) {
+        console.error(
+          "GraphQL Error (More Blogs):",
+          result.errors
+        );
+        return;
+      }
+
+      const nextPosts =
+        result.data?.posts;
+
+      if (!nextPosts) {
+        return;
+      }
+
+      setPosts((previous) => [
+        ...previous,
+        ...nextPosts.nodes,
+      ]);
+
+      setVisibleCount(
+        (previous) =>
+          previous + LOAD_MORE_COUNT
+      );
+
+      setHasNextPage(
+        nextPosts.pageInfo.hasNextPage
+      );
+
+      setEndCursor(
+        nextPosts.pageInfo.endCursor
+      );
+    } catch (error) {
+      console.error(
+        "Unable to load more blogs:",
+        error
+      );
+    } finally {
+      setLoadingMore(false);
     }
+  }
 
-    fetchPosts();
-  }, []);
+  /*
+   * =========================================
+   * VISIBLE POSTS
+   * =========================================
+   */
 
-  const visibleItems = items.slice(0, visibleCount);
-  const hasMore = visibleCount < items.length;
+  const visiblePosts =
+    posts.slice(0, visibleCount);
+
+  /*
+   * =========================================
+   * LOADING
+   * =========================================
+   */
 
   if (loading) {
     return (
-      <section className="latest-blogs-grid-section">
-        <div className="latest-blogs-loading">Loading articles...</div>
+      <section className="blog-grid-section">
+        <div className="blog-grid-loading">
+          Loading latest blogs...
+        </div>
       </section>
     );
   }
 
+  /*
+   * =========================================
+   * EMPTY STATE
+   * =========================================
+   */
+
+  if (posts.length === 0) {
+    return null;
+  }
+
+  /*
+   * =========================================
+   * BLOG GRID
+   * =========================================
+   */
+
   return (
-    <section className="latest-blogs-grid-section">
-      <div className="latest-blogs-grid-header">
-        <h2>Latest Blogs</h2>
-        <a href="/blog" className="latest-blogs-view-all">
+    <section className="blog-grid-section">
+
+      {/* =====================================
+          HEADER
+      ===================================== */}
+
+      <div className="blog-grid-header">
+
+        <div className="blog-grid-heading">
+          <h2>Latest Blogs</h2>
+        </div>
+
+        <a
+          href="/insights"
+          className="blog-grid-view-all"
+        >
           View All Blogs
-          <span aria-hidden="true">→</span>
+          <span>→</span>
         </a>
+
       </div>
 
-      <div className="latest-blogs-cards-grid">
-        {visibleItems.map((item) => (
-          <article className="latest-blog-card" key={item.id}>
-            <div className="latest-blog-image">
-              {item.featuredImage?.node?.sourceUrl ? (
-                <img
-                  src={item.featuredImage.node.sourceUrl}
-                  alt={item.featuredImage.node.altText || item.title}
-                />
-              ) : (
-                <div className="latest-blog-image-placeholder" />
-              )}
+      {/* =====================================
+          BLOG CARDS
+      ===================================== */}
 
-              {item.categories?.nodes[0]?.name && (
-                <span className="latest-blog-badge">
-                  {item.categories.nodes[0].name}
+      <div className="blog-grid">
+
+        {visiblePosts.map((post) => {
+
+          const image =
+            post.featuredImage?.node;
+
+          const category =
+            post.categories?.nodes?.[0]
+              ?.name || "Insight";
+
+          const excerpt =
+            stripHtml(
+              post.excerpt ?? ""
+            );
+
+          return (
+            <article
+              className="blog-card"
+              key={post.id}
+            >
+
+              {/* IMAGE */}
+
+              <a
+                href={post.uri}
+                className="blog-card-image"
+              >
+
+                {image?.sourceUrl ? (
+                  <img
+                    src={image.sourceUrl}
+                    alt={
+                      image.altText ||
+                      post.title
+                    }
+                  />
+                ) : (
+                  <div className="blog-card-image-placeholder" />
+                )}
+
+                <span className="blog-card-category">
+                  {category}
                 </span>
-              )}
-            </div>
 
-            <div className="latest-blog-content">
-              <div className="latest-blog-meta">
-                {formatDate(item.date)} &middot; 6 min read
+              </a>
+
+              {/* CONTENT */}
+
+              <div className="blog-card-content">
+
+                {/* DATE + READ TIME */}
+
+                <div className="blog-card-meta">
+                  {formatDate(post.date)}
+                  <span aria-hidden="true">
+                    {" "}
+                    • 6 min read
+                  </span>
+                </div>
+
+                {/* TITLE */}
+
+                <h3 className="blog-card-title">
+                  <a href={post.uri}>
+                    {post.title}
+                  </a>
+                </h3>
+
+                {/* EXCERPT */}
+
+                {excerpt && (
+                  <p className="blog-card-excerpt">
+                    {truncateText(
+                      excerpt
+                    )}
+                  </p>
+                )}
+
+                {/* READ MORE */}
+
+                <a
+                  href={post.uri}
+                  className="blog-card-link"
+                >
+                  Read More
+                  <span>→</span>
+                </a>
+
               </div>
 
-              <h3>{item.title}</h3>
+            </article>
+          );
+        })}
 
-              {item.excerpt && (
-                <div
-                  className="latest-blog-excerpt"
-                  dangerouslySetInnerHTML={{ __html: item.excerpt }}
-                />
-              )}
-
-              <a href={item.uri} className="latest-blog-link">
-                Read More
-                <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
-        ))}
       </div>
 
-      {hasMore && (
-        <div className="latest-blogs-load-more-wrap">
+      {/* =====================================
+          LOAD MORE
+      ===================================== */}
+
+      {(visibleCount < posts.length ||
+        hasNextPage) && (
+        <div className="blog-grid-load-more-wrap">
+
           <button
             type="button"
-            className="latest-blogs-load-more"
-            onClick={() => setVisibleCount((count) => count + PER_PAGE)}
+            className="blog-grid-load-more"
+            onClick={loadMoreBlogs}
+            disabled={loadingMore}
           >
-            Load More Blogs
-            <span aria-hidden="true">→</span>
+            {loadingMore
+              ? "Loading..."
+              : "Load More Blogs"}
+
+            {!loadingMore && (
+              <span>→</span>
+            )}
           </button>
+
         </div>
       )}
 
-      <div className="latest-blogs-cta-banner">
-        <div className="latest-blogs-cta-content">
-          <h3>Explore Success Through Stories</h3>
-          <p>
-            Discover how we help businesses transform challenges into
-            measurable results.
-          </p>
-          <a href="/case-studies" className="latest-blogs-cta-button">
-            View Success Stories
-            <span aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
     </section>
   );
 }
