@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SectionHeading from "@/components/SectionHeading";
 
 const PER_PAGE = 12;
 
@@ -78,15 +77,7 @@ export default function CaseStudiesGrid() {
 
   return (
     <section className="case-studies-grid-section">
-      <div className="case-studies-grid-header">
-        <SectionHeading
-          eyebrow="Case Studies"
-          title="Explore Our"
-          gradientText="Success Stories"
-          description="Real results delivered for real businesses."
-          inline
-        />
-      </div>
+    
 
       {loading ? (
         <div className="case-studies-loading">Loading case studies...</div>
