@@ -12,6 +12,7 @@ import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
+import FeaturedStorySection from "@/components/FeaturedStorySection";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
@@ -259,6 +260,10 @@ export default async function WordPressPage({
   const showCaseStudiesGrid =
     slug.length === 1 && PAGES_WITH_CASE_STUDIES_GRID.includes(slug[0]);
 
+   /* true only on /insights — shows the Featured Story section */
+const showFeaturedStory =
+  slug.length === 1 && slug[0] === "insights";
+
   /* controls the closing "Let's Build" CTA independently of Testimonial/Blog */
   const showCTA = slug.length === 1 && PAGES_WITH_CTA.includes(slug[0]);
 
@@ -341,6 +346,13 @@ export default async function WordPressPage({
           <CaseStudiesGrid />
         </div>
       )}
+
+       {showFeaturedStory && (
+  <div className="relative z-10">
+    <FeaturedStorySection />
+  </div>
+)}
+
 
       {showBlog && (
         <div className="relative z-10">
