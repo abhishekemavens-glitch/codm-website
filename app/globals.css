@@ -7529,3 +7529,38 @@ img.codm-footer-logo {
 	font-weight: 500;
 	line-height: 20px;
 }
+
+
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.case-studies-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+
+.case-studies-pagination button {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e2e2f0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.case-studies-pagination button.active {
+  background: #6c5ce7;
+  color: #fff;
+  border-color: #6c5ce7;
+}
+
+.case-studies-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
