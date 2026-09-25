@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 const FEATURED_COUNT = 4;
 const AUTOPLAY_DELAY = 6000;
@@ -191,13 +192,9 @@ export default function FeaturedStorySection() {
     <section className="featured-story-section">
 
       {/* HEADING */}
-      <div className="featured-story-eyebrow">
-        <span className="featured-story-eyebrow-line" />
-
-        <span>FEATURED STORY</span>
-
-        <span className="featured-story-eyebrow-line" />
-      </div>
+      <div className="featured-story-heading">
+  <SectionHeading eyebrow="Featured Story" />
+</div>
 
       {/* MAIN CARD */}
       <div className="featured-story-card">
