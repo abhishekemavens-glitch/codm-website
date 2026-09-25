@@ -11,7 +11,6 @@ import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
-import BlogGrid from "@/components/BlogGrid";
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
