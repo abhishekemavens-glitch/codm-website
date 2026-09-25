@@ -240,6 +240,8 @@ export default function CaseStudiesGrid() {
 
   if (loading) {
     return (
+        <div style={{ backgroundColor: "#F8FAFC" }}
+  >
       <section className="case-studies-grid-section">
         <div className="case-studies-loading">
           Loading case studies...
@@ -472,5 +474,6 @@ export default function CaseStudiesGrid() {
       )}
 
     </section>
+ </div>
   );
 }
