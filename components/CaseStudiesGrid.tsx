@@ -77,8 +77,7 @@ export default function CaseStudiesGrid() {
 
   return (
     <section className="case-studies-grid-section">
-    
-
+     
       {loading ? (
         <div className="case-studies-loading">Loading case studies...</div>
       ) : items.length === 0 ? (
@@ -99,7 +98,12 @@ export default function CaseStudiesGrid() {
 
                 <h3>{item.title}</h3>
 
-                <a href={item.uri} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="case-study-link"
+                  href={item.uri}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   View case study <span>→</span>
                 </a>
               </article>
