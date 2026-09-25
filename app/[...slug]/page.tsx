@@ -13,6 +13,7 @@ import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import FeaturedStorySection from "@/components/FeaturedStorySection";
+import BlogGrid from "@/components/BlogGrid";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
@@ -350,6 +351,12 @@ const showFeaturedStory =
        {showFeaturedStory && (
   <div className="relative z-10">
     <FeaturedStorySection />
+  </div>
+)}
+
+       {showBlogGrid && (
+  <div className="relative z-10">
+    <BlogGrid />
   </div>
 )}
 
