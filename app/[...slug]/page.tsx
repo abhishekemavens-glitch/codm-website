@@ -240,11 +240,19 @@ export default async function WordPressPage({
   const image = page.featuredImage?.node;
 
   /* only render the WordPress body if it has real text in it */
-  const hasContent =
+  const isInsightsPage =
+  slug.length === 1 &&
+  slug[0].toLowerCase() === "insights";
+
+const hasContent =
+  !isInsightsPage &&
   slug.length === 1 &&
   slug[0] !== "case-studies" &&
-  slug[0] !== "insights" &&
-  Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
+  Boolean(
+    page.content
+      ?.replace(/<[^>]*>/g, "")
+      .trim()
+  );
 
   const showTestimonials =
     slug.length === 1 && PAGES_WITH_TESTIMONIALS.includes(slug[0]);
@@ -262,11 +270,9 @@ export default async function WordPressPage({
     slug.length === 1 && PAGES_WITH_CASE_STUDIES_GRID.includes(slug[0]);
 
    /* true only on /insights — shows the Featured Story section */
-const showFeaturedStory =
-  slug.length === 1 && slug[0] === "insights";
+const showFeaturedStory = isInsightsPage;
 
-   const showBlogGrid =
-  slug.length === 1 && slug[0] === "insights";
+const showBlogGrid = isInsightsPage;
 
   /* controls the closing "Let's Build" CTA independently of Testimonial/Blog */
   const showCTA = slug.length === 1 && PAGES_WITH_CTA.includes(slug[0]);
