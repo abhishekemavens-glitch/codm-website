@@ -3,12 +3,22 @@
 import { useEffect, useState } from "react";
 
 const FEATURED_COUNT = 4;
+const AUTOPLAY_DELAY = 6000;
 
 type WpFeaturedPost = {
   id: string;
   title: string;
   uri: string;
   date: string;
+  content: string | null;
+  badge: string | null;
+  readTime: string | null;
+  featuredImage?: {
+    node?: {
+      sourceUrl?: string;
+      altText?: string;
+    } | null;
+  } | null;
 };
 
 type FeaturedPostsResponse = {
@@ -22,12 +32,27 @@ type FeaturedPostsResponse = {
 
 type FeaturedStory = {
   id: string;
-  title: string;
-  uri: string;
+  badge: string;
   date: string;
+  readTime: string;
+  title: string;
+  excerpt: string;
+  uri: string;
+  imageUrl: string | null;
+  imageAlt: string;
 };
 
-const AUTOPLAY_DELAY = 6000;
+function stripHtml(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+}
 
 function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
@@ -68,8 +93,17 @@ export default function FeaturedStorySection() {
                   nodes {
                     id
                     title
+                    content
                     uri
                     date
+                    badge
+                    readTime
+                    featuredImage {
+                      node {
+                        sourceUrl
+                        altText
+                      }
+                    }
                   }
                 }
               }
@@ -78,22 +112,14 @@ export default function FeaturedStorySection() {
         });
 
         if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
+          throw new Error(`HTTP error: ${response.status}`);
         }
 
-        const result: FeaturedPostsResponse =
-          await response.json();
-
-        console.log(
-          "Featured Stories Response:",
-          result
-        );
+        const result: FeaturedPostsResponse = await response.json();
 
         if (result.errors) {
           console.error(
-            "GraphQL Error:",
+            "GraphQL Error (Featured Story):",
             result.errors
           );
           return;
@@ -102,18 +128,32 @@ export default function FeaturedStorySection() {
         const nodes =
           result.data?.featuredStories?.nodes ?? [];
 
-        const mapped: FeaturedStory[] =
-          nodes.map((post) => ({
-            id: post.id,
-            title: post.title,
-            uri: post.uri,
-            date: formatDate(post.date),
-          }));
+        const mapped: FeaturedStory[] = nodes.map((post) => ({
+          id: post.id,
 
-        console.log(
-          "Mapped Featured Stories:",
-          mapped
-        );
+          badge: post.badge || "Insight",
+
+          date: formatDate(post.date),
+
+          readTime:
+            post.readTime &&
+            post.readTime !== "Read Full Article"
+              ? post.readTime
+              : "",
+
+          title: post.title,
+
+          excerpt: stripHtml(post.content ?? ""),
+
+          uri: post.uri,
+
+          imageUrl:
+            post.featuredImage?.node?.sourceUrl ?? null,
+
+          imageAlt:
+            post.featuredImage?.node?.altText ||
+            post.title,
+        }));
 
         setStories(mapped);
       } catch (error) {
@@ -132,14 +172,10 @@ export default function FeaturedStorySection() {
   const total = stories.length;
 
   useEffect(() => {
-    if (total <= 1) {
-      return;
-    }
+    if (total <= 1) return;
 
     const timer = setInterval(() => {
-      setActiveIndex(
-        (previous) => (previous + 1) % total
-      );
+      setActiveIndex((prev) => (prev + 1) % total);
     }, AUTOPLAY_DELAY);
 
     return () => clearInterval(timer);
@@ -164,59 +200,88 @@ export default function FeaturedStorySection() {
   return (
     <section className="featured-story-section">
 
-      {/* EYEBROW */}
+      {/* HEADER */}
       <div className="featured-story-eyebrow">
         <span className="featured-story-eyebrow-line" />
 
-        <span>
-          Featured Story
-        </span>
+        <span>FEATURED STORY</span>
 
         <span className="featured-story-eyebrow-line" />
       </div>
 
-      {/* CARD */}
+      {/* FEATURED STORY */}
       <div className="featured-story-card">
 
+        {/* IMAGE */}
+        <div className="featured-story-image-wrap">
+
+          {story.imageUrl && (
+            <img
+              src={story.imageUrl}
+              alt={story.imageAlt}
+              className="featured-story-image"
+            />
+          )}
+
+          <span className="featured-story-badge">
+            {story.badge}
+          </span>
+
+        </div>
+
+        {/* CONTENT */}
         <div className="featured-story-content">
 
-          {/* META */}
           <div className="featured-story-meta">
+
             <span>{story.date}</span>
+
+            {story.readTime && (
+              <>
+                <span className="featured-story-dot">
+                  •
+                </span>
+
+                <span>{story.readTime}</span>
+              </>
+            )}
+
           </div>
 
-          {/* TITLE */}
           <h2 className="featured-story-title">
             {story.title}
           </h2>
 
-          {/* LINK */}
+          {story.excerpt && (
+            <p className="featured-story-excerpt">
+              {story.excerpt}
+            </p>
+          )}
+
           <a
             href={story.uri}
             className="featured-story-cta"
           >
-            Read Full Article
-            <span>→</span>
+            <span>Read Full Article</span>
+            <span aria-hidden="true">→</span>
           </a>
 
         </div>
-
       </div>
 
-      {/* DOTS */}
+      {/* SLIDER DOTS */}
       {total > 1 && (
         <div
           className="featured-story-dots"
           role="tablist"
+          aria-label="Featured stories"
         >
-          {stories.map((item, index) => (
+          {stories.map((storyItem, index) => (
             <button
-              key={item.id}
+              key={storyItem.id}
               type="button"
               role="tab"
-              aria-selected={
-                index === activeIndex
-              }
+              aria-selected={index === activeIndex}
               aria-label={`Show featured story ${
                 index + 1
               }`}
@@ -225,9 +290,7 @@ export default function FeaturedStorySection() {
                   ? "featured-story-dot-btn active"
                   : "featured-story-dot-btn"
               }
-              onClick={() =>
-                setActiveIndex(index)
-              }
+              onClick={() => setActiveIndex(index)}
             />
           ))}
         </div>
