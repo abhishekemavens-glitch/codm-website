@@ -8272,3 +8272,240 @@ img.codm-footer-logo {
     font-size: 13px;
   }
 }   
+
+.case-studies-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.case-studies-filter {
+  appearance: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 32px 8px 14px;
+  font-size: 14px;
+  color: #374151;
+  background: #fafafa
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236b7280'/></svg>")
+    no-repeat right 12px center;
+  cursor: pointer;
+}
+
+.case-studies-filter:focus {
+  outline: none;
+  border-color: #6c5ce7;
+}
+
+.case-studies-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #9ca3af;
+  background: #fafafa;
+}
+
+.case-studies-search span {
+  font-size: 14px;
+}
+
+.case-studies-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+  color: #111827;
+}
+
+.case-study-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.case-study-category {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c5ce7;
+  margin-bottom: 8px;
+}
+
+.case-study-excerpt {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0 0 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pagination-ellipsis {
+  padding: 0 4px;
+  color: #9ca3af;
+}
+
+.blog-grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.blog-grid-heading h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.blog-grid-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6c5ce7;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.blog-grid-view-all:hover {
+  text-decoration: underline;
+}
+
+.case-studies-grid-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.case-studies-grid-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.case-studies-loading {
+  text-align: center;
+  padding: 60px 0;
+  color: #6b7280;
+}
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .case-studies-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .case-studies-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.case-study-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  padding: 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.case-study-card:hover {
+  box-shadow: 0 10px 30px rgba(108, 92, 231, 0.12);
+  transform: translateY(-2px);
+}
+
+.case-study-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: #f3f4f6;
+}
+
+.case-study-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.case-study-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 12px;
+  color: #111827;
+}
+
+.case-study-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6c5ce7;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.case-study-link:hover {
+  text-decoration: underline;
+}
+
+.case-studies-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.case-studies-pagination button {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e2e2f0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.case-studies-pagination button.active {
+  background: #6c5ce7;
+  color: #fff;
+  border-color: #6c5ce7;
+}
+
+.case-studies-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
