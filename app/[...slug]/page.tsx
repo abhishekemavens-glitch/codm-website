@@ -243,6 +243,7 @@ export default async function WordPressPage({
   const hasContent =
   slug.length === 1 &&
   slug[0] !== "case-studies" &&
+  slug[0] !== "insights" &&
   Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
 
   const showTestimonials =
