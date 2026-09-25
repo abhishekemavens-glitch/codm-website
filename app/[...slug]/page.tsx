@@ -239,7 +239,10 @@ export default async function WordPressPage({
   const image = page.featuredImage?.node;
 
   /* only render the WordPress body if it has real text in it */
-  const hasContent = Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
+  const hasContent =
+  slug.length === 1 &&
+  slug[0] !== "case-studies" &&
+  Boolean(page.content?.replace(/<[^>]*>/g, "").trim());
 
   const showTestimonials =
     slug.length === 1 && PAGES_WITH_TESTIMONIALS.includes(slug[0]);
