@@ -7843,9 +7843,7 @@ img.codm-footer-logo {
   box-sizing: border-box;
 }
 
-.case-study-link:hover {
-  text-decoration: underline;
-}
+
 
 .case-studies-pagination {
   display: flex;
