@@ -35,7 +35,7 @@ const PAGES_WITH_SERVICES_SECTIONS = ["services"];
 const PAGES_WITH_CASE_STUDIES_GRID = ["case-studies"];
 
 /* WordPress slugs that should show the closing CTA ("Let's Build") */
-const PAGES_WITH_CTA = ["about", "services", "industries", "case-studies"];
+const PAGES_WITH_CTA = ["about", "services", "industries", "case-studies","insights"];
 
 /*
  * Save as: app/[...slug]/page.tsx
