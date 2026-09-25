@@ -15,7 +15,7 @@ import LatestBlogs from "@/components/LatestBlogs"; // Blog
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 
 /* WordPress slugs that should also show the homepage sections */
-const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries"];
+const PAGES_WITH_HOME_SECTIONS = ["about", "services","industries","case-studies"];
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
 const PAGES_WITH_ABOUT_SECTIONS = ["about"];
