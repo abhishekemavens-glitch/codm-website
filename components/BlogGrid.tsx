@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const INITIAL_COUNT = 9;
-const LOAD_MORE_COUNT = 3;
+const PER_PAGE = 12;
 
-type BlogPost = {
+type CaseStudy = {
   id: string;
   title: string;
   uri: string;
@@ -20,16 +19,18 @@ type BlogPost = {
   } | null;
 
   categories?: {
-    nodes: {
-      name: string;
-    }[];
+    nodes: { name: string }[];
+  } | null;
+
+  tags?: {
+    nodes: { name: string }[];
   } | null;
 };
 
 type PostsResponse = {
   data?: {
     posts?: {
-      nodes: BlogPost[];
+      nodes: CaseStudy[];
       pageInfo: {
         hasNextPage: boolean;
         endCursor: string | null;
@@ -39,67 +40,39 @@ type PostsResponse = {
   errors?: unknown;
 };
 
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-function stripHtml(html: string) {
-  return html
-    .replace(/<[^>]*>/g, "")
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
-    .replace(/&amp;/g, "&")
-    .trim();
-}
-
-function truncateText(text: string, length = 140) {
-  if (text.length <= length) return text;
-
-  return `${text.slice(0, length).trim()}...`;
-}
-
-export default function BlogGrid() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+export default function CaseStudiesGrid() {
+  const [items, setItems] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const [visibleCount, setVisibleCount] =
-    useState(INITIAL_COUNT);
-
-  const [hasNextPage, setHasNextPage] =
-    useState(false);
-
-  const [endCursor, setEndCursor] =
-    useState<string | null>(null);
+  /*
+   * -----------------------------------------
+   * LOAD ALL CASE STUDIES
+   * -----------------------------------------
+   */
 
   useEffect(() => {
-    async function fetchPosts() {
+    async function fetchAllPosts() {
       try {
-        const response = await fetch(
-          "/api/wordpress",
-          {
+        const allItems: CaseStudy[] = [];
+
+        let hasNextPage = true;
+        let after: string | null = null;
+
+        while (hasNextPage) {
+          const response = await fetch("/api/wordpress", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
               query: `
-                query LatestBlogs {
+                query AllPosts($after: String) {
                   posts(
-                    first: 12
+                    first: 100
+                    after: $after
                     where: {
                       status: PUBLISH
-                      orderby: {
-                        field: DATE
-                        order: DESC
-                      }
                     }
                   ) {
                     nodes {
@@ -121,6 +94,12 @@ export default function BlogGrid() {
                           name
                         }
                       }
+
+                      tags {
+                        nodes {
+                          name
+                        }
+                      }
                     }
 
                     pageInfo {
@@ -130,322 +109,366 @@ export default function BlogGrid() {
                   }
                 }
               `,
+
+              variables: {
+                after,
+              },
             }),
+          });
+
+          if (!response.ok) {
+            throw new Error(
+              `WordPress request failed: ${response.status}`
+            );
           }
-        );
 
-        if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
+          const result: PostsResponse = await response.json();
+
+          if (result.errors) {
+            console.error("GraphQL Error:", result.errors);
+            break;
+          }
+
+          const posts = result.data?.posts;
+
+          if (!posts) {
+            break;
+          }
+
+          allItems.push(...posts.nodes);
+
+          hasNextPage = posts.pageInfo.hasNextPage;
+          after = posts.pageInfo.endCursor;
+
+          if (hasNextPage && !after) {
+            console.error(
+              "WordPress returned hasNextPage=true but no cursor."
+            );
+            break;
+          }
         }
 
-        const result: PostsResponse =
-          await response.json();
-
-        if (result.errors) {
-          console.error(
-            "GraphQL Error (Latest Blogs):",
-            result.errors
-          );
-          return;
-        }
-
-        const blogPosts =
-          result.data?.posts;
-
-        if (!blogPosts) {
-          return;
-        }
-
-        setPosts(blogPosts.nodes);
-
-        setHasNextPage(
-          blogPosts.pageInfo.hasNextPage
-        );
-
-        setEndCursor(
-          blogPosts.pageInfo.endCursor
-        );
+        setItems(allItems);
       } catch (error) {
-        console.error(
-          "Unable to load latest blogs:",
-          error
-        );
+        console.error("Unable to load posts:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchPosts();
+    fetchAllPosts();
   }, []);
 
-  async function loadMoreBlogs() {
-    if (visibleCount < posts.length) {
-      setVisibleCount(
-        (previous) =>
-          previous + LOAD_MORE_COUNT
-      );
+  /*
+   * -----------------------------------------
+   * PAGINATION
+   * -----------------------------------------
+   */
 
+  const totalPages = Math.max(
+    1,
+    Math.ceil(items.length / PER_PAGE)
+  );
+
+  const visibleItems = useMemo(() => {
+    const start = (page - 1) * PER_PAGE;
+
+    return items.slice(
+      start,
+      start + PER_PAGE
+    );
+  }, [items, page]);
+
+  function goToPage(newPage: number) {
+    if (newPage < 1 || newPage > totalPages) {
       return;
     }
 
-    if (!hasNextPage || !endCursor) {
-      return;
-    }
+    setPage(newPage);
 
-    setLoadingMore(true);
-
-    try {
-      const response = await fetch(
-        "/api/wordpress",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: `
-              query MoreBlogs($after: String) {
-                posts(
-                  first: 12
-                  after: $after
-                  where: {
-                    status: PUBLISH
-                    orderby: {
-                      field: DATE
-                      order: DESC
-                    }
-                  }
-                ) {
-                  nodes {
-                    id
-                    title
-                    uri
-                    date
-                    excerpt
-
-                    featuredImage {
-                      node {
-                        sourceUrl
-                        altText
-                      }
-                    }
-
-                    categories {
-                      nodes {
-                        name
-                      }
-                    }
-                  }
-
-                  pageInfo {
-                    hasNextPage
-                    endCursor
-                  }
-                }
-              }
-            `,
-            variables: {
-              after: endCursor,
-            },
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `WordPress request failed: ${response.status}`
-        );
-      }
-
-      const result: PostsResponse =
-        await response.json();
-
-      if (result.errors) {
-        console.error(
-          "GraphQL Error (More Blogs):",
-          result.errors
-        );
-        return;
-      }
-
-      const nextPosts =
-        result.data?.posts;
-
-      if (!nextPosts) {
-        return;
-      }
-
-      setPosts((previous) => [
-        ...previous,
-        ...nextPosts.nodes,
-      ]);
-
-      setVisibleCount(
-        (previous) =>
-          previous + LOAD_MORE_COUNT
-      );
-
-      setHasNextPage(
-        nextPosts.pageInfo.hasNextPage
-      );
-
-      setEndCursor(
-        nextPosts.pageInfo.endCursor
-      );
-    } catch (error) {
-      console.error(
-        "Unable to load more blogs:",
-        error
-      );
-    } finally {
-      setLoadingMore(false);
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
-  const visiblePosts =
-    posts.slice(0, visibleCount);
+  function getPageNumbers() {
+    const pages: (number | "ellipsis")[] = [];
+
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    }
+
+    pages.push(1);
+
+    if (page > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(
+      2,
+      page - 1
+    );
+
+    const end = Math.min(
+      totalPages - 1,
+      page + 1
+    );
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (page < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+
+    pages.push(totalPages);
+
+    return pages;
+  }
+
+  /*
+   * -----------------------------------------
+   * LOADING
+   * -----------------------------------------
+   */
 
   if (loading) {
     return (
-      <section className="blog-grid-section">
-        <div className="blog-grid-loading">
-          Loading latest blogs...
+      <section className="case-studies-grid-section">
+        <div className="case-studies-loading">
+          Loading case studies...
         </div>
       </section>
     );
   }
 
-  if (posts.length === 0) {
-    return null;
-  }
+  /*
+   * -----------------------------------------
+   * MAIN
+   * -----------------------------------------
+   */
 
   return (
-    <section className="blog-grid-section">
+    <section className="case-studies-grid-section">
 
-      {/* HEADER */}
+      {/* =========================================
+          CASE STUDIES HEADER
+      ========================================= */}
 
       <div className="blog-grid-header">
 
-        <h2 className="blog-grid-title">
-          Latest Blogs
-        </h2>
+        <div className="blog-grid-heading">
+          <h2>Latest Case Studies</h2>
+        </div>
 
         <a
-          href="/insights"
+          href="/case-studies"
           className="blog-grid-view-all"
         >
-          View All Blogs
+          View All Case Studies
           <span>→</span>
         </a>
 
       </div>
 
-      {/* GRID */}
+      {/* =========================================
+          GRID / EMPTY STATE
+      ========================================= */}
 
-      <div className="blog-grid">
+      {items.length === 0 ? (
+        <div className="case-studies-loading">
+          No case studies found.
+        </div>
+      ) : (
+        <>
+          <div className="case-studies-grid">
 
-        {visiblePosts.map((post) => {
-          const image =
-            post.featuredImage?.node;
+            {visibleItems.map((item) => (
+              <article
+                className="case-study-card"
+                key={item.id}
+              >
 
-          const category =
-            post.categories?.nodes?.[0]
-              ?.name || "Uncategorized";
+                {/* IMAGE */}
 
-          const excerpt =
-            stripHtml(
-              post.excerpt ?? ""
-            );
+                {item.featuredImage?.node?.sourceUrl && (
+                  <div className="case-study-image">
 
-          return (
-            <article
-              className="blog-card"
-              key={post.id}
+                    <img
+                      src={
+                        item.featuredImage.node.sourceUrl
+                      }
+                      alt={
+                        item.featuredImage.node.altText ||
+                        item.title
+                      }
+                    />
+
+                  </div>
+                )}
+
+                {/* CONTENT */}
+
+                <div className="case-study-content">
+
+                  <div className="case-study-category">
+                    {
+                      item.categories?.nodes[0]?.name ||
+                      "Case Study"
+                    }
+                  </div>
+
+                  <h3>
+                    {item.title}
+                  </h3>
+
+                  {item.excerpt && (
+                    <div
+                      className="case-study-excerpt"
+                      dangerouslySetInnerHTML={{
+                        __html: item.excerpt,
+                      }}
+                    />
+                  )}
+
+                  <a
+                    href={item.uri}
+                    className="case-study-link"
+                  >
+                    Read More
+
+                    <span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </a>
+
+                </div>
+
+              </article>
+            ))}
+
+          </div>
+
+          {/* =========================================
+              PAGINATION
+          ========================================= */}
+
+          {totalPages > 1 && (
+            <nav
+              className="case-studies-pagination"
+              aria-label="Case study pagination"
             >
 
-              {/* IMAGE */}
+              {/* PREVIOUS */}
 
-              <a
-                href={post.uri}
-                className="blog-card-image"
+              <button
+                type="button"
+                onClick={() =>
+                  goToPage(page - 1)
+                }
+                disabled={page === 1}
+                aria-label="Previous page"
               >
-                {image?.sourceUrl ? (
-                  <img
-                    src={image.sourceUrl}
-                    alt={
-                      image.altText ||
-                      post.title
-                    }
-                  />
-                ) : (
-                  <div className="blog-card-image-placeholder" />
-                )}
-              </a>
+                ←
+              </button>
 
-              {/* CONTENT */}
+              {/* PAGE NUMBERS */}
 
-              <div className="blog-card-content">
+              {getPageNumbers().map(
+                (pageNumber, index) => {
 
-                <div className="blog-card-category">
-                  {category}
-                </div>
+                  if (
+                    pageNumber === "ellipsis"
+                  ) {
+                    return (
+                      <span
+                        key={`ellipsis-${index}`}
+                        className="pagination-ellipsis"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
 
-                <div className="blog-card-meta">
-                  {formatDate(post.date)}
-                </div>
+                  return (
+                    <button
+                      type="button"
+                      key={pageNumber}
+                      onClick={() =>
+                        goToPage(pageNumber)
+                      }
+                      className={
+                        pageNumber === page
+                          ? "active"
+                          : ""
+                      }
+                      aria-current={
+                        pageNumber === page
+                          ? "page"
+                          : undefined
+                      }
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                }
+              )}
 
-                <h3 className="blog-card-title">
-                  <a href={post.uri}>
-                    {post.title}
-                  </a>
-                </h3>
+              {/* NEXT */}
 
-                {excerpt && (
-                  <p className="blog-card-excerpt">
-                    {truncateText(excerpt)}
-                  </p>
-                )}
+              <button
+                type="button"
+                onClick={() =>
+                  goToPage(page + 1)
+                }
+                disabled={
+                  page === totalPages
+                }
+                aria-label="Next page"
+              >
+                Next Page
 
-                <a
-                  href={post.uri}
-                  className="blog-card-link"
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden="true"
                 >
-                  Read More
-                  <span>↗</span>
-                </a>
+                  <path
+                    d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
 
-              </div>
+            </nav>
+          )}
 
-            </article>
-          );
-        })}
-
-      </div>
-
-      {/* LOAD MORE */}
-
-      {(visibleCount < posts.length ||
-        hasNextPage) && (
-        <div className="blog-grid-load-more-wrap">
-
-          <button
-            type="button"
-            className="blog-grid-load-more"
-            onClick={loadMoreBlogs}
-            disabled={loadingMore}
-          >
-            {loadingMore
-              ? "Loading..."
-              : "Load More Blogs"}
-
-            {!loadingMore && (
-              <span>→</span>
-            )}
-          </button>
-
-        </div>
+        </>
       )}
 
     </section>
