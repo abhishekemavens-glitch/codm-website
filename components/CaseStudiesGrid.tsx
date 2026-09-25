@@ -17,6 +17,14 @@ type CaseStudy = {
       altText?: string;
     } | null;
   } | null;
+
+  categories?: {
+    nodes: { name: string }[];
+  } | null;
+
+  tags?: {
+    nodes: { name: string }[];
+  } | null;
 };
 
 type PostsResponse = {
@@ -36,6 +44,10 @@ export default function CaseStudiesGrid() {
   const [items, setItems] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState("");
 
   useEffect(() => {
     async function fetchAllPosts() {
@@ -74,6 +86,18 @@ export default function CaseStudiesGrid() {
                           altText
                         }
                       }
+
+                      categories {
+                        nodes {
+                          name
+                        }
+                      }
+
+                      tags {
+                        nodes {
+                          name
+                        }
+                      }
                     }
 
                     pageInfo {
@@ -96,15 +120,10 @@ export default function CaseStudiesGrid() {
             );
           }
 
-          const result: PostsResponse =
-            await response.json();
+          const result: PostsResponse = await response.json();
 
           if (result.errors) {
-            console.error(
-              "GraphQL Error:",
-              result.errors
-            );
-
+            console.error("GraphQL Error:", result.errors);
             break;
           }
 
@@ -116,32 +135,20 @@ export default function CaseStudiesGrid() {
 
           allItems.push(...posts.nodes);
 
-          hasNextPage =
-            posts.pageInfo.hasNextPage;
-
-          after =
-            posts.pageInfo.endCursor;
+          hasNextPage = posts.pageInfo.hasNextPage;
+          after = posts.pageInfo.endCursor;
 
           if (hasNextPage && !after) {
             console.error(
               "WordPress returned hasNextPage=true but no cursor."
             );
-
             break;
           }
         }
 
-        console.log(
-          "TOTAL POSTS LOADED:",
-          allItems.length
-        );
-
         setItems(allItems);
       } catch (error) {
-        console.error(
-          "Unable to load posts:",
-          error
-        );
+        console.error("Unable to load posts:", error);
       } finally {
         setLoading(false);
       }
@@ -152,93 +159,94 @@ export default function CaseStudiesGrid() {
 
   /*
    * -----------------------------------------
+   * FILTER OPTIONS (built from real data)
+   * -----------------------------------------
+   */
+
+  const industryOptions = useMemo(() => {
+    const set = new Set<string>();
+    items.forEach((item) => {
+      item.categories?.nodes.forEach((c) => set.add(c.name));
+    });
+    return Array.from(set).sort();
+  }, [items]);
+
+  const productOptions = useMemo(() => {
+    const set = new Set<string>();
+    items.forEach((item) => {
+      item.tags?.nodes.forEach((t) => set.add(t.name));
+    });
+    return Array.from(set).sort();
+  }, [items]);
+
+  /*
+   * -----------------------------------------
+   * FILTERING
+   * -----------------------------------------
+   */
+
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => {
+      const matchesSearch = searchTerm.trim()
+        ? item.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+          (item.excerpt ?? "")
+            .toLowerCase()
+            .includes(searchTerm.trim().toLowerCase())
+        : true;
+
+      const matchesIndustry = selectedIndustry
+        ? item.categories?.nodes.some((c) => c.name === selectedIndustry)
+        : true;
+
+      const matchesProduct = selectedProduct
+        ? item.tags?.nodes.some((t) => t.name === selectedProduct)
+        : true;
+
+      return matchesSearch && matchesIndustry && matchesProduct;
+    });
+  }, [items, searchTerm, selectedIndustry, selectedProduct]);
+
+  /* reset to page 1 whenever a filter changes */
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, selectedIndustry, selectedProduct]);
+
+  /*
+   * -----------------------------------------
    * PAGINATION
    * -----------------------------------------
    */
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(items.length / PER_PAGE)
-  );
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / PER_PAGE));
 
   const visibleItems = useMemo(() => {
-    const start =
-      (page - 1) * PER_PAGE;
-
-    return items.slice(
-      start,
-      start + PER_PAGE
-    );
-  }, [items, page]);
+    const start = (page - 1) * PER_PAGE;
+    return filteredItems.slice(start, start + PER_PAGE);
+  }, [filteredItems, page]);
 
   function goToPage(newPage: number) {
-    if (
-      newPage < 1 ||
-      newPage > totalPages
-    ) {
-      return;
-    }
-
+    if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  /*
-   * -----------------------------------------
-   * PAGINATION NUMBERS
-   * -----------------------------------------
-   */
-
   function getPageNumbers() {
-    const pages: (
-      | number
-      | "ellipsis"
-    )[] = [];
+    const pages: (number | "ellipsis")[] = [];
 
     if (totalPages <= 7) {
-      for (
-        let i = 1;
-        i <= totalPages;
-        i++
-      ) {
-        pages.push(i);
-      }
-
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
       return pages;
     }
 
     pages.push(1);
+    if (page > 3) pages.push("ellipsis");
 
-    if (page > 3) {
-      pages.push("ellipsis");
-    }
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
 
-    const start = Math.max(
-      2,
-      page - 1
-    );
+    for (let i = start; i <= end; i++) pages.push(i);
 
-    const end = Math.min(
-      totalPages - 1,
-      page + 1
-    );
-
-    for (
-      let i = start;
-      i <= end;
-      i++
-    ) {
-      pages.push(i);
-    }
-
-    if (page < totalPages - 2) {
-      pages.push("ellipsis");
-    }
-
+    if (page < totalPages - 2) pages.push("ellipsis");
     pages.push(totalPages);
 
     return pages;
@@ -253,212 +261,147 @@ export default function CaseStudiesGrid() {
   if (loading) {
     return (
       <section className="case-studies-grid-section">
-        <div className="case-studies-loading">
-          Loading case studies...
-        </div>
+        <div className="case-studies-loading">Loading case studies...</div>
       </section>
     );
   }
-
-  /*
-   * -----------------------------------------
-   * EMPTY
-   * -----------------------------------------
-   */
-
-  if (items.length === 0) {
-    return (
-      <section className="case-studies-grid-section">
-        <div className="case-studies-loading">
-          No case studies available.
-        </div>
-      </section>
-    );
-  }
-
-  /*
-   * -----------------------------------------
-   * RESULTS
-   * -----------------------------------------
-   */
 
   return (
     <section className="case-studies-grid-section">
-
       {/* FILTERS */}
-
       <div className="case-studies-toolbar">
-
         <select
           className="case-studies-filter"
-          defaultValue=""
+          value={selectedIndustry}
+          onChange={(e) => setSelectedIndustry(e.target.value)}
         >
-          <option value="">
-            Industries
-          </option>
+          <option value="">Industries</option>
+          {industryOptions.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
         </select>
 
         <select
           className="case-studies-filter"
-          defaultValue=""
+          value={selectedProduct}
+          onChange={(e) => setSelectedProduct(e.target.value)}
         >
-          <option value="">
-            Salesforce products
-          </option>
+          <option value="">Salesforce products</option>
+          {productOptions.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
         </select>
 
         <div className="case-studies-search">
           <span>⌕</span>
-
           <input
             type="search"
             placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
       </div>
 
-      {/* GRID */}
+      {/* GRID / EMPTY STATE */}
+      {filteredItems.length === 0 ? (
+        <div className="case-studies-loading">
+          No case studies match your filters.
+        </div>
+      ) : (
+        <>
+          <div className="case-studies-grid">
+            {visibleItems.map((item) => (
+              <article className="case-study-card" key={item.id}>
+                {item.featuredImage?.node?.sourceUrl && (
+                  <div className="case-study-image">
+                    <img
+                      src={item.featuredImage.node.sourceUrl}
+                      alt={item.featuredImage.node.altText || item.title}
+                    />
+                  </div>
+                )}
 
-      <div className="case-studies-grid">
+                <div className="case-study-content">
+                  <div className="case-study-category">
+                    {item.categories?.nodes[0]?.name || "Case Study"}
+                  </div>
 
-        {visibleItems.map((item) => (
-          <article
-            className="case-study-card"
-            key={item.id}
-          >
+                  <h3>{item.title}</h3>
 
-            {/* IMAGE */}
+                  {item.excerpt && (
+                    <div
+                      className="case-study-excerpt"
+                      dangerouslySetInnerHTML={{
+                        __html: item.excerpt,
+                      }}
+                    />
+                  )}
 
-            {item.featuredImage?.node?.sourceUrl && (
-              <div className="case-study-image">
-                <img
-                  src={
-                    item.featuredImage.node.sourceUrl
-                  }
-                  alt={
-                    item.featuredImage.node.altText ||
-                    item.title
-                  }
-                />
-              </div>
-            )}
+                  <a href={item.uri} className="case-study-link">
+                    Read More
+                    <span>→</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
 
-            {/* CONTENT */}
-
-            <div className="case-study-content">
-
-              <div className="case-study-category">
-                Case Study
-              </div>
-
-              <h3>{item.title}</h3>
-
-              {item.excerpt && (
-                <div
-                  className="case-study-excerpt"
-                  dangerouslySetInnerHTML={{
-                    __html: item.excerpt,
-                  }}
-                />
-              )}
-
-              <a
-                href={item.uri}
-                className="case-study-link"
+          {totalPages > 1 && (
+            <nav
+              className="case-studies-pagination"
+              aria-label="Case study pagination"
+            >
+              <button
+                type="button"
+                onClick={() => goToPage(page - 1)}
+                disabled={page === 1}
+                aria-label="Previous page"
               >
-                Read More
-                <span>→</span>
-              </a>
+                ←
+              </button>
 
-            </div>
+              {getPageNumbers().map((pageNumber, index) => {
+                if (pageNumber === "ellipsis") {
+                  return (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="pagination-ellipsis"
+                    >
+                      ...
+                    </span>
+                  );
+                }
 
-          </article>
-        ))}
-
-      </div>
-
-      {/* PAGINATION */}
-
-      {totalPages > 1 && (
-        <nav
-          className="case-studies-pagination"
-          aria-label="Case study pagination"
-        >
-
-          {/* PREVIOUS */}
-
-          <button
-            type="button"
-            onClick={() =>
-              goToPage(page - 1)
-            }
-            disabled={page === 1}
-            aria-label="Previous page"
-          >
-            ←
-          </button>
-
-          {/* PAGE NUMBERS */}
-
-          {getPageNumbers().map(
-            (pageNumber, index) => {
-
-              if (
-                pageNumber === "ellipsis"
-              ) {
                 return (
-                  <span
-                    key={`ellipsis-${index}`}
-                    className="pagination-ellipsis"
+                  <button
+                    type="button"
+                    key={pageNumber}
+                    onClick={() => goToPage(pageNumber)}
+                    className={pageNumber === page ? "active" : ""}
+                    aria-current={pageNumber === page ? "page" : undefined}
                   >
-                    ...
-                  </span>
+                    {pageNumber}
+                  </button>
                 );
-              }
+              })}
 
-              return (
-                <button
-                  type="button"
-                  key={pageNumber}
-                  onClick={() =>
-                    goToPage(pageNumber)
-                  }
-                  className={
-                    pageNumber === page
-                      ? "active"
-                      : ""
-                  }
-                  aria-current={
-                    pageNumber === page
-                      ? "page"
-                      : undefined
-                  }
-                >
-                  {pageNumber}
-                </button>
-              );
-            }
+              <button
+                type="button"
+                onClick={() => goToPage(page + 1)}
+                disabled={page === totalPages}
+                aria-label="Next page"
+              >
+                Next Page →
+              </button>
+            </nav>
           )}
-
-          {/* NEXT */}
-
-          <button
-            type="button"
-            onClick={() =>
-              goToPage(page + 1)
-            }
-            disabled={
-              page === totalPages
-            }
-            aria-label="Next page"
-          >
-            Next Page →
-          </button>
-
-        </nav>
+        </>
       )}
-
     </section>
   );
 }
