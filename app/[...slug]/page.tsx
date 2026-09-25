@@ -20,8 +20,8 @@ import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid
 const PAGES_WITH_TESTIMONIALS = ["about", "services", "industries"];
 
 /* WordPress slugs that should show the Blog section
-   ("case-studies" included — it now shows alongside the grid) */
-const PAGES_WITH_BLOG = ["about", "services", "industries", "case-studies"];
+   ("case-studies" removed — that page shows only its own paginated grid) */
+const PAGES_WITH_BLOG = ["about", "services", "industries"];
 
 /* WordPress slugs that should show the About-only sections
    (CODM Story, Our Purpose, What We Do, Our Excellence) */
