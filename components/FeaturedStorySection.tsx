@@ -8,9 +8,9 @@ const AUTOPLAY_DELAY = 6000;
 type WpFeaturedPost = {
   id: string;
   title: string;
+  content: string | null;
   uri: string;
   date: string;
-  content: string | null;
   badge: string | null;
   readTime: string | null;
   featuredImage?: {
@@ -46,11 +46,9 @@ function stripHtml(html: string): string {
   return html
     .replace(/<[^>]*>/g, "")
     .replace(/&#8217;/g, "'")
-    .replace(/&#8216;/g, "'")
     .replace(/&#8220;/g, '"')
     .replace(/&#8221;/g, '"')
     .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
     .trim();
 }
 
@@ -111,10 +109,6 @@ export default function FeaturedStorySection() {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-
         const result: FeaturedPostsResponse = await response.json();
 
         if (result.errors) {
@@ -135,11 +129,7 @@ export default function FeaturedStorySection() {
 
           date: formatDate(post.date),
 
-          readTime:
-            post.readTime &&
-            post.readTime !== "Read Full Article"
-              ? post.readTime
-              : "",
+          readTime: post.readTime || "",
 
           title: post.title,
 
@@ -200,7 +190,7 @@ export default function FeaturedStorySection() {
   return (
     <section className="featured-story-section">
 
-      {/* HEADER */}
+      {/* HEADING */}
       <div className="featured-story-eyebrow">
         <span className="featured-story-eyebrow-line" />
 
@@ -209,7 +199,7 @@ export default function FeaturedStorySection() {
         <span className="featured-story-eyebrow-line" />
       </div>
 
-      {/* FEATURED STORY */}
+      {/* MAIN CARD */}
       <div className="featured-story-card">
 
         {/* IMAGE */}
@@ -232,49 +222,56 @@ export default function FeaturedStorySection() {
         {/* CONTENT */}
         <div className="featured-story-content">
 
+          {/* META */}
           <div className="featured-story-meta">
 
-            <span>{story.date}</span>
+            <span>
+              {story.date}
+            </span>
 
             {story.readTime && (
               <>
-                <span className="featured-story-dot">
+                <span className="featured-story-meta-dot">
                   •
                 </span>
 
-                <span>{story.readTime}</span>
+                <span>
+                  {story.readTime}
+                </span>
               </>
             )}
 
           </div>
 
+          {/* TITLE */}
           <h2 className="featured-story-title">
             {story.title}
           </h2>
 
+          {/* DESCRIPTION */}
           {story.excerpt && (
             <p className="featured-story-excerpt">
               {story.excerpt}
             </p>
           )}
 
+          {/* BUTTON */}
           <a
             href={story.uri}
             className="featured-story-cta"
           >
             <span>Read Full Article</span>
-            <span aria-hidden="true">→</span>
+            <span>→</span>
           </a>
 
         </div>
       </div>
 
-      {/* SLIDER DOTS */}
+      {/* DOTS */}
       {total > 1 && (
         <div
           className="featured-story-dots"
           role="tablist"
-          aria-label="Featured stories"
         >
           {stories.map((storyItem, index) => (
             <button
@@ -290,7 +287,9 @@ export default function FeaturedStorySection() {
                   ? "featured-story-dot-btn active"
                   : "featured-story-dot-btn"
               }
-              onClick={() => setActiveIndex(index)}
+              onClick={() =>
+                setActiveIndex(index)
+              }
             />
           ))}
         </div>
