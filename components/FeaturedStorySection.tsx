@@ -110,7 +110,8 @@ export default function FeaturedStorySection() {
           }),
         });
 
-        const result: FeaturedPostsResponse = await response.json();
+        const result: FeaturedPostsResponse =
+          await response.json();
 
         if (result.errors) {
           console.error(
@@ -125,22 +126,14 @@ export default function FeaturedStorySection() {
 
         const mapped: FeaturedStory[] = nodes.map((post) => ({
           id: post.id,
-
           badge: post.badge || "Insight",
-
           date: formatDate(post.date),
-
           readTime: post.readTime || "",
-
           title: post.title,
-
           excerpt: stripHtml(post.content ?? ""),
-
           uri: post.uri,
-
           imageUrl:
             post.featuredImage?.node?.sourceUrl ?? null,
-
           imageAlt:
             post.featuredImage?.node?.altText ||
             post.title,
@@ -172,6 +165,9 @@ export default function FeaturedStorySection() {
     return () => clearInterval(timer);
   }, [total]);
 
+  /*
+   * LOADING
+   */
   if (loading) {
     return (
       <section className="featured-story-section">
@@ -182,6 +178,9 @@ export default function FeaturedStorySection() {
     );
   }
 
+  /*
+   * NO STORIES
+   */
   if (total === 0) {
     return null;
   }
@@ -189,117 +188,136 @@ export default function FeaturedStorySection() {
   const story = stories[activeIndex];
 
   return (
-     <div style={{ backgroundColor: "#F1F5F9" }}
-  >
-   <section
-    className="featured-story-section">
+    <div
+      style={{
+        backgroundColor: "#F1F5F9",
+      }}
+    >
+      <section className="featured-story-section">
 
-      {/* HEADING */}
-      <div className="featured-story-heading">
-  <SectionHeading
-    eyebrow="Featured Story"
-    title=""
-    gradientText=""
-  />
-</div>
+        {/* =========================================
+            HEADING
+        ========================================= */}
 
-      {/* MAIN CARD */}
-      <div className="featured-story-card">
-
-        {/* IMAGE */}
-        <div className="featured-story-image-wrap">
-
-          {story.imageUrl && (
-            <img
-              src={story.imageUrl}
-              alt={story.imageAlt}
-              className="featured-story-image"
-            />
-          )}
-
-          <span className="featured-story-badge">
-            {story.badge}
-          </span>
-
+        <div className="featured-story-heading">
+          <SectionHeading
+            eyebrow="Featured Story"
+            title=""
+            gradientText=""
+          />
         </div>
 
-        {/* CONTENT */}
-        <div className="featured-story-content">
+        {/* =========================================
+            MAIN CARD
+        ========================================= */}
 
-          {/* META */}
-          <div className="featured-story-meta">
+        <div className="featured-story-card">
 
-            <span>
-              {story.date}
-            </span>
+          {/* IMAGE */}
 
-            {story.readTime && (
-              <>
-                <span className="featured-story-meta-dot">
-                  •
-                </span>
+          <div className="featured-story-image-wrap">
 
-                <span>
-                  {story.readTime}
-                </span>
-              </>
+            {story.imageUrl && (
+              <img
+                src={story.imageUrl}
+                alt={story.imageAlt}
+                className="featured-story-image"
+              />
             )}
+
+            <span className="featured-story-badge">
+              {story.badge}
+            </span>
 
           </div>
 
-          {/* TITLE */}
-          <h2 className="featured-story-title">
-            {story.title}
-          </h2>
+          {/* CONTENT */}
 
-          {/* DESCRIPTION */}
-          {story.excerpt && (
-            <p className="featured-story-excerpt">
-              {story.excerpt}
-            </p>
-          )}
+          <div className="featured-story-content">
 
-          {/* BUTTON */}
-          <a
-            href={story.uri}
-            className="featured-story-cta"
+            {/* META */}
+
+            <div className="featured-story-meta">
+
+              <span>
+                {story.date}
+              </span>
+
+              {story.readTime && (
+                <>
+                  <span className="featured-story-meta-dot">
+                    •
+                  </span>
+
+                  <span>
+                    {story.readTime}
+                  </span>
+                </>
+              )}
+
+            </div>
+
+            {/* TITLE */}
+
+            <h2 className="featured-story-title">
+              {story.title}
+            </h2>
+
+            {/* DESCRIPTION */}
+
+            {story.excerpt && (
+              <p className="featured-story-excerpt">
+                {story.excerpt}
+              </p>
+            )}
+
+            {/* BUTTON */}
+
+            <a
+              href={story.uri}
+              className="featured-story-cta"
+            >
+              <span>Read Full Article</span>
+              <span>→</span>
+            </a>
+
+          </div>
+        </div>
+
+        {/* =========================================
+            DOTS
+        ========================================= */}
+
+        {total > 1 && (
+          <div
+            className="featured-story-dots"
+            role="tablist"
           >
-            <span>Read Full Article</span>
-            <span>→</span>
-          </a>
+            {stories.map((storyItem, index) => (
+              <button
+                key={storyItem.id}
+                type="button"
+                role="tab"
+                aria-selected={
+                  index === activeIndex
+                }
+                aria-label={`Show featured story ${
+                  index + 1
+                }`}
+                className={
+                  index === activeIndex
+                    ? "featured-story-dot-btn active"
+                    : "featured-story-dot-btn"
+                }
+                onClick={() =>
+                  setActiveIndex(index)
+                }
+              />
+            ))}
+          </div>
+        )}
 
-        </div>
-      </div>
-
-      {/* DOTS */}
-      {total > 1 && (
-        <div
-          className="featured-story-dots"
-          role="tablist"
-        >
-          {stories.map((storyItem, index) => (
-            <button
-              key={storyItem.id}
-              type="button"
-              role="tab"
-              aria-selected={index === activeIndex}
-              aria-label={`Show featured story ${
-                index + 1
-              }`}
-              className={
-                index === activeIndex
-                  ? "featured-story-dot-btn active"
-                  : "featured-story-dot-btn"
-              }
-              onClick={() =>
-                setActiveIndex(index)
-              }
-            />
-          ))}
-        </div>
-      )}
-
-    </section>
-         </div>
+      </section>
+    </div>
   );
 }
