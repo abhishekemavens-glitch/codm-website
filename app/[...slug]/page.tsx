@@ -17,7 +17,7 @@ import BlogGrid from "@/components/BlogGrid";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
-/* WordPress slugs that should show the Testimonial section
+/* WordPress slugs that should show the Testimonial section 
    (kept off "case-studies") */
 const PAGES_WITH_TESTIMONIALS = ["about", "services", "industries"];
 
