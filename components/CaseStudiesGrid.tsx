@@ -9,7 +9,6 @@ type CaseStudy = {
   title: string;
   uri: string;
   date: string;
-
   excerpt?: string | null;
 
   featuredImage?: {
@@ -20,9 +19,9 @@ type CaseStudy = {
   } | null;
 };
 
-type CaseStudyResponse = {
+type PostsResponse = {
   data?: {
-    caseStudies?: {
+    posts?: {
       nodes: CaseStudy[];
       pageInfo: {
         hasNextPage: boolean;
@@ -39,7 +38,7 @@ export default function CaseStudiesGrid() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    async function fetchAllCaseStudies() {
+    async function fetchAllPosts() {
       try {
         const allItems: CaseStudy[] = [];
 
@@ -54,8 +53,8 @@ export default function CaseStudiesGrid() {
             },
             body: JSON.stringify({
               query: `
-                query AllCaseStudies($after: String) {
-                  caseStudies(
+                query AllPosts($after: String) {
+                  posts(
                     first: 100
                     after: $after
                     where: {
@@ -67,7 +66,6 @@ export default function CaseStudiesGrid() {
                       title
                       uri
                       date
-
                       excerpt
 
                       featuredImage {
@@ -98,7 +96,7 @@ export default function CaseStudiesGrid() {
             );
           }
 
-          const result: CaseStudyResponse =
+          const result: PostsResponse =
             await response.json();
 
           if (result.errors) {
@@ -110,26 +108,23 @@ export default function CaseStudiesGrid() {
             break;
           }
 
-          const caseStudies =
-            result.data?.caseStudies;
+          const posts = result.data?.posts;
 
-          if (!caseStudies) {
+          if (!posts) {
             break;
           }
 
-          allItems.push(
-            ...caseStudies.nodes
-          );
+          allItems.push(...posts.nodes);
 
           hasNextPage =
-            caseStudies.pageInfo.hasNextPage;
+            posts.pageInfo.hasNextPage;
 
           after =
-            caseStudies.pageInfo.endCursor;
+            posts.pageInfo.endCursor;
 
           if (hasNextPage && !after) {
             console.error(
-              "GraphQL says there is another page but no cursor was returned."
+              "WordPress returned hasNextPage=true but no cursor."
             );
 
             break;
@@ -137,14 +132,14 @@ export default function CaseStudiesGrid() {
         }
 
         console.log(
-          "TOTAL CASE STUDIES:",
+          "TOTAL POSTS LOADED:",
           allItems.length
         );
 
         setItems(allItems);
       } catch (error) {
         console.error(
-          "Unable to load case studies:",
+          "Unable to load posts:",
           error
         );
       } finally {
@@ -152,7 +147,7 @@ export default function CaseStudiesGrid() {
       }
     }
 
-    fetchAllCaseStudies();
+    fetchAllPosts();
   }, []);
 
   /*
@@ -194,7 +189,7 @@ export default function CaseStudiesGrid() {
 
   /*
    * -----------------------------------------
-   * PAGE NUMBERS
+   * PAGINATION NUMBERS
    * -----------------------------------------
    */
 
@@ -222,7 +217,11 @@ export default function CaseStudiesGrid() {
       pages.push("ellipsis");
     }
 
-    const start = Math.max(2, page - 1);
+    const start = Math.max(
+      2,
+      page - 1
+    );
+
     const end = Math.min(
       totalPages - 1,
       page + 1
@@ -286,7 +285,7 @@ export default function CaseStudiesGrid() {
   return (
     <section className="case-studies-grid-section">
 
-      {/* FILTER / SEARCH AREA */}
+      {/* FILTERS */}
 
       <div className="case-studies-toolbar">
 
@@ -324,7 +323,6 @@ export default function CaseStudiesGrid() {
       <div className="case-studies-grid">
 
         {visibleItems.map((item) => (
-
           <article
             className="case-study-card"
             key={item.id}
@@ -334,7 +332,6 @@ export default function CaseStudiesGrid() {
 
             {item.featuredImage?.node?.sourceUrl && (
               <div className="case-study-image">
-
                 <img
                   src={
                     item.featuredImage.node.sourceUrl
@@ -344,7 +341,6 @@ export default function CaseStudiesGrid() {
                     item.title
                   }
                 />
-
               </div>
             )}
 
@@ -356,9 +352,7 @@ export default function CaseStudiesGrid() {
                 Case Study
               </div>
 
-              <h3>
-                {item.title}
-              </h3>
+              <h3>{item.title}</h3>
 
               {item.excerpt && (
                 <div
@@ -380,7 +374,6 @@ export default function CaseStudiesGrid() {
             </div>
 
           </article>
-
         ))}
 
       </div>
@@ -388,7 +381,6 @@ export default function CaseStudiesGrid() {
       {/* PAGINATION */}
 
       {totalPages > 1 && (
-
         <nav
           className="case-studies-pagination"
           aria-label="Case study pagination"
@@ -407,7 +399,7 @@ export default function CaseStudiesGrid() {
             ←
           </button>
 
-          {/* NUMBERS */}
+          {/* PAGE NUMBERS */}
 
           {getPageNumbers().map(
             (pageNumber, index) => {
@@ -459,12 +451,12 @@ export default function CaseStudiesGrid() {
             disabled={
               page === totalPages
             }
+            aria-label="Next page"
           >
             Next Page →
           </button>
 
         </nav>
-
       )}
 
     </section>
