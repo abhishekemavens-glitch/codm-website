@@ -7719,23 +7719,21 @@ img.codm-footer-logo {
 }
 
 .case-study-category {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #6c5ce7;
-  margin-bottom: 8px;
+	color: #6B7388;
+	margin-bottom: 8px;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .case-study-excerpt {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #6b7280;
-  margin: 0 0 16px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+	color: #6B7890;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	margin: 0 0 16px;
+	font-size: 16px;
+	line-height: 20px;
+	display: -webkit-box;
+	overflow: hidden;
 }
 
 .pagination-ellipsis {
@@ -7811,22 +7809,38 @@ img.codm-footer-logo {
 }
 
 .case-study-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0 0 12px;
-  color: #111827;
+	color: #475569;
+	margin: 0 0 12px;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 26px;
 }
 
 .case-study-link {
-  display: inline-flex;
+  color: #8A7BFF;
+  display: inline-flex !important;
+  width: fit-content !important;
+  max-width: max-content !important;
+  flex: 0 0 auto !important;
+  align-self: flex-start !important;
+
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 20px;
+  padding: 9px 16px;
+
+  font-size: 16px;
   font-weight: 500;
-  color: #6c5ce7;
+  line-height: 1;
+
   text-decoration: none;
-  margin-top: auto;
+
+  border: 1px solid #8A7BFF !important;
+  border-radius: 30px;
+
+  box-sizing: border-box;
 }
 
 .case-study-link:hover {
