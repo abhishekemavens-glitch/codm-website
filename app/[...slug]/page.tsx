@@ -333,15 +333,15 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {showBlog && (
-        <div className="relative z-10">
-          <LatestBlogs />
-        </div>
-      )}
-
       {showCaseStudiesGrid && (
         <div className="relative z-10">
           <CaseStudiesGrid />
+        </div>
+      )}
+
+      {showBlog && (
+        <div className="relative z-10">
+          <LatestBlogs />
         </div>
       )}
 
