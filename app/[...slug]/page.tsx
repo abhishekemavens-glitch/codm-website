@@ -11,7 +11,7 @@ import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
-import LatestBlogs from "@/components/LatestBlogs"; // Blog
+import BlogGrid from "@/components/BlogGrid";
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
@@ -263,6 +263,9 @@ export default async function WordPressPage({
 
    /* true only on /insights — shows the Featured Story section */
 const showFeaturedStory =
+  slug.length === 1 && slug[0] === "insights";
+
+   const showBlogGrid =
   slug.length === 1 && slug[0] === "insights";
 
   /* controls the closing "Let's Build" CTA independently of Testimonial/Blog */
