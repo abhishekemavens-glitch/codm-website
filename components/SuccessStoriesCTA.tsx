@@ -86,7 +86,21 @@ export default async function SuccessStoriesCTA() {
                 className="mt-6 inline-flex h-[46px] items-center gap-2 rounded-full bg-[#4b3fce] px-6 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
               >
                 {data.buttonText}
-                <span aria-hidden="true">→</span>
+                <span aria-hidden="true"> <svg
+  width="18"
+  height="18"
+  viewBox="0 0 14 14"
+  fill="none"
+  aria-hidden="true"
+>
+  <path
+    d="M3 7H11M7.5 3.5L11 7L7.5 10.5"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg> </span>
               </Link>
             )}
           </div>
