@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SectionHeading from "@/components/SectionHeading";
 
-const INITIAL_COUNT = 9;
+const INITIAL_COUNT = 9; 
 const LOAD_MORE_COUNT = 3;
 
 type BlogPost = {
