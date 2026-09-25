@@ -193,7 +193,11 @@ export default function FeaturedStorySection() {
 
       {/* HEADING */}
       <div className="featured-story-heading">
-  <SectionHeading eyebrow="Featured Story" />
+  <SectionHeading
+    eyebrow="Featured Story"
+    title=""
+    gradientText=""
+  />
 </div>
 
       {/* MAIN CARD */}
