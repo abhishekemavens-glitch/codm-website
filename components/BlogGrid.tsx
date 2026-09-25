@@ -272,8 +272,8 @@ export default function CaseStudiesGrid() {
      <a href="/insights" className="blog-grid-view-all">
   View All Blogs
 <svg
-  width="14"
-  height="14"
+  width="18"
+  height="18"
   viewBox="0 0 14 14"
   fill="none"
   aria-hidden="true"
@@ -357,21 +357,21 @@ export default function CaseStudiesGrid() {
                     Read More
 
                     <span>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                     <svg
+  width="18"
+  height="18"
+  viewBox="0 0 14 14"
+  fill="none"
+  aria-hidden="true"
+>
+  <path
+    d="M3 7H11M7.5 3.5L11 7L7.5 10.5"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg>
                     </span>
                   </a>
 
