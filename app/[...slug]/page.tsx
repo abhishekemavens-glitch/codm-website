@@ -13,6 +13,7 @@ import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials"; // Testimonial
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
+import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
 import ContactCTA from "@/components/ContactCTA"; // Let's Build
 import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
 
@@ -368,7 +369,12 @@ const showBlogGrid = isInsightsPage;
     <BlogGrid />
   </div>
 )}
-      
+
+{/* SUCCESS STORIES CTA */}
+<div className="relative z-10">
+  <SuccessStoriesCTA />
+</div>
+       
       {showCTA && (
         <div className="relative z-10">
           <ContactCTA />
