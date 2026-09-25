@@ -77,7 +77,6 @@ export default function CaseStudiesGrid() {
 
   return (
     <section className="case-studies-grid-section">
-     
       {loading ? (
         <div className="case-studies-loading">Loading case studies...</div>
       ) : items.length === 0 ? (
