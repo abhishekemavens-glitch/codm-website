@@ -22,6 +22,7 @@ import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
 
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
+import LatestBlogs from "@/components/LatestBlogs";
 
 /* =========================================================
    PAGE CONFIGURATION
