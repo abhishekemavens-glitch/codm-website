@@ -5,7 +5,9 @@ import Link from "next/link";
  *
  * Compact CTA banner: heading, description, button, and a decorative
  * line-chart graphic on the right. Fetches its own content from the
- * "Success Stories CTA" custom post type.
+ * "Success Stories CTA" custom post type. Theme-aware colors live in
+ * CSS via .codm-success-cta-* classes -- see the [data-theme="dark"]
+ * overrides in the shared stylesheet.
  */
 
 const WORDPRESS_GRAPHQL_URL =
@@ -65,17 +67,17 @@ export default async function SuccessStoriesCTA() {
   return (
     <section className="px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
-        <div className="relative grid items-center overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#f1eefd_0%,#e6e0fb_55%,#ddd5fa_100%)] p-8 md:grid-cols-[1.2fr_1fr] md:p-12">
+        <div className="codm-success-cta-card relative grid items-center overflow-hidden rounded-[24px] p-8 md:grid-cols-[1.2fr_1fr] md:p-12">
           {/* ---------- Left: text ---------- */}
           <div className="relative z-10">
             {data.heading && (
-              <h2 className="text-[clamp(22px,2.6vw,30px)] font-medium leading-[1.2] tracking-[-0.02em] text-[#1e2230]">
+              <h2 className="codm-success-cta-heading text-[clamp(22px,2.6vw,30px)] font-medium leading-[1.2] tracking-[-0.02em]">
                 {data.heading}
               </h2>
             )}
 
             {data.description && (
-              <p className="mt-3 max-w-[440px] text-[15px] leading-[1.6] text-[#5b6072]">
+              <p className="codm-success-cta-body mt-3 max-w-[440px] text-[15px] leading-[1.6]">
                 {data.description}
               </p>
             )}
@@ -83,24 +85,10 @@ export default async function SuccessStoriesCTA() {
             {hasButton && (
               <Link
                 href={data.buttonUrl!}
-                className="mt-6 inline-flex h-[46px] items-center gap-2 rounded-full bg-[#4b3fce] px-6 text-[14px] font-medium text-white transition-transform hover:-translate-y-0.5"
+                className="codm-success-cta-button mt-6 inline-flex h-[46px] items-center gap-2 rounded-full px-6 text-[14px] font-medium transition-all hover:-translate-y-0.5"
               >
                 {data.buttonText}
-                <span aria-hidden="true"> <svg
-  width="18"
-  height="18"
-  viewBox="0 0 14 14"
-  fill="none"
-  aria-hidden="true"
->
-  <path
-    d="M3 7H11M7.5 3.5L11 7L7.5 10.5"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  />
-</svg> </span>
+                <span aria-hidden="true">→</span>
               </Link>
             )}
           </div>
@@ -110,7 +98,7 @@ export default async function SuccessStoriesCTA() {
             <svg
               viewBox="0 0 420 160"
               fill="none"
-              className="absolute inset-0 h-full w-full opacity-70"
+              className="codm-success-cta-chart absolute inset-0 h-full w-full opacity-70"
               aria-hidden="true"
             >
               {/* faint vertical bars */}
@@ -123,7 +111,7 @@ export default async function SuccessStoriesCTA() {
                     width="14"
                     height={30 + (i % 4) * 20}
                     rx="3"
-                    fill="#7c6cf0"
+                    style={{ fill: "var(--success-chart-color, #7c6cf0)" }}
                     opacity="0.15"
                   />
                 )
@@ -138,7 +126,7 @@ export default async function SuccessStoriesCTA() {
               {/* main line */}
               <path
                 d="M10 120 L60 90 L110 130 L160 70 L210 100 L260 50 L310 80 L360 20 L410 40"
-                stroke="#4b3fce"
+                style={{ stroke: "var(--success-chart-color, #4b3fce)" }}
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -161,8 +149,10 @@ export default async function SuccessStoriesCTA() {
                   cx={cx}
                   cy={cy}
                   r="4"
-                  fill="#ffffff"
-                  stroke="#4b3fce"
+                  style={{
+                    fill: "var(--success-chart-dot-fill, #ffffff)",
+                    stroke: "var(--success-chart-color, #4b3fce)",
+                  }}
                   strokeWidth="2"
                 />
               ))}
@@ -175,8 +165,20 @@ export default async function SuccessStoriesCTA() {
                   x2="0"
                   y2="1"
                 >
-                  <stop offset="0%" stopColor="#7c6cf0" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#7c6cf0" stopOpacity="0" />
+                  <stop
+                    offset="0%"
+                    style={{
+                      stopColor: "var(--success-chart-color, #7c6cf0)",
+                    }}
+                    stopOpacity="0.25"
+                  />
+                  <stop
+                    offset="100%"
+                    style={{
+                      stopColor: "var(--success-chart-color, #7c6cf0)",
+                    }}
+                    stopOpacity="0"
+                  />
                 </linearGradient>
               </defs>
             </svg>
