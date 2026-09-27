@@ -8630,3 +8630,30 @@ img.codm-footer-logo {
   --success-chart-dot-fill: #0d1023;
 }
  
+.codm-featured-story {
+  background: #f7f8fb;
+}
+
+.codm-featured-story-title,
+.codm-featured-story-heading {
+  color: #1e2230;
+}
+
+.codm-featured-story-meta,
+.codm-featured-story-description {
+  color: #5b6072;
+}
+
+[data-theme="dark"] .codm-featured-story {
+  background: #06081a;
+}
+
+[data-theme="dark"] .codm-featured-story-title,
+[data-theme="dark"] .codm-featured-story-heading {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .codm-featured-story-meta,
+[data-theme="dark"] .codm-featured-story-description {
+  color: #a1a4b3;
+}
