@@ -8657,3 +8657,41 @@ img.codm-footer-logo {
 [data-theme="dark"] .codm-featured-story-description {
   color: #a1a4b3;
 }
+
+
+.codm-featured-story-wrap {
+  background-color: #f1f5f9;
+}
+
+[data-theme="dark"] .codm-featured-story-wrap {
+  background-color: #06081a;
+}
+
+[data-theme="dark"] .featured-story-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .featured-story-excerpt {
+  color: #a1a4b3;
+}
+
+[data-theme="dark"] .featured-story-meta,
+[data-theme="dark"] .featured-story-meta-dot {
+  color: #8890ac;
+}
+
+[data-theme="dark"] .featured-story-badge {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .featured-story-dot-btn {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] .featured-story-dot-btn.active {
+  background-color: #7c6cf0;
+}
+[data-theme="dark"] .featured-story-title {
+  color: #ffffff !important;
+}
