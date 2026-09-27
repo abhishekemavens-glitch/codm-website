@@ -17,31 +17,24 @@ import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials";
 
 import FeaturedStorySection from "@/components/FeaturedStorySection";
-import BlogGrid from "@/components/BlogGrid";
 
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 
 /* =========================================================
+   LATEST BLOGS
+   ========================================================= */
+
+import LatestBlogs from "@/components/LatestBlogs";
+
+/* =========================================================
    PAGE CONFIGURATION
-========================================================= */
+   ========================================================= */
 
 /*
  * Pages with Testimonials
  */
 const PAGES_WITH_TESTIMONIALS = [
-  "about",
-  "services",
-  "industries",
-  "partner",
-];
-
-/*
- * Pages with Latest Blogs
- *
- * BlogGrid itself should display only the latest 3 blogs.
- */
-const PAGES_WITH_BLOG = [
   "about",
   "services",
   "industries",
@@ -90,7 +83,7 @@ const PAGES_WITH_CTA = [
 
 /* =========================================================
    WORDPRESS
-========================================================= */
+   ========================================================= */
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -124,7 +117,7 @@ type WpPage = {
 
 /* =========================================================
    WORDPRESS FETCH
-========================================================= */
+   ========================================================= */
 
 async function wpFetch<T>(
   query: string,
@@ -165,7 +158,7 @@ async function wpFetch<T>(
 
 /* =========================================================
    WORDPRESS URI
-========================================================= */
+   ========================================================= */
 
 function toUri(slug: string[]) {
   return `/${slug.join("/")}/`;
@@ -173,10 +166,11 @@ function toUri(slug: string[]) {
 
 /* =========================================================
    PAGE FIELDS
-========================================================= */
+   ========================================================= */
 
 const PAGE_FIELDS = `
   title
+
   content
 
   featuredImage {
@@ -200,7 +194,7 @@ const PAGE_FIELDS = `
 
 /* =========================================================
    GET PAGE
-========================================================= */
+   ========================================================= */
 
 async function getPage(
   slug: string[]
@@ -233,7 +227,7 @@ async function getPage(
 
 /* =========================================================
    FALLBACK PAGE LOOKUP
-========================================================= */
+   ========================================================= */
 
 async function getPageByFallback(
   slug: string[]
@@ -294,7 +288,7 @@ async function getPageByFallback(
 
 /* =========================================================
    FIX WORDPRESS LINKS
-========================================================= */
+   ========================================================= */
 
 function fixLinks(html: string) {
   return html.replace(
@@ -316,7 +310,7 @@ function fixLinks(html: string) {
 
 /* =========================================================
    STATIC PARAMS
-========================================================= */
+   ========================================================= */
 
 export async function generateStaticParams() {
   const data =
@@ -352,7 +346,7 @@ export async function generateStaticParams() {
 
 /* =========================================================
    METADATA
-========================================================= */
+   ========================================================= */
 
 export async function generateMetadata({
   params,
@@ -374,7 +368,7 @@ export async function generateMetadata({
 
 /* =========================================================
    PAGE
-========================================================= */
+   ========================================================= */
 
 export default async function WordPressPage({
   params,
@@ -426,6 +420,7 @@ export default async function WordPressPage({
    *
    * because these pages are built from React sections.
    */
+
   const hasContent =
     !isInsightsPage &&
     !isPartnerPage &&
@@ -439,11 +434,12 @@ export default async function WordPressPage({
 
   /* =======================================================
      SECTION FLAGS
-  ======================================================= */
+     ======================================================= */
 
   /*
    * ABOUT
    */
+
   const showAboutSections =
     slug.length === 1 &&
     PAGES_WITH_ABOUT_SECTIONS.includes(
@@ -453,6 +449,7 @@ export default async function WordPressPage({
   /*
    * SERVICES
    */
+
   const showServicesSections =
     slug.length === 1 &&
     PAGES_WITH_SERVICES_SECTIONS.includes(
@@ -467,6 +464,7 @@ export default async function WordPressPage({
    * Industries
    * Partner
    */
+
   const showTestimonials =
     slug.length === 1 &&
     PAGES_WITH_TESTIMONIALS.includes(
@@ -474,22 +472,9 @@ export default async function WordPressPage({
     );
 
   /*
-   * LATEST BLOGS
-   *
-   * About
-   * Services
-   * Industries
-   * Partner
-   */
-  const showBlog =
-    slug.length === 1 &&
-    PAGES_WITH_BLOG.includes(
-      currentSlug
-    );
-
-  /*
    * CASE STUDIES
    */
+
   const showCaseStudiesGrid =
     slug.length === 1 &&
     PAGES_WITH_CASE_STUDIES_GRID.includes(
@@ -499,6 +484,7 @@ export default async function WordPressPage({
   /*
    * INSIGHTS FEATURED STORY
    */
+
   const showFeaturedStory =
     slug.length === 1 &&
     PAGES_WITH_FEATURED_STORY.includes(
@@ -508,6 +494,7 @@ export default async function WordPressPage({
   /*
    * LET'S BUILD
    */
+
   const showCTA =
     slug.length === 1 &&
     PAGES_WITH_CTA.includes(
@@ -516,7 +503,7 @@ export default async function WordPressPage({
 
   /* =======================================================
      RENDER
-  ======================================================= */
+     ======================================================= */
 
   return (
     <PageShell>
@@ -551,7 +538,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           ABOUT PAGE
-          
+
           CODM STORY
           OUR PURPOSE
           WHAT WE DO
@@ -591,7 +578,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           SERVICES PAGE
-          
+
           KEY CAPABILITIES
           USE CASES
           SERVICE PROCESS
@@ -628,30 +615,26 @@ export default async function WordPressPage({
 
       {/* =================================================
           PARTNER PAGE
-          
+
           EXACT ORDER:
-          
+
           OUR PURPOSE
           WHAT WE DO
           PRODUCT EXPERIENCE
           TESTIMONIAL
-          BLOG
+          LATEST BLOGS
           LET'S BUILD
       ================================================= */}
 
       {isPartnerPage && (
         <>
-          {/* =============================================
-              OUR PURPOSE
-          ============================================= */}
+          {/* OUR PURPOSE */}
 
           <div className="relative z-10">
             <PurposeSection />
           </div>
 
-          {/* =============================================
-              WHAT WE DO
-          ============================================= */}
+          {/* WHAT WE DO */}
 
           <div
             id="services"
@@ -660,9 +643,7 @@ export default async function WordPressPage({
             <ServicesSection />
           </div>
 
-          {/* =============================================
-              PRODUCT EXPERIENCE
-          ============================================= */}
+          {/* PRODUCT EXPERIENCE */}
 
           <div className="relative z-10">
             <ProductExperience />
@@ -672,7 +653,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           TESTIMONIALS
-          
+
           ABOUT
           SERVICES
           INDUSTRIES
@@ -697,7 +678,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           INSIGHTS
-          
+
           FEATURED STORY
       ================================================= */}
 
@@ -709,32 +690,16 @@ export default async function WordPressPage({
 
       {/* =================================================
           LATEST BLOGS
-          
-          ABOUT
-          SERVICES
-          INDUSTRIES
-          PARTNER
-          
-          BlogGrid should show:
-          - Latest 3 blogs
-          - View All Blogs button
+
+          SHOW ON EVERY PAGE
       ================================================= */}
 
-      {showBlog && (
-        <div className="relative z-10">
-          <BlogGrid />
-        </div>
-      )}
+      <div className="relative z-10">
+        <LatestBlogs />
+      </div>
 
       {/* =================================================
           LET'S BUILD
-          
-          ABOUT
-          SERVICES
-          INDUSTRIES
-          CASE STUDIES
-          INSIGHTS
-          PARTNER
       ================================================= */}
 
       {showCTA && (
