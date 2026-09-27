@@ -3,18 +3,22 @@ import { notFound } from "next/navigation";
 
 import PageShell from "@/components/PageShell";
 import AboutHero from "@/components/AboutHero";
+
 import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection";
 import ExcellenceSection from "@/components/ExcellenceSection";
+
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
+
 import Testimonials from "@/components/Testimonials";
+
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
-import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
+
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 
@@ -22,42 +26,80 @@ import CaseStudiesGrid from "@/components/CaseStudiesGrid";
    PAGE CONFIGURATION
 ========================================================= */
 
-/* Testimonials */
+/*
+ * Pages that show Testimonials
+ */
 const PAGES_WITH_TESTIMONIALS = [
   "about",
   "services",
   "industries",
+  "partner",
 ];
 
-/* Blog section */
+/*
+ * Pages that show Latest Blogs
+ */
 const PAGES_WITH_BLOG = [
   "about",
   "services",
   "industries",
+  "partner",
 ];
 
-/* About sections */
+/*
+ * About-only sections
+ */
 const PAGES_WITH_ABOUT_SECTIONS = [
   "about",
 ];
 
-/* Services sections */
+/*
+ * Services-only sections
+ */
 const PAGES_WITH_SERVICES_SECTIONS = [
   "services",
 ];
 
-/* Case Studies page */
+/*
+ * Case Studies page
+ */
 const PAGES_WITH_CASE_STUDIES_GRID = [
   "case-studies",
 ];
 
-/* Let's Build CTA */
+/*
+ * Pages that show Featured Story
+ */
+const PAGES_WITH_FEATURED_STORY = [
+  "insights",
+];
+
+/*
+ * Pages that show Let's Build CTA
+ */
 const PAGES_WITH_CTA = [
   "about",
   "services",
   "industries",
   "case-studies",
   "insights",
+  "partner",
+];
+
+/*
+ * Partner-only sections
+ *
+ * Partner page:
+ * Hero
+ * Our Purpose
+ * What We Do
+ * Product Experience
+ * Testimonials
+ * Blog
+ * Let's Build
+ */
+const PAGES_WITH_PARTNER_SECTIONS = [
+  "partner",
 ];
 
 /* =========================================================
@@ -85,8 +127,10 @@ type WpPage = {
   aboutHero: {
     headline: string | null;
     description: string | null;
+
     primaryLabel: string | null;
     primaryUrl: string | null;
+
     secondaryLabel: string | null;
     secondaryUrl: string | null;
   } | null;
@@ -159,8 +203,10 @@ const PAGE_FIELDS = `
   aboutHero {
     headline
     description
+
     primaryLabel
     primaryUrl
+
     secondaryLabel
     secondaryUrl
   }
@@ -173,23 +219,24 @@ const PAGE_FIELDS = `
 async function getPage(
   slug: string[]
 ): Promise<WpPage | null> {
-  const data = await wpFetch<{
-    page: WpPage | null;
-  }>(
-    `
-      query GetPage($uri: ID!) {
-        page(
-          id: $uri
-          idType: URI
-        ) {
-          ${PAGE_FIELDS}
+  const data =
+    await wpFetch<{
+      page: WpPage | null;
+    }>(
+      `
+        query GetPage($uri: ID!) {
+          page(
+            id: $uri
+            idType: URI
+          ) {
+            ${PAGE_FIELDS}
+          }
         }
+      `,
+      {
+        uri: toUri(slug),
       }
-    `,
-    {
-      uri: toUri(slug),
-    }
-  );
+    );
 
   if (data?.page) {
     return data.page;
@@ -207,25 +254,26 @@ async function getPageByFallback(
 ): Promise<WpPage | null> {
   const targetUri = toUri(slug);
 
-  const list = await wpFetch<{
-    pages: {
-      nodes: {
-        databaseId: number;
-        uri: string;
-      }[];
-    };
-  }>(
-    `
-      query AllPageUris {
-        pages(first: 200) {
-          nodes {
-            databaseId
-            uri
+  const list =
+    await wpFetch<{
+      pages: {
+        nodes: {
+          databaseId: number;
+          uri: string;
+        }[];
+      };
+    }>(
+      `
+        query AllPageUris {
+          pages(first: 200) {
+            nodes {
+              databaseId
+              uri
+            }
           }
         }
-      }
-    `
-  );
+      `
+    );
 
   const match =
     list?.pages.nodes.find(
@@ -236,23 +284,24 @@ async function getPageByFallback(
     return null;
   }
 
-  const data = await wpFetch<{
-    page: WpPage | null;
-  }>(
-    `
-      query GetPageById($id: ID!) {
-        page(
-          id: $id
-          idType: DATABASE_ID
-        ) {
-          ${PAGE_FIELDS}
+  const data =
+    await wpFetch<{
+      page: WpPage | null;
+    }>(
+      `
+        query GetPageById($id: ID!) {
+          page(
+            id: $id
+            idType: DATABASE_ID
+          ) {
+            ${PAGE_FIELDS}
+          }
         }
+      `,
+      {
+        id: String(match.databaseId),
       }
-    `,
-    {
-      id: String(match.databaseId),
-    }
-  );
+    );
 
   return data?.page ?? null;
 }
@@ -284,25 +333,28 @@ function fixLinks(html: string) {
 ========================================================= */
 
 export async function generateStaticParams() {
-  const data = await wpFetch<{
-    pages: {
-      nodes: {
-        uri: string;
-      }[];
-    };
-  }>(
-    `
-      query AllPages {
-        pages(first: 100) {
-          nodes {
-            uri
+  const data =
+    await wpFetch<{
+      pages: {
+        nodes: {
+          uri: string;
+        }[];
+      };
+    }>(
+      `
+        query AllPages {
+          pages(first: 100) {
+            nodes {
+              uri
+            }
           }
         }
-      }
-    `
-  );
+      `
+    );
 
-  return (data?.pages.nodes ?? [])
+  return (
+    data?.pages.nodes ?? []
+  )
     .map((node) => node.uri)
     .filter((uri) => uri !== "/")
     .map((uri) => ({
@@ -357,21 +409,35 @@ export default async function WordPressPage({
     page.featuredImage?.node;
 
   /* =======================================================
-     PAGE TYPE
+     PAGE FLAGS
   ======================================================= */
 
+  const currentSlug =
+    slug.length === 1
+      ? slug[0].toLowerCase()
+      : "";
+
+  /*
+   * Insights page
+   */
   const isInsightsPage =
-    slug.length === 1 &&
-    slug[0].toLowerCase() === "insights";
+    currentSlug === "insights";
 
-  /* =======================================================
-     WORDPRESS CONTENT
-  ======================================================= */
+  /*
+   * Partner page
+   */
+  const isPartnerPage =
+    currentSlug === "partner";
 
+  /*
+   * WordPress page content
+   *
+   * Do NOT show WordPress body on Insights.
+   */
   const hasContent =
     !isInsightsPage &&
     slug.length === 1 &&
-    slug[0] !== "case-studies" &&
+    currentSlug !== "case-studies" &&
     Boolean(
       page.content
         ?.replace(/<[^>]*>/g, "")
@@ -379,81 +445,70 @@ export default async function WordPressPage({
     );
 
   /* =======================================================
-     TESTIMONIALS
-  ======================================================= */
-
-  const showTestimonials =
-    slug.length === 1 &&
-    PAGES_WITH_TESTIMONIALS.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     BLOG
-  ======================================================= */
-
-  const showBlog =
-    slug.length === 1 &&
-    PAGES_WITH_BLOG.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     ABOUT
-  ======================================================= */
-
-  const showAboutSections =
-    slug.length === 1 &&
-    PAGES_WITH_ABOUT_SECTIONS.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     SERVICES
-  ======================================================= */
-
-  const showServicesSections =
-    slug.length === 1 &&
-    PAGES_WITH_SERVICES_SECTIONS.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     CASE STUDIES
-  ======================================================= */
-
-  const showCaseStudiesGrid =
-    slug.length === 1 &&
-    PAGES_WITH_CASE_STUDIES_GRID.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     INSIGHTS
+     SECTION FLAGS
   ======================================================= */
 
   /*
-   * IMPORTANT:
-   * All three of these are ONLY for /insights.
+   * Testimonials
    */
+  const showTestimonials =
+    slug.length === 1 &&
+    PAGES_WITH_TESTIMONIALS.includes(
+      currentSlug
+    );
 
+  /*
+   * Latest Blogs
+   */
+  const showBlog =
+    slug.length === 1 &&
+    PAGES_WITH_BLOG.includes(
+      currentSlug
+    );
+
+  /*
+   * About sections
+   */
+  const showAboutSections =
+    slug.length === 1 &&
+    PAGES_WITH_ABOUT_SECTIONS.includes(
+      currentSlug
+    );
+
+  /*
+   * Services sections
+   */
+  const showServicesSections =
+    slug.length === 1 &&
+    PAGES_WITH_SERVICES_SECTIONS.includes(
+      currentSlug
+    );
+
+  /*
+   * Case Studies grid
+   */
+  const showCaseStudiesGrid =
+    slug.length === 1 &&
+    PAGES_WITH_CASE_STUDIES_GRID.includes(
+      currentSlug
+    );
+
+  /*
+   * Featured Story
+   */
   const showFeaturedStory =
-    isInsightsPage;
+    slug.length === 1 &&
+    PAGES_WITH_FEATURED_STORY.includes(
+      currentSlug
+    );
 
-  const showBlogGrid =
-    isInsightsPage;
-
-  const showSuccessStories =
-    isInsightsPage;
-
-  /* =======================================================
-     CONTACT CTA
-  ======================================================= */
-
+  /*
+   * Let's Build CTA
+   */
   const showCTA =
     slug.length === 1 &&
     PAGES_WITH_CTA.includes(
-      slug[0]
+      currentSlug
     );
 
   /* =======================================================
@@ -492,18 +547,24 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          ABOUT SECTIONS
+          ABOUT PAGE
       ================================================= */}
 
       {showAboutSections && (
         <>
+          {/* CODM STORY */}
+
           <div className="relative z-10">
             <CodmStory />
           </div>
 
+          {/* OUR PURPOSE */}
+
           <div className="relative z-10">
             <PurposeSection />
           </div>
+
+          {/* WHAT WE DO */}
 
           <div
             id="services"
@@ -512,6 +573,8 @@ export default async function WordPressPage({
             <ServicesSection />
           </div>
 
+          {/* OUR EXCELLENCE */}
+
           <div className="relative z-10">
             <ExcellenceSection />
           </div>
@@ -519,22 +582,74 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          SERVICES SECTIONS
+          SERVICES PAGE
       ================================================= */}
 
       {showServicesSections && (
         <>
+          {/* KEY CAPABILITIES */}
+
           <div className="relative z-10">
             <KeyCapabilities />
           </div>
+
+          {/* USE CASES */}
 
           <div className="relative z-10">
             <UseCasesSection />
           </div>
 
+          {/* SERVICE PROCESS */}
+
           <div className="relative z-10">
             <ServiceProcess />
           </div>
+
+          {/* PRODUCT EXPERIENCE */}
+
+          <div className="relative z-10">
+            <ProductExperience />
+          </div>
+        </>
+      )}
+
+      {/* =================================================
+          PARTNER PAGE
+          
+          Required order:
+
+          OUR PURPOSE
+          WHAT WE DO
+          PRODUCT EXPERIENCE
+          TESTIMONIAL
+          BLOG
+          LET'S BUILD
+      ================================================= */}
+
+      {isPartnerPage && (
+        <>
+          {/* =============================================
+              OUR PURPOSE
+          ============================================= */}
+
+          <div className="relative z-10">
+            <PurposeSection />
+          </div>
+
+          {/* =============================================
+              WHAT WE DO
+          ============================================= */}
+
+          <div
+            id="services"
+            className="relative z-10 scroll-mt-24"
+          >
+            <ServicesSection />
+          </div>
+
+          {/* =============================================
+              PRODUCT EXPERIENCE
+          ============================================= */}
 
           <div className="relative z-10">
             <ProductExperience />
@@ -544,6 +659,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           TESTIMONIALS
+
+          About
+          Services
+          Industries
+          Partner
       ================================================= */}
 
       {showTestimonials && (
@@ -553,7 +673,7 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          CASE STUDIES PAGE
+          CASE STUDIES
       ================================================= */}
 
       {showCaseStudiesGrid && (
@@ -573,27 +693,29 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          INSIGHTS — LATEST BLOG / CASE STUDIES
+          LATEST BLOGS
+
+          About
+          Services
+          Industries
+          Partner
       ================================================= */}
 
-      {showBlogGrid && (
+      {showBlog && (
         <div className="relative z-10">
           <BlogGrid />
         </div>
       )}
 
       {/* =================================================
-          INSIGHTS — EXPLORE SUCCESS THROUGH STORIES
-      ================================================= */}
+          LET'S BUILD CTA
 
-      {showSuccessStories && (
-        <div className="relative z-10">
-          <SuccessStoriesCTA />
-        </div>
-      )}
-
-      {/* =================================================
-          LET'S BUILD
+          About
+          Services
+          Industries
+          Case Studies
+          Insights
+          Partner
       ================================================= */}
 
       {showCTA && (
