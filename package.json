@@ -12,7 +12,9 @@
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "framer-motion": "^12.23.24"
+    "framer-motion": "^12.23.24",
+    "gsap": "^3.12.5",
+    "@gsap/react": "^2.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
