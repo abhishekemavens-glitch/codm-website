@@ -14,22 +14,23 @@ import ProductExperience from "@/components/ProductExperience";
 import Testimonials from "@/components/Testimonials";
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
-import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 
-/* =========================================================
-   PAGE CONFIGURATION
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| PAGE CONFIGURATION
+|--------------------------------------------------------------------------
+*/
 
-/* Pages that show Testimonials */
+/* Pages that should show Testimonials */
 const PAGES_WITH_TESTIMONIALS = [
   "about",
   "services",
   "industries",
 ];
 
-/* Pages that show the normal Blog section */
+/* Pages that should show Latest Blogs */
 const PAGES_WITH_BLOG = [
   "about",
   "services",
@@ -46,12 +47,12 @@ const PAGES_WITH_SERVICES_SECTIONS = [
   "services",
 ];
 
-/* Case Studies page */
+/* Case Studies grid */
 const PAGES_WITH_CASE_STUDIES_GRID = [
   "case-studies",
 ];
 
-/* Pages that show the closing Let's Build CTA */
+/* Closing CTA */
 const PAGES_WITH_CTA = [
   "about",
   "services",
@@ -60,9 +61,11 @@ const PAGES_WITH_CTA = [
   "insights",
 ];
 
-/* =========================================================
-   WORDPRESS
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| WORDPRESS
+|--------------------------------------------------------------------------
+*/
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -72,7 +75,6 @@ const WORDPRESS_ORIGIN =
 
 type WpPage = {
   title: string;
-
   content: string | null;
 
   featuredImage: {
@@ -92,9 +94,11 @@ type WpPage = {
   } | null;
 };
 
-/* =========================================================
-   WORDPRESS FETCH
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| WORDPRESS FETCH
+|--------------------------------------------------------------------------
+*/
 
 async function wpFetch<T>(
   query: string,
@@ -133,20 +137,25 @@ async function wpFetch<T>(
   }
 }
 
-/* =========================================================
-   WORDPRESS URI
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| WORDPRESS URI
+|--------------------------------------------------------------------------
+*/
 
 function toUri(slug: string[]) {
   return `/${slug.join("/")}/`;
 }
 
-/* =========================================================
-   PAGE FIELDS
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| PAGE FIELDS
+|--------------------------------------------------------------------------
+*/
 
 const PAGE_FIELDS = `
   title
+
   content
 
   featuredImage {
@@ -166,9 +175,11 @@ const PAGE_FIELDS = `
   }
 `;
 
-/* =========================================================
-   GET PAGE
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| GET PAGE
+|--------------------------------------------------------------------------
+*/
 
 async function getPage(
   slug: string[]
@@ -198,9 +209,11 @@ async function getPage(
   return getPageByFallback(slug);
 }
 
-/* =========================================================
-   FALLBACK PAGE LOOKUP
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| FALLBACK PAGE LOOKUP
+|--------------------------------------------------------------------------
+*/
 
 async function getPageByFallback(
   slug: string[]
@@ -227,10 +240,9 @@ async function getPageByFallback(
     `
   );
 
-  const match =
-    list?.pages.nodes.find(
-      (node) => node.uri === targetUri
-    );
+  const match = list?.pages.nodes.find(
+    (node) => node.uri === targetUri
+  );
 
   if (!match) {
     return null;
@@ -257,9 +269,11 @@ async function getPageByFallback(
   return data?.page ?? null;
 }
 
-/* =========================================================
-   FIX WORDPRESS LINKS
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| FIX WORDPRESS INTERNAL LINKS
+|--------------------------------------------------------------------------
+*/
 
 function fixLinks(html: string) {
   return html.replace(
@@ -279,9 +293,11 @@ function fixLinks(html: string) {
   );
 }
 
-/* =========================================================
-   STATIC PARAMS
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| STATIC PARAMS
+|--------------------------------------------------------------------------
+*/
 
 export async function generateStaticParams() {
   const data = await wpFetch<{
@@ -302,7 +318,9 @@ export async function generateStaticParams() {
     `
   );
 
-  return (data?.pages.nodes ?? [])
+  return (
+    data?.pages.nodes ?? []
+  )
     .map((node) => node.uri)
     .filter((uri) => uri !== "/")
     .map((uri) => ({
@@ -312,9 +330,11 @@ export async function generateStaticParams() {
     }));
 }
 
-/* =========================================================
-   METADATA
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| METADATA
+|--------------------------------------------------------------------------
+*/
 
 export async function generateMetadata({
   params,
@@ -334,9 +354,11 @@ export async function generateMetadata({
   };
 }
 
-/* =========================================================
-   PAGE
-========================================================= */
+/*
+|--------------------------------------------------------------------------
+| PAGE
+|--------------------------------------------------------------------------
+*/
 
 export default async function WordPressPage({
   params,
@@ -353,122 +375,154 @@ export default async function WordPressPage({
     notFound();
   }
 
-  const image =
-    page.featuredImage?.node;
+  const image = page.featuredImage?.node;
 
-  /* =======================================================
-     PAGE TYPE CHECKS
-  ======================================================= */
+  /*
+  |--------------------------------------------------------------------------
+  | PAGE TYPE
+  |--------------------------------------------------------------------------
+  */
+
+  const isSinglePage = slug.length === 1;
+
+  const pageSlug = slug[0]?.toLowerCase();
 
   const isInsightsPage =
-    slug.length === 1 &&
-    slug[0].toLowerCase() === "insights";
+    isSinglePage &&
+    pageSlug === "insights";
 
-  /* =======================================================
-     WORDPRESS CONTENT
-  ======================================================= */
+  const isCaseStudiesPage =
+    isSinglePage &&
+    pageSlug === "case-studies";
+
+  /*
+  |--------------------------------------------------------------------------
+  | WORDPRESS CONTENT
+  |--------------------------------------------------------------------------
+  */
 
   const hasContent =
     !isInsightsPage &&
-    slug.length === 1 &&
-    slug[0] !== "case-studies" &&
+    !isCaseStudiesPage &&
     Boolean(
       page.content
         ?.replace(/<[^>]*>/g, "")
         .trim()
     );
 
-  /* =======================================================
-     TESTIMONIALS
-  ======================================================= */
+  /*
+  |--------------------------------------------------------------------------
+  | SECTION FLAGS
+  |--------------------------------------------------------------------------
+  */
 
   const showTestimonials =
-    slug.length === 1 &&
+    isSinglePage &&
     PAGES_WITH_TESTIMONIALS.includes(
-      slug[0]
+      pageSlug
     );
-
-  /* =======================================================
-     BLOG
-  ======================================================= */
-
-  const showBlog =
-    slug.length === 1 &&
-    PAGES_WITH_BLOG.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     ABOUT
-  ======================================================= */
-
-  const showAboutSections =
-    slug.length === 1 &&
-    PAGES_WITH_ABOUT_SECTIONS.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     SERVICES
-  ======================================================= */
-
-  const showServicesSections =
-    slug.length === 1 &&
-    PAGES_WITH_SERVICES_SECTIONS.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     CASE STUDIES
-  ======================================================= */
-
-  const showCaseStudiesGrid =
-    slug.length === 1 &&
-    PAGES_WITH_CASE_STUDIES_GRID.includes(
-      slug[0]
-    );
-
-  /* =======================================================
-     INSIGHTS
-  ======================================================= */
 
   /*
-   * These sections are ONLY shown on /insights
-   */
+  |--------------------------------------------------------------------------
+  | LATEST BLOGS
+  |
+  | ONLY:
+  | /about
+  | /services
+  | /industries
+  |--------------------------------------------------------------------------
+  */
+
+  const showBlog =
+    isSinglePage &&
+    PAGES_WITH_BLOG.includes(
+      pageSlug
+    );
+
+  /*
+  |--------------------------------------------------------------------------
+  | ABOUT SECTIONS
+  |--------------------------------------------------------------------------
+  */
+
+  const showAboutSections =
+    isSinglePage &&
+    PAGES_WITH_ABOUT_SECTIONS.includes(
+      pageSlug
+    );
+
+  /*
+  |--------------------------------------------------------------------------
+  | SERVICES SECTIONS
+  |--------------------------------------------------------------------------
+  */
+
+  const showServicesSections =
+    isSinglePage &&
+    PAGES_WITH_SERVICES_SECTIONS.includes(
+      pageSlug
+    );
+
+  /*
+  |--------------------------------------------------------------------------
+  | CASE STUDIES
+  |--------------------------------------------------------------------------
+  */
+
+  const showCaseStudiesGrid =
+    isSinglePage &&
+    PAGES_WITH_CASE_STUDIES_GRID.includes(
+      pageSlug
+    );
+
+  /*
+  |--------------------------------------------------------------------------
+  | FEATURED STORY
+  |
+  | ONLY INSIGHTS
+  |--------------------------------------------------------------------------
+  */
 
   const showFeaturedStory =
     isInsightsPage;
 
-  const showBlogGrid =
+  /*
+  |--------------------------------------------------------------------------
+  | INSIGHTS BLOG / STORY GRID
+  |
+  | BlogGrid is also needed on Insights because
+  | the Insights page contains the Latest Case Studies
+  | / story content.
+  |--------------------------------------------------------------------------
+  */
+
+  const showInsightsBlogGrid =
     isInsightsPage;
 
   /*
-   * "Explore Success Through Stories"
-   * is also ONLY shown on /insights.
-   */
-  const showSuccessStories =
-    isInsightsPage;
-
-  /* =======================================================
-     CONTACT CTA
-  ======================================================= */
+  |--------------------------------------------------------------------------
+  | CTA
+  |--------------------------------------------------------------------------
+  */
 
   const showCTA =
-    slug.length === 1 &&
+    isSinglePage &&
     PAGES_WITH_CTA.includes(
-      slug[0]
+      pageSlug
     );
 
-  /* =======================================================
-     RENDER
-  ======================================================= */
+  /*
+  |--------------------------------------------------------------------------
+  | RENDER
+  |--------------------------------------------------------------------------
+  */
 
   return (
     <PageShell>
 
-      {/* ===================================================
+      {/* =========================================================
           HERO
-      =================================================== */}
+      ========================================================= */}
 
       <AboutHero
         pageTitle={page.title}
@@ -477,9 +531,9 @@ export default async function WordPressPage({
         imageAlt={image?.altText}
       />
 
-      {/* ===================================================
+      {/* =========================================================
           WORDPRESS CONTENT
-      =================================================== */}
+      ========================================================= */}
 
       {hasContent && (
         <article className="mx-auto max-w-[1000px] px-6 py-16">
@@ -494,23 +548,26 @@ export default async function WordPressPage({
         </article>
       )}
 
-      {/* ===================================================
+      {/* =========================================================
           ABOUT SECTIONS
-      =================================================== */}
+      ========================================================= */}
 
       {showAboutSections && (
         <>
           {/* CODM STORY */}
+
           <div className="relative z-10">
             <CodmStory />
           </div>
 
           {/* OUR PURPOSE */}
+
           <div className="relative z-10">
             <PurposeSection />
           </div>
 
           {/* WHAT WE DO */}
+
           <div
             id="services"
             className="relative z-10 scroll-mt-24"
@@ -519,43 +576,48 @@ export default async function WordPressPage({
           </div>
 
           {/* OUR EXCELLENCE */}
+
           <div className="relative z-10">
             <ExcellenceSection />
           </div>
         </>
       )}
 
-      {/* ===================================================
+      {/* =========================================================
           SERVICES SECTIONS
-      =================================================== */}
+      ========================================================= */}
 
       {showServicesSections && (
         <>
           {/* KEY CAPABILITIES */}
+
           <div className="relative z-10">
             <KeyCapabilities />
           </div>
 
           {/* USE CASES */}
+
           <div className="relative z-10">
             <UseCasesSection />
           </div>
 
           {/* SERVICE PROCESS */}
+
           <div className="relative z-10">
             <ServiceProcess />
           </div>
 
           {/* PRODUCT EXPERIENCE */}
+
           <div className="relative z-10">
             <ProductExperience />
           </div>
         </>
       )}
 
-      {/* ===================================================
+      {/* =========================================================
           TESTIMONIALS
-      =================================================== */}
+      ========================================================= */}
 
       {showTestimonials && (
         <div className="relative z-10">
@@ -563,9 +625,21 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* ===================================================
-          CASE STUDIES
-      =================================================== */}
+      {/* =========================================================
+          LATEST BLOGS
+          ONLY ABOUT / SERVICES / INDUSTRIES
+      ========================================================= */}
+
+      {showBlog && (
+        <div className="relative z-10">
+          <BlogGrid />
+        </div>
+      )}
+
+      {/* =========================================================
+          CASE STUDIES PAGE
+          ONLY /case-studies
+      ========================================================= */}
 
       {showCaseStudiesGrid && (
         <div className="relative z-10">
@@ -573,10 +647,10 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* ===================================================
-          FEATURED STORY
-          ONLY /INSIGHTS
-      =================================================== */}
+      {/* =========================================================
+          INSIGHTS — FEATURED STORY
+          ONLY /insights
+      ========================================================= */}
 
       {showFeaturedStory && (
         <div className="relative z-10">
@@ -584,31 +658,20 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* ===================================================
-          BLOG GRID
-          ONLY /INSIGHTS
-      =================================================== */}
+      {/* =========================================================
+          INSIGHTS — BLOG/STORY GRID
+          ONLY /insights
+      ========================================================= */}
 
-      {showBlogGrid && (
+      {showInsightsBlogGrid && (
         <div className="relative z-10">
           <BlogGrid />
         </div>
       )}
 
-      {/* ===================================================
-          SUCCESS STORIES CTA
-          ONLY /INSIGHTS
-      =================================================== */}
-
-      {showSuccessStories && (
-        <div className="relative z-10">
-          <SuccessStoriesCTA />
-        </div>
-      )}
-
-      {/* ===================================================
-          CONTACT CTA
-      =================================================== */}
+      {/* =========================================================
+          CLOSING CTA
+      ========================================================= */}
 
       {showCTA && (
         <div className="relative z-10">
