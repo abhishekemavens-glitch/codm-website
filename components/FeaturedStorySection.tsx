@@ -177,11 +177,7 @@ export default function FeaturedStorySection() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          backgroundColor: "#F1F5F9",
-        }}
-      >
+     <div className="codm-featured-story-wrap">
         <section className="featured-story-section">
           <div className="featured-story-loading">
             Loading featured story...
@@ -198,11 +194,8 @@ export default function FeaturedStorySection() {
   const story = stories[activeIndex];
 
   return (
-    <div
-      style={{
-        backgroundColor: "#F1F5F9",
-      }}
-    >
+   <div className="codm-featured-story"> 
+     
       <section className="featured-story-section">
 
         {/* =========================================
