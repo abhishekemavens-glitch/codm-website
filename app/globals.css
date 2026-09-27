@@ -8576,3 +8576,56 @@ img.codm-footer-logo {
   .codm-word:nth-child(5) {
   transition-delay: 0.65s;
 }
+
+
+.codm-success-cta-card {
+  background: linear-gradient(120deg, #f1eefd 0%, #e6e0fb 55%, #ddd5fa 100%);
+}
+
+.codm-success-cta-heading {
+  color: #1e2230;
+}
+
+.codm-success-cta-body {
+  color: #5b6072;
+}
+
+.codm-success-cta-button {
+  background: #4b3fce;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+.codm-success-cta-button:hover {
+  background: #3f34b8;
+}
+
+[data-theme="dark"] .codm-success-cta-card {
+  background: radial-gradient(120% 140% at 85% 20%, #10193f 0%, #0d1023 60%);
+}
+
+[data-theme="dark"] .codm-success-cta-heading {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .codm-success-cta-body {
+  color: #a1a4b3;
+}
+
+[data-theme="dark"] .codm-success-cta-button {
+  background: transparent;
+  border: 1px solid #2e3457;
+  color: #ffffff;
+}
+[data-theme="dark"] .codm-success-cta-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.codm-success-cta-card {
+  --success-chart-color: #7c6cf0;
+  --success-chart-dot-fill: #ffffff;
+}
+
+[data-theme="dark"] .codm-success-cta-card {
+  --success-chart-color: #3d6fe8;
+  --success-chart-dot-fill: #0d1023;
+}
