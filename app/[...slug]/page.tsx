@@ -903,20 +903,20 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* =================================================
-          NORMAL LATEST BLOGS
+    {/* =================================================
+    LATEST BLOGS
 
-          ABOUT
-          SERVICES
-          INDUSTRIES
-          PARTNER
-      ================================================= */}
+    ABOUT
+    SERVICES
+    INDUSTRIES
+    PARTNER
+================================================= */}
 
-      {showBlog && (
-        <div className="relative z-10">
-          <BlogGrid />
-        </div>
-      )}
+{showBlog && (
+  <div className="relative z-10">
+    <LatestBlogs />
+  </div>
+)}
 
       {/* =================================================
           CASE STUDIES PAGE
