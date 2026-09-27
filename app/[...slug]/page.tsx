@@ -39,10 +39,6 @@ const PAGES_WITH_TESTIMONIALS = [
 
 /*
  * Pages with Latest Blogs
- *
- * DO NOT CHANGE THESE.
- * These are the pages where your normal blog section
- * should continue to appear.
  */
 const PAGES_WITH_BLOG = [
   "about",
@@ -67,8 +63,6 @@ const PAGES_WITH_SERVICES_SECTIONS = [
 
 /*
  * Case Studies page
- *
- * ONLY Case Studies Grid is shown here.
  */
 const PAGES_WITH_CASE_STUDIES_GRID = [
   "case-studies",
@@ -83,8 +77,6 @@ const PAGES_WITH_FEATURED_STORY = [
 
 /*
  * Insights Blog Grid
- *
- * BlogGrid is shown ONLY on Insights from this flag.
  */
 const PAGES_WITH_INSIGHTS_BLOG = [
   "insights",
@@ -121,6 +113,10 @@ const WORDPRESS_GRAPHQL_URL =
 const WORDPRESS_ORIGIN =
   "https://lightyellow-echidna-411021.hostingersite.com";
 
+/* =========================================================
+   WORDPRESS PAGE TYPE
+========================================================= */
+
 type WpPage = {
   title: string;
 
@@ -142,6 +138,32 @@ type WpPage = {
 
     secondaryLabel: string | null;
     secondaryUrl: string | null;
+  } | null;
+};
+
+/* =========================================================
+   WORDPRESS BLOG POST TYPE
+========================================================= */
+
+type WpPost = {
+  id: string;
+  title: string;
+  content: string | null;
+  excerpt: string | null;
+  uri: string;
+  date: string;
+
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    } | null;
+  } | null;
+
+  categories: {
+    nodes: {
+      name: string;
+    }[];
   } | null;
 };
 
@@ -218,6 +240,32 @@ const PAGE_FIELDS = `
 
     secondaryLabel
     secondaryUrl
+  }
+`;
+
+/* =========================================================
+   POST FIELDS
+========================================================= */
+
+const POST_FIELDS = `
+  id
+  title
+  content
+  excerpt
+  uri
+  date
+
+  featuredImage {
+    node {
+      sourceUrl
+      altText
+    }
+  }
+
+  categories {
+    nodes {
+      name
+    }
   }
 `;
 
@@ -316,6 +364,37 @@ async function getPageByFallback(
 }
 
 /* =========================================================
+   GET WORDPRESS BLOG POST
+========================================================= */
+
+async function getPost(
+  slug: string[]
+): Promise<WpPost | null> {
+  const uri = toUri(slug);
+
+  const data =
+    await wpFetch<{
+      post: WpPost | null;
+    }>(
+      `
+        query GetPost($uri: ID!) {
+          post(
+            id: $uri
+            idType: URI
+          ) {
+            ${POST_FIELDS}
+          }
+        }
+      `,
+      {
+        uri,
+      }
+    );
+
+  return data?.post ?? null;
+}
+
+/* =========================================================
    FIX WORDPRESS LINKS
 ========================================================= */
 
@@ -386,12 +465,30 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
 
+  /*
+   * First check WordPress Pages.
+   */
   const page = await getPage(slug);
 
+  if (page) {
+    return {
+      title: `${page.title} | CODM`,
+    };
+  }
+
+  /*
+   * Then check WordPress Blog Posts.
+   */
+  const post = await getPost(slug);
+
+  if (post) {
+    return {
+      title: `${post.title} | CODM`,
+    };
+  }
+
   return {
-    title: page
-      ? `${page.title} | CODM`
-      : "Page not found | CODM",
+    title: "Page not found | CODM",
   };
 }
 
@@ -408,7 +505,107 @@ export default async function WordPressPage({
 }) {
   const { slug } = await params;
 
+  /*
+   * =======================================================
+   * FIRST: TRY WORDPRESS PAGE
+   * =======================================================
+   */
+
   const page = await getPage(slug);
+
+  /*
+   * =======================================================
+   * IF NO PAGE EXISTS, TRY WORDPRESS BLOG POST
+   * =======================================================
+   */
+
+  const post = page
+    ? null
+    : await getPost(slug);
+
+  /*
+   * =======================================================
+   * BLOG DETAIL PAGE
+   *
+   * This is the important fix.
+   *
+   * WordPress blog posts are NOT WordPress Pages.
+   * Therefore they are handled separately here.
+   * =======================================================
+   */
+
+  if (!page && post) {
+    const postImage =
+      post.featuredImage?.node;
+
+    const category =
+      post.categories?.nodes?.[0]?.name ||
+      "Insight";
+
+    return (
+      <PageShell>
+        <article className="mx-auto max-w-[1200px] px-6 py-16">
+
+          {/* CATEGORY */}
+          <div className="mb-4 text-sm font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
+            {category}
+          </div>
+
+          {/* TITLE */}
+          <h1 className="mx-auto max-w-[1000px] text-center text-4xl font-semibold leading-tight md:text-6xl">
+            {post.title}
+          </h1>
+
+          {/* DATE */}
+          <div className="mt-6 text-center text-sm text-[var(--muted)]">
+            {new Date(
+              post.date
+            ).toLocaleDateString(
+              "en-US",
+              {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }
+            )}
+          </div>
+
+          {/* FEATURED IMAGE */}
+          {postImage?.sourceUrl && (
+            <div className="mx-auto mt-12 max-w-[1100px] overflow-hidden rounded-[24px]">
+              <img
+                src={postImage.sourceUrl}
+                alt={
+                  postImage.altText ||
+                  post.title
+                }
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* BLOG CONTENT */}
+          {post.content && (
+            <div
+              className="codm-wp-content mx-auto mt-12 max-w-[900px]"
+              dangerouslySetInnerHTML={{
+                __html: fixLinks(
+                  post.content
+                ),
+              }}
+            />
+          )}
+
+        </article>
+      </PageShell>
+    );
+  }
+
+  /*
+   * =======================================================
+   * NOTHING FOUND
+   * =======================================================
+   */
 
   if (!page) {
     notFound();
@@ -490,11 +687,6 @@ export default async function WordPressPage({
 
   /*
    * TESTIMONIALS
-   *
-   * About
-   * Services
-   * Industries
-   * Partner
    */
 
   const showTestimonials =
@@ -510,8 +702,6 @@ export default async function WordPressPage({
    * Services
    * Industries
    * Partner
-   *
-   * KEEP THESE UNCHANGED.
    */
 
   const showBlog =
@@ -607,7 +797,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           ABOUT PAGE
-          
+
           CODM STORY
           OUR PURPOSE
           WHAT WE DO
@@ -639,7 +829,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           SERVICES PAGE
-          
+
           KEY CAPABILITIES
           USE CASES
           SERVICE PROCESS
@@ -668,9 +858,9 @@ export default async function WordPressPage({
 
       {/* =================================================
           PARTNER PAGE
-          
+
           EXACT ORDER:
-          
+
           OUR PURPOSE
           WHAT WE DO
           PRODUCT EXPERIENCE
@@ -700,7 +890,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           TESTIMONIALS
-          
+
           ABOUT
           SERVICES
           INDUSTRIES
@@ -715,13 +905,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           NORMAL LATEST BLOGS
-          
+
           ABOUT
           SERVICES
           INDUSTRIES
           PARTNER
-          
-          These remain exactly as before.
       ================================================= */}
 
       {showBlog && (
@@ -732,11 +920,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           CASE STUDIES PAGE
-          
+
           HERO
           CASE STUDIES GRID
           LET'S BUILD
-          
+
           NOTHING ELSE ADDED.
       ================================================= */}
 
@@ -748,7 +936,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           INSIGHTS PAGE
-          
+
           HERO
           FEATURED STORY
           BLOG GRID
@@ -776,7 +964,7 @@ export default async function WordPressPage({
 
       {/* =================================================
           LET'S BUILD
-          
+
           ABOUT
           SERVICES
           INDUSTRIES
