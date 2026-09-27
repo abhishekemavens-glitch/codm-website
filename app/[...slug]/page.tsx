@@ -3,69 +3,108 @@ import { notFound } from "next/navigation";
 
 import PageShell from "@/components/PageShell";
 import AboutHero from "@/components/AboutHero";
+
 import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection";
 import ExcellenceSection from "@/components/ExcellenceSection";
+
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
+
 import Testimonials from "@/components/Testimonials";
+
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
+
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 
-/*
-|--------------------------------------------------------------------------
-| PAGE CONFIGURATION
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   PAGE CONFIGURATION
+========================================================= */
 
-/* Pages that should show Testimonials */
+/*
+ * Pages that show Testimonials
+ */
 const PAGES_WITH_TESTIMONIALS = [
   "about",
   "services",
   "industries",
+  "partner",
 ];
 
-/* Pages that should show Latest Blogs */
+/*
+ * Pages that show Latest Blogs
+ */
 const PAGES_WITH_BLOG = [
   "about",
   "services",
   "industries",
+  "partner",
 ];
 
-/* About-only sections */
+/*
+ * About-only sections
+ */
 const PAGES_WITH_ABOUT_SECTIONS = [
   "about",
 ];
 
-/* Services-only sections */
+/*
+ * Services-only sections
+ */
 const PAGES_WITH_SERVICES_SECTIONS = [
   "services",
 ];
 
-/* Case Studies grid */
+/*
+ * Case Studies page
+ */
 const PAGES_WITH_CASE_STUDIES_GRID = [
   "case-studies",
 ];
 
-/* Closing CTA */
+/*
+ * Pages that show Featured Story
+ */
+const PAGES_WITH_FEATURED_STORY = [
+  "insights",
+];
+
+/*
+ * Pages that show Let's Build CTA
+ */
 const PAGES_WITH_CTA = [
   "about",
   "services",
   "industries",
   "case-studies",
   "insights",
+  "partner",
 ];
 
 /*
-|--------------------------------------------------------------------------
-| WORDPRESS
-|--------------------------------------------------------------------------
-*/
+ * Partner-only sections
+ *
+ * Partner page:
+ * Hero
+ * Our Purpose
+ * What We Do
+ * Product Experience
+ * Testimonials
+ * Blog
+ * Let's Build
+ */
+const PAGES_WITH_PARTNER_SECTIONS = [
+  "partner",
+];
+
+/* =========================================================
+   WORDPRESS
+========================================================= */
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -75,6 +114,7 @@ const WORDPRESS_ORIGIN =
 
 type WpPage = {
   title: string;
+
   content: string | null;
 
   featuredImage: {
@@ -87,18 +127,18 @@ type WpPage = {
   aboutHero: {
     headline: string | null;
     description: string | null;
+
     primaryLabel: string | null;
     primaryUrl: string | null;
+
     secondaryLabel: string | null;
     secondaryUrl: string | null;
   } | null;
 };
 
-/*
-|--------------------------------------------------------------------------
-| WORDPRESS FETCH
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   WORDPRESS FETCH
+========================================================= */
 
 async function wpFetch<T>(
   query: string,
@@ -137,25 +177,20 @@ async function wpFetch<T>(
   }
 }
 
-/*
-|--------------------------------------------------------------------------
-| WORDPRESS URI
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   WORDPRESS URI
+========================================================= */
 
 function toUri(slug: string[]) {
   return `/${slug.join("/")}/`;
 }
 
-/*
-|--------------------------------------------------------------------------
-| PAGE FIELDS
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   PAGE FIELDS
+========================================================= */
 
 const PAGE_FIELDS = `
   title
-
   content
 
   featuredImage {
@@ -168,39 +203,40 @@ const PAGE_FIELDS = `
   aboutHero {
     headline
     description
+
     primaryLabel
     primaryUrl
+
     secondaryLabel
     secondaryUrl
   }
 `;
 
-/*
-|--------------------------------------------------------------------------
-| GET PAGE
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   GET PAGE
+========================================================= */
 
 async function getPage(
   slug: string[]
 ): Promise<WpPage | null> {
-  const data = await wpFetch<{
-    page: WpPage | null;
-  }>(
-    `
-      query GetPage($uri: ID!) {
-        page(
-          id: $uri
-          idType: URI
-        ) {
-          ${PAGE_FIELDS}
+  const data =
+    await wpFetch<{
+      page: WpPage | null;
+    }>(
+      `
+        query GetPage($uri: ID!) {
+          page(
+            id: $uri
+            idType: URI
+          ) {
+            ${PAGE_FIELDS}
+          }
         }
+      `,
+      {
+        uri: toUri(slug),
       }
-    `,
-    {
-      uri: toUri(slug),
-    }
-  );
+    );
 
   if (data?.page) {
     return data.page;
@@ -209,71 +245,70 @@ async function getPage(
   return getPageByFallback(slug);
 }
 
-/*
-|--------------------------------------------------------------------------
-| FALLBACK PAGE LOOKUP
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   FALLBACK PAGE LOOKUP
+========================================================= */
 
 async function getPageByFallback(
   slug: string[]
 ): Promise<WpPage | null> {
   const targetUri = toUri(slug);
 
-  const list = await wpFetch<{
-    pages: {
-      nodes: {
-        databaseId: number;
-        uri: string;
-      }[];
-    };
-  }>(
-    `
-      query AllPageUris {
-        pages(first: 200) {
-          nodes {
-            databaseId
-            uri
+  const list =
+    await wpFetch<{
+      pages: {
+        nodes: {
+          databaseId: number;
+          uri: string;
+        }[];
+      };
+    }>(
+      `
+        query AllPageUris {
+          pages(first: 200) {
+            nodes {
+              databaseId
+              uri
+            }
           }
         }
-      }
-    `
-  );
+      `
+    );
 
-  const match = list?.pages.nodes.find(
-    (node) => node.uri === targetUri
-  );
+  const match =
+    list?.pages.nodes.find(
+      (node) => node.uri === targetUri
+    );
 
   if (!match) {
     return null;
   }
 
-  const data = await wpFetch<{
-    page: WpPage | null;
-  }>(
-    `
-      query GetPageById($id: ID!) {
-        page(
-          id: $id
-          idType: DATABASE_ID
-        ) {
-          ${PAGE_FIELDS}
+  const data =
+    await wpFetch<{
+      page: WpPage | null;
+    }>(
+      `
+        query GetPageById($id: ID!) {
+          page(
+            id: $id
+            idType: DATABASE_ID
+          ) {
+            ${PAGE_FIELDS}
+          }
         }
+      `,
+      {
+        id: String(match.databaseId),
       }
-    `,
-    {
-      id: String(match.databaseId),
-    }
-  );
+    );
 
   return data?.page ?? null;
 }
 
-/*
-|--------------------------------------------------------------------------
-| FIX WORDPRESS INTERNAL LINKS
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   FIX WORDPRESS LINKS
+========================================================= */
 
 function fixLinks(html: string) {
   return html.replace(
@@ -293,30 +328,29 @@ function fixLinks(html: string) {
   );
 }
 
-/*
-|--------------------------------------------------------------------------
-| STATIC PARAMS
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   STATIC PARAMS
+========================================================= */
 
 export async function generateStaticParams() {
-  const data = await wpFetch<{
-    pages: {
-      nodes: {
-        uri: string;
-      }[];
-    };
-  }>(
-    `
-      query AllPages {
-        pages(first: 100) {
-          nodes {
-            uri
+  const data =
+    await wpFetch<{
+      pages: {
+        nodes: {
+          uri: string;
+        }[];
+      };
+    }>(
+      `
+        query AllPages {
+          pages(first: 100) {
+            nodes {
+              uri
+            }
           }
         }
-      }
-    `
-  );
+      `
+    );
 
   return (
     data?.pages.nodes ?? []
@@ -330,11 +364,9 @@ export async function generateStaticParams() {
     }));
 }
 
-/*
-|--------------------------------------------------------------------------
-| METADATA
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   METADATA
+========================================================= */
 
 export async function generateMetadata({
   params,
@@ -354,11 +386,9 @@ export async function generateMetadata({
   };
 }
 
-/*
-|--------------------------------------------------------------------------
-| PAGE
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   PAGE
+========================================================= */
 
 export default async function WordPressPage({
   params,
@@ -375,154 +405,122 @@ export default async function WordPressPage({
     notFound();
   }
 
-  const image = page.featuredImage?.node;
+  const image =
+    page.featuredImage?.node;
+
+  /* =======================================================
+     PAGE FLAGS
+  ======================================================= */
+
+  const currentSlug =
+    slug.length === 1
+      ? slug[0].toLowerCase()
+      : "";
 
   /*
-  |--------------------------------------------------------------------------
-  | PAGE TYPE
-  |--------------------------------------------------------------------------
-  */
-
-  const isSinglePage = slug.length === 1;
-
-  const pageSlug = slug[0]?.toLowerCase();
-
+   * Insights page
+   */
   const isInsightsPage =
-    isSinglePage &&
-    pageSlug === "insights";
-
-  const isCaseStudiesPage =
-    isSinglePage &&
-    pageSlug === "case-studies";
+    currentSlug === "insights";
 
   /*
-  |--------------------------------------------------------------------------
-  | WORDPRESS CONTENT
-  |--------------------------------------------------------------------------
-  */
+   * Partner page
+   */
+  const isPartnerPage =
+    currentSlug === "partner";
 
+  /*
+   * WordPress page content
+   *
+   * Do NOT show WordPress body on Insights.
+   */
   const hasContent =
     !isInsightsPage &&
-    !isCaseStudiesPage &&
+    slug.length === 1 &&
+    currentSlug !== "case-studies" &&
     Boolean(
       page.content
         ?.replace(/<[^>]*>/g, "")
         .trim()
     );
 
-  /*
-  |--------------------------------------------------------------------------
-  | SECTION FLAGS
-  |--------------------------------------------------------------------------
-  */
+  /* =======================================================
+     SECTION FLAGS
+  ======================================================= */
 
+  /*
+   * Testimonials
+   */
   const showTestimonials =
-    isSinglePage &&
+    slug.length === 1 &&
     PAGES_WITH_TESTIMONIALS.includes(
-      pageSlug
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | LATEST BLOGS
-  |
-  | ONLY:
-  | /about
-  | /services
-  | /industries
-  |--------------------------------------------------------------------------
-  */
-
+   * Latest Blogs
+   */
   const showBlog =
-    isSinglePage &&
+    slug.length === 1 &&
     PAGES_WITH_BLOG.includes(
-      pageSlug
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | ABOUT SECTIONS
-  |--------------------------------------------------------------------------
-  */
-
+   * About sections
+   */
   const showAboutSections =
-    isSinglePage &&
+    slug.length === 1 &&
     PAGES_WITH_ABOUT_SECTIONS.includes(
-      pageSlug
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | SERVICES SECTIONS
-  |--------------------------------------------------------------------------
-  */
-
+   * Services sections
+   */
   const showServicesSections =
-    isSinglePage &&
+    slug.length === 1 &&
     PAGES_WITH_SERVICES_SECTIONS.includes(
-      pageSlug
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | CASE STUDIES
-  |--------------------------------------------------------------------------
-  */
-
+   * Case Studies grid
+   */
   const showCaseStudiesGrid =
-    isSinglePage &&
+    slug.length === 1 &&
     PAGES_WITH_CASE_STUDIES_GRID.includes(
-      pageSlug
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | FEATURED STORY
-  |
-  | ONLY INSIGHTS
-  |--------------------------------------------------------------------------
-  */
-
+   * Featured Story
+   */
   const showFeaturedStory =
-    isInsightsPage;
-
-  /*
-  |--------------------------------------------------------------------------
-  | INSIGHTS BLOG / STORY GRID
-  |
-  | BlogGrid is also needed on Insights because
-  | the Insights page contains the Latest Case Studies
-  | / story content.
-  |--------------------------------------------------------------------------
-  */
-
-  const showInsightsBlogGrid =
-    isInsightsPage;
-
-  /*
-  |--------------------------------------------------------------------------
-  | CTA
-  |--------------------------------------------------------------------------
-  */
-
-  const showCTA =
-    isSinglePage &&
-    PAGES_WITH_CTA.includes(
-      pageSlug
+    slug.length === 1 &&
+    PAGES_WITH_FEATURED_STORY.includes(
+      currentSlug
     );
 
   /*
-  |--------------------------------------------------------------------------
-  | RENDER
-  |--------------------------------------------------------------------------
-  */
+   * Let's Build CTA
+   */
+  const showCTA =
+    slug.length === 1 &&
+    PAGES_WITH_CTA.includes(
+      currentSlug
+    );
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
 
   return (
     <PageShell>
 
-      {/* =========================================================
+      {/* =================================================
           HERO
-      ========================================================= */}
+      ================================================= */}
 
       <AboutHero
         pageTitle={page.title}
@@ -531,9 +529,9 @@ export default async function WordPressPage({
         imageAlt={image?.altText}
       />
 
-      {/* =========================================================
+      {/* =================================================
           WORDPRESS CONTENT
-      ========================================================= */}
+      ================================================= */}
 
       {hasContent && (
         <article className="mx-auto max-w-[1000px] px-6 py-16">
@@ -548,9 +546,9 @@ export default async function WordPressPage({
         </article>
       )}
 
-      {/* =========================================================
-          ABOUT SECTIONS
-      ========================================================= */}
+      {/* =================================================
+          ABOUT PAGE
+      ================================================= */}
 
       {showAboutSections && (
         <>
@@ -583,9 +581,9 @@ export default async function WordPressPage({
         </>
       )}
 
-      {/* =========================================================
-          SERVICES SECTIONS
-      ========================================================= */}
+      {/* =================================================
+          SERVICES PAGE
+      ================================================= */}
 
       {showServicesSections && (
         <>
@@ -615,9 +613,58 @@ export default async function WordPressPage({
         </>
       )}
 
-      {/* =========================================================
+      {/* =================================================
+          PARTNER PAGE
+          
+          Required order:
+
+          OUR PURPOSE
+          WHAT WE DO
+          PRODUCT EXPERIENCE
+          TESTIMONIAL
+          BLOG
+          LET'S BUILD
+      ================================================= */}
+
+      {isPartnerPage && (
+        <>
+          {/* =============================================
+              OUR PURPOSE
+          ============================================= */}
+
+          <div className="relative z-10">
+            <PurposeSection />
+          </div>
+
+          {/* =============================================
+              WHAT WE DO
+          ============================================= */}
+
+          <div
+            id="services"
+            className="relative z-10 scroll-mt-24"
+          >
+            <ServicesSection />
+          </div>
+
+          {/* =============================================
+              PRODUCT EXPERIENCE
+          ============================================= */}
+
+          <div className="relative z-10">
+            <ProductExperience />
+          </div>
+        </>
+      )}
+
+      {/* =================================================
           TESTIMONIALS
-      ========================================================= */}
+
+          About
+          Services
+          Industries
+          Partner
+      ================================================= */}
 
       {showTestimonials && (
         <div className="relative z-10">
@@ -625,21 +672,9 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* =========================================================
-          LATEST BLOGS
-          ONLY ABOUT / SERVICES / INDUSTRIES
-      ========================================================= */}
-
-      {showBlog && (
-        <div className="relative z-10">
-          <BlogGrid />
-        </div>
-      )}
-
-      {/* =========================================================
-          CASE STUDIES PAGE
-          ONLY /case-studies
-      ========================================================= */}
+      {/* =================================================
+          CASE STUDIES
+      ================================================= */}
 
       {showCaseStudiesGrid && (
         <div className="relative z-10">
@@ -647,10 +682,9 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* =========================================================
+      {/* =================================================
           INSIGHTS — FEATURED STORY
-          ONLY /insights
-      ========================================================= */}
+      ================================================= */}
 
       {showFeaturedStory && (
         <div className="relative z-10">
@@ -658,20 +692,31 @@ export default async function WordPressPage({
         </div>
       )}
 
-      {/* =========================================================
-          INSIGHTS — BLOG/STORY GRID
-          ONLY /insights
-      ========================================================= */}
+      {/* =================================================
+          LATEST BLOGS
 
-      {showInsightsBlogGrid && (
+          About
+          Services
+          Industries
+          Partner
+      ================================================= */}
+
+      {showBlog && (
         <div className="relative z-10">
           <BlogGrid />
         </div>
       )}
 
-      {/* =========================================================
-          CLOSING CTA
-      ========================================================= */}
+      {/* =================================================
+          LET'S BUILD CTA
+
+          About
+          Services
+          Industries
+          Case Studies
+          Insights
+          Partner
+      ================================================= */}
 
       {showCTA && (
         <div className="relative z-10">
