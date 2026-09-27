@@ -1,55 +1,68 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import PageShell from "@/components/PageShell";
-import AboutHero from "@/components/AboutHero"; // Hero
+import AboutHero from "@/components/AboutHero";
 import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
-import ServicesSection from "@/components/ServicesSection"; // What We Do
+import ServicesSection from "@/components/ServicesSection";
 import ExcellenceSection from "@/components/ExcellenceSection";
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
-import Testimonials from "@/components/Testimonials"; // Testimonial
+import Testimonials from "@/components/Testimonials";
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
 import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
-import ContactCTA from "@/components/ContactCTA"; // Let's Build
-import CaseStudiesGrid from "@/components/CaseStudiesGrid"; // Case Studies grid + pagination
+import ContactCTA from "@/components/ContactCTA";
+import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 
-/* WordPress slugs that should show the Testimonial section 
-   (kept off "case-studies") */
-const PAGES_WITH_TESTIMONIALS = ["about", "services", "industries"];
+/* =========================================================
+   PAGE CONFIGURATION
+========================================================= */
 
-/* WordPress slugs that should show the Blog section
-   ("case-studies" removed — that page shows only its own paginated grid) */
-const PAGES_WITH_BLOG = ["about", "services", "industries"];
+/* Pages that show Testimonials */
+const PAGES_WITH_TESTIMONIALS = [
+  "about",
+  "services",
+  "industries",
+];
 
-/* WordPress slugs that should show the About-only sections
-   (CODM Story, Our Purpose, What We Do, Our Excellence) */
-const PAGES_WITH_ABOUT_SECTIONS = ["about"];
+/* Pages that show the normal Blog section */
+const PAGES_WITH_BLOG = [
+  "about",
+  "services",
+  "industries",
+];
 
-/* WordPress slugs that should show Services-only sections
-   (Key Capabilities) */
-const PAGES_WITH_SERVICES_SECTIONS = ["services"];
+/* About-only sections */
+const PAGES_WITH_ABOUT_SECTIONS = [
+  "about",
+];
 
-/* WordPress slugs that should show the Case Studies grid (12 per page + pagination) */
-const PAGES_WITH_CASE_STUDIES_GRID = ["case-studies"];
+/* Services-only sections */
+const PAGES_WITH_SERVICES_SECTIONS = [
+  "services",
+];
 
-/* WordPress slugs that should show the closing CTA ("Let's Build") */
-const PAGES_WITH_CTA = ["about", "services", "industries", "case-studies","insights"];
+/* Case Studies page */
+const PAGES_WITH_CASE_STUDIES_GRID = [
+  "case-studies",
+];
 
-/*
- * Save as: app/[...slug]/page.tsx
- *
- * Any PUBLISHED page you create in WordPress > Pages appears on the
- * site at the same slug:
- *   WordPress slug "privacy-policy"  ->  https://your-site/privacy-policy
- *   Child page "team" under "about"  ->  https://your-site/about/team
- *
- * Fixed routes you create in code (app/contact, app/industries/[slug],
- * ...) always win over this catch-all.
- */
+/* Pages that show the closing Let's Build CTA */
+const PAGES_WITH_CTA = [
+  "about",
+  "services",
+  "industries",
+  "case-studies",
+  "insights",
+];
+
+/* =========================================================
+   WORDPRESS
+========================================================= */
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -59,13 +72,16 @@ const WORDPRESS_ORIGIN =
 
 type WpPage = {
   title: string;
+
   content: string | null;
+
   featuredImage: {
     node: {
       sourceUrl: string;
       altText: string;
     } | null;
   } | null;
+
   aboutHero: {
     headline: string | null;
     description: string | null;
@@ -76,21 +92,38 @@ type WpPage = {
   } | null;
 };
 
+/* =========================================================
+   WORDPRESS FETCH
+========================================================= */
+
 async function wpFetch<T>(
   query: string,
   variables?: Record<string, unknown>
 ): Promise<T | null> {
   try {
-    const response = await fetch(WORDPRESS_GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query, variables }),
-      next: { revalidate: 60 }, // WordPress edits show up within a minute
-    });
+    const response = await fetch(
+      WORDPRESS_GRAPHQL_URL,
+      {
+        method: "POST",
 
-    if (!response.ok) return null;
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
 
     const result = await response.json();
 
@@ -100,20 +133,29 @@ async function wpFetch<T>(
   }
 }
 
-/* ["about", "team"]  ->  "/about/team/"  (WordPress URI format) */
+/* =========================================================
+   WORDPRESS URI
+========================================================= */
+
 function toUri(slug: string[]) {
   return `/${slug.join("/")}/`;
 }
 
+/* =========================================================
+   PAGE FIELDS
+========================================================= */
+
 const PAGE_FIELDS = `
   title
   content
+
   featuredImage {
     node {
       sourceUrl
       altText
     }
   }
+
   aboutHero {
     headline
     description
@@ -124,162 +166,310 @@ const PAGE_FIELDS = `
   }
 `;
 
-async function getPage(slug: string[]): Promise<WpPage | null> {
-  const data = await wpFetch<{ page: WpPage | null }>(
+/* =========================================================
+   GET PAGE
+========================================================= */
+
+async function getPage(
+  slug: string[]
+): Promise<WpPage | null> {
+  const data = await wpFetch<{
+    page: WpPage | null;
+  }>(
     `
       query GetPage($uri: ID!) {
-        page(id: $uri, idType: URI) {
+        page(
+          id: $uri
+          idType: URI
+        ) {
           ${PAGE_FIELDS}
         }
       }
     `,
-    { uri: toUri(slug) }
+    {
+      uri: toUri(slug),
+    }
   );
 
   if (data?.page) {
     return data.page;
   }
 
-  /* URI lookup can fail when another content type shares the same slug
-     (a plugin-registered rewrite rule, for example). Fall back to
-     finding the page's database ID from the full page list, then
-     fetch it by ID, which is unaffected by the URI conflict. */
   return getPageByFallback(slug);
 }
 
-async function getPageByFallback(slug: string[]): Promise<WpPage | null> {
+/* =========================================================
+   FALLBACK PAGE LOOKUP
+========================================================= */
+
+async function getPageByFallback(
+  slug: string[]
+): Promise<WpPage | null> {
   const targetUri = toUri(slug);
 
   const list = await wpFetch<{
-    pages: { nodes: { databaseId: number; uri: string }[] };
-  }>(`
-    query AllPageUris {
-      pages(first: 200) {
-        nodes {
-          databaseId
-          uri
+    pages: {
+      nodes: {
+        databaseId: number;
+        uri: string;
+      }[];
+    };
+  }>(
+    `
+      query AllPageUris {
+        pages(first: 200) {
+          nodes {
+            databaseId
+            uri
+          }
         }
       }
-    }
-  `);
+    `
+  );
 
-  const match = list?.pages.nodes.find((node) => node.uri === targetUri);
+  const match =
+    list?.pages.nodes.find(
+      (node) => node.uri === targetUri
+    );
 
   if (!match) {
     return null;
   }
 
-  const data = await wpFetch<{ page: WpPage | null }>(
+  const data = await wpFetch<{
+    page: WpPage | null;
+  }>(
     `
       query GetPageById($id: ID!) {
-        page(id: $id, idType: DATABASE_ID) {
+        page(
+          id: $id
+          idType: DATABASE_ID
+        ) {
           ${PAGE_FIELDS}
         }
       }
     `,
-    { id: String(match.databaseId) }
+    {
+      id: String(match.databaseId),
+    }
   );
 
   return data?.page ?? null;
 }
 
-/* Links to other WordPress pages should stay on THIS site, not
-   jump to the WordPress backend. Uploaded files are left alone. */
-function fixLinks(html: string) {
-  return html.replace(/href="(https?:\/\/[^"]+)"/g, (match, url: string) => {
-    if (url.startsWith(WORDPRESS_ORIGIN) && !url.includes("/wp-content/")) {
-      return `href="${url.slice(WORDPRESS_ORIGIN.length) || "/"}"`;
-    }
+/* =========================================================
+   FIX WORDPRESS LINKS
+========================================================= */
 
-    return match;
-  });
+function fixLinks(html: string) {
+  return html.replace(
+    /href="(https?:\/\/[^"]+)"/g,
+    (match, url: string) => {
+      if (
+        url.startsWith(WORDPRESS_ORIGIN) &&
+        !url.includes("/wp-content/")
+      ) {
+        return `href="${
+          url.slice(WORDPRESS_ORIGIN.length) || "/"
+        }"`;
+      }
+
+      return match;
+    }
+  );
 }
 
-/* Pre-build every existing page. Pages created later still work. */
+/* =========================================================
+   STATIC PARAMS
+========================================================= */
+
 export async function generateStaticParams() {
-  const data = await wpFetch<{ pages: { nodes: { uri: string }[] } }>(`
-    query AllPages {
-      pages(first: 100) {
-        nodes {
-          uri
+  const data = await wpFetch<{
+    pages: {
+      nodes: {
+        uri: string;
+      }[];
+    };
+  }>(
+    `
+      query AllPages {
+        pages(first: 100) {
+          nodes {
+            uri
+          }
         }
       }
-    }
-  `);
+    `
+  );
 
   return (data?.pages.nodes ?? [])
     .map((node) => node.uri)
     .filter((uri) => uri !== "/")
-    .map((uri) => ({ slug: uri.split("/").filter(Boolean) }));
+    .map((uri) => ({
+      slug: uri
+        .split("/")
+        .filter(Boolean),
+    }));
 }
+
+/* =========================================================
+   METADATA
+========================================================= */
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{
+    slug: string[];
+  }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+
   const page = await getPage(slug);
 
   return {
-    title: page ? `${page.title} | CODM` : "Page not found | CODM",
+    title: page
+      ? `${page.title} | CODM`
+      : "Page not found | CODM",
   };
 }
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 export default async function WordPressPage({
   params,
 }: {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{
+    slug: string[];
+  }>;
 }) {
   const { slug } = await params;
+
   const page = await getPage(slug);
 
   if (!page) {
     notFound();
   }
 
-  const image = page.featuredImage?.node;
+  const image =
+    page.featuredImage?.node;
 
-  /* only render the WordPress body if it has real text in it */
+  /* =======================================================
+     PAGE TYPE CHECKS
+  ======================================================= */
+
   const isInsightsPage =
-  slug.length === 1 &&
-  slug[0].toLowerCase() === "insights";
+    slug.length === 1 &&
+    slug[0].toLowerCase() === "insights";
 
-const hasContent =
-  !isInsightsPage &&
-  slug.length === 1 &&
-  slug[0] !== "case-studies" &&
-  Boolean(
-    page.content
-      ?.replace(/<[^>]*>/g, "")
-      .trim()
-  );
+  /* =======================================================
+     WORDPRESS CONTENT
+  ======================================================= */
+
+  const hasContent =
+    !isInsightsPage &&
+    slug.length === 1 &&
+    slug[0] !== "case-studies" &&
+    Boolean(
+      page.content
+        ?.replace(/<[^>]*>/g, "")
+        .trim()
+    );
+
+  /* =======================================================
+     TESTIMONIALS
+  ======================================================= */
 
   const showTestimonials =
-    slug.length === 1 && PAGES_WITH_TESTIMONIALS.includes(slug[0]);
+    slug.length === 1 &&
+    PAGES_WITH_TESTIMONIALS.includes(
+      slug[0]
+    );
 
-  const showBlog = slug.length === 1 && PAGES_WITH_BLOG.includes(slug[0]);
+  /* =======================================================
+     BLOG
+  ======================================================= */
+
+  const showBlog =
+    slug.length === 1 &&
+    PAGES_WITH_BLOG.includes(
+      slug[0]
+    );
+
+  /* =======================================================
+     ABOUT
+  ======================================================= */
 
   const showAboutSections =
-    slug.length === 1 && PAGES_WITH_ABOUT_SECTIONS.includes(slug[0]);
+    slug.length === 1 &&
+    PAGES_WITH_ABOUT_SECTIONS.includes(
+      slug[0]
+    );
+
+  /* =======================================================
+     SERVICES
+  ======================================================= */
 
   const showServicesSections =
-    slug.length === 1 && PAGES_WITH_SERVICES_SECTIONS.includes(slug[0]);
+    slug.length === 1 &&
+    PAGES_WITH_SERVICES_SECTIONS.includes(
+      slug[0]
+    );
 
-  /* true only on /case-studies — shows the paginated grid */
+  /* =======================================================
+     CASE STUDIES
+  ======================================================= */
+
   const showCaseStudiesGrid =
-    slug.length === 1 && PAGES_WITH_CASE_STUDIES_GRID.includes(slug[0]);
+    slug.length === 1 &&
+    PAGES_WITH_CASE_STUDIES_GRID.includes(
+      slug[0]
+    );
 
-   /* true only on /insights — shows the Featured Story section */
-const showFeaturedStory = isInsightsPage;
+  /* =======================================================
+     INSIGHTS
+  ======================================================= */
 
-const showBlogGrid = isInsightsPage;
+  /*
+   * These sections are ONLY shown on /insights
+   */
 
-  /* controls the closing "Let's Build" CTA independently of Testimonial/Blog */
-  const showCTA = slug.length === 1 && PAGES_WITH_CTA.includes(slug[0]);
+  const showFeaturedStory =
+    isInsightsPage;
+
+  const showBlogGrid =
+    isInsightsPage;
+
+  /*
+   * "Explore Success Through Stories"
+   * is also ONLY shown on /insights.
+   */
+  const showSuccessStories =
+    isInsightsPage;
+
+  /* =======================================================
+     CONTACT CTA
+  ======================================================= */
+
+  const showCTA =
+    slug.length === 1 &&
+    PAGES_WITH_CTA.includes(
+      slug[0]
+    );
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
 
   return (
     <PageShell>
+
+      {/* ===================================================
+          HERO
+      =================================================== */}
+
       <AboutHero
         pageTitle={page.title}
         hero={page.aboutHero}
@@ -287,16 +477,26 @@ const showBlogGrid = isInsightsPage;
         imageAlt={image?.altText}
       />
 
+      {/* ===================================================
+          WORDPRESS CONTENT
+      =================================================== */}
+
       {hasContent && (
         <article className="mx-auto max-w-[1000px] px-6 py-16">
           <div
             className="codm-wp-content"
             dangerouslySetInnerHTML={{
-              __html: fixLinks(page.content ?? ""),
+              __html: fixLinks(
+                page.content ?? ""
+              ),
             }}
           />
         </article>
       )}
+
+      {/* ===================================================
+          ABOUT SECTIONS
+      =================================================== */}
 
       {showAboutSections && (
         <>
@@ -311,7 +511,10 @@ const showBlogGrid = isInsightsPage;
           </div>
 
           {/* WHAT WE DO */}
-          <div id="services" className="relative z-10 scroll-mt-24">
+          <div
+            id="services"
+            className="relative z-10 scroll-mt-24"
+          >
             <ServicesSection />
           </div>
 
@@ -321,6 +524,10 @@ const showBlogGrid = isInsightsPage;
           </div>
         </>
       )}
+
+      {/* ===================================================
+          SERVICES SECTIONS
+      =================================================== */}
 
       {showServicesSections && (
         <>
@@ -334,7 +541,7 @@ const showBlogGrid = isInsightsPage;
             <UseCasesSection />
           </div>
 
-          {/* Service Process */}
+          {/* SERVICE PROCESS */}
           <div className="relative z-10">
             <ServiceProcess />
           </div>
@@ -346,11 +553,19 @@ const showBlogGrid = isInsightsPage;
         </>
       )}
 
+      {/* ===================================================
+          TESTIMONIALS
+      =================================================== */}
+
       {showTestimonials && (
         <div className="relative z-10">
           <Testimonials />
         </div>
       )}
+
+      {/* ===================================================
+          CASE STUDIES
+      =================================================== */}
 
       {showCaseStudiesGrid && (
         <div className="relative z-10">
@@ -358,28 +573,49 @@ const showBlogGrid = isInsightsPage;
         </div>
       )}
 
-       {showFeaturedStory && (
-  <div className="relative z-10">
-    <FeaturedStorySection />
-  </div>
-)}
+      {/* ===================================================
+          FEATURED STORY
+          ONLY /INSIGHTS
+      =================================================== */}
 
-       {showBlogGrid && (
-  <div className="relative z-10">
-    <BlogGrid />
-  </div>
-)}
+      {showFeaturedStory && (
+        <div className="relative z-10">
+          <FeaturedStorySection />
+        </div>
+      )}
 
-{/* SUCCESS STORIES CTA */}
-<div className="relative z-10">
-  <SuccessStoriesCTA />
-</div>
-       
+      {/* ===================================================
+          BLOG GRID
+          ONLY /INSIGHTS
+      =================================================== */}
+
+      {showBlogGrid && (
+        <div className="relative z-10">
+          <BlogGrid />
+        </div>
+      )}
+
+      {/* ===================================================
+          SUCCESS STORIES CTA
+          ONLY /INSIGHTS
+      =================================================== */}
+
+      {showSuccessStories && (
+        <div className="relative z-10">
+          <SuccessStoriesCTA />
+        </div>
+      )}
+
+      {/* ===================================================
+          CONTACT CTA
+      =================================================== */}
+
       {showCTA && (
         <div className="relative z-10">
           <ContactCTA />
         </div>
       )}
+
     </PageShell>
   );
 }
