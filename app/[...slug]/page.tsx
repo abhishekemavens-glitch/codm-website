@@ -27,7 +27,7 @@ import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 ========================================================= */
 
 /*
- * Pages that show Testimonials
+ * Pages with Testimonials
  */
 const PAGES_WITH_TESTIMONIALS = [
   "about",
@@ -37,7 +37,9 @@ const PAGES_WITH_TESTIMONIALS = [
 ];
 
 /*
- * Pages that show Latest Blogs
+ * Pages with Latest Blogs
+ *
+ * BlogGrid itself should display only the latest 3 blogs.
  */
 const PAGES_WITH_BLOG = [
   "about",
@@ -47,14 +49,14 @@ const PAGES_WITH_BLOG = [
 ];
 
 /*
- * About-only sections
+ * About page sections
  */
 const PAGES_WITH_ABOUT_SECTIONS = [
   "about",
 ];
 
 /*
- * Services-only sections
+ * Services page sections
  */
 const PAGES_WITH_SERVICES_SECTIONS = [
   "services",
@@ -68,14 +70,14 @@ const PAGES_WITH_CASE_STUDIES_GRID = [
 ];
 
 /*
- * Pages that show Featured Story
+ * Insights Featured Story
  */
 const PAGES_WITH_FEATURED_STORY = [
   "insights",
 ];
 
 /*
- * Pages that show Let's Build CTA
+ * Let's Build CTA
  */
 const PAGES_WITH_CTA = [
   "about",
@@ -83,22 +85,6 @@ const PAGES_WITH_CTA = [
   "industries",
   "case-studies",
   "insights",
-  "partner",
-];
-
-/*
- * Partner-only sections
- *
- * Partner page:
- * Hero
- * Our Purpose
- * What We Do
- * Product Experience
- * Testimonials
- * Blog
- * Let's Build
- */
-const PAGES_WITH_PARTNER_SECTIONS = [
   "partner",
 ];
 
@@ -409,7 +395,7 @@ export default async function WordPressPage({
     page.featuredImage?.node;
 
   /* =======================================================
-     PAGE FLAGS
+     CURRENT PAGE
   ======================================================= */
 
   const currentSlug =
@@ -417,25 +403,32 @@ export default async function WordPressPage({
       ? slug[0].toLowerCase()
       : "";
 
-  /*
-   * Insights page
-   */
+  /* =======================================================
+     PAGE IDENTIFICATION
+  ======================================================= */
+
   const isInsightsPage =
     currentSlug === "insights";
 
-  /*
-   * Partner page
-   */
   const isPartnerPage =
     currentSlug === "partner";
 
+  /* =======================================================
+     WORDPRESS CONTENT
+  ======================================================= */
+
   /*
-   * WordPress page content
+   * Do not render WordPress body content on:
    *
-   * Do NOT show WordPress body on Insights.
+   * - Insights
+   * - Case Studies
+   * - Partner
+   *
+   * because these pages are built from React sections.
    */
   const hasContent =
     !isInsightsPage &&
+    !isPartnerPage &&
     slug.length === 1 &&
     currentSlug !== "case-studies" &&
     Boolean(
@@ -449,25 +442,7 @@ export default async function WordPressPage({
   ======================================================= */
 
   /*
-   * Testimonials
-   */
-  const showTestimonials =
-    slug.length === 1 &&
-    PAGES_WITH_TESTIMONIALS.includes(
-      currentSlug
-    );
-
-  /*
-   * Latest Blogs
-   */
-  const showBlog =
-    slug.length === 1 &&
-    PAGES_WITH_BLOG.includes(
-      currentSlug
-    );
-
-  /*
-   * About sections
+   * ABOUT
    */
   const showAboutSections =
     slug.length === 1 &&
@@ -476,7 +451,7 @@ export default async function WordPressPage({
     );
 
   /*
-   * Services sections
+   * SERVICES
    */
   const showServicesSections =
     slug.length === 1 &&
@@ -485,7 +460,35 @@ export default async function WordPressPage({
     );
 
   /*
-   * Case Studies grid
+   * TESTIMONIALS
+   *
+   * About
+   * Services
+   * Industries
+   * Partner
+   */
+  const showTestimonials =
+    slug.length === 1 &&
+    PAGES_WITH_TESTIMONIALS.includes(
+      currentSlug
+    );
+
+  /*
+   * LATEST BLOGS
+   *
+   * About
+   * Services
+   * Industries
+   * Partner
+   */
+  const showBlog =
+    slug.length === 1 &&
+    PAGES_WITH_BLOG.includes(
+      currentSlug
+    );
+
+  /*
+   * CASE STUDIES
    */
   const showCaseStudiesGrid =
     slug.length === 1 &&
@@ -494,7 +497,7 @@ export default async function WordPressPage({
     );
 
   /*
-   * Featured Story
+   * INSIGHTS FEATURED STORY
    */
   const showFeaturedStory =
     slug.length === 1 &&
@@ -503,7 +506,7 @@ export default async function WordPressPage({
     );
 
   /*
-   * Let's Build CTA
+   * LET'S BUILD
    */
   const showCTA =
     slug.length === 1 &&
@@ -548,6 +551,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           ABOUT PAGE
+          
+          CODM STORY
+          OUR PURPOSE
+          WHAT WE DO
+          OUR EXCELLENCE
       ================================================= */}
 
       {showAboutSections && (
@@ -583,6 +591,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           SERVICES PAGE
+          
+          KEY CAPABILITIES
+          USE CASES
+          SERVICE PROCESS
+          PRODUCT EXPERIENCE
       ================================================= */}
 
       {showServicesSections && (
@@ -616,8 +629,8 @@ export default async function WordPressPage({
       {/* =================================================
           PARTNER PAGE
           
-          Required order:
-
+          EXACT ORDER:
+          
           OUR PURPOSE
           WHAT WE DO
           PRODUCT EXPERIENCE
@@ -659,11 +672,11 @@ export default async function WordPressPage({
 
       {/* =================================================
           TESTIMONIALS
-
-          About
-          Services
-          Industries
-          Partner
+          
+          ABOUT
+          SERVICES
+          INDUSTRIES
+          PARTNER
       ================================================= */}
 
       {showTestimonials && (
@@ -683,7 +696,9 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          INSIGHTS — FEATURED STORY
+          INSIGHTS
+          
+          FEATURED STORY
       ================================================= */}
 
       {showFeaturedStory && (
@@ -694,11 +709,15 @@ export default async function WordPressPage({
 
       {/* =================================================
           LATEST BLOGS
-
-          About
-          Services
-          Industries
-          Partner
+          
+          ABOUT
+          SERVICES
+          INDUSTRIES
+          PARTNER
+          
+          BlogGrid should show:
+          - Latest 3 blogs
+          - View All Blogs button
       ================================================= */}
 
       {showBlog && (
@@ -708,14 +727,14 @@ export default async function WordPressPage({
       )}
 
       {/* =================================================
-          LET'S BUILD CTA
-
-          About
-          Services
-          Industries
-          Case Studies
-          Insights
-          Partner
+          LET'S BUILD
+          
+          ABOUT
+          SERVICES
+          INDUSTRIES
+          CASE STUDIES
+          INSIGHTS
+          PARTNER
       ================================================= */}
 
       {showCTA && (
