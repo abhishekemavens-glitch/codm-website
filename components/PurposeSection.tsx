@@ -91,32 +91,42 @@ export default async function PurposeSection() {
         {(hasVision || hasMission) && (
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {hasVision && (
-              <div className="codm-alt-card rounded-[20px] p-9">
-                {visionTitle && (
-                  <h3 className="text-[24px] font-normal text-[var(--foreground)]">
-                    {visionTitle}
-                  </h3>
-                )}
-                {visionText && (
-                  <p className="codm-alt-body mt-4 text-[15px] leading-[1.7]">
-                    {visionText}
-                  </p>
-                )}
+              <div className="codm-alt-card rounded-[28px] p-9">
+                {/* HOVER GRADIENT — fades in when the card is hovered */}
+                <div className="codm-alt-card-glow" aria-hidden="true" />
+
+                {/* CONTENT sits above the gradient */}
+                <div className="relative z-10">
+                  {visionTitle && (
+                    <h3 className="text-[24px] font-normal text-[var(--foreground)]">
+                      {visionTitle}
+                    </h3>
+                  )}
+                  {visionText && (
+                    <p className="codm-alt-body mt-4 text-[15px] leading-[1.7]">
+                      {visionText}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 
             {hasMission && (
-              <div className="codm-alt-card rounded-[20px] p-9">
-                {missionTitle && (
-                  <h3 className="text-[24px] font-normal text-[var(--foreground)]">
-                    {missionTitle}
-                  </h3>
-                )}
-                {missionText && (
-                  <p className="codm-alt-body mt-4 text-[15px] leading-[1.7]">
-                    {missionText}
-                  </p>
-                )}
+              <div className="codm-alt-card rounded-[28px] p-9">
+                <div className="codm-alt-card-glow" aria-hidden="true" />
+
+                <div className="relative z-10">
+                  {missionTitle && (
+                    <h3 className="text-[24px] font-normal text-[var(--foreground)]">
+                      {missionTitle}
+                    </h3>
+                  )}
+                  {missionText && (
+                    <p className="codm-alt-body mt-4 text-[15px] leading-[1.7]">
+                      {missionText}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
