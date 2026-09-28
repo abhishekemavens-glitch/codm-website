@@ -19,7 +19,7 @@ export default function Home() {
       {/* HERO — animates on load since it's already in view */}
       <Reveal className="relative z-10" distance={24} duration={0.7}>
         <Hero />
-      </Reveal>
+      </Reveal> 
 
       <Reveal className="relative z-10">
         <Industries />
