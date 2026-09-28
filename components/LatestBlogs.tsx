@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 type Blog = {
   id: string;
@@ -84,7 +85,7 @@ export default function LatestBlogs() {
             inline={true} keeps "Our" and "Latest Blogs" on the
             same line, matching the target design.
             ================================================= */}
-
+<Reveal distance={20}>
         <SectionHeading
           eyebrow="From Blog"
           title="Our"
@@ -92,6 +93,7 @@ export default function LatestBlogs() {
           description="Explore the insights and trends shaping our industry"
           inline
         />
+    </Reveal>
 
       </div>
 
@@ -104,8 +106,10 @@ export default function LatestBlogs() {
           No blogs available.
         </div>
       ) : (
-        <div className="latest-blogs-grid">
+        <div className="latest-blogs">
+          <Stagger className="latest-blogs-grid">
           {blogs.map((blog) => (
+              <StaggerItem key={blog.id} className="h-full">
             <article className="blog-card" key={blog.id}>
               <div className="blog-categories">
                 {blog.categories?.nodes.map((category) => (
@@ -137,7 +141,9 @@ export default function LatestBlogs() {
   </svg></span>
               </a>
             </article>
+                </StaggerItem>
           ))}
+            </Stagger>
         </div>
       )}
     </section>
