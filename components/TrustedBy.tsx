@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 type TrustedLogo = {
   id: string;
@@ -109,13 +110,15 @@ export default function TrustedBy() {
       <div className="mx-auto max-w-[1200px] px-6">
 
        {/* EYEBROW */}
-<div className="heading-codm-eyebrow-wrap">
-  <span aria-hidden="true" className="heading-codm-eyebrow-line" />
-  <span className="heading-codm-eyebrow">
-    Trusted by world best
-  </span>
-  <span aria-hidden="true" className="heading-codm-eyebrow-line" />
-</div>
+<Reveal distance={16}>
+  <div className="heading-codm-eyebrow-wrap">
+    <span aria-hidden="true" className="heading-codm-eyebrow-line" />
+    <span className="heading-codm-eyebrow">
+      Trusted by world best
+    </span>
+    <span aria-hidden="true" className="heading-codm-eyebrow-line" />
+  </div>
+</Reveal>
 
         {/* LOGOS */}
         {loading ? (
@@ -130,8 +133,8 @@ export default function TrustedBy() {
               No trusted companies found.
             </p>
           </div>
-        ) : (
-          <div
+               ) : (
+          <Stagger
             className="
               mx-auto
               flex
@@ -143,6 +146,7 @@ export default function TrustedBy() {
             "
           >
             {logos.map((logo) => (
+                <StaggerItem key={logo.id}>
               <div
                 key={logo.id}
                 className="
@@ -191,8 +195,9 @@ export default function TrustedBy() {
                   </span>
                 )}
               </div>
+                   </StaggerItem>
             ))}
-          </div>
+               </Stagger>
         )}
 
       </div>
