@@ -50,9 +50,9 @@ export default function Home() {
   <LatestBlogs />
 </div>
 
-      <Reveal className="relative z-10">
-        <ContactCTA />
-      </Reveal>
+    <div className="relative z-10">
+  <ContactCTA />
+</div>
 
       {/* Footer stays outside Reveal */}
       <Footer />
