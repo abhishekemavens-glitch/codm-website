@@ -24,6 +24,7 @@ import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 import LatestBlogs from "@/components/LatestBlogs";
 import WhatWeBuild from "@/components/WhatWeBuild";
+import PartnersInSuccess from "@/components/PartnersInSuccess";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -890,7 +891,11 @@ export default async function WordPressPage({
 
           <div className="relative z-10">
             <ProductExperience />
-          </div>
+          </div
+
+           <div className="relative z-10">
+            <PartnersInSuccess/>
+          </div> 
         </>
       )}
 
