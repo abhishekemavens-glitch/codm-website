@@ -148,7 +148,6 @@ export default function TrustedBy() {
             {logos.map((logo) => (
                 <StaggerItem key={logo.id}>
               <div
-                key={logo.id}
                 className="
                   flex
                   h-[70px]
