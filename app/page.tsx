@@ -42,9 +42,9 @@ export default function Home() {
 </div>
 
       {/* Testimonial slides in from the side for variety */}
-      <Reveal className="relative z-10" direction="left">
-        <Testimonials />
-      </Reveal>
+     <div className="relative z-10">
+  <Testimonials />
+</div>
 
       <Reveal className="relative z-10">
         <LatestBlogs />
