@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { useInViewOnce, useParallax, splitWords } from "@/lib/codm-animations";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 type Industry = {
   id: string;
@@ -193,89 +194,119 @@ export default function Industries() {
             )}
           </div>
 
-          {active && (
-            <div
-              key={active.id}
-              onMouseMove={handleCardMouseMove}
-              onMouseLeave={handleCardMouseLeave}
-              style={cardStyle}
-              className="codm-industry-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
+{active && (
+  <Reveal
+    className="mt-9 md:mt-12"
+    distance={40}
+    duration={0.8}
+  >
+    <div
+      key={active.id}
+      onMouseMove={handleCardMouseMove}
+      onMouseLeave={handleCardMouseLeave}
+      style={cardStyle}
+      className="codm-industry-card overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)]"
+    >
+      <div
+        aria-hidden="true"
+        className="codm-industry-spotlight"
+      />
+
+      <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
+
+        {/* =================================================
+            CONTENT
+            ================================================= */}
+        <div
+          className={
+            "codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16 " +
+            (isVisible ? "codm-industry-content-in" : "")
+          }
+        >
+          <div className="max-w-[500px]">
+
+            <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
+
+            <h3
+              className={
+                "codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl " +
+                (titleVisible
+                  ? "codm-industry-title-visible"
+                  : "")
+              }
             >
-              <div aria-hidden="true" className="codm-industry-spotlight" />
+              {splitWords(active.title)}
+            </h3>
 
-              <div className="grid items-center lg:grid-cols-[1fr_0.95fr]">
-                <div
-                  className={
-                    "codm-industry-card-content order-2 p-8 md:p-12 lg:order-1 lg:pl-12 xl:p-16 " +
-                    (isVisible ? "codm-industry-content-in" : "")
-                  }
-                >
-                  <div className="max-w-[500px]">
-                    <div className="codm-industry-accent mb-6 h-[2px] w-10 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#4F46E5]" />
+            <p
+              className={
+                "codm-industry-text-reveal mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px] " +
+                (isVisible && contentVisible
+                  ? "codm-industry-text-reveal-in"
+                  : "")
+              }
+              dangerouslySetInnerHTML={{
+                __html: active.content || active.excerpt,
+              }}
+            />
 
-                    <h3
-                      className={
-                        "codm-word-stagger codm-industry-title-reveal text-3xl font-semibold leading-[1.08] tracking-[-0.045em] text-[var(--foreground)] md:text-4xl " +
-                        (titleVisible ? "codm-industry-title-visible" : "")
-                      }
-                    >
-                      {splitWords(active.title)}
-                    </h3>
+            <a
+              href={"/industries/" + active.slug}
+              className={
+                "codm-industry-view-link codm-industry-link-reveal mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] " +
+                (isVisible && contentVisible
+                  ? "codm-industry-link-reveal-in"
+                  : "")
+              }
+            >
+              <span>View all</span>
 
-                    <p
-                      className={
-                        "codm-industry-text-reveal mt-5 text-sm leading-6 text-[var(--muted)] md:text-[15px] " +
-                        (isVisible && contentVisible
-                          ? "codm-industry-text-reveal-in"
-                          : "")
-                      }
-                      dangerouslySetInnerHTML={{
-                        __html: active.content || active.excerpt,
-                      }}
-                    />
+              <span className="codm-industry-arrow">
+                {"\u2192"}
+              </span>
+            </a>
 
-                    <a
-                      href={"/industries/" + active.slug}
-                      className={
-                        "codm-industry-view-link codm-industry-link-reveal mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] " +
-                        (isVisible && contentVisible
-                          ? "codm-industry-link-reveal-in"
-                          : "")
-                      }
-                    >
-                      <span>View all</span>
-                      <span className="codm-industry-arrow">{"\u2192"}</span>
-                    </a>
-                  </div>
-                </div>
+          </div>
+        </div>
 
-                <div
-                  ref={imageParallaxRef}
-                  style={imageWrapperStyle}
-                  className={
-                    "codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 " +
-                    (isVisible && contentVisible ? "codm-media-loaded" : "")
-                  }
-                >
-                  <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
-                    <div
-                      aria-hidden="true"
-                      className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full"
-                    />
+        {/* =================================================
+            IMAGE
+            ================================================= */}
+        <div
+          ref={imageParallaxRef}
+          style={imageWrapperStyle}
+          className={
+            "codm-hero-media-scale order-1 p-4 md:p-5 lg:order-2 lg:p-5 " +
+            (isVisible && contentVisible
+              ? "codm-media-loaded"
+              : "")
+          }
+        >
+          <div className="codm-industry-image-container relative aspect-[1.2/1] overflow-hidden rounded-[18px] bg-[#f5f3ff] dark:bg-[#111326]">
 
-                    {active.featuredImage?.node?.sourceUrl && (
-                      <img
-                        src={active.featuredImage.node.sourceUrl}
-                        alt={
-                          active.featuredImage.node.altText || active.title
-                        }
-                        className="codm-industry-image relative h-full w-full object-contain p-5 md:p-8"
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div
+              aria-hidden="true"
+              className="codm-industry-image-glow absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            />
+
+            {active.featuredImage?.node?.sourceUrl && (
+              <img
+                src={active.featuredImage.node.sourceUrl}
+                alt={
+                  active.featuredImage.node.altText ||
+                  active.title
+                }
+                className="codm-industry-image relative h-full w-full object-contain p-5 md:p-8"
+              />
+            )}
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </Reveal>
+)}
           )}
         </div>
       </section>
