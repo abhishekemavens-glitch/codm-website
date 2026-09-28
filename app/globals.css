@@ -9370,3 +9370,21 @@ img.codm-footer-logo {
   .trust-stat-value { font-size: 36px; }
   .trust-stat-label { font-size: 20px; }
 }
+
+/* WWB card background */
+.wwb-card {
+  background: #e9eef6 !important;
+  border: 1px solid #dbe2ee !important;
+}
+
+/* Inner parts must not paint their own white background */
+.wwb-body,
+.wwb-compact,
+.wwb-feature {
+  background: transparent !important;
+}
+
+[data-theme="dark"] .wwb-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
