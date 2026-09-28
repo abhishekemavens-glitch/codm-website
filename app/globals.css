@@ -8695,3 +8695,78 @@ img.codm-footer-logo {
 [data-theme="dark"] .featured-story-title {
   color: #ffffff !important;
 }
+
+
+
+/* =====================================================
+   PURPOSE CARDS — hover gradient (Vision / Mission)
+   Add to your shared stylesheet (globals.css), next to the
+   existing .codm-alt-card rules.
+   ===================================================== */
+
+.codm-alt-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 500ms ease,
+    box-shadow 500ms ease;
+}
+
+.codm-alt-card:hover {
+  transform: translateY(-2px);
+  border-color: #d4cbff;
+  box-shadow: 0 20px 60px rgba(108, 92, 231, 0.15);
+}
+
+/* The gradient layer: invisible until the card is hovered */
+.codm-alt-card-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+  background: linear-gradient(
+    135deg,
+    #f6f4ff 0%,
+    #ebe7fd 45%,
+    #d4cbff 100%
+  );
+}
+
+.codm-alt-card:hover .codm-alt-card-glow {
+  opacity: 1;
+}
+
+/* Dark mode — same deep navy-to-purple as the Services cards */
+[data-theme="dark"] .codm-alt-card-glow {
+  background: linear-gradient(
+    135deg,
+    #11143a 0%,
+    #24206f 50%,
+    #5038e8 100%
+  );
+}
+
+[data-theme="dark"] .codm-alt-card:hover {
+  border-color: rgba(80, 56, 232, 0.4);
+  box-shadow: 0 20px 60px rgba(80, 56, 232, 0.2);
+}
+
+/* Touch screens: no hover state, so skip the lift */
+@media (hover: none) {
+  .codm-alt-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-alt-card,
+  .codm-alt-card-glow {
+    transition: none;
+  }
+
+  .codm-alt-card:hover {
+    transform: none;
+  }
+}
