@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 type Service = {
   id: string;
@@ -307,12 +308,14 @@ export default function ServicesSection() {
         "
       >
 
-    <SectionHeading
-  eyebrow="What We Do"
-  title="Engineering the systems that run"
-  gradientText="modern enterprises."
-  description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
-/>
+    <Reveal distance={20}>
+  <SectionHeading
+    eyebrow="What We Do"
+    title="Engineering the systems that run"
+    gradientText="modern enterprises."
+    description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+  />
+</Reveal>
 
         {/* =================================================
             LOADING
@@ -421,9 +424,19 @@ export default function ServicesSection() {
                 lg:grid-cols-3
               "
             >
+              <Stagger
+  className="
+    mt-9
+    grid
+    grid-cols-1
+    gap-4
+    sm:grid-cols-2
+    lg:grid-cols-3
+  "
+>
 
               {services.map((service) => (
-
+    <StaggerItem key={service.id} className="h-full">
                 <article
                   key={service.id}
                   className="
@@ -539,8 +552,10 @@ export default function ServicesSection() {
                   />
 
                 </article>
+      </StaggerItem>
 
               ))}
+                </Stagger>
 
             </div>
 
