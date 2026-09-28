@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
+import { Reveal } from "@/components/Reveal";
 
 type Testimonial = {
   id: string;
@@ -295,16 +296,20 @@ export default function Testimonials({
             SECTION HEADING
             ================================================= */}
 
-        <SectionHeading
-          eyebrow="Testimonial"
-          title="Experiences Shared by"
-          gradientText="Our Clients"
-        />
+        <Reveal distance={20}>
+  <SectionHeading
+    eyebrow="Testimonial"
+    title="Experiences Shared by"
+    gradientText="Our Clients"
+  />
+</Reveal>
 
 
         {/* =================================================
             SLIDER
             ================================================= */}
+			
+        <Reveal direction="left" delay={0.15}>
 
         <div
           className="codm-testimonial-slider"
@@ -474,6 +479,8 @@ export default function Testimonials({
           </div>
 
         </div>
+		
+		</Reveal>
 
 
         {/* =================================================
