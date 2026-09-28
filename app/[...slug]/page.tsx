@@ -873,31 +873,27 @@ export default async function WordPressPage({
       ================================================= */}
 
       {isPartnerPage && (
-        <>
+  <>
+    <div className="relative z-10">
+      <PurposeSection />
+    </div>
 
-             <div className="relative z-10">
-    <WhatWeBuild />
-  </div>
-          <div className="relative z-10">
-            <PurposeSection />
-          </div>
+    <div
+      id="services"
+      className="relative z-10 scroll-mt-24"
+    >
+      <ServicesSection />
+    </div>
 
-          <div
-            id="services"
-            className="relative z-10 scroll-mt-24"
-          >
-            <ServicesSection />
-          </div>
+    <div className="relative z-10">
+      <ProductExperience />
+    </div>
 
-          <div className="relative z-10">
-            <ProductExperience />
-          </div
-
-           <div className="relative z-10">
-            <PartnersInSuccess/>
-          </div> 
-        </>
-      )}
+    <div className="relative z-10">
+      <PartnersInSuccess data={partnerTrust} />
+    </div>
+  </>
+)}
 
       {/* =================================================
           TESTIMONIALS
