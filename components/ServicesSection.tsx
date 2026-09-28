@@ -410,154 +410,130 @@ export default function ServicesSection() {
             SERVICES
             ================================================= */}
 
+              {/* =================================================
+            SERVICES
+            ================================================= */}
+
         {!loading &&
           !error &&
           services.length > 0 && (
-
-            <div
+            <Stagger
               className="
                 mt-9
                 grid
+                w-full
                 grid-cols-1
                 gap-4
                 sm:grid-cols-2
                 lg:grid-cols-3
               "
             >
-              <Stagger
-  className="
-    mt-9
-    grid
-    grid-cols-1
-    gap-4
-    sm:grid-cols-2
-    lg:grid-cols-3
-  "
->
-
               {services.map((service) => (
-    <StaggerItem key={service.id} className="h-full">
-                <article
+                <StaggerItem
                   key={service.id}
-                  className="
-                    group
-                    min-h-[166px]
-                    rounded-[18px]
-                    border
-                    border-[var(--border)]
-                    bg-[var(--surface)]
-                    px-[22px]
-                    py-[22px]
-
-                    transition-all
-                    duration-500
-                    ease-out
-
-                    hover:-translate-y-[2px]
-
-                    hover:border-[var(--accent)]/40
-
-                    hover:bg-gradient-to-br
-                    hover:from-[#11143a]
-                    hover:via-[#24206f]
-                    hover:to-[#5038e8]
-
-                    hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
-                  "
+                  className="h-full"
                 >
-
-                  {/* =================================================
-                      FEATURED IMAGE / ICON
-                      ================================================= */}
-
-                  <div
+                  <article
                     className="
-                      mb-[18px]
-                      flex
-                      h-[28px]
-                      w-[28px]
-                      items-center
-                      justify-start
+                      group
+                      h-full
+                      min-h-[166px]
+                      w-full
+                      rounded-[18px]
+                      border
+                      border-[var(--border)]
+                      bg-[var(--surface)]
+                      px-[22px]
+                      py-[22px]
                       transition-all
-                      duration-300
-                      group-hover:scale-105
+                      duration-500
+                      ease-out
+                      hover:-translate-y-[2px]
+                      hover:border-[var(--accent)]/40
+                      hover:bg-gradient-to-br
+                      hover:from-[#11143a]
+                      hover:via-[#24206f]
+                      hover:to-[#5038e8]
+                      hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
                     "
                   >
+                    {/* =================================================
+                        FEATURED IMAGE / ICON
+                        ================================================= */}
 
-                    {service.featuredImage?.node?.sourceUrl ? (
+                    <div
+                      className="
+                        mb-[18px]
+                        flex
+                        h-[28px]
+                        w-[28px]
+                        items-center
+                        justify-start
+                        transition-all
+                        duration-300
+                        group-hover:scale-105
+                      "
+                    >
+                      {service.featuredImage?.node?.sourceUrl ? (
+                        <img
+                          src={service.featuredImage.node.sourceUrl}
+                          alt={
+                            service.featuredImage.node.altText ||
+                            service.title
+                          }
+                          className="
+                            h-[28px]
+                            w-[28px]
+                            object-contain
+                          "
+                        />
+                      ) : (
+                        <ServiceIcon type={service.icon} />
+                      )}
+                    </div>
 
-                      <img
-                        src={
-                          service.featuredImage.node.sourceUrl
-                        }
-                        alt={
-                          service.featuredImage.node.altText ||
-                          service.title
-                        }
-                        className="
-                          h-[28px]
-                          w-[28px]
-                          object-contain
-                        "
-                      />
+                    {/* =================================================
+                        TITLE
+                        ================================================= */}
 
-                    ) : (
+                    <h3
+                      className="
+                        text-[14px]
+                        font-semibold
+                        tracking-[-0.02em]
+                        text-[var(--foreground)]
+                        transition-colors
+                        duration-300
+                        group-hover:text-white
+                      "
+                    >
+                      {service.title}
+                    </h3>
 
-                      <ServiceIcon
-                        type={service.icon}
-                      />
+                    {/* =================================================
+                        DESCRIPTION
+                        ================================================= */}
 
-                    )}
-
-                  </div>
-
-
-                  {/* =================================================
-                      TITLE
-                      ================================================= */}
-
-                  <h3
-                    className="
-                      text-[14px]
-                      font-semibold
-                      tracking-[-0.02em]
-                      text-[var(--foreground)]
-                      transition-colors
-                      duration-300
-                      group-hover:text-white
-                    "
-                  >
-                    {service.title}
-                  </h3>
-
-
-                  {/* =================================================
-                      DESCRIPTION
-                      ================================================= */}
-
-                  <div
-                    className="
-                      mt-[7px]
-                      max-w-[285px]
-                      text-[11px]
-                      leading-[1.5]
-                      text-[var(--muted)]
-                      transition-colors
-                      duration-300
-                      group-hover:text-white/70
-                    "
-                    dangerouslySetInnerHTML={{
-                      __html: service.content,
-                    }}
-                  />
-
-                </article>
-      </StaggerItem>
-
+                    <div
+                      className="
+                        mt-[7px]
+                        max-w-[285px]
+                        text-[11px]
+                        leading-[1.5]
+                        text-[var(--muted)]
+                        transition-colors
+                        duration-300
+                        group-hover:text-white/70
+                      "
+                      dangerouslySetInnerHTML={{
+                        __html: service.content,
+                      }}
+                    />
+                  </article>
+                </StaggerItem>
               ))}
-                </Stagger>
-
-            </div>
+            </Stagger>
+          )}
 
           )}
 
