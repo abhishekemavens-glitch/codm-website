@@ -46,9 +46,9 @@ export default function Home() {
   <Testimonials />
 </div>
 
-      <Reveal className="relative z-10">
-        <LatestBlogs />
-      </Reveal>
+      <div className="relative z-10">
+  <LatestBlogs />
+</div>
 
       <Reveal className="relative z-10">
         <ContactCTA />
