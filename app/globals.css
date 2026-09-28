@@ -9054,3 +9054,145 @@ img.codm-footer-logo {
     transform: none;
   }
 }
+
+
+/* ---------- Tokens (light + dark friendly) ---------- */
+:root {
+  --products-bg: #f0f4fa;
+  --card-bg: #e9eef6;
+  --card-border: #dbe2ee;
+  --tag-bg: rgba(255, 255, 255, 0.35);
+  --tag-border: #d3dbe8;
+  --text-muted: #6b7690;
+}
+
+/* ---------- Section ---------- */
+.products-section {
+  background: var(--products-bg);
+  padding: 80px 24px;
+}
+
+.products-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* NOT column-reverse */
+  gap: 20px;
+}
+
+/* ---------- Row 1: Custom AI Agents + Private LLM ---------- */
+.products-row-top {
+  display: grid;
+  grid-template-columns: 2.4fr 1fr; /* ~70 / 30 */
+  gap: 20px;
+}
+
+/* ---------- Row 3: SaaS, Automation, Conversational ---------- */
+.products-row-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ---------- Card base ---------- */
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ---------- Custom AI Agents (image left, text right) ---------- */
+.agents-card {
+  display: grid;
+  grid-template-columns: 364px 1fr;
+  min-height: 305px;
+}
+.agents-card .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.agents-card .card-body {
+  padding: 32px;
+}
+.agents-card .card-desc {
+  max-width: 300px; /* forces the 3-line wrap */
+  color: var(--text-muted);
+  line-height: 24px;
+}
+.agents-card .tag-list {
+  max-width: 300px; /* pushes "Measurable outcomes" to row 2 */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- AI + Salesforce (text left, image right) ---------- */
+.salesforce-card {
+  display: grid;
+  grid-template-columns: 49% 51%;
+  min-height: 330px;
+}
+.salesforce-card .card-body {
+  padding: 34px;
+}
+.salesforce-card .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Bottom cards (image top, text below) ---------- */
+.stack-card .card-image-wrap {
+  height: 234px;
+  overflow: hidden;
+}
+.stack-card .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.stack-card .card-body {
+  padding: 22px 22px 28px;
+}
+
+/* SaaS laptop: show the whole laptop including the base */
+.stack-card--saas .card-image {
+  object-fit: contain;
+  object-position: center bottom;
+  background: #c9d3e0;
+}
+
+/* ---------- Tags ---------- */
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: #3b465c;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .products-row-top {
+    grid-template-columns: 1fr;
+  }
+  .agents-card {
+    grid-template-columns: 1fr;
+  }
+  .agents-card .card-image {
+    height: 220px;
+  }
+  .salesforce-card {
+    grid-template-columns: 1fr;
+  }
+  .salesforce-card .card-image {
+    height: 260px;
+  }
+  .products-row-bottom {
+    grid-template-columns: 1fr;
+  }
+}
