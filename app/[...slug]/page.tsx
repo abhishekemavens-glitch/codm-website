@@ -23,6 +23,7 @@ import SuccessStoriesCTA from "@/components/SuccessStoriesCTA";
 import ContactCTA from "@/components/ContactCTA";
 import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 import LatestBlogs from "@/components/LatestBlogs";
+import WhatWeBuild from "@/components/WhatWeBuild";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -872,6 +873,10 @@ export default async function WordPressPage({
 
       {isPartnerPage && (
         <>
+
+             <div className="relative z-10">
+    <WhatWeBuild />
+  </div>
           <div className="relative z-10">
             <PurposeSection />
           </div>
