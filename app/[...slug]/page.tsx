@@ -860,24 +860,29 @@ export default async function WordPressPage({
         </>
       )}
 
-      {/* =================================================
-          PARTNER PAGE
-
-          EXACT ORDER:
-
-          OUR PURPOSE
-          WHAT WE DO
-          PRODUCT EXPERIENCE
-          TESTIMONIAL
-          BLOG
-          LET'S BUILD
-      ================================================= */}
-
-      {isPartnerPage && (
+    {isPartnerPage && (
   <>
+    {/* =================================================
+        WHAT WE BUILD
+        ================================================= */}
+
+    {showWhatWeBuild && (
+      <div className="relative z-10">
+        <WhatWeBuild />
+      </div>
+    )}
+
+    {/* =================================================
+        OUR PURPOSE
+        ================================================= */}
+
     <div className="relative z-10">
       <PurposeSection />
     </div>
+
+    {/* =================================================
+        WHAT WE DO
+        ================================================= */}
 
     <div
       id="services"
@@ -886,16 +891,23 @@ export default async function WordPressPage({
       <ServicesSection />
     </div>
 
+    {/* =================================================
+        PRODUCT EXPERIENCE
+        ================================================= */}
+
     <div className="relative z-10">
       <ProductExperience />
     </div>
 
+    {/* =================================================
+        TESTIMONIAL
+        ================================================= */}
+
     <div className="relative z-10">
-      <PartnersInSuccess data={partnerTrust} />
+      <PartnersInSuccess />
     </div>
   </>
 )}
-
       {/* =================================================
           TESTIMONIALS
 
