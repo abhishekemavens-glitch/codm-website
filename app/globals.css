@@ -8782,8 +8782,8 @@ img.codm-footer-logo {
    ===================================================== */
 
 .wwb-section {
-  background: var(--background);
-  padding: 72px 24px;
+	background: #F1F5F9;
+	padding: 72px 24px;
 }
 
 .wwb-container {
@@ -9196,3 +9196,34 @@ img.codm-footer-logo {
     grid-template-columns: 1fr;
   }
 }
+
+/* Cards: tinted, not white */
+.product-card {
+  background: #e9eef6;
+  border: 1px solid #dbe2ee;
+}
+
+/* Tags: translucent outlined pill */
+.tag {
+  padding: 3px 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #5b6780;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid #d3dbe8;
+  border-radius: 999px;
+}
+
+/* Top row: Agents wide, LLM narrow */
+.products-row-top {
+  display: grid;
+  grid-template-columns: 2.4fr 1fr;
+  gap: 20px;
+}
+
+/* Text widths */
+.agents-card .card-desc,
+.agents-card .tag-list { max-width: 300px; }
+
+.salesforce-card .card-desc { max-width: 430px; }
+.salesforce-card .tag-list  { flex-wrap: wrap; }
