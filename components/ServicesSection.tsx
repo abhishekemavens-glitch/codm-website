@@ -410,7 +410,7 @@ export default function ServicesSection() {
             SERVICES
             ================================================= */}
 
-              {/* =================================================
+                    {/* =================================================
             SERVICES
             ================================================= */}
 
@@ -457,6 +457,7 @@ export default function ServicesSection() {
                       hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
                     "
                   >
+
                     {/* =================================================
                         FEATURED IMAGE / ICON
                         ================================================= */}
@@ -488,7 +489,9 @@ export default function ServicesSection() {
                           "
                         />
                       ) : (
-                        <ServiceIcon type={service.icon} />
+                        <ServiceIcon
+                          type={service.icon}
+                        />
                       )}
                     </div>
 
@@ -529,11 +532,11 @@ export default function ServicesSection() {
                         __html: service.content,
                       }}
                     />
+
                   </article>
                 </StaggerItem>
               ))}
             </Stagger>
-          )}
 
           )}
 
