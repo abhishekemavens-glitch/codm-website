@@ -866,11 +866,9 @@ export default async function WordPressPage({
         WHAT WE BUILD
         ================================================= */}
 
-    {showWhatWeBuild && (
-      <div className="relative z-10">
-        <WhatWeBuild />
-      </div>
-    )}
+   <div className="relative z-10">
+  <WhatWeBuild />
+</div>
 
     {/* =================================================
         OUR PURPOSE
