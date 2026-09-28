@@ -19,20 +19,24 @@ export default function Home() {
       {/* HERO — animates on load since it's already in view */}
       <Reveal className="relative z-10" distance={24} duration={0.7}>
         <Hero />
-      </Reveal> 
+      </Reveal>
 
-      <Reveal className="relative z-10">
+      {/* Industries animates itself (useInViewOnce + Reveal on the card) */}
+      <div className="relative z-10">
         <Industries />
-      </Reveal>
+      </div>
 
-      <Reveal className="relative z-10">
+      {/* WhyCodm animates itself (Stagger on the cards) */}
+      <div className="relative z-10">
         <WhyCodm />
-      </Reveal>
+      </div>
 
-      <Reveal className="relative z-10">
+      {/* ServicesSection animates itself (Stagger on the cards) */}
+      <div className="relative z-10">
         <ServicesSection />
-      </Reveal>
+      </div>
 
+      {/* Still wrapped until TrustedBy gets its own Stagger */}
       <Reveal className="relative z-10">
         <TrustedBy />
       </Reveal>
