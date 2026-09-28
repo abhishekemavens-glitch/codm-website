@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
+import { Reveal } from "@/components/Reveal";
 
 type ContactCTAData = {
   id: string;
@@ -120,6 +121,7 @@ export default function ContactCTA() {
       <div className="contact-cta-glow" />
 
       <div className="contact-cta-content">
+            <Reveal distance={20}>
 
         {/* =================================================
             SECTION HEADING
@@ -134,6 +136,9 @@ export default function ContactCTA() {
           gradientText={cta.highlight}
           description={cta.description}
         />
+              </Reveal>
+        
+            <Reveal delay={0.2} className="flex justify-center">
 
         {/* BUTTON */}
         <a
@@ -150,6 +155,8 @@ export default function ContactCTA() {
           
           
         </a>
+
+               </Reveal>
 
       </div>
     </section>
