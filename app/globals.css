@@ -10084,103 +10084,139 @@ img.codm-footer-logo {
 
 
 /* =========================================================
-   CODM BLOG DETAIL PAGE
-   Reference design
+   CODM BLOG DETAIL
    ========================================================= */
 
 .codm-post {
   width: 100%;
   background: #eef4fa;
   color: #17213a;
-  padding: 42px 0 0;
+  padding: 42px 0 72px;
 }
 
-/* ---------------------------------------------------------
-   MAIN BLOG LAYOUT
-   --------------------------------------------------------- */
+/* =========================================================
+   BLOG GRID
+   ========================================================= */
 
 .codm-post-layout {
-  width: min(1140px, calc(100% - 48px));
+  width: min(1180px, calc(100% - 64px));
+
   margin: 0 auto;
+
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 250px;
-  gap: 42px;
+
+  grid-template-columns:
+    minmax(0, 760px)
+    250px;
+
+  gap: 38px;
+
   align-items: start;
 }
 
-/* ---------------------------------------------------------
-   MAIN ARTICLE
-   --------------------------------------------------------- */
+/* =========================================================
+   ARTICLE
+   ========================================================= */
 
 .codm-post-main {
   min-width: 0;
   width: 100%;
 }
 
+/* =========================================================
+   META
+   ========================================================= */
+
 .codm-post-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
 
-  font-family: inherit;
-  font-size: 11px;
+  gap: 7px;
+
+  margin-bottom: 13px;
+
+  font-size: 10px;
   line-height: 1.4;
-  color: #8793a8;
+
+  color: #8b98aa;
 }
 
+/* =========================================================
+   TITLE
+   ========================================================= */
+
 .codm-post-title {
-  margin: 0;
   max-width: 760px;
 
-  font-family: inherit;
-  font-size: clamp(38px, 4vw, 58px);
-  line-height: 1.02;
+  margin: 0;
+
+  font-size: clamp(
+    40px,
+    4vw,
+    54px
+  );
+
+  line-height: 1.03;
+
   font-weight: 400;
+
   letter-spacing: -0.045em;
 
   color: #17213a;
 }
 
-.codm-post-excerpt {
-  max-width: 700px;
-  margin: 14px 0 20px;
+/* =========================================================
+   EXCERPT
+   ========================================================= */
 
-  font-size: 14px;
+.codm-post-excerpt {
+  max-width: 690px;
+
+  margin: 14px 0 19px;
+
+  font-size: 12px;
+
   line-height: 1.55;
-  font-weight: 400;
 
   color: #8190a6;
 }
 
-/* ---------------------------------------------------------
+/* =========================================================
    BYLINE
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .codm-post-byline {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 20px;
 
-  margin-bottom: 20px;
+  margin-bottom: 17px;
 }
 
 .codm-post-author {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
 
-  font-size: 11px;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  font-size: 9px;
+
   color: #68758b;
 }
 
 .codm-post-avatar {
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
 
   border-radius: 50%;
+
   object-fit: cover;
 
   display: block;
@@ -10188,47 +10224,60 @@ img.codm-footer-logo {
 
 .codm-post-avatar-fallback {
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  background: #d8e0eb;
-  color: #647187;
+  background: #d9e1ec;
 
-  font-size: 12px;
+  color: #657288;
+
+  font-size: 10px;
+
   font-weight: 600;
 }
 
 .codm-post-sep {
   width: 1px;
-  height: 14px;
-  background: #bfc9d7;
+  height: 12px;
+
   margin: 0 3px;
+
+  background: #c5cfdb;
 }
 
-/* ---------------------------------------------------------
+/* =========================================================
    SHARE
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .codm-post-share {
   display: flex;
-  align-items: center;
-  gap: 7px;
 
-  font-size: 10px;
-  color: #78869b;
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 9px;
+
+  color: #77869b;
 }
 
 .codm-post-share > a {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 50%;
+
   background: #111827;
-  color: #fff;
+
+  color: #ffffff;
 
   text-decoration: none;
 
@@ -10238,7 +10287,8 @@ img.codm-footer-logo {
 }
 
 .codm-post-share > a:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+
   opacity: 0.85;
 }
 
@@ -10246,164 +10296,196 @@ img.codm-footer-logo {
   display: block;
 }
 
-/* ---------------------------------------------------------
-   HERO IMAGE
-   --------------------------------------------------------- */
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .codm-post-hero {
   width: 100%;
+
   overflow: hidden;
 
-  border-radius: 9px;
-  background: #fff;
+  margin-bottom: 23px;
 
-  margin-bottom: 24px;
+  border-radius: 8px;
+
+  background: #ffffff;
 }
 
 .codm-post-hero img {
   display: block;
 
   width: 100%;
+
   height: auto;
 
-  max-height: 500px;
+  max-height: 420px;
+
   object-fit: cover;
 }
 
-/* ---------------------------------------------------------
-   ARTICLE CONTENT
-   --------------------------------------------------------- */
+/* =========================================================
+   CONTENT
+   ========================================================= */
 
 .codm-post-content {
   width: 100%;
+
   max-width: 760px;
 
-  color: #66758c;
+  font-size: 12px;
 
-  font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.65;
+
+  color: #68788f;
 }
 
 .codm-post-content p {
-  margin: 0 0 18px;
+  margin: 0 0 17px;
 }
 
 .codm-post-content h2 {
-  position: relative;
-
-  margin: 34px 0 12px;
+  margin: 32px 0 12px;
 
   scroll-margin-top: 110px;
 
-  font-size: 24px;
+  font-size: 22px;
+
   line-height: 1.2;
+
   font-weight: 500;
+
   letter-spacing: -0.025em;
 
-  color: #26334d;
+  color: #26344d;
 }
 
 .codm-post-content h3 {
-  margin: 26px 0 10px;
+  margin: 25px 0 9px;
 
-  font-size: 18px;
+  scroll-margin-top: 110px;
+
+  font-size: 17px;
+
   line-height: 1.3;
+
   font-weight: 500;
 
-  color: #26334d;
+  color: #26344d;
 }
 
 .codm-post-content h4 {
-  margin: 22px 0 8px;
+  margin: 20px 0 8px;
 
-  font-size: 15px;
+  font-size: 14px;
+
   font-weight: 600;
 
-  color: #26334d;
+  color: #26344d;
 }
 
 .codm-post-content ul,
 .codm-post-content ol {
-  margin: 0 0 20px;
-  padding-left: 22px;
+  margin: 0 0 18px;
+
+  padding-left: 21px;
 }
 
 .codm-post-content li {
-  margin-bottom: 6px;
-}
-
-.codm-post-content a {
-  color: #635bff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  margin-bottom: 5px;
 }
 
 .codm-post-content strong {
-  color: #34415a;
+  color: #34425a;
+
   font-weight: 600;
+}
+
+.codm-post-content a {
+  color: #695cff;
+
+  text-decoration: underline;
+
+  text-underline-offset: 3px;
 }
 
 .codm-post-content img {
   display: block;
 
   width: 100%;
-  max-width: 100%;
+
   height: auto;
 
-  margin: 25px 0;
+  margin: 23px 0;
 
   border-radius: 8px;
 }
 
 .codm-post-content blockquote {
-  margin: 25px 0;
-  padding: 18px 22px;
+  margin: 23px 0;
 
-  border-left: 3px solid #7661ff;
+  padding: 17px 20px;
+
+  border-left: 3px solid #765cff;
+
   border-radius: 0 8px 8px 0;
 
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(
+    255,
+    255,
+    255,
+    0.45
+  );
 
-  color: #58677f;
+  color: #596980;
 }
 
-/* ---------------------------------------------------------
+/* =========================================================
    SIDEBAR
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .codm-post-aside {
   width: 100%;
 
   display: flex;
-  flex-direction: column;
-  gap: 24px;
 
-  position: sticky;
-  top: 105px;
+  flex-direction: column;
+
+  gap: 24px;
 
   align-self: start;
 }
 
-/* ---------------------------------------------------------
-   TABLE OF CONTENTS
-   --------------------------------------------------------- */
+/* =========================================================
+   TOC
+   ========================================================= */
 
 .codm-toc {
   width: 100%;
 
-  padding: 17px 16px 18px;
+  box-sizing: border-box;
 
-  border: 1px solid #d7e0eb;
+  padding: 16px 15px 17px;
+
+  border: 1px solid #d6e0eb;
+
   border-radius: 9px;
 
-  background: rgba(230, 237, 245, 0.75);
+  background: rgba(
+    228,
+    236,
+    245,
+    0.78
+  );
 }
 
 .codm-toc-title {
-  margin: 0 0 13px;
+  margin: 0 0 12px;
 
-  font-size: 13px;
+  font-size: 12px;
+
   line-height: 1.3;
+
   font-weight: 500;
 
   color: #64728a;
@@ -10413,65 +10495,68 @@ img.codm-footer-logo {
   list-style: none;
 
   margin: 0;
+
   padding: 0;
 }
 
 .codm-toc-list li {
   margin: 0;
+
   padding: 0;
 }
 
 .codm-toc-list a {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  gap: 7px;
 
-  padding: 6px 0;
+  grid-template-columns:
+    23px
+    minmax(0, 1fr);
 
-  color: #8290a5;
+  gap: 6px;
+
+  padding: 5px 0;
+
+  color: #8390a5;
+
   text-decoration: none;
 
-  font-size: 10px;
+  font-size: 9px;
+
   line-height: 1.45;
 
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+    color 0.2s ease;
 }
 
-.codm-toc-list a:hover {
-  color: #655cff;
-}
-
+.codm-toc-list a:hover,
 .codm-toc-list a.is-active {
-  color: #655cff;
+  color: #675cff;
 }
 
 .codm-toc-num {
-  font-size: 9px;
-  color: #9aa6b8;
+  color: #9ba6b7;
+
+  font-size: 8px;
 }
 
-/* ---------------------------------------------------------
+/* =========================================================
    EXPERT FORM
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .codm-expert-form {
   width: 100%;
-
-  padding: 0;
-
-  background: transparent;
 }
 
 .codm-expert-title {
-  margin: 0 0 14px;
+  margin: 0 0 13px;
 
-  font-size: 14px;
-  line-height: 1.3;
+  font-size: 12px;
+
+  line-height: 1.35;
+
   font-weight: 500;
 
-  color: #27344d;
+  color: #26344b;
 }
 
 .codm-expert-form form {
@@ -10481,39 +10566,47 @@ img.codm-footer-logo {
 .codm-expert-field {
   display: block;
 
-  margin: 0 0 11px;
+  margin: 0 0 10px;
 }
 
 .codm-expert-field > span {
   display: block;
 
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 
-  font-size: 10px;
+  font-size: 9px;
+
   line-height: 1.3;
 
-  color: #33415a;
+  color: #344158;
 }
 
 .codm-expert-field input,
 .codm-expert-field textarea {
   display: block;
 
-  width: 100%;
-
   box-sizing: border-box;
 
-  border: 1px solid #d3dce8;
+  width: 100%;
+
+  border: 1px solid #d4dfe9;
+
   border-radius: 5px;
 
-  background: rgba(239, 245, 251, 0.65);
+  background: rgba(
+    239,
+    245,
+    251,
+    0.72
+  );
 
-  color: #28354d;
-
-  font-family: inherit;
-  font-size: 10px;
+  color: #28364e;
 
   outline: none;
+
+  font-family: inherit;
+
+  font-size: 9px;
 
   transition:
     border-color 0.2s ease,
@@ -10521,216 +10614,152 @@ img.codm-footer-logo {
 }
 
 .codm-expert-field input {
-  height: 31px;
-  padding: 0 10px;
+  height: 30px;
+
+  padding: 0 9px;
 }
 
 .codm-expert-field textarea {
-  min-height: 76px;
-  padding: 8px 10px;
+  min-height: 68px;
+
+  padding: 7px 9px;
 
   resize: vertical;
 }
 
 .codm-expert-field input::placeholder,
 .codm-expert-field textarea::placeholder {
-  color: #a3adbc;
+  color: #a0aaba;
 }
 
 .codm-expert-field input:focus,
 .codm-expert-field textarea:focus {
-  border-color: #8068ff;
+  border-color: #8067ff;
 
-  box-shadow: 0 0 0 2px rgba(128, 104, 255, 0.08);
+  box-shadow:
+    0 0 0 2px
+    rgba(
+      128,
+      103,
+      255,
+      0.08
+    );
 }
 
 .codm-expert-submit {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   width: 100%;
-  height: 31px;
+
+  height: 30px;
 
   border: 0;
+
   border-radius: 5px;
 
   background: #7658f5;
-  color: #fff;
+
+  color: #ffffff;
 
   font-family: inherit;
-  font-size: 10px;
+
+  font-size: 9px;
+
   font-weight: 500;
 
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .codm-expert-submit:hover {
+  opacity: 0.9;
+
   transform: translateY(-1px);
-  opacity: 0.92;
 }
 
 .codm-expert-submit:disabled {
   opacity: 0.6;
+
   cursor: wait;
 }
 
 .codm-expert-error {
-  margin: 8px 0;
+  margin: 7px 0;
 
-  font-size: 10px;
-  color: #d34c5a;
+  font-size: 9px;
+
+  color: #d34d5b;
 }
 
-.codm-expert-form-success {
-  padding: 20px;
+/* =========================================================
+   SUCCESS MESSAGE
+   ========================================================= */
 
-  border: 1px solid #d7e0eb;
+.codm-expert-form-success {
+  padding: 18px;
+
+  border: 1px solid #d6e0eb;
+
   border-radius: 9px;
 
-  background: rgba(230, 237, 245, 0.75);
+  background: rgba(
+    228,
+    236,
+    245,
+    0.78
+  );
 }
 
 .codm-expert-form-success p {
   margin: 0;
 
-  font-size: 11px;
+  font-size: 10px;
+
   line-height: 1.5;
+
   color: #718097;
 }
 
 /* =========================================================
-   BLOG CTA
+   RESPONSIVE
    ========================================================= */
 
-.codm-blog-cta {
-  width: 100%;
+@media (max-width: 1050px) {
+  .codm-post-layout {
+    width: min(
+      920px,
+      calc(100% - 44px)
+    );
 
-  margin-top: 75px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      225px;
 
-  padding: 75px 20px 80px;
+    gap: 30px;
+  }
 
-  text-align: center;
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(121, 93, 255, 0.22),
-      rgba(121, 93, 255, 0) 48%
-    ),
-    #e8f1f9;
+  .codm-post-title {
+    font-size: 44px;
+  }
 }
 
-.codm-blog-cta-inner {
-  width: min(850px, 100%);
-  margin: 0 auto;
-}
-
-.codm-blog-cta-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  margin-bottom: 16px;
-
-  font-size: 10px;
-  letter-spacing: 0.03em;
-
-  color: #6974a4;
-}
-
-.codm-blog-cta-label::before,
-.codm-blog-cta-label::after {
-  content: "";
-
-  width: 35px;
-  height: 1px;
-
-  background: #aaa8df;
-}
-
-.codm-blog-cta-title {
-  margin: 0;
-
-  font-size: clamp(38px, 5vw, 64px);
-  line-height: 1.05;
-  font-weight: 400;
-  letter-spacing: -0.045em;
-
-  color: #151d34;
-}
-
-.codm-blog-cta-title span {
-  display: block;
-
-  background: linear-gradient(
-    90deg,
-    #386ff1,
-    #695cff,
-    #9b72e8
-  );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  color: transparent;
-}
-
-.codm-blog-cta-text {
-  max-width: 650px;
-
-  margin: 22px auto 28px;
-
-  font-size: 13px;
-  line-height: 1.6;
-
-  color: #91a0b5;
-}
-
-.codm-blog-cta-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 38px;
-
-  padding: 0 20px;
-
-  border-radius: 999px;
-
-  background: #795cff;
-  color: #fff;
-
-  text-decoration: none;
-
-  font-size: 11px;
-  font-weight: 500;
-
-  box-shadow: 0 8px 20px rgba(121, 92, 255, 0.22);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.codm-blog-cta-button:hover {
-  transform: translateY(-2px);
-
-  box-shadow: 0 12px 25px rgba(121, 92, 255, 0.28);
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   .codm-post {
     padding-top: 30px;
   }
 
   .codm-post-layout {
-    width: min(100% - 32px, 760px);
+    width: min(
+      720px,
+      calc(100% - 32px)
+    );
 
     grid-template-columns: 1fr;
 
@@ -10738,21 +10767,26 @@ img.codm-footer-logo {
   }
 
   .codm-post-aside {
-    position: static;
-
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 24px;
+
+    position: static;
   }
 
   .codm-post-title {
-    font-size: clamp(36px, 7vw, 52px);
+    font-size: 42px;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .codm-post {
     padding-top: 24px;
+
+    padding-bottom: 50px;
   }
 
   .codm-post-layout {
@@ -10760,16 +10794,20 @@ img.codm-footer-logo {
   }
 
   .codm-post-title {
-    font-size: 38px;
+    font-size: 36px;
+
+    line-height: 1.05;
   }
 
   .codm-post-excerpt {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .codm-post-byline {
     align-items: flex-start;
+
     flex-direction: column;
+
     gap: 12px;
   }
 
@@ -10786,15 +10824,6 @@ img.codm-footer-logo {
   }
 
   .codm-post-content {
-    font-size: 13px;
-  }
-
-  .codm-blog-cta {
-    margin-top: 50px;
-    padding: 55px 18px 60px;
-  }
-
-  .codm-blog-cta-title {
-    font-size: 42px;
+    font-size: 12px;
   }
 }
