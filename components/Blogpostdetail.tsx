@@ -13,7 +13,7 @@ const YOUTUBE_URL = "https://www.youtube.com/";
 
 /* ========================================================= */
 
-type TocItem = { id: string; text: string }; 
+type TocItem = { id: string; text: string };
 
 type BlogPost = {
   title: string;
