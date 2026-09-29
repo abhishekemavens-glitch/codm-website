@@ -9617,7 +9617,6 @@ img.codm-footer-logo {
 
 .codm-post-title {
   width: 100%;
-  max-width: 760px;
 
   margin: 0;
 
@@ -9643,7 +9642,6 @@ img.codm-footer-logo {
 
 .codm-post-excerpt {
   width: 100%;
-  max-width: 690px;
 
   margin: 13px 0 0;
 
@@ -9842,8 +9840,6 @@ img.codm-footer-logo {
 
 .codm-post-content {
   width: 100%;
-
-  max-width: 760px;
 
   color: #68788f;
 
