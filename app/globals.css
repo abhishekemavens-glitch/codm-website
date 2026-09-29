@@ -10809,3 +10809,108 @@ img.codm-footer-logo {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+/* =========================================================
+   BLOG DETAIL - FONT SIZE FIXES
+   ========================================================= */
+
+.codm-post-meta {
+  font-size: 13px;
+}
+
+.codm-post-excerpt {
+  font-size: 16px;
+}
+
+.codm-post-author,
+.codm-post-share {
+  font-size: 13px;
+}
+
+.codm-post-avatar-fallback {
+  font-size: 13px;
+}
+
+.codm-post-content {
+  font-size: 16px;
+}
+
+.codm-post-content h2 {
+  font-size: 26px;
+}
+
+.codm-post-content h3 {
+  font-size: 20px;
+}
+
+.codm-post-content h4 {
+  font-size: 16px;
+}
+
+.codm-post-content table {
+  font-size: 13px;
+}
+
+.codm-toc-title {
+  font-size: 14px;
+}
+
+.codm-toc-list a {
+  font-size: 13px;
+}
+
+.codm-toc-num {
+  font-size: 11px;
+}
+
+.codm-expert-title {
+  font-size: 15px;
+}
+
+.codm-expert-field > span {
+  font-size: 12px;
+}
+
+.codm-expert-field input,
+.codm-expert-field textarea {
+  font-size: 13px;
+}
+
+.codm-expert-submit {
+  font-size: 13px;
+}
+
+.codm-expert-error {
+  font-size: 12px;
+}
+
+.codm-expert-form-success p {
+  font-size: 13px;
+}
+
+/* Keep the mobile breakpoints proportionally larger too */
+@media (max-width: 640px) {
+  .codm-post-meta {
+    font-size: 12px;
+  }
+  .codm-post-excerpt {
+    font-size: 14px;
+  }
+  .codm-post-content {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 420px) {
+  .codm-post-author,
+  .codm-post-share {
+    font-size: 12px;
+  }
+  .codm-toc-title,
+  .codm-expert-title {
+    font-size: 13px;
+  }
+}
