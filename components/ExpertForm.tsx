@@ -1,66 +1,111 @@
+"use client";
+
+import { useState } from "react";
+
+type Status = "idle" | "submitting" | "success" | "error";
+
 export default function ExpertForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setStatus("submitting");
+
+    try {
+      /* TODO: point this at your real endpoint — a WordPress form
+         plugin's REST route, an email API, or a CRM webhook.
+         This placeholder just needs a 2xx response to succeed. */
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, company, message }),
+      });
+
+      if (!response.ok) throw new Error("Request failed");
+
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setCompany("");
+      setMessage("");
+    } catch (error) {
+      console.error("Expert form submission failed:", error);
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="codm-expert-form codm-expert-form-success">
+        <h2 className="codm-expert-title">Thanks — we'll be in touch!</h2>
+        <p>Your message has been sent. A CODM expert will reach out shortly.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="codm-expert-form">
-      <h3>Talk to our Experts today!</h3>
+      <h2 className="codm-expert-title">Talk to our Experts today!</h2>
 
-      <form>
-        <div className="codm-form-field">
-          <label htmlFor="expert-name">
-            Name
-          </label>
-
+      <form onSubmit={handleSubmit}>
+        <label className="codm-expert-field">
+          <span>Name</span>
           <input
-            id="expert-name"
             type="text"
-            name="name"
-            placeholder="Full name..."
+            placeholder="Full name...."
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
           />
-        </div>
+        </label>
 
-        <div className="codm-form-field">
-          <label htmlFor="expert-email">
-            Email
-          </label>
-
+        <label className="codm-expert-field">
+          <span>Email</span>
           <input
-            id="expert-email"
             type="email"
-            name="email"
-            placeholder="Enter Email id..."
+            placeholder="Enter Email id...."
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
           />
-        </div>
+        </label>
 
-        <div className="codm-form-field">
-          <label htmlFor="expert-company">
-            Company Name
-          </label>
-
+        <label className="codm-expert-field">
+          <span>Company Name</span>
           <input
-            id="expert-company"
             type="text"
-            name="company"
             placeholder="Enter"
+            value={company}
+            onChange={(event) => setCompany(event.target.value)}
           />
-        </div>
+        </label>
 
-        <div className="codm-form-field">
-          <label htmlFor="expert-message">
-            Message
-          </label>
-
+        <label className="codm-expert-field">
+          <span>Message</span>
           <textarea
-            id="expert-message"
-            name="message"
             placeholder="Value"
             rows={4}
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
           />
-        </div>
+        </label>
+
+        {status === "error" && (
+          <p className="codm-expert-error">
+            Something went wrong. Please try again.
+          </p>
+        )}
 
         <button
           type="submit"
           className="codm-expert-submit"
+          disabled={status === "submitting"}
         >
-          Submit
+          {status === "submitting" ? "Sending..." : "Submit"}
         </button>
       </form>
     </div>
