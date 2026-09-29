@@ -25,7 +25,7 @@ import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 import LatestBlogs from "@/components/LatestBlogs";
 import WhatWeBuild from "@/components/WhatWeBuild";
 import PartnersInSuccess from "@/components/PartnersInSuccess";
-import BlogPostDetail from "@/components/Blogpostdetail";
+import BlogPostDetail from "@/components/BlogPostDetail";
 
 
 
@@ -170,6 +170,15 @@ type WpPost = {
     nodes: {
       name: string;
     }[];
+  } | null;
+
+  author?: {
+    node?: {
+      name?: string | null;
+      avatar?: {
+        url?: string | null;
+      } | null;
+    } | null;
   } | null;
 };
 
@@ -542,87 +551,27 @@ export default async function WordPressPage({
    * =======================================================
    * BLOG DETAIL PAGE
    *
-   * This is the important fix.
-   *
    * WordPress blog posts are NOT WordPress Pages.
-   * Therefore they are handled separately here.
+   * Rendered here with the shared sidebar layout
+   * (Table of Contents + Expert form) via BlogPostDetail.
    * =======================================================
    */
 
   if (!page && post) {
-    const postImage =
-      post.featuredImage?.node;
-
-    const category =
-      post.categories?.nodes?.[0]?.name ||
-      "Insight";
-
     return (
       <PageShell>
-        <article className="mx-auto max-w-[1200px] px-6 py-16">
+        <BlogPostDetail
+          post={post}
+          content={fixLinks(post.content ?? "")}
+        />
 
-          {/* CATEGORY */}
-          <div className="mb-4 text-sm font-medium uppercase tracking-[0.15em] text-[var(--muted)]">
-            {category}
-          </div>
+        {/* =================================================
+            LET'S BUILD
+        ================================================= */}
 
-          {/* TITLE */}
-          <h1 className="mx-auto max-w-[1000px] text-center text-4xl font-semibold leading-tight md:text-6xl">
-            {post.title}
-          </h1>
-
-          {/* DATE */}
-          <div className="mt-6 text-center text-sm text-[var(--muted)]">
-            {new Date(
-              post.date
-            ).toLocaleDateString(
-              "en-US",
-              {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              }
-            )}
-          </div>
-
-          {/* FEATURED IMAGE */}
-          {postImage?.sourceUrl && (
-            <div className="mx-auto mt-12 max-w-[1100px] overflow-hidden rounded-[24px]">
-              <img
-                src={postImage.sourceUrl}
-                alt={
-                  postImage.altText ||
-                  post.title
-                }
-                className="h-auto w-full object-cover"
-              />
-            </div>
-          )}
-
-          {/* BLOG CONTENT */}
-          {post.content && (
-            <div
-              className="codm-wp-content mx-auto mt-12 max-w-[900px]"
-              dangerouslySetInnerHTML={{
-                __html: fixLinks(
-                  post.content
-                ),
-              }}
-            />
-          )}
-
-        </article>
-
-   {/* =================================================
-          LET'S BUILD
-      ================================================= */}
-
-      <div className="relative z-10">
-        <ContactCTA />
-      </div>
-
-
-         
+        <div className="relative z-10">
+          <ContactCTA />
+        </div>
       </PageShell>
     );
   }
