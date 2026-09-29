@@ -50,6 +50,7 @@ const PAGES_WITH_BLOG = [
   "services",
   "industries",
   "partner",
+   "products",
 ];
 
 /*
@@ -106,6 +107,7 @@ const PAGES_WITH_CTA = [
   "case-studies",
   "insights",
   "partner",
+  "products",
 ];
 
 /* =========================================================
