@@ -4,10 +4,10 @@ import SectionHeading from "@/components/SectionHeading";
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-type ProductCard = {
+type TechnologyCard = {
   id: string;
   title: string;
-  overviewFields: {
+  technologyFields: {
     icon: string | null;
     description: string | null;
     linkText: string | null;
@@ -15,21 +15,36 @@ type ProductCard = {
   } | null;
 };
 
-async function getProductCards(): Promise<ProductCard[]> {
+/* =========================================================
+   FETCH TECHNOLOGY CARDS FROM WORDPRESS
+   ========================================================= */
+
+async function getTechnologyCards(): Promise<TechnologyCard[]> {
   try {
     const response = await fetch(WORDPRESS_GRAPHQL_URL, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         query: `
-          query GetProductOverviews {
-            productOverviews(first: 20) {
+          query GetTechnologyCards {
+            technologyCards(
+              first: 20
+              where: {
+                orderby: {
+                  field: MENU_ORDER
+                  order: ASC
+                }
+              }
+            ) {
               nodes {
                 id
                 title
-                overviewFields {
+
+                technologyFields {
                   icon
                   description
                   linkText
@@ -40,6 +55,7 @@ async function getProductCards(): Promise<ProductCard[]> {
           }
         `,
       }),
+
       next: {
         revalidate: 60,
       },
@@ -50,50 +66,77 @@ async function getProductCards(): Promise<ProductCard[]> {
     console.log(
       "========================================"
     );
+
     console.log(
-      "PRODUCT OVERVIEWS GRAPHQL RESPONSE"
+      "TECHNOLOGY CARDS GRAPHQL RESPONSE"
     );
+
     console.log(
       "========================================"
     );
+
     console.log(
       JSON.stringify(result, null, 2)
     );
 
+    /* -------------------------------------------------------
+       HTTP ERROR
+    ------------------------------------------------------- */
+
     if (!response.ok) {
       console.error(
-        "GraphQL HTTP ERROR:",
+        "GRAPHQL HTTP ERROR:",
         response.status
       );
+
       return [];
     }
+
+    /* -------------------------------------------------------
+       GRAPHQL ERROR
+    ------------------------------------------------------- */
 
     if (result.errors) {
       console.error(
         "GRAPHQL ERRORS:",
         result.errors
       );
+
       return [];
     }
 
+    /* -------------------------------------------------------
+       GET CARDS
+    ------------------------------------------------------- */
+
     const cards =
-      result?.data?.productOverviews?.nodes ?? [];
+      result?.data?.technologyCards?.nodes ?? [];
 
     console.log(
-      "PRODUCT CARDS FOUND:",
+      "TECHNOLOGY CARDS FOUND:",
       cards.length
+    );
+
+    console.log(
+      "TECHNOLOGY CARDS:",
+      cards
     );
 
     return cards;
   } catch (error) {
     console.error(
-      "PRODUCT OVERVIEWS FETCH ERROR:",
+      "TECHNOLOGY CARDS FETCH ERROR:",
       error
     );
 
     return [];
   }
 }
+
+
+/* =========================================================
+   SALESFORCE ICON
+   ========================================================= */
 
 function SalesforceIcon() {
   return (
@@ -120,6 +163,11 @@ function SalesforceIcon() {
     </svg>
   );
 }
+
+
+/* =========================================================
+   AI ICON
+   ========================================================= */
 
 function AiIcon() {
   return (
@@ -178,6 +226,11 @@ function AiIcon() {
   );
 }
 
+
+/* =========================================================
+   CUSTOM TECHNOLOGY ICON
+   ========================================================= */
+
 function CustomTechIcon() {
   return (
     <svg
@@ -215,6 +268,11 @@ function CustomTechIcon() {
   );
 }
 
+
+/* =========================================================
+   CARD ICON
+   ========================================================= */
+
 function CardIcon({
   type,
 }: {
@@ -237,29 +295,44 @@ function CardIcon({
   }
 }
 
+
+/* =========================================================
+   PRODUCTS & PLATFORMS SECTION
+   ========================================================= */
+
 export default async function ProductsOverview() {
-  const cards = await getProductCards();
+  const cards = await getTechnologyCards();
 
   console.log(
     "ProductsOverview cards:",
     cards
   );
 
+  /* -------------------------------------------------------
+     NO DATA
+  ------------------------------------------------------- */
+
   if (cards.length === 0) {
     return (
-      <section className="px-6 py-24">
+      <section className="bg-[var(--background)] px-6 py-24">
         <div className="mx-auto max-w-[1200px]">
           <p className="text-center text-red-500">
-            Products & Platforms data not found.
+            Technology Cards data not found.
           </p>
         </div>
       </section>
     );
   }
 
+  /* -------------------------------------------------------
+     SECTION
+  ------------------------------------------------------- */
+
   return (
     <section className="bg-[var(--background)] px-6 py-24">
       <div className="mx-auto max-w-[1200px]">
+
+        {/* SECTION HEADING */}
 
         <SectionHeading
           eyebrow="Overview"
@@ -268,10 +341,13 @@ export default async function ProductsOverview() {
           description="From Salesforce and AI-powered technologies to modern application platforms, CODM brings together the right technology to solve complex business challenges."
         />
 
+        {/* CARDS */}
+
         <div className="mt-14 grid gap-6 md:grid-cols-3">
 
           {cards.map((card) => {
-            const fields = card.overviewFields;
+            const fields =
+              card.technologyFields;
 
             const hasLink =
               Boolean(
@@ -282,31 +358,85 @@ export default async function ProductsOverview() {
             return (
               <div
                 key={card.id}
-                className="rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-8"
+                className="
+                  rounded-[20px]
+                  border
+                  border-[var(--border)]
+                  bg-[var(--surface)]
+                  p-8
+                "
               >
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-[var(--accent)]/30 text-[var(--accent)]">
+                {/* ICON */}
+
+                <div
+                  className="
+                    flex
+                    h-11
+                    w-11
+                    items-center
+                    justify-center
+                    rounded-[10px]
+                    border
+                    border-[var(--accent)]/30
+                    text-[var(--accent)]
+                  "
+                >
                   <CardIcon
                     type={fields?.icon}
                   />
                 </div>
 
-                <h3 className="mt-6 text-[19px] font-semibold text-[var(--foreground)]">
+
+                {/* TITLE */}
+
+                <h3
+                  className="
+                    mt-6
+                    text-[19px]
+                    font-semibold
+                    text-[var(--foreground)]
+                  "
+                >
                   {card.title}
                 </h3>
 
+
+                {/* DESCRIPTION */}
+
                 {fields?.description && (
-                  <p className="mt-2 text-[14px] leading-[1.6] text-[var(--muted)]">
+                  <p
+                    className="
+                      mt-2
+                      text-[14px]
+                      leading-[1.6]
+                      text-[var(--muted)]
+                    "
+                  >
                     {fields.description}
                   </p>
                 )}
 
+
+                {/* LINK */}
+
                 {hasLink && (
                   <Link
                     href={fields!.linkUrl!}
-                    className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-medium text-[var(--accent)] transition-transform hover:translate-x-0.5"
+                    className="
+                      mt-5
+                      inline-flex
+                      items-center
+                      gap-1.5
+                      text-[14px]
+                      font-medium
+                      text-[var(--accent)]
+                      transition-transform
+                      hover:translate-x-0.5
+                    "
                   >
                     {fields!.linkText}
+
                     <span aria-hidden="true">
                       →
                     </span>
