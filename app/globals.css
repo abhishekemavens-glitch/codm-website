@@ -9572,9 +9572,7 @@ img.codm-footer-logo {
 
   display: grid;
 
-  grid-template-columns:
-    minmax(0, 760px)
-    250px;
+  grid-template-columns: minmax(0,850px) 300px;
 
   column-gap: 38px;
 
