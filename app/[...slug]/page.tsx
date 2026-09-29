@@ -28,7 +28,6 @@ import PartnersInSuccess from "@/components/PartnersInSuccess";
 import BlogPostDetail from "@/components/BlogPostDetail";
 
 
-
 /* =========================================================
    PAGE CONFIGURATION
 ========================================================= */
