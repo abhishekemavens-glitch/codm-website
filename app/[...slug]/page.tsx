@@ -26,6 +26,7 @@ import LatestBlogs from "@/components/LatestBlogs";
 import WhatWeBuild from "@/components/WhatWeBuild";
 import PartnersInSuccess from "@/components/PartnersInSuccess";
 import BlogPostDetail from "@/components/BlogPostDetail";  
+import ProductsOverview from "@/components/ProductsOverview";
 
 
 /* =========================================================
@@ -612,6 +613,9 @@ export default async function WordPressPage({
   const isCaseStudiesPage =
     currentSlug === "case-studies";
 
+   const isProductsPage =
+  currentSlug === "products";
+
   /* =======================================================
      WORDPRESS CONTENT
   ======================================================= */
@@ -892,6 +896,19 @@ export default async function WordPressPage({
           <Testimonials />
         </div>
       )}
+
+
+       {/* =================================================
+    PRODUCTS & PLATFORMS
+
+    PRODUCTS PAGE ONLY
+================================================= */}
+
+{isProductsPage && (
+  <div className="relative z-10">
+    <ProductsOverview />
+  </div>
+)}
 
     {/* =================================================
     LATEST BLOGS
