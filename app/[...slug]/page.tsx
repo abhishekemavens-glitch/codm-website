@@ -25,7 +25,7 @@ import CaseStudiesGrid from "@/components/CaseStudiesGrid";
 import LatestBlogs from "@/components/LatestBlogs";
 import WhatWeBuild from "@/components/WhatWeBuild";
 import PartnersInSuccess from "@/components/PartnersInSuccess";
-import BlogPostDetail from "@/components/BlogPostDetail";
+import BlogPostDetail from "@/components/BlogPostDetail"; 
 
 
 /* =========================================================
