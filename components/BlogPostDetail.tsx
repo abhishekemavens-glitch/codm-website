@@ -75,7 +75,8 @@ function decodeEntities(text: string) {
     .replace(/&quot;/g, '"')
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
+    .replace(/&amp;/g, "&")
+    .replace(/\[?&hellip;\]?/g, "…");
 }
 
 function slugify(text: string) {
