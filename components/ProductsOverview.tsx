@@ -344,7 +344,7 @@ export default async function ProductsOverview() {
             return (
               <div
   key={card.id}
- className="rounded-[20px] border border-[rgba(124,108,240,0.14)] bg-[#eaebfa] p-8 shadow-[0_20px_45px_-30px_rgba(76,60,190,0.35)] dark:bg-[var(--surface)] dark:shadow-none"
+ className="rounded-[20px] border border-[rgba(124,108,240,0.14)] bg-[#eaebfa] p-8 shadow-[0_20px_45px_-30px_rgba(76,60,190,0.35)] dark:bg-[var(--surface)] dark:shadow-none">
   <div className="flex h-9 w-9 items-center justify-center text-[var(--accent)]">
     <CardIcon type={fields?.icon} />
   </div>
