@@ -14,7 +14,7 @@ import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
 
-import Testimonials from "@/components/Testimonials";
+import Testimonials from "@/components/Testimonials"; 
 
 import FeaturedStorySection from "@/components/FeaturedStorySection";
 import BlogGrid from "@/components/BlogGrid";
