@@ -11046,8 +11046,8 @@ img.codm-footer-logo {
 
 
 .sfp-section {
-  background: var(--background);
-  padding: 96px 24px;
+	background: #F8FAFC;
+	padding: 96px 24px;
 }
 .sfp-container {
   max-width: 1240px;
