@@ -153,7 +153,7 @@ export default async function AiIntelligenceOverview() {
   if (cards.length === 0) return null;
 
   return (
-    <section className="bg-[var(--background)] px-6 py-24">
+    <section className="bg-[var(--background)] px-6 py-24 intelligence-sect">
       <div className="mx-auto max-w-[1200px]">
         <SectionHeading
           eyebrow="AI & Intelligence"
