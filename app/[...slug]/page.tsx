@@ -28,7 +28,7 @@ import PartnersInSuccess from "@/components/PartnersInSuccess";
 import BlogPostDetail from "@/components/BlogPostDetail";  
 import ProductsOverview from "@/components/ProductsOverview";
 import SalesforceProducts from "@/components/SalesforceProducts";
-import AiIntelligenceOverview from "@/components/AiIntelligenceOverview";
+import AiIntelligenceOverview from "@/components/AiIntelligenceOverview"; 
 import TechOverview from "@/components/TechOverview";
 import ProductFeatureSection from "@/components/ProductFeatureSection";
 
