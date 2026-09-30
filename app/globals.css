@@ -11141,3 +11141,27 @@ img.codm-footer-logo {
 .overview-sect {
 	background: #F1F5F9;
 }
+
+
+
+.codm-overview-card {
+  border-radius: 20px;
+  border: 1px solid rgba(124, 108, 240, 0.14);
+  background: linear-gradient(to bottom right, #f3f1fd, #fbfaff);
+  box-shadow: 0 20px 45px -30px rgba(76, 60, 190, 0.35);
+  padding: 32px;
+}
+
+[data-theme="dark"] .codm-overview-card {
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.codm-overview-icon {
+  display: flex;
+  height: 36px;
+  width: 36px;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
