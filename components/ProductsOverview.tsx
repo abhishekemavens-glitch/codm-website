@@ -140,27 +140,13 @@ async function getTechnologyCards(): Promise<TechnologyCard[]> {
 
 function SalesforceIcon() {
   return (
-    <svg
-      width="26"
-      height="26"
-      viewBox="0 0 26 26"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M6.5 16.5C3.5 16.5 1 14.2 1 11.4C1 8.9 3 6.9 5.6 6.6C6.5 4 8.9 2.2 11.7 2.2C14.7 2.2 17.2 4.2 18.1 6.9C20.5 7.1 22.4 9 22.4 11.4C22.4 13.9 20.3 16 17.8 16H6.5Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-      />
-
-      <circle
-        cx="11.5"
-        cy="12"
-        r="2.1"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-    </svg>
+    <img
+      src="https://lightyellow-echidna-411021.hostingersite.com/wp-content/uploads/2026/08/image-257.png"
+      alt="Salesforce"
+      width={26}
+      height={26}
+      style={{ display: "block", objectFit: "contain" }}
+    />
   );
 }
 
@@ -357,35 +343,12 @@ export default async function ProductsOverview() {
 
             return (
               <div
-                key={card.id}
-                className="
-                  rounded-[20px]
-                  border
-                  border-[var(--border)]
-                  bg-[var(--surface)]
-                  p-8
-                "
-              >
-
-                {/* ICON */}
-
-                <div
-                  className="
-                    flex
-                    h-11
-                    w-11
-                    items-center
-                    justify-center
-                    rounded-[10px]
-                    border
-                    border-[var(--accent)]/30
-                    text-[var(--accent)]
-                  "
-                >
-                  <CardIcon
-                    type={fields?.icon}
-                  />
-                </div>
+  key={card.id}
+  className="rounded-[20px] border border-[rgba(124,108,240,0.14)] bg-gradient-to-br from-[#f3f1fd] to-[#fbfaff] p-8 shadow-[0_20px_45px_-30px_rgba(76,60,190,0.35)] dark:from-[var(--surface)] dark:to-[var(--surface)] dark:shadow-none"
+>
+  <div className="flex h-9 w-9 items-center justify-center text-[var(--accent)]">
+    <CardIcon type={fields?.icon} />
+  </div>
 
 
                 {/* TITLE */}
