@@ -437,9 +437,9 @@ export default async function ProductsOverview() {
                   >
                     {fields!.linkText}
 
-                    <span aria-hidden="true">
-                      →
-                    </span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M3 7h8m0 0L7.5 3.5M11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                   </Link>
                 )}
 
