@@ -14,8 +14,6 @@ type SfProduct = {
   exploreUrl: string | null;
 };
 
-const ICONS: Record<string, JSX.Element> = {import type { ReactElement } from "react";
-// ...
 const ICONS: Record<string, ReactElement> = {
   chart: <path d="M4 15l4-4 3 3 6-6" />,
   people: <path d="M6 15a3 3 0 100-6 3 3 0 000 6zm8 0a3 3 0 100-6 3 3 0 000 6zM2 20c0-3 2.5-5 4-5m10 0c1.5 0 4 2 4 5" />,
