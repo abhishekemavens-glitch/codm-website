@@ -11039,3 +11039,92 @@ img.codm-footer-logo {
     transform: none;
   }
 }
+
+
+
+
+.sfp-section {
+  background: var(--background);
+  padding: 96px 24px;
+}
+.sfp-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.sfp-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.sfp-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e3e7f0);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+}
+
+.sfp-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sfp-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(106, 92, 255, 0.1);
+  color: #6a5cff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sfp-icon svg { width: 20px; height: 20px; }
+
+.sfp-badge {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--muted, #6b7690);
+  border: 1px solid var(--border, #d8dee9);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.sfp-title {
+  margin-top: 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+.sfp-desc {
+  margin-top: 10px;
+  color: var(--muted, #6b7690);
+  font-size: 14.5px;
+  line-height: 1.55;
+  flex-grow: 1;
+}
+
+.sfp-link {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #6a5cff;
+  text-decoration: none;
+  width: fit-content;
+}
+.sfp-link:hover { text-decoration: underline; }
+
+@media (max-width: 1024px) {
+  .sfp-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .sfp-grid { grid-template-columns: 1fr; }
+}
