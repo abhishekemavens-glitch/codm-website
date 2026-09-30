@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactElement } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Stagger, StaggerItem } from "@/components/Reveal";
 
@@ -13,7 +14,9 @@ type SfProduct = {
   exploreUrl: string | null;
 };
 
-const ICONS: Record<string, JSX.Element> = {
+const ICONS: Record<string, JSX.Element> = {import type { ReactElement } from "react";
+// ...
+const ICONS: Record<string, ReactElement> = {
   chart: <path d="M4 15l4-4 3 3 6-6" />,
   people: <path d="M6 15a3 3 0 100-6 3 3 0 000 6zm8 0a3 3 0 100-6 3 3 0 000 6zM2 20c0-3 2.5-5 4-5m10 0c1.5 0 4 2 4 5" />,
   megaphone: <path d="M3 10v4h3l6 4V6l-6 4H3zm14-2a4 4 0 010 6" />,
