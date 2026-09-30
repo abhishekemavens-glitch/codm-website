@@ -314,7 +314,7 @@ export default async function ProductsOverview() {
 
   if (cards.length === 0) {
     return (
-      <section className="bg-[var(--background)] px-6 py-24  overview-sect">
+      <section className="bg-[var(--background)] px-6 py-24">
         <div className="mx-auto max-w-[1200px]">
           <p className="text-center text-red-500">
             Technology Cards data not found.
@@ -329,7 +329,7 @@ export default async function ProductsOverview() {
   ------------------------------------------------------- */
 
   return (
-    <section className="bg-[var(--background)] px-6 py-24">
+    <section className="bg-[var(--background)] px-6 py-24 overview-sect">
       <div className="mx-auto max-w-[1200px]">
 
         {/* SECTION HEADING */}
