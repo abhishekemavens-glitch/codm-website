@@ -27,7 +27,7 @@ import WhatWeBuild from "@/components/WhatWeBuild";
 import PartnersInSuccess from "@/components/PartnersInSuccess";
 import BlogPostDetail from "@/components/BlogPostDetail";  
 import ProductsOverview from "@/components/ProductsOverview";
-
+import SalesforceProducts from "@/components/SalesforceProducts";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -908,6 +908,11 @@ export default async function WordPressPage({
   <div className="relative z-10">
     <ProductsOverview />
   </div>
+
+<div className="relative z-10">
+  <SalesforceProducts />
+</div>
+   
 )}
 
     {/* =================================================
