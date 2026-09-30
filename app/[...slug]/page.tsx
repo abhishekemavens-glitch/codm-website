@@ -898,23 +898,26 @@ export default async function WordPressPage({
       )}
 
 
-       {/* =================================================
+      {/* =================================================
     PRODUCTS & PLATFORMS
 
     PRODUCTS PAGE ONLY
 ================================================= */}
 
 {isProductsPage && (
-  <div className="relative z-10">
-    <ProductsOverview />
-  </div>
+  <>
+    <div className="relative z-10">
+      <ProductsOverview />
+    </div>
 
-<div className="relative z-10">
-  <SalesforceProducts />
-</div>
-   
+    <div className="relative z-10">
+      <SalesforceProducts />
+    </div>
+  </>
 )}
 
+
+       
     {/* =================================================
     LATEST BLOGS
 
