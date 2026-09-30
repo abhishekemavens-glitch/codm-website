@@ -11061,13 +11061,13 @@ img.codm-footer-logo {
 }
 
 .sfp-card {
-  background: var(--surface, #fff);
-  border: 1px solid var(--border, #e3e7f0);
-  border-radius: 16px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  min-height: 260px;
+	background: transparent;
+	border: 1px solid #C5D0DC;
+	border-radius: 16px;
+	flex-direction: column;
+	min-height: 260px;
+	padding: 28px;
+	display: flex;
 }
 
 .sfp-card-top {
@@ -11088,39 +11088,40 @@ img.codm-footer-logo {
 .sfp-icon svg { width: 20px; height: 20px; }
 
 .sfp-badge {
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  font-weight: 600;
-  color: var(--muted, #6b7690);
-  border: 1px solid var(--border, #d8dee9);
-  border-radius: 999px;
-  padding: 4px 12px;
+	color: #9AA3B8;
+	border: 1px solid #232845;
+	border-radius: 999px;
+	padding: 4px 12px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.55px;
+	text-transform: uppercase;
 }
 
 .sfp-title {
-  margin-top: 24px;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--foreground);
+	color: #475569;
+	margin-top: 24px;
+	font-size: 20px;
+	font-weight: 700;
 }
 .sfp-desc {
-  margin-top: 10px;
-  color: var(--muted, #6b7690);
-  font-size: 14.5px;
-  line-height: 1.55;
-  flex-grow: 1;
+	color: #9AA3B8;
+	flex-grow: 1;
+	margin-top: 10px;
+	font-size: 16px;
+	line-height: 1.55;
 }
 
 .sfp-link {
-  margin-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #6a5cff;
-  text-decoration: none;
-  width: fit-content;
+	color: #6C4AF1;
+	align-items: center;
+	gap: 6px;
+	width: fit-content;
+	margin-top: 20px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	display: inline-flex;
 }
 .sfp-link:hover { text-decoration: underline; }
 
@@ -11164,4 +11165,23 @@ img.codm-footer-logo {
   align-items: center;
   justify-content: center;
   color: var(--accent);
+}
+.overview-sect h3 {
+	font-size: 20px;
+	font-weight: 600;
+	color: #475569;
+}
+.overview-sect p {
+	color: #6B7388;
+	font-size: 16px;
+	font-weight: 500;
+}
+.overview-sect a {
+	font-size: 14px;
+	color: #6C4AF1;
+	font-weight: 600;
+}
+
+.custom-technology {
+	background: #E8EEF5;
 }
