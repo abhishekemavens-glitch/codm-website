@@ -28,6 +28,7 @@ import PartnersInSuccess from "@/components/PartnersInSuccess";
 import BlogPostDetail from "@/components/BlogPostDetail";  
 import ProductsOverview from "@/components/ProductsOverview";
 import SalesforceProducts from "@/components/SalesforceProducts";
+import AiIntelligenceOverview from "@/components/AiIntelligenceOverview";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -913,6 +914,11 @@ export default async function WordPressPage({
     <div className="relative z-10">
       <SalesforceProducts />
     </div>
+
+<div className="relative z-10">
+  <AiIntelligenceOverview />
+</div>
+     
   </>
 )}
 
