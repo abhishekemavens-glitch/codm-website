@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 
 type FeatureFields = {
@@ -144,24 +145,17 @@ export default function ProductFeatureSection({
   return (
     <section className="product-feature">
       <div className="product-feature-container">
-        {fields.eyebrow && (
-          <div className="product-feature-eyebrow">
-            <span className="product-feature-eyebrow-line" />
-            <span>{fields.eyebrow}</span>
-            <span className="product-feature-eyebrow-line" />
-          </div>
-        )}
-
-        {(fields.heading1 || fields.heading2) && (
-          <h2 className="product-feature-heading">
-            {fields.heading1 && <span>{fields.heading1}</span>}
-            {fields.heading2 && (
-              <span className="product-feature-heading-gradient">
-                {fields.heading2}
-              </span>
-            )}
-          </h2>
-        )}
+        {/* =================================================
+            SECTION HEADING
+            Same shared component + Reveal wrapper as LatestBlogs.
+            ================================================= */}
+        <Reveal distance={20}>
+          <SectionHeading
+            eyebrow={fields.eyebrow || ""}
+            title={fields.heading1 || ""}
+            gradientText={fields.heading2 || ""}
+          />
+        </Reveal>
 
         <div className="product-feature-grid">
           <Reveal direction="right" className="product-feature-media">
