@@ -11136,3 +11136,8 @@ img.codm-footer-logo {
 .overview-sect .heading-codm-wrap .heading-codm-title .codm-word-stagger {
 	display: none;
 }
+
+
+.overview-sect {
+	background: #F1F5F9;
+}
