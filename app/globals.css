@@ -4,7 +4,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "./codm-animations.css"; 
 @import "tailwindcss"; 
-
+.overview-sect .heading-codm-wrap .heading-codm-title .codm-word-stagger {
+	display: none;
+}
 /* =========================================================
    GLOBAL RESET & BASE
    ========================================================= */
@@ -11127,4 +11129,10 @@ img.codm-footer-logo {
 }
 @media (max-width: 640px) {
   .sfp-grid { grid-template-columns: 1fr; }
+}
+
+
+
+.overview-sect .heading-codm-wrap .heading-codm-title .codm-word-stagger {
+	display: none;
 }
