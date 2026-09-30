@@ -11337,3 +11337,8 @@ img.codm-footer-logo {
     transform: none;
   }
 }
+
+
+.custom-technology .heading-codm-title .codm-word-stagger {
+	display: none;
+}
