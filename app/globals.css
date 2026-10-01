@@ -11345,3 +11345,33 @@ img.codm-footer-logo {
 .intelligence-sect .heading-codm-wrap .heading-codm-title .codm-word-stagger {
 	display: none;
 }
+
+
+.heading-codm-title {
+  text-align: center;
+}
+
+.heading-codm-title .codm-word-stagger,
+.heading-codm-title .heading-codm-title-gradient {
+  display: inline;            /* not block, grid or flex */
+  position: static;
+}
+
+.heading-codm-title .codm-word {
+  display: inline-block;
+  position: relative;         /* never absolute */
+  white-space: pre;           /* keeps the \u00A0 spacing */
+}
+
+/* gradient on each word, not on the wrapper */
+.heading-codm-title-gradient {
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+.heading-codm-title-gradient .codm-word {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
