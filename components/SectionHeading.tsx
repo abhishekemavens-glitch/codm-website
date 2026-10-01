@@ -53,14 +53,13 @@ export default function SectionHeading({
 
         {/* GRADIENT TEXT */}
         {gradientText && (
-          <>
-            {inline ? " " : null}
-
-            <span className="heading-codm-title-gradient codm-gradient-text">
-              {splitWords(gradientText)}
-            </span>
-          </>
-        )}
+  <>
+    {" "}
+    <span className="heading-codm-title-gradient codm-gradient-text">
+      {splitWords(gradientText)}
+    </span>
+  </>
+)}
       </h2>
 
       {/* DESCRIPTION */}
