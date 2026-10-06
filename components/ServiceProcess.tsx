@@ -15,6 +15,8 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 type ServiceProcessData = {
+  slug: string;
+
   processEyebrow: string | null;
   processHeading: string | null;
   processHighlight: string | null;
@@ -35,7 +37,9 @@ type ServiceProcessData = {
   processStep4Description: string | null;
 };
 
-async function getServiceProcessData(): Promise<ServiceProcessData | null> {
+async function getServiceProcessData(
+  serviceSlug?: string
+): Promise<ServiceProcessData | null> {
   try {
     const response = await fetch(WORDPRESS_GRAPHQL_URL, {
       method: "POST",
@@ -47,6 +51,7 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
           query GetServiceProcess {
             services(first: 50) {
               nodes {
+               slug
                 processEyebrow
                 processHeading
                 processHighlight
@@ -94,16 +99,25 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
      * Find the Service that contains
      * "The CODM Difference" content.
      */
-    return (
-      nodes.find(
-        (node) =>
-          Boolean(node.processHeading) ||
-          Boolean(node.processStep1Title) ||
-          Boolean(node.processStep2Title) ||
-          Boolean(node.processStep3Title) ||
-          Boolean(node.processStep4Title)
-      ) ?? null
-    );
+   if (serviceSlug) {
+  return (
+    nodes.find(
+      (node) =>
+        node.slug?.toLowerCase() === serviceSlug.toLowerCase()
+    ) ?? null
+  );
+}
+
+return (
+  nodes.find(
+    (node) =>
+      Boolean(node.processHeading) ||
+      Boolean(node.processStep1Title) ||
+      Boolean(node.processStep2Title) ||
+      Boolean(node.processStep3Title) ||
+      Boolean(node.processStep4Title)
+  ) ?? null
+);
   } catch (error) {
     console.error(
       "Failed to load service process:",
@@ -114,8 +128,14 @@ async function getServiceProcessData(): Promise<ServiceProcessData | null> {
   }
 }
 
-export default async function ServiceProcess() {
-  const data = await getServiceProcessData();
+type ServiceProcessProps = {
+  serviceSlug?: string;
+};
+
+export default async function ServiceProcess({
+  serviceSlug,
+}: ServiceProcessProps) {
+  const data = await getServiceProcessData(serviceSlug);
 
   if (!data) {
     return null;
