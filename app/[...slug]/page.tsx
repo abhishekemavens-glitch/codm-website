@@ -592,26 +592,66 @@ export default async function WordPressPage({
    * For service detail pages, try the WordPress page
    * using the complete path first.
    */
- const wordpressPage = await getPage(slug);
+ /*
+ * =======================================================
+ * LOAD WORDPRESS PAGE / SERVICE
+ * =======================================================
+ */
 
+/*
+ * First try the complete URL path.
+ *
+ * Example:
+ * /services/sales-cloud
+ */
+let wordpressPage = await getPage(slug);
+
+/*
+ * For service detail pages, the actual WordPress Page
+ * may have the slug "sales-cloud" rather than the
+ * nested URI "/services/sales-cloud".
+ *
+ * Therefore, if the full path was not found,
+ * try the service slug directly.
+ */
+if (!wordpressPage && isServiceDetailPage) {
+  const serviceSlugForPage = slug[1];
+
+  if (serviceSlugForPage) {
+    wordpressPage = await getPage([serviceSlugForPage]);
+  }
+}
+
+/*
+ * If it is still not a WordPress Page, try the
+ * Service custom post type.
+ */
 const service =
   !wordpressPage && isServiceDetailPage
     ? await getService(slug)
     : null;
 
-   console.log("SERVICE DEBUG:", {
-  slug,
-  isServiceDetailPage,
-  wordpressPageFound: Boolean(wordpressPage),
-  serviceFound: Boolean(service),
-});
-
+/*
+ * Final page object used by the rest of the component.
+ */
 const page = wordpressPage ?? service;
 
+/*
+ * Only try a blog post if neither a Page nor
+ * Service was found.
+ */
 const post =
   !page
     ? await getPost(slug)
     : null;
+
+console.log("SERVICE DEBUG:", {
+  slug,
+  isServiceDetailPage,
+  wordpressPageFound: Boolean(wordpressPage),
+  serviceFound: Boolean(service),
+  finalPageFound: Boolean(page),
+});
 
   /*
    * =======================================================
