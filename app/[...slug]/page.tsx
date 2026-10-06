@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import PageShell from "@/components/PageShell";
-import AboutHero from "@/components/AboutHero";
+import AboutHero from "@/components/AboutHero"; 
 
 import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
