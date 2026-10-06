@@ -532,8 +532,11 @@ export async function generateMetadata({
   const { slug } = await params;
 
   /*
-   * First check WordPress Pages.
+   * =======================================================
+   * FIRST: CHECK WORDPRESS PAGES
+   * =======================================================
    */
+
   const page = await getPage(slug);
 
   if (page) {
@@ -543,8 +546,34 @@ export async function generateMetadata({
   }
 
   /*
-   * Then check WordPress Blog Posts.
+   * =======================================================
+   * SECOND: CHECK SERVICE DETAIL PAGES
+   *
+   * Example:
+   * /services/sales-cloud
+   * =======================================================
    */
+
+  const isServiceDetailPage =
+    slug.length >= 2 &&
+    slug[0].toLowerCase() === "services";
+
+  if (isServiceDetailPage) {
+    const service = await getService(slug);
+
+    if (service) {
+      return {
+        title: `${service.title} | CODM`,
+      };
+    }
+  }
+
+  /*
+   * =======================================================
+   * THIRD: CHECK WORDPRESS BLOG POSTS
+   * =======================================================
+   */
+
   const post = await getPost(slug);
 
   if (post) {
@@ -553,11 +582,16 @@ export async function generateMetadata({
     };
   }
 
+  /*
+   * =======================================================
+   * PAGE NOT FOUND
+   * =======================================================
+   */
+
   return {
     title: "Page not found | CODM",
   };
 }
-
 /* =========================================================
    PAGE
 ========================================================= */
