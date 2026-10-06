@@ -616,13 +616,25 @@ export default async function WordPressPage({
   const isCaseStudiesPage =
     currentSlug === "case-studies";
 
-   const isServiceDetailPage =
-  slug.length === 2 && slug[0].toLowerCase() === "services";
+   const SERVICE_DETAIL_SLUGS = [
+  "sales-cloud",
+  "education-cloud",
+  "financial-services",
+  "api-integration",
+  "data-integration",
+  "data-migration",
+  "react-application",
+  "technical-support",
+  "ai-llm-overview",
+];
 
-const serviceSlug = isServiceDetailPage ? slug[1].toLowerCase() : undefined;
+const isServiceDetailPage =
+  slug.length === 1 &&
+  SERVICE_DETAIL_SLUGS.includes(currentSlug);
 
-   const isProductsPage =
-  currentSlug === "products";
+const serviceSlug = isServiceDetailPage
+  ? currentSlug
+  : undefined;
 
   /* =======================================================
      WORDPRESS CONTENT
@@ -818,26 +830,9 @@ const showTestimonials =
           PRODUCT EXPERIENCE
       ================================================= */}
 
-      {showServicesSections && (
-        <>
-          <div className="relative z-10">
-            <KeyCapabilities />
-          </div>
-
-          <div className="relative z-10">
-            <UseCasesSection />
-          </div>
-
-          <div className="relative z-10">
-            <ServiceProcess />
-          </div>
-
-          <div className="relative z-10">
-            <ProductExperience />
-          </div>
-        </>
-      )}
-
+     {/* =================================================
+    SERVICES / SERVICE DETAIL SECTIONS
+================================================= */}
 
 {isServiceDetailPage && (
   <>
