@@ -403,28 +403,32 @@ async function getService(
 ): Promise<WpPage | null> {
   const serviceSlug = slug[slug.length - 1];
 
-  const data =
-    await wpFetch<{
-      service: WpPage | null;
-    }>(
-      `
-        query GetService($slug: ID!) {
-          service(
-            id: $slug
-            idType: SLUG
-          ) {
-            ${PAGE_FIELDS}
+  try {
+    const data =
+      await wpFetch<{
+        service: WpPage | null;
+      }>(
+        `
+          query GetService($slug: ID!) {
+            service(
+              id: $slug
+              idType: SLUG
+            ) {
+              ${PAGE_FIELDS}
+            }
           }
+        `,
+        {
+          slug: serviceSlug,
         }
-      `,
-      {
-        slug: serviceSlug,
-      }
-    );
+      );
 
-  return data?.service ?? null;
+    return data?.service ?? null;
+  } catch (error) {
+    console.error("Failed to load service:", error);
+    return null;
+  }
 }
-
 /* =========================================================
    GET WORDPRESS BLOG POST
 ========================================================= */
@@ -594,6 +598,13 @@ const service =
   !wordpressPage && isServiceDetailPage
     ? await getService(slug)
     : null;
+
+   console.log("SERVICE DEBUG:", {
+  slug,
+  isServiceDetailPage,
+  wordpressPageFound: Boolean(wordpressPage),
+  serviceFound: Boolean(service),
+});
 
 const page = wordpressPage ?? service;
 
