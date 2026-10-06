@@ -547,10 +547,7 @@ export async function generateMetadata({
 
   /*
    * =======================================================
-   * SECOND: CHECK SERVICE DETAIL PAGES
-   *
-   * Example:
-   * /services/sales-cloud
+   * SECOND: CHECK SERVICE DETAIL
    * =======================================================
    */
 
@@ -560,6 +557,12 @@ export async function generateMetadata({
 
   if (isServiceDetailPage) {
     const service = await getService(slug);
+
+    console.log("METADATA SERVICE DEBUG:", {
+      slug,
+      serviceFound: Boolean(service),
+      serviceTitle: service?.title,
+    });
 
     if (service) {
       return {
@@ -584,7 +587,7 @@ export async function generateMetadata({
 
   /*
    * =======================================================
-   * PAGE NOT FOUND
+   * NOT FOUND
    * =======================================================
    */
 
