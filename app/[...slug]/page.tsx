@@ -531,13 +531,32 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
 
+  const isServiceDetailPage =
+    slug.length >= 2 &&
+    slug[0].toLowerCase() === "services";
+
   /*
    * =======================================================
-   * FIRST: CHECK WORDPRESS PAGES
+   * FIRST: CHECK WORDPRESS PAGES — full path
    * =======================================================
    */
 
-  const page = await getPage(slug);
+  let page = await getPage(slug);
+
+  /*
+   * =======================================================
+   * SECOND: CHECK WORDPRESS PAGES — just the last slug
+   * segment, matching the fallback used on the page itself.
+   * =======================================================
+   */
+
+  if (!page && isServiceDetailPage) {
+    const serviceSlugForPage = slug[1];
+
+    if (serviceSlugForPage) {
+      page = await getPage([serviceSlugForPage]);
+    }
+  }
 
   if (page) {
     return {
@@ -547,22 +566,12 @@ export async function generateMetadata({
 
   /*
    * =======================================================
-   * SECOND: CHECK SERVICE DETAIL
+   * THIRD: CHECK SERVICE CPT
    * =======================================================
    */
 
-  const isServiceDetailPage =
-    slug.length >= 2 &&
-    slug[0].toLowerCase() === "services";
-
   if (isServiceDetailPage) {
     const service = await getService(slug);
-
-    console.log("METADATA SERVICE DEBUG:", {
-      slug,
-      serviceFound: Boolean(service),
-      serviceTitle: service?.title,
-    });
 
     if (service) {
       return {
@@ -573,7 +582,7 @@ export async function generateMetadata({
 
   /*
    * =======================================================
-   * THIRD: CHECK WORDPRESS BLOG POSTS
+   * FOURTH: CHECK WORDPRESS BLOG POSTS
    * =======================================================
    */
 
