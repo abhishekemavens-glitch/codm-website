@@ -124,13 +124,10 @@ export default function KeyCapabilities({
 
        const allItems = result.data.capabilities.nodes;
 
-const filteredItems = serviceSlug
-  ? allItems.filter(
-      (item: CapabilityItem) =>
-        !item.serviceSlug ||
-        item.serviceSlug.toLowerCase() === serviceSlug.toLowerCase()
-    )
-  : allItems;
+const filteredItems = allItems;
+
+console.log("SERVICE SLUG:", serviceSlug);
+console.log("ALL CAPABILITIES:", allItems);
 
 setItems(filteredItems);
 setActiveItem(0);
