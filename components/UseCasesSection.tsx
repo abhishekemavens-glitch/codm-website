@@ -10,7 +10,7 @@ type UseCaseItem = {
   usecaseFields: {
     eyebrow: string | null;
     heading: string | null;
-    description: string | null;
+    description: string | null; 
     tags: string | null;
   } | null;
 };
