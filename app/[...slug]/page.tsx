@@ -573,13 +573,14 @@ export default async function WordPressPage({
    * =======================================================
    */
 
-  if (!page && post) {
-    return (
-      <BlogPostDetail
-        post={post}
-      />
-    );
-  }
+ if (!page && post) {
+  return (
+    <BlogPostDetail
+      post={post}
+      content={post.content ?? ""}
+    />
+  );
+}
 
   /*
    * =======================================================
