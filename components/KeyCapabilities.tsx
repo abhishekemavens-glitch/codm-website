@@ -18,6 +18,7 @@ type CapabilityItem = {
   databaseId: number;
   title: string;
   slug: string;
+  serviceSlug: string | null;
   excerpt: string;
   content: string;
   badges: string | null;
@@ -33,7 +34,13 @@ type CapabilityItem = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-export default function KeyCapabilities() {
+type KeyCapabilitiesProps = {
+  serviceSlug?: string;
+};
+
+export default function KeyCapabilities({
+  serviceSlug,
+}: KeyCapabilitiesProps) {
   const [items, setItems] = useState<CapabilityItem[]>([]);
   const [activeItem, setActiveItem] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -87,18 +94,19 @@ export default function KeyCapabilities() {
               query GetCapabilities {
                 capabilities(first: 20) {
                   nodes {
-                    id
-                    databaseId
-                    title
-                    slug
-                    excerpt
-                    content
-                    badges
-                    exploreLink
-                    featuredImage {
-                      node {
-                        sourceUrl
-                        altText
+  id
+  databaseId
+  title
+  slug
+  serviceSlug
+  excerpt
+  content
+  badges
+  exploreLink
+  featuredImage {
+    node {
+      sourceUrl
+      altText
                       }
                     }
                   }
@@ -115,7 +123,20 @@ export default function KeyCapabilities() {
           return;
         }
 
-        setItems(result.data.capabilities.nodes);
+       const allItems = result.data.capabilities.nodes;
+
+const filteredItems = serviceSlug
+  ? allItems.filter(
+      (item: CapabilityItem) =>
+        !item.serviceSlug ||
+        item.serviceSlug.toLowerCase() === serviceSlug.toLowerCase()
+    )
+  : allItems;
+
+setItems(filteredItems);
+setActiveItem(0);
+
+        
       } catch (error) {
         console.error("Failed to load capabilities:", error);
       } finally {
