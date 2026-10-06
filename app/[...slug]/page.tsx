@@ -536,15 +536,30 @@ export default async function WordPressPage({
 
   /*
    * =======================================================
-   * FIRST: TRY WORDPRESS PAGE
+   * SERVICE DETAIL PAGE
+   *
+   * Example:
+   * /services/sales-cloud
+   * /services/education-cloud
+   * /services/health-cloud
+   *
+   * These are WordPress child pages under "Services".
    * =======================================================
    */
 
+  const isServiceDetailPage =
+    slug.length === 2 &&
+    slug[0].toLowerCase() === "services";
+
+  /*
+   * For service detail pages, try the WordPress page
+   * using the complete path first.
+   */
   const page = await getPage(slug);
 
   /*
    * =======================================================
-   * IF NO PAGE EXISTS, TRY WORDPRESS BLOG POST
+   * IF NO WORDPRESS PAGE EXISTS, TRY BLOG POST
    * =======================================================
    */
 
@@ -555,41 +570,44 @@ export default async function WordPressPage({
   /*
    * =======================================================
    * BLOG DETAIL PAGE
-   *
-   * WordPress blog posts are NOT WordPress Pages.
-   * Rendered here with the shared sidebar layout
-   * (Table of Contents + Expert form) via BlogPostDetail.
    * =======================================================
    */
 
   if (!page && post) {
     return (
-      <PageShell>
-        <BlogPostDetail
-          post={post}
-          content={fixLinks(post.content ?? "")}
-        />
-
-        {/* =================================================
-            LET'S BUILD
-        ================================================= */}
-
-        <div className="relative z-10">
-          <ContactCTA />
-        </div>
-      </PageShell>
+      <BlogPostDetail
+        post={post}
+      />
     );
   }
 
   /*
    * =======================================================
-   * NOTHING FOUND
+   * PAGE NOT FOUND
    * =======================================================
    */
 
   if (!page) {
     notFound();
   }
+
+  /*
+   * =======================================================
+   * SERVICE SLUG
+   * =======================================================
+   */
+
+  const serviceSlug = isServiceDetailPage
+    ? slug[1].toLowerCase()
+    : undefined;
+
+  /*
+   * =======================================================
+   * EXISTING PAGE LOGIC CONTINUES BELOW
+   * =======================================================
+   */
+
+  // KEEP EVERYTHING THAT YOU CURRENTLY HAVE BELOW THIS POINT.
 
   const image =
     page.featuredImage?.node;
@@ -619,26 +637,7 @@ export default async function WordPressPage({
    const isProductsPage =
   currentSlug === "products";
 
-   const SERVICE_DETAIL_SLUGS = [
-  "sales-cloud",
-  "education-cloud",
-  "financial-services",
-  "api-integration",
-  "data-integration",
-  "data-migration",
-  "react-application",
-  "technical-support",
-  "ai-llm-overview",
-];
-
-const isServiceDetailPage =
-  slug.length === 1 &&
-  SERVICE_DETAIL_SLUGS.includes(currentSlug);
-
-const serviceSlug = isServiceDetailPage
-  ? currentSlug
-  : undefined;
-
+   
   /* =======================================================
      WORDPRESS CONTENT
   ======================================================= */
