@@ -616,6 +616,9 @@ export default async function WordPressPage({
   const isCaseStudiesPage =
     currentSlug === "case-studies";
 
+   const isProductsPage =
+  currentSlug === "products";
+
    const SERVICE_DETAIL_SLUGS = [
   "sales-cloud",
   "education-cloud",
