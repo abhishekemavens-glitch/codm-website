@@ -392,6 +392,39 @@ async function getPageByFallback(
   return data?.page ?? null;
 }
 
+
+
+/* =========================================================
+   GET SERVICE
+========================================================= */
+
+async function getService(
+  slug: string[]
+): Promise<WpPage | null> {
+  const serviceSlug = slug[slug.length - 1];
+
+  const data =
+    await wpFetch<{
+      service: WpPage | null;
+    }>(
+      `
+        query GetService($slug: ID!) {
+          service(
+            id: $slug
+            idType: SLUG
+          ) {
+            ${PAGE_FIELDS}
+          }
+        }
+      `,
+      {
+        slug: serviceSlug,
+      }
+    );
+
+  return data?.service ?? null;
+}
+
 /* =========================================================
    GET WORDPRESS BLOG POST
 ========================================================= */
@@ -555,17 +588,19 @@ export default async function WordPressPage({
    * For service detail pages, try the WordPress page
    * using the complete path first.
    */
-  const page = await getPage(slug);
+ const wordpressPage = await getPage(slug);
 
-  /*
-   * =======================================================
-   * IF NO WORDPRESS PAGE EXISTS, TRY BLOG POST
-   * =======================================================
-   */
+const service =
+  !wordpressPage && isServiceDetailPage
+    ? await getService(slug)
+    : null;
 
-  const post = page
-    ? null
-    : await getPost(slug);
+const page = wordpressPage ?? service;
+
+const post =
+  !page
+    ? await getPost(slug)
+    : null;
 
   /*
    * =======================================================
