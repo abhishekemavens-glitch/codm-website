@@ -122,17 +122,19 @@ export default function KeyCapabilities({
           return;
         }
 
-       const allItems = result.data.capabilities.nodes;
+       const allItems: CapabilityItem[] = result.data.capabilities.nodes;
 
-const filteredItems = allItems;
-
-console.log("SERVICE SLUG:", serviceSlug);
-console.log("ALL CAPABILITIES:", allItems);
+const filteredItems = serviceSlug
+  ? allItems.filter(
+      (item) =>
+        !item.serviceSlug ||
+        item.serviceSlug.toLowerCase() === serviceSlug.toLowerCase()
+    )
+  : allItems;
 
 setItems(filteredItems);
 setActiveItem(0);
 
-        
       } catch (error) {
         console.error("Failed to load capabilities:", error);
       } finally {
@@ -141,7 +143,7 @@ setActiveItem(0);
     }
 
     loadCapabilities();
-  }, []);
+  }, [serviceSlug]);
 
   const cardStyle: React.CSSProperties & {
     "--spot-x"?: string;
