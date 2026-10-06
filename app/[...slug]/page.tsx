@@ -616,6 +616,11 @@ export default async function WordPressPage({
   const isCaseStudiesPage =
     currentSlug === "case-studies";
 
+   const isServiceDetailPage =
+  slug.length === 2 && slug[0].toLowerCase() === "services";
+
+const serviceSlug = isServiceDetailPage ? slug[1].toLowerCase() : undefined;
+
    const isProductsPage =
   currentSlug === "products";
 
@@ -672,11 +677,9 @@ export default async function WordPressPage({
    * TESTIMONIALS
    */
 
-  const showTestimonials =
-    slug.length === 1 &&
-    PAGES_WITH_TESTIMONIALS.includes(
-      currentSlug
-    );
+const showTestimonials =
+  (slug.length === 1 && PAGES_WITH_TESTIMONIALS.includes(currentSlug)) ||
+  isServiceDetailPage;
 
   /*
    * NORMAL LATEST BLOGS
@@ -688,10 +691,8 @@ export default async function WordPressPage({
    */
 
   const showBlog =
-    slug.length === 1 &&
-    PAGES_WITH_BLOG.includes(
-      currentSlug
-    );
+  (slug.length === 1 && PAGES_WITH_BLOG.includes(currentSlug)) ||
+  isServiceDetailPage;
 
   /*
    * CASE STUDIES
@@ -738,10 +739,8 @@ export default async function WordPressPage({
    */
 
   const showCTA =
-    slug.length === 1 &&
-    PAGES_WITH_CTA.includes(
-      currentSlug
-    );
+  (slug.length === 1 && PAGES_WITH_CTA.includes(currentSlug)) ||
+  isServiceDetailPage;
 
   /* =======================================================
      RENDER
@@ -839,6 +838,31 @@ export default async function WordPressPage({
         </>
       )}
 
+
+{isServiceDetailPage && (
+  <>
+    <div className="relative z-10">
+      <KeyCapabilities serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <UseCasesSection serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <ServiceProcess serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <ProductExperience
+        serviceSlug={serviceSlug}
+        productName={page.title}
+      />
+    </div>
+  </>
+)}
+
+       
     {isPartnerPage && (
   <>
     {/* =================================================
