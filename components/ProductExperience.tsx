@@ -16,6 +16,7 @@ import { useInViewOnce } from "@/lib/codm-animations";
 type ExperienceTab = {
   id: string;
   title: string;
+  serviceSlug: string | null;
   featuredImage: {
     node: {
       sourceUrl: string;
@@ -27,7 +28,15 @@ type ExperienceTab = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-export default function ProductExperience() {
+type ProductExperienceProps = {
+  serviceSlug?: string;
+  productName?: string;
+};
+
+export default function ProductExperience({
+  serviceSlug,
+  productName,
+}: ProductExperienceProps) {
   const [tabs, setTabs] = useState<ExperienceTab[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -47,6 +56,7 @@ export default function ProductExperience() {
                   nodes {
                     id
                     title
+                    serviceSlug
                     featuredImage {
                       node {
                         sourceUrl
@@ -66,7 +76,18 @@ export default function ProductExperience() {
           console.error("GraphQL Error (ProductExperience):", result.errors);
           return;
         }
-        setTabs(result?.data?.experienceTabs?.nodes ?? []);
+        const allTabs = result?.data?.experienceTabs?.nodes ?? [];
+
+const filteredTabs = serviceSlug
+  ? allTabs.filter(
+      (tab: ExperienceTab) =>
+        !tab.serviceSlug ||
+        tab.serviceSlug.toLowerCase() === serviceSlug.toLowerCase()
+    )
+  : allTabs;
+
+setTabs(filteredTabs);
+setActiveIndex(0);
       } catch (error) {
         console.error("Failed to load experience tabs:", error);
       } finally {
@@ -75,7 +96,7 @@ export default function ProductExperience() {
     }
 
     loadTabs();
-  }, []);
+  }, [serviceSlug]);
 
   const active = tabs[activeIndex];
 
@@ -94,9 +115,9 @@ export default function ProductExperience() {
       <div className="mx-auto max-w-[1250px]">
         <SectionHeading
           eyebrow="Product Experience"
-          title="See Education Cloud"
+          title={`See ${productName || "Education Cloud"}`}
           gradientText="in action"
-          description="We connect strategy, technology, and people so Education Cloud becomes a platform your institution can grow into."
+         description={`We connect strategy, technology, and people so ${productName || "Education Cloud"} becomes a platform your institution can grow into.`}
         />
 
         {tabs.length > 0 && (
