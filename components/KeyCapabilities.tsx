@@ -6,7 +6,7 @@ import { useInViewOnce, useParallax, splitWords } from "@/lib/codm-animations";
 /*
  * Save as: components/KeyCapabilities.tsx
  *
- * Standalone "Key Capabilities" section -- same tabbed pill + big
+ * Standalone "Key Capabilities" section -- same tabbed pill + big 
  * card pattern as Industries.tsx, backed by its own WordPress
  * custom post type ("Capabilities"), with small tag badges and an
  * optional "Explore capability" link per entry.
