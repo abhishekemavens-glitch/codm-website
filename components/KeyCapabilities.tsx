@@ -15,6 +15,7 @@ type CapabilityItem = {
   slug: string;
   excerpt: string;
   content: string;
+  serviceSlug: string | null;
   badges: string | null;
   exploreLink: string | null;
   featuredImage: {
@@ -125,6 +126,7 @@ export default function KeyCapabilities({
                       slug
                       excerpt
                       content
+                      serviceSlug
                       badges
                       exploreLink
                       featuredImage {
@@ -160,24 +162,21 @@ export default function KeyCapabilities({
         }
 
         const allItems: CapabilityItem[] =
-          result?.data?.capabilities?.nodes ?? [];
+  result?.data?.capabilities?.nodes ?? [];
 
-        /*
-         * IMPORTANT:
-         *
-         * The current WordPress Capability CPT does NOT
-         * expose a serviceSlug field yet.
-         *
-         * Therefore we do NOT try to filter using
-         * item.serviceSlug here.
-         *
-         * We load the valid WordPress capability records
-         * first. This prevents the GraphQL request from
-         * failing and makes the backend content appear.
-         */
+const normalizedServiceSlug =
+  serviceSlug?.toLowerCase().trim();
 
-        setItems(allItems);
-        setActiveItem(0);
+const filteredItems = normalizedServiceSlug
+  ? allItems.filter(
+      (item) =>
+        item.serviceSlug?.toLowerCase().trim() ===
+        normalizedServiceSlug
+    )
+  : allItems;
+
+setItems(filteredItems);
+setActiveItem(0);
 
         console.log(
           "KEY CAPABILITIES:",
