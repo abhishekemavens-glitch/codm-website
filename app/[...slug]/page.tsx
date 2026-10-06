@@ -610,10 +610,16 @@ const post =
 
  if (!page && post) {
   return (
-    <BlogPostDetail
-      post={post}
-      content={post.content ?? ""}
-    />
+    <PageShell>
+      <BlogPostDetail
+        post={post}
+        content={fixLinks(post.content ?? "")}
+      />
+
+      <div className="relative z-10">
+        <ContactCTA />
+      </div>
+    </PageShell>
   );
 }
 
@@ -867,6 +873,30 @@ const showTestimonials =
           SERVICE PROCESS
           PRODUCT EXPERIENCE
       ================================================= */}
+
+     {/* =================================================
+    GENERIC /services OVERVIEW PAGE (unscoped, unchanged)
+================================================= */}
+
+{showServicesSections && (
+  <>
+    <div className="relative z-10">
+      <KeyCapabilities />
+    </div>
+
+    <div className="relative z-10">
+      <UseCasesSection />
+    </div>
+
+    <div className="relative z-10">
+      <ServiceProcess />
+    </div>
+
+    <div className="relative z-10">
+      <ProductExperience />
+    </div>
+  </>
+)}
 
      {/* =================================================
     SERVICES / SERVICE DETAIL SECTIONS
