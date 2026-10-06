@@ -6,6 +6,7 @@ import { useInViewOnce } from "@/lib/codm-animations";
 type UseCaseItem = {
   id: string;
   title: string;
+  serviceSlug: string | null;
   usecaseFields: {
     eyebrow: string | null;
     heading: string | null;
@@ -17,7 +18,14 @@ type UseCaseItem = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-export default function UseCasesSection() {
+type UseCasesSectionProps = {
+  serviceSlug?: string;
+};
+
+export default function UseCasesSection({
+  serviceSlug,
+}: UseCasesSectionProps) {
+  
   const [items, setItems] = useState<UseCaseItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -35,15 +43,16 @@ export default function UseCasesSection() {
               query GetUseCases {
                 useCases(first: 20) {
                   nodes {
-                    id
-                    title
-                    usecaseFields {
-                      eyebrow
-                      heading
-                      description
-                      tags
-                    }
-                  }
+  id
+  title
+  serviceSlug
+  usecaseFields {
+    eyebrow
+    heading
+    description
+    tags
+  }
+}
                 }
               }
             `,
@@ -56,7 +65,18 @@ export default function UseCasesSection() {
           console.error("GraphQL Error:", result.errors);
           return;
         }
-        setItems(result?.data?.useCases?.nodes ?? []);
+       const allItems = result?.data?.useCases?.nodes ?? [];
+
+const filteredItems = serviceSlug
+  ? allItems.filter(
+      (item: UseCaseItem) =>
+        !item.serviceSlug ||
+        item.serviceSlug.toLowerCase() === serviceSlug.toLowerCase()
+    )
+  : allItems;
+
+setItems(filteredItems);
+setActiveIndex(0);
       } catch (error) {
         console.error("Failed to load use cases:", error);
       } finally {
@@ -65,7 +85,7 @@ export default function UseCasesSection() {
     }
 
     loadUseCases();
-  }, []);
+ }, [serviceSlug]);
 
   const active = items[activeIndex];
   const fields = active?.usecaseFields;
