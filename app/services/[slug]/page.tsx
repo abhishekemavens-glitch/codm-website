@@ -238,7 +238,7 @@ export default async function ServicePage({
     servicePage.serviceHero;
 
   const heroEyebrow =
-    hero?.eyebrow || "SERVICES";
+  hero?.eyebrow || "";
 
   const heroHeadline =
     hero?.headline || serviceTitle;
