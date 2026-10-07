@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+
 import { ThemeProvider } from "../context/ThemeContext";
 import ScrollReset from "../components/ScrollReset";
+
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "CODM Software | Salesforce, AI & Enterprise Technology",
@@ -20,7 +24,11 @@ export default function RootLayout({
         <ScrollReset />
 
         <ThemeProvider>
+          <Header />
+
           {children}
+
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
