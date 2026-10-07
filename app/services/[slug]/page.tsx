@@ -314,6 +314,7 @@ export default async function ServicePage({
   aria-label="Breadcrumb"
   className="flex items-center gap-2 text-[16px]"
 >
+  {/* Home */}
   <a
     href="/"
     className="codm-hero-breadcrumb-link transition-colors"
@@ -321,6 +322,7 @@ export default async function ServicePage({
     Home
   </a>
 
+  {/* Chevron */}
   <svg
     width="14"
     height="14"
@@ -335,6 +337,30 @@ export default async function ServicePage({
     <path d="m9 18 6-6-6-6" />
   </svg>
 
+  {/* Services */}
+  <a
+    href="/services"
+    className="codm-hero-breadcrumb-link transition-colors"
+  >
+    Services
+  </a>
+
+  {/* Chevron */}
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="codm-hero-chevron"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+
+  {/* Current Service */}
   <span
     aria-current="page"
     className="text-[#8b6cf6]"
