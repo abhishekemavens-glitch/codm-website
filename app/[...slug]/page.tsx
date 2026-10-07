@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductExperience from "@/components/ProductExperience";
+
 import PageShell from "@/components/PageShell";
 import AboutHero from "@/components/AboutHero"; 
 
@@ -8,6 +8,11 @@ import CodmStory from "@/components/CodmStory";
 import PurposeSection from "@/components/PurposeSection";
 import ServicesSection from "@/components/ServicesSection";
 import ExcellenceSection from "@/components/ExcellenceSection";
+
+import KeyCapabilities from "@/components/KeyCapabilities";
+import UseCasesSection from "@/components/UseCasesSection";
+import ServiceProcess from "@/components/ServiceProcess";
+import ProductExperience from "@/components/ProductExperience";
 
 import Testimonials from "@/components/Testimonials"; 
 
@@ -957,7 +962,65 @@ const showTestimonials =
         </>
       )}
 
-     
+      {/* =================================================
+          SERVICES PAGE
+
+          KEY CAPABILITIES
+          USE CASES
+          SERVICE PROCESS
+          PRODUCT EXPERIENCE
+      ================================================= */}
+
+     {/* =================================================
+    GENERIC /services OVERVIEW PAGE (unscoped, unchanged)
+================================================= */}
+
+{showServicesSections && (
+  <>
+    <div className="relative z-10">
+      <KeyCapabilities />
+    </div>
+
+    <div className="relative z-10">
+      <UseCasesSection />
+    </div>
+
+    <div className="relative z-10">
+      <ServiceProcess />
+    </div>
+
+    <div className="relative z-10">
+      <ProductExperience />
+    </div>
+  </>
+)}
+
+     {/* =================================================
+    SERVICES / SERVICE DETAIL SECTIONS
+================================================= */}
+
+{isServiceDetailPage && (
+  <>
+    <div className="relative z-10">
+      <KeyCapabilities serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <UseCasesSection serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <ServiceProcess serviceSlug={serviceSlug} />
+    </div>
+
+    <div className="relative z-10">
+      <ProductExperience
+        serviceSlug={serviceSlug}
+        productName={page.title}
+      />
+    </div>
+  </>
+)}
 
        
     {isPartnerPage && (
