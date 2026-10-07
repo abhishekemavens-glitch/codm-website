@@ -492,9 +492,7 @@ export default async function ServicePage({
                   >
                     {primaryLabel}
 
-                    <span className="ml-2">
-                      ↗
-                    </span>
+                   
                   </a>
                 )}
 
@@ -522,9 +520,7 @@ export default async function ServicePage({
                   >
                     {secondaryLabel}
 
-                    <span className="ml-2">
-                      →
-                    </span>
+                   
                   </a>
                 )}
 
