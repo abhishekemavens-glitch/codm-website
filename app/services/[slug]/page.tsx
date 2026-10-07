@@ -4,7 +4,7 @@ import SectionHeading from "@/components/SectionHeading";
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
-import ProductExperience from "@/components/ProductExperience";
+import ProductExperience from "@/components/ProductExperience"; 
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
