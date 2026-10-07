@@ -11375,3 +11375,18 @@ img.codm-footer-logo {
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+
+
+.codm-capabilities-section {
+	background: #F1F5F9;
+}
+.codm-usecases-section {
+	background: #F8FAFC;
+}
+.codm-process-section-wrap {
+	background: #F1F5F9;
+}
+.codm-experience-section {
+	background: #E8EEF5;
+}
