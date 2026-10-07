@@ -310,61 +310,38 @@ export default async function ServicePage({
 
           {/* Breadcrumb */}
 
-          <nav
-            aria-label="Breadcrumb"
-            className="
-              mb-12
-              text-sm
-              text-[#303044]
-              md:mb-16
-            "
-          >
+<nav
+  aria-label="Breadcrumb"
+  className="flex items-center gap-2 text-[16px]"
+>
+  <a
+    href="/"
+    className="codm-hero-breadcrumb-link transition-colors"
+  >
+    Home
+  </a>
 
-            <ol className="flex items-center gap-2">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="codm-hero-chevron"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="m9 18 6-6-6-6" />
+  </svg>
 
-              <li>
-                <a
-                  href="/"
-                  className="
-                    transition-colors
-                    hover:text-[#7357ff]
-                  "
-                >
-                  Home
-                </a>
-              </li>
-
-              <li aria-hidden="true">
-                /
-              </li>
-
-              <li>
-                <a
-                  href="/services"
-                  className="
-                    text-[#7357ff]
-                    transition-colors
-                    hover:text-[#5d42df]
-                  "
-                >
-                  Services
-                </a>
-              </li>
-
-              <li aria-hidden="true">
-                /
-              </li>
-
-              <li
-                className="text-[#15151c]"
-                aria-current="page"
-              >
-                {serviceTitle}
-              </li>
-
-            </ol>
-
-          </nav>
+  <span
+    aria-current="page"
+    className="text-[#8b6cf6]"
+  >
+    {serviceTitle}
+  </span>
+</nav>
 
           {/* Hero content */}
 
