@@ -5,7 +5,7 @@ export type ServiceHeroData = {
   headline?: string | null;
   description?: string | null;
   primaryLabel?: string | null;
-  primaryUrl?: string | null;
+  primaryUrl?: string | null; 
   secondaryLabel?: string | null;
   secondaryUrl?: string | null;
 };
