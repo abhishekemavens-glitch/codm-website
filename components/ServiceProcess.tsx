@@ -3,12 +3,13 @@
  *
  * "The CODM Difference" process section.
  *
- * The fields for this section live on an individual Service entry
- * in WordPress under:
- *
- * Services → The CODM Difference
+ * Content is loaded from the individual Service entry
+ * in WordPress.
  */
- 
+
+"use client";
+
+import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 
 const WORDPRESS_GRAPHQL_URL =
@@ -21,6 +22,7 @@ type ServiceProcessData = {
   processHeading: string | null;
   processHighlight: string | null;
   processDescription: string | null;
+
   processCtaText: string | null;
   processCtaUrl: string | null;
 
@@ -37,144 +39,203 @@ type ServiceProcessData = {
   processStep4Description: string | null;
 };
 
-async function getServiceProcessData(
-  serviceSlug?: string
-): Promise<ServiceProcessData | null> {
-  try {
-    const response = await fetch(WORDPRESS_GRAPHQL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `
-          query GetServiceProcess {
-            services(first: 50) {
-              nodes {
-               slug
-                processEyebrow
-                processHeading
-                processHighlight
-                processDescription
-                processCtaText
-                processCtaUrl
-
-                processStep1Title
-                processStep1Description
-
-                processStep2Title
-                processStep2Description
-
-                processStep3Title
-                processStep3Description
-
-                processStep4Title
-                processStep4Description
-              }
-            }
-          }
-        `,
-      }),
-      next: { revalidate: 60 },
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const result = await response.json();
-
-    if (result.errors) {
-      console.error(
-        "GraphQL Error (ServiceProcess):",
-        result.errors
-      );
-      return null;
-    }
-
-    const nodes: ServiceProcessData[] =
-      result?.data?.services?.nodes ?? [];
-
-    /*
-     * Find the Service that contains
-     * "The CODM Difference" content.
-     */
-   if (serviceSlug) {
-  return (
-    nodes.find(
-      (node) =>
-        node.slug?.toLowerCase() === serviceSlug.toLowerCase()
-    ) ?? null
-  );
-}
-
-return (
-  nodes.find(
-    (node) =>
-      Boolean(node.processHeading) ||
-      Boolean(node.processStep1Title) ||
-      Boolean(node.processStep2Title) ||
-      Boolean(node.processStep3Title) ||
-      Boolean(node.processStep4Title)
-  ) ?? null
-);
-  } catch (error) {
-    console.error(
-      "Failed to load service process:",
-      error
-    );
-
-    return null;
-  }
-}
-
 type ServiceProcessProps = {
   serviceSlug?: string;
 };
 
-export default async function ServiceProcess({
+export default function ServiceProcess({
   serviceSlug,
 }: ServiceProcessProps) {
-  const data = await getServiceProcessData(serviceSlug);
+  const [data, setData] = useState<ServiceProcessData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!data) {
+  useEffect(() => {
+    async function loadServiceProcess() {
+      if (!serviceSlug) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+
+        const response = await fetch(
+          WORDPRESS_GRAPHQL_URL,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query GetServiceProcess {
+                  services(first: 50) {
+                    nodes {
+                      slug
+
+                      processEyebrow
+                      processHeading
+                      processHighlight
+                      processDescription
+
+                      processCtaText
+                      processCtaUrl
+
+                      processStep1Title
+                      processStep1Description
+
+                      processStep2Title
+                      processStep2Description
+
+                      processStep3Title
+                      processStep3Description
+
+                      processStep4Title
+                      processStep4Description
+                    }
+                  }
+                }
+              `,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          console.error(
+            "ServiceProcess HTTP error:",
+            response.status
+          );
+
+          setData(null);
+          return;
+        }
+
+        const result = await response.json();
+
+        if (result.errors) {
+          console.error(
+            "GraphQL Error (ServiceProcess):",
+            result.errors
+          );
+
+          setData(null);
+          return;
+        }
+
+        const nodes: ServiceProcessData[] =
+          result?.data?.services?.nodes ?? [];
+
+        console.log(
+          "SERVICE PROCESS DEBUG:",
+          {
+            requestedSlug: serviceSlug,
+            availableServices: nodes.map(
+              (node) => node.slug
+            ),
+          }
+        );
+
+        const requestedSlug =
+          serviceSlug.trim().toLowerCase();
+
+        const matchedService =
+          nodes.find(
+            (node) =>
+              node.slug?.trim().toLowerCase() ===
+              requestedSlug
+          ) ?? null;
+
+        console.log(
+          "SERVICE PROCESS MATCH:",
+          {
+            requestedSlug,
+            matchedService:
+              matchedService?.slug ?? null,
+          }
+        );
+
+        setData(matchedService);
+      } catch (error) {
+        console.error(
+          "Failed to load Service Process:",
+          error
+        );
+
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadServiceProcess();
+  }, [serviceSlug]);
+
+  /*
+   * Don't render while loading.
+   */
+  if (loading) {
     return null;
   }
 
   /*
-   * Convert all nullable WordPress values
-   * into safe values for the React component.
+   * Don't render if the requested Service
+   * does not exist.
    */
-  const eyebrow = data.processEyebrow ?? "";
-  const heading = data.processHeading ?? "";
-  const highlight = data.processHighlight ?? "";
-  const description = data.processDescription ?? "";
-  const ctaText = data.processCtaText ?? "";
-  const ctaUrl = data.processCtaUrl ?? "/contact";
+  if (!data) {
+    return null;
+  }
+
+  const eyebrow =
+    data.processEyebrow ?? "";
+
+  const heading =
+    data.processHeading ?? "";
+
+  const highlight =
+    data.processHighlight ?? "";
+
+  const description =
+    data.processDescription ?? "";
+
+  const ctaText =
+    data.processCtaText ?? "";
+
+  const ctaUrl =
+    data.processCtaUrl ?? "/contact";
 
   const steps = [
     {
       title: data.processStep1Title ?? "",
-      description: data.processStep1Description ?? "",
+      description:
+        data.processStep1Description ?? "",
     },
     {
       title: data.processStep2Title ?? "",
-      description: data.processStep2Description ?? "",
+      description:
+        data.processStep2Description ?? "",
     },
     {
       title: data.processStep3Title ?? "",
-      description: data.processStep3Description ?? "",
+      description:
+        data.processStep3Description ?? "",
     },
     {
       title: data.processStep4Title ?? "",
-      description: data.processStep4Description ?? "",
+      description:
+        data.processStep4Description ?? "",
     },
-  ].filter((step) => step.title !== "");
+  ].filter(
+    (step) =>
+      step.title.trim() !== ""
+  );
 
   /*
    * Don't render an empty section.
    */
-  if (steps.length === 0 && heading === "") {
+  if (
+    heading.trim() === "" &&
+    steps.length === 0
+  ) {
     return null;
   }
 
@@ -182,8 +243,11 @@ export default async function ServiceProcess({
     <section className="codm-process-section-wrap">
       <div className="codm-process-inner">
 
-        {/* SECTION HEADING */}
-        {heading !== "" && (
+        {/* =================================================
+            SECTION HEADING
+        ================================================= */}
+
+        {heading.trim() !== "" && (
           <SectionHeading
             eyebrow={eyebrow}
             title={heading}
@@ -192,36 +256,50 @@ export default async function ServiceProcess({
           />
         )}
 
-        {/* PROCESS STEPS */}
+        {/* =================================================
+            PROCESS STEPS
+        ================================================= */}
+
         {steps.length > 0 && (
           <div className="codm-process-steps">
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className="codm-process-step"
-              >
-                <div className="codm-process-step-number">
-                  0{index + 1}
-                </div>
-
-                <div className="codm-process-step-title">
-                  {step.title}
-                </div>
-
-                {step.description !== "" && (
-                  <div className="codm-process-step-description">
-                    {step.description}
+            {steps.map(
+              (step, index) => (
+                <div
+                  key={`${data.slug}-${index}`}
+                  className="codm-process-step"
+                >
+                  <div className="codm-process-step-number">
+                    {String(
+                      index + 1
+                    ).padStart(2, "0")}
                   </div>
-                )}
-              </div>
-            ))}
+
+                  <div className="codm-process-step-title">
+                    {step.title}
+                  </div>
+
+                  {step.description.trim() !== "" && (
+                    <div className="codm-process-step-description">
+                      {step.description}
+                    </div>
+                  )}
+                </div>
+              )
+            )}
           </div>
         )}
 
-        {/* CTA */}
-        {ctaText !== "" && (
+        {/* =================================================
+            CTA
+        ================================================= */}
+
+        {ctaText.trim() !== "" && (
           <a
-            href={ctaUrl}
+            href={
+              ctaUrl.trim() !== ""
+                ? ctaUrl
+                : "/contact"
+            }
             className="contact-cta-button"
           >
             {ctaText}
