@@ -339,7 +339,7 @@ export default async function ServicePage({
 
   {/* Services */}
   <a
-    href="/services"
+    href="#"
     className="codm-hero-breadcrumb-link transition-colors"
   >
     Services
