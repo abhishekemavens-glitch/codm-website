@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 
+import PageShell from "@/components/PageShell";
+
 import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
@@ -238,7 +240,7 @@ export default async function ServicePage({
     servicePage.serviceHero;
 
   const heroEyebrow =
-  hero?.eyebrow || "";
+    hero?.eyebrow || "";
 
   const heroHeadline =
     hero?.headline || serviceTitle;
@@ -270,397 +272,434 @@ export default async function ServicePage({
   ======================================================= */
 
   return (
-    <main className="service-page">
+    <PageShell>
 
-      {/* =================================================
-          HERO
-      ================================================= */}
+      <main className="service-page">
 
-      <section
-        className="
-          relative
-          overflow-hidden
-          bg-[#eeecff]
-        "
-      >
+        {/* =================================================
+            HERO
+        ================================================= */}
 
-        {/* Background glow */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_25%_45%,rgba(123,92,255,0.12),transparent_38%),radial-gradient(circle_at_75%_50%,rgba(123,92,255,0.08),transparent_35%)]
-          "
-        />
-
-        <div
+        <section
           className="
             relative
-            mx-auto
-            max-w-[1250px]
-            px-6
-            pt-20
-            pb-20
-            md:pt-32
-            md:pb-24
+            overflow-hidden
+            bg-[#eeecff]
           "
         >
 
-          {/* Breadcrumb */}
-
-<nav
-  aria-label="Breadcrumb"
-  className="flex items-center gap-2 text-[16px]"
->
-  {/* Home */}
-  <a
-    href="/"
-    className="codm-hero-breadcrumb-link transition-colors"
-  >
-    Home
-  </a>
-
-  {/* Chevron */}
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="codm-hero-chevron"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-
-  {/* Services */}
-  <a
-    href="#"
-    className="codm-hero-breadcrumb-link transition-colors"
-  >
-    Services
-  </a>
-
-  {/* Chevron */}
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="codm-hero-chevron"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-
-  {/* Current Service */}
-  <span
-    aria-current="page"
-    className="text-[#8b6cf6]"
-  >
-    {serviceTitle}
-  </span>
-</nav>
-
-          {/* Hero content */}
+          {/* Background glow */}
 
           <div
             className="
-              grid
-              items-center
-              gap-12
-              lg:grid-cols-[1fr_1fr]
-              lg:gap-16
+              pointer-events-none
+              absolute
+              inset-0
+              bg-[radial-gradient(circle_at_25%_45%,rgba(123,92,255,0.12),transparent_38%),radial-gradient(circle_at_75%_50%,rgba(123,92,255,0.08),transparent_35%)]
+            "
+          />
+
+          <div
+            className="
+              relative
+              mx-auto
+              max-w-[1250px]
+              px-6
+              pt-20
+              pb-20
+              md:pt-32
+              md:pb-24
             "
           >
 
-            {/* LEFT */}
+            {/* =================================================
+                BREADCRUMB
+            ================================================= */}
 
-            <div>
+            <nav
+              aria-label="Breadcrumb"
+              className="
+                flex
+                items-center
+                gap-2
+                text-[16px]
+              "
+            >
 
-              {/* Eyebrow */}
+              {/* Home */}
 
-              {heroEyebrow && (
-                <div
-                  className="
-                    mb-5
-                    flex
-                    items-center
-                    gap-3
-                    text-sm
-                    font-medium
-                    uppercase
-                    tracking-wide
-                    text-[#7257ee]
-                  "
-                >
-
-                  <span
-                    className="
-                      h-px
-                      w-8
-                      bg-[#7257ee]
-                    "
-                  />
-
-                  <span>
-                    {heroEyebrow}
-                  </span>
-
-                  <span
-                    className="
-                      h-px
-                      w-8
-                      bg-[#7257ee]
-                    "
-                  />
-
-                </div>
-              )}
-
-              {/* Headline */}
-
-              <h1
+              <a
+                href="/"
                 className="
-                  max-w-[650px]
-                  text-5xl
-                  font-normal
-                  leading-[1.05]
-                  tracking-[-0.04em]
-                  text-[#101014]
-                  md:text-6xl
-                  lg:text-[68px]
+                  codm-hero-breadcrumb-link
+                  transition-colors
                 "
               >
-                {heroHeadline}
-              </h1>
+                Home
+              </a>
 
-              {/* Description */}
+              {/* Chevron */}
 
-              {heroDescription && (
-                <p
-                  className="
-                    mt-7
-                    max-w-[620px]
-                    text-lg
-                    leading-8
-                    text-[#66687a]
-                    md:text-xl
-                  "
-                >
-                  {heroDescription}
-                </p>
-              )}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="codm-hero-chevron"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
 
-              {/* Buttons */}
+              {/* Services */}
 
-              <div
+              <a
+                href="/services"
                 className="
-                  mt-9
-                  flex
-                  flex-wrap
-                  gap-4
+                  codm-hero-breadcrumb-link
+                  transition-colors
                 "
               >
+                Services
+              </a>
 
-                {primaryLabel && (
-                  <a
-                    href={primaryUrl || "#"}
+              {/* Chevron */}
+
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="codm-hero-chevron"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+
+              {/* Current Service */}
+
+              <span
+                aria-current="page"
+                className="text-[#8b6cf6]"
+              >
+                {serviceTitle}
+              </span>
+
+            </nav>
+
+
+            {/* =================================================
+                HERO CONTENT
+            ================================================= */}
+
+            <div
+              className="
+                mt-8
+                grid
+                items-center
+                gap-12
+                lg:grid-cols-[1fr_1fr]
+                lg:gap-16
+              "
+            >
+
+              {/* =================================================
+                  LEFT
+              ================================================= */}
+
+              <div>
+
+                {/* Eyebrow */}
+
+                {heroEyebrow && (
+                  <div
                     className="
-                      inline-flex
+                      mb-5
+                      flex
                       items-center
-                      justify-center
-                      rounded-full
-                      bg-[#7452f5]
-                      px-8
-                      py-4
-                      text-base
+                      gap-3
+                      text-sm
                       font-medium
-                      text-white
-                      shadow-[0_12px_30px_rgba(116,82,245,0.25)]
-                      transition-all
-                      hover:-translate-y-0.5
-                      hover:bg-[#6442e5]
+                      uppercase
+                      tracking-wide
+                      text-[#7257ee]
                     "
                   >
-                    {primaryLabel}
 
-                   
-                  </a>
+                    <span
+                      className="
+                        h-px
+                        w-8
+                        bg-[#7257ee]
+                      "
+                    />
+
+                    <span>
+                      {heroEyebrow}
+                    </span>
+
+                    <span
+                      className="
+                        h-px
+                        w-8
+                        bg-[#7257ee]
+                      "
+                    />
+
+                  </div>
                 )}
 
-                {secondaryLabel && (
-                  <a
-                    href={secondaryUrl || "#"}
+
+                {/* Headline */}
+
+                <h1
+                  className="
+                    max-w-[650px]
+                    text-5xl
+                    font-normal
+                    leading-[1.05]
+                    tracking-[-0.04em]
+                    text-[#101014]
+                    md:text-6xl
+                    lg:text-[68px]
+                  "
+                >
+                  {heroHeadline}
+                </h1>
+
+
+                {/* Description */}
+
+                {heroDescription && (
+                  <p
                     className="
-                      inline-flex
+                      mt-7
+                      max-w-[620px]
+                      text-lg
+                      leading-8
+                      text-[#66687a]
+                      md:text-xl
+                    "
+                  >
+                    {heroDescription}
+                  </p>
+                )}
+
+
+                {/* Buttons */}
+
+                <div
+                  className="
+                    mt-9
+                    flex
+                    flex-wrap
+                    gap-4
+                  "
+                >
+
+                  {/* Primary */}
+
+                  {primaryLabel && (
+                    <a
+                      href={primaryUrl || "#"}
+                      className="
+                        inline-flex
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-[#7452f5]
+                        px-8
+                        py-4
+                        text-base
+                        font-medium
+                        text-white
+                        shadow-[0_12px_30px_rgba(116,82,245,0.25)]
+                        transition-all
+                        hover:-translate-y-0.5
+                        hover:bg-[#6442e5]
+                      "
+                    >
+                      {primaryLabel}
+                    </a>
+                  )}
+
+
+                  {/* Secondary */}
+
+                  {secondaryLabel && (
+                    <a
+                      href={secondaryUrl || "#"}
+                      className="
+                        inline-flex
+                        items-center
+                        justify-center
+                        rounded-full
+                        border
+                        border-white
+                        bg-white/40
+                        px-8
+                        py-4
+                        text-base
+                        font-medium
+                        text-[#303044]
+                        backdrop-blur
+                        transition-all
+                        hover:-translate-y-0.5
+                        hover:bg-white
+                      "
+                    >
+                      {secondaryLabel}
+                    </a>
+                  )}
+
+                </div>
+
+              </div>
+
+
+              {/* =================================================
+                  RIGHT — FEATURED IMAGE
+              ================================================= */}
+
+              <div className="relative">
+
+                {heroImage ? (
+
+                  <div
+                    className="
+                      overflow-hidden
+                      rounded-[20px]
+                      border
+                      border-white/80
+                      bg-white/50
+                      p-2
+                      shadow-[0_25px_70px_rgba(65,52,130,0.12)]
+                    "
+                  >
+
+                    <img
+                      src={heroImage}
+                      alt={heroImageAlt}
+                      className="
+                        block
+                        h-auto
+                        w-full
+                        rounded-[14px]
+                        object-cover
+                      "
+                    />
+
+                  </div>
+
+                ) : (
+
+                  <div
+                    className="
+                      flex
+                      min-h-[350px]
                       items-center
                       justify-center
-                      rounded-full
+                      rounded-[20px]
                       border
                       border-white
                       bg-white/40
-                      px-8
-                      py-4
-                      text-base
-                      font-medium
-                      text-[#303044]
-                      backdrop-blur
-                      transition-all
-                      hover:-translate-y-0.5
-                      hover:bg-white
+                      text-sm
+                      text-[#777]
                     "
                   >
-                    {secondaryLabel}
+                    Set a Featured Image
+                    for this Service Page
+                  </div>
 
-                   
-                  </a>
                 )}
 
               </div>
 
             </div>
 
-            {/* RIGHT - FEATURED IMAGE */}
-
-            <div className="relative">
-
-              {heroImage ? (
-
-                <div
-                  className="
-                    overflow-hidden
-                    rounded-[20px]
-                    border
-                    border-white/80
-                    bg-white/50
-                    p-2
-                    shadow-[0_25px_70px_rgba(65,52,130,0.12)]
-                  "
-                >
-
-                  <img
-                    src={heroImage}
-                    alt={heroImageAlt}
-                    className="
-                      block
-                      h-auto
-                      w-full
-                      rounded-[14px]
-                      object-cover
-                    "
-                  />
-
-                </div>
-
-              ) : (
-
-                <div
-                  className="
-                    flex
-                    min-h-[350px]
-                    items-center
-                    justify-center
-                    rounded-[20px]
-                    border
-                    border-white
-                    bg-white/40
-                    text-sm
-                    text-[#777]
-                  "
-                >
-                  Set a Featured Image
-                  for this Service Page
-                </div>
-
-              )}
-
-            </div>
-
           </div>
 
-        </div>
-
-      </section>
-
-
-      {/* =================================================
-          KEY CAPABILITIES
-      ================================================= */}
-
-      {servicePage.capabilitiesEnabled && (
-        <section>
-          <KeyCapabilities
-            serviceSlug={serviceSlug}
-          />
         </section>
-      )}
 
 
-      {/* =================================================
-          USE CASES
-      ================================================= */}
+        {/* =================================================
+            KEY CAPABILITIES
+        ================================================= */}
 
-      {servicePage.usecasesEnabled && (
+        {servicePage.capabilitiesEnabled && (
+          <section>
+            <KeyCapabilities
+              serviceSlug={serviceSlug}
+            />
+          </section>
+        )}
+
+
+        {/* =================================================
+            USE CASES
+        ================================================= */}
+
+        {servicePage.usecasesEnabled && (
+          <section>
+            <UseCasesSection
+              serviceSlug={serviceSlug}
+            />
+          </section>
+        )}
+
+
+        {/* =================================================
+            THE CODM DIFFERENCE
+        ================================================= */}
+
+        {servicePage.processEnabled && (
+          <section>
+            <ServiceProcess
+              serviceSlug={serviceSlug}
+            />
+          </section>
+        )}
+
+
+        {/* =================================================
+            PRODUCT EXPERIENCE
+        ================================================= */}
+
+        {servicePage.productEnabled && (
+          <section>
+            <ProductExperience
+              serviceSlug={serviceSlug}
+              productName={serviceTitle}
+            />
+          </section>
+        )}
+
+
+        {/* =================================================
+            LATEST BLOGS
+        ================================================= */}
+
         <section>
-          <UseCasesSection
-            serviceSlug={serviceSlug}
-          />
+          <LatestBlogs />
         </section>
-      )}
 
 
-      {/* =================================================
-          THE CODM DIFFERENCE
-      ================================================= */}
+        {/* =================================================
+            CONTACT CTA
+        ================================================= */}
 
-      {servicePage.processEnabled && (
         <section>
-          <ServiceProcess
-            serviceSlug={serviceSlug}
-          />
+          <ContactCTA />
         </section>
-      )}
 
+      </main>
 
-      {/* =================================================
-          PRODUCT EXPERIENCE
-      ================================================= */}
-
-      {servicePage.productEnabled && (
-        <section>
-          <ProductExperience
-            serviceSlug={serviceSlug}
-            productName={serviceTitle}
-          />
-        </section>
-      )}
-
-
-      {/* =================================================
-          LATEST BLOGS
-      ================================================= */}
-
-      <section>
-        <LatestBlogs />
-      </section>
-
-
-      {/* =================================================
-          CONTACT CTA
-      ================================================= */}
-
-      <section>
-        <ContactCTA />
-      </section>
-
-    </main>
+    </PageShell>
   );
 }
