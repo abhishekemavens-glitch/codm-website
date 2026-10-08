@@ -59,7 +59,42 @@ export default function ServiceHero({
 
         <div>
 
-          {/* ================= BREADCRUMB ================= */}
+         
+
+
+          {/* ================= EYEBROW ================= */}
+
+          {eyebrow && (
+            <div className="mt-6 flex items-center gap-3">
+
+              <span
+                className="h-px w-8"
+                style={{
+                  background: "rgba(139,108,246,0.45)",
+                }}
+              />
+
+              <span
+                className="text-[14px] uppercase tracking-[0.02em]"
+                style={{
+                  color: "#8b6cf6",
+                }}
+              >
+                {eyebrow}
+              </span>
+
+              <span
+                className="h-px w-8"
+                style={{
+                  background: "rgba(139,108,246,0.45)",
+                }}
+              />
+
+            </div>
+          )}
+
+
+           {/* ================= BREADCRUMB ================= */}
 
           <nav
             aria-label="Breadcrumb"
@@ -114,39 +149,6 @@ export default function ServiceHero({
               {pageTitle}
             </span>
           </nav>
-
-
-          {/* ================= EYEBROW ================= */}
-
-          {eyebrow && (
-            <div className="mt-6 flex items-center gap-3">
-
-              <span
-                className="h-px w-8"
-                style={{
-                  background: "rgba(139,108,246,0.45)",
-                }}
-              />
-
-              <span
-                className="text-[14px] uppercase tracking-[0.02em]"
-                style={{
-                  color: "#8b6cf6",
-                }}
-              >
-                {eyebrow}
-              </span>
-
-              <span
-                className="h-px w-8"
-                style={{
-                  background: "rgba(139,108,246,0.45)",
-                }}
-              />
-
-            </div>
-          )}
-
 
           {/* ================= HEADLINE ================= */}
 
