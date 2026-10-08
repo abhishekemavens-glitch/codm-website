@@ -11518,3 +11518,51 @@ img.codm-footer-logo {
   left: 50%;
   transform: translateX(-50%);
 }
+
+
+
+/* =========================================================
+   CODM SERVICES MEGA MENU
+   FINAL POSITIONING
+   ========================================================= */
+
+.codm-header-nav-item-wrap {
+  position: static !important;
+}
+
+.codm-header-nav-item-wrap > .codm-megamenu {
+  position: fixed !important;
+
+  left: 50% !important;
+  right: auto !important;
+
+  width: 1120px !important;
+  max-width: calc(100vw - 40px) !important;
+
+  margin: 0 !important;
+
+  transform: translateX(-50%) !important;
+
+  z-index: 999999 !important;
+}
+
+
+/* Normal header */
+.codm-header:not(.codm-header-sticky)
+  .codm-header-nav-item-wrap
+  > .codm-megamenu {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
+
+/* Sticky header */
+.codm-header-sticky
+  .codm-header-nav-item-wrap
+  > .codm-megamenu {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
