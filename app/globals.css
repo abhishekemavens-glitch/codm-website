@@ -11379,32 +11379,28 @@ img.codm-footer-logo {
 
 
 /* =========================================================
-   FINAL SERVICES MEGA MENU FIX
+   SERVICES MEGA MENU — CLEAN POSITIONING
    ========================================================= */
 
 @media (min-width: 901px) {
 
-  /*
-   * IMPORTANT:
-   * The Services wrapper must NOT become the positioning
-   * reference. The header-inner is already position: relative.
-   */
-  .codm-services-nav-wrap {
+  /* Services controls the menu visibility,
+     but NOT its positioning */
+  .codm-services-nav-wrap,
+  .codm-services-menu-trigger,
+  .codm-header-nav-item-wrap {
     position: static !important;
   }
 
-  /*
-   * Center the mega menu relative to the header-inner / viewport.
-   */
-  .codm-services-nav-wrap > .codm-megamenu {
+  /* Mega menu */
+  .codm-services-nav-wrap > .codm-megamenu,
+  .codm-services-menu-trigger > .codm-megamenu,
+  .codm-header-nav-item-wrap > .codm-megamenu {
     position: absolute !important;
 
-    top: calc(100% + 12px) !important;
-
+    top: 100% !important;
     left: 50% !important;
     right: auto !important;
-
-    transform: translateX(-50%) !important;
 
     width: 1120px !important;
     max-width: calc(100vw - 40px) !important;
@@ -11412,177 +11408,28 @@ img.codm-footer-logo {
 
     margin: 0 !important;
 
-    z-index: 99999 !important;
+    transform: translateX(-50%) !important;
+
+    z-index: 999999 !important;
   }
 
-  /*
-   * Keep the dropdown arrow visible and animate it.
-   */
+  /* Dropdown arrow */
   .codm-nav-dropdown-icon {
     display: inline-block !important;
-    flex-shrink: 0;
-    transition: transform 0.2s ease !important;
+    width: 10px !important;
+    height: 6px !important;
+
+    margin-left: 5px !important;
+
+    flex-shrink: 0 !important;
+
+    transition: transform 200ms ease !important;
+
+    transform-origin: center !important;
   }
 
+  /* Arrow points UP when menu is open */
   .codm-nav-dropdown-icon-open {
     transform: rotate(180deg) !important;
   }
 }
-
-
-
-
-/* =========================================================
-   SERVICES DROPDOWN ARROW
-========================================================= */
-
-.codm-nav-dropdown-icon {
-  display: inline-block !important;
-  width: 10px !important;
-  height: 6px !important;
-  margin-left: 5px !important;
-  flex-shrink: 0 !important;
-  vertical-align: middle !important;
-  overflow: visible !important;
-  transition: transform 0.2s ease !important;
-}
-
-.codm-nav-dropdown-icon-open {
-  transform: rotate(180deg) !important;
-}
-
-
-
-/* =========================================================
-   SERVICES DROPDOWN ICON
-   ========================================================= */
-
-.codm-nav-dropdown-icon {
-  display: inline-block;
-  margin-left: 5px;
-  flex-shrink: 0;
-
-  transition:
-    transform 200ms ease,
-    opacity 200ms ease;
-
-  transform-origin: center;
-}
-
-/* Rotate when Services menu is open */
-.codm-nav-dropdown-icon-open {
-  transform: rotate(180deg);
-}
-
-/* Rotate on hover */
-.codm-header-nav-item-wrap:hover .codm-nav-dropdown-icon {
-  transform: rotate(180deg);
-}
-
-
-
-
-/* =========================================================
-   MEGA MENU POSITIONING
-   ========================================================= */
-
-.codm-header-nav-item-wrap {
-  position: static;
-}
-
-.codm-header-nav-item-wrap .codm-megamenu {
-  position: absolute;
-
-  top: 100%;
-  left: 50%;
-
-  width: min(1120px, calc(100vw - 40px));
-
-  transform: translateX(-50%);
-
-  z-index: 99999;
-}
-
-
-/* Normal header */
-.codm-header
-  .codm-header-nav-item-wrap
-  .codm-megamenu {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-
-/* Sticky header */
-.codm-header-sticky
-  .codm-header-nav-item-wrap
-  .codm-megamenu {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-
-
-/* =========================================================
-   CODM SERVICES MEGA MENU
-   FINAL POSITIONING
-   ========================================================= */
-
-.codm-header-nav-item-wrap {
-  position: static !important;
-}
-
-
-
-
-/* Normal header */
-.codm-header:not(.codm-header-sticky)
-  .codm-header-nav-item-wrap
-  > .codm-megamenu {
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) !important;
-}
-
-
-/* Sticky header */
-.codm-header-sticky
-  .codm-header-nav-item-wrap
-  > .codm-megamenu {
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) !important;
-}
-
-
-/* =========================================================
-   SERVICES MEGA MENU — FINAL
-   ========================================================= */
-
-/* The nav item itself must NOT become the positioning parent */
-.codm-services-menu-trigger {
-  position: static !important;
-}
-
-/* Mega menu */
-.codm-services-menu-trigger > .codm-megamenu {
-  position: absolute !important;
-
-  top: 100% !important;
-
-  left: 50% !important;
-  right: auto !important;
-
-  width: 1120px !important;
-  max-width: calc(100vw - 40px) !important;
-
-  margin: 0 !important;
-
-  transform: translateX(-50%) !important;
-
-  z-index: 999999 !important;
-}
-
-
-
-
