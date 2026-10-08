@@ -11362,3 +11362,8 @@ img.codm-footer-logo {
     #DAD1FC 100%
   );
 }
+
+
+html[data-theme="light"] .codm-header {
+	border: none !important;
+}
