@@ -7332,7 +7332,11 @@ img.codm-footer-logo {
 ========================================================= */
 
 .codm-hero-section {
-  background: linear-gradient(180deg, #eef0fc 0%, #e8e7fb 55%, #dcd5fa 100%);
+  background: linear-gradient(
+    180deg,
+    #ebebfb 0%,
+    #ded7fa 100%
+  );
 }
 
 .codm-hero-breadcrumb-link {
