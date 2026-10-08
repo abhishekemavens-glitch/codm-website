@@ -11358,4 +11358,26 @@ img.codm-footer-logo {
 
 
 
+/* =========================================================
+   SERVICE HERO
+   EXACT SAME BACKGROUND AS ABOUT HERO
+========================================================= */
 
+.codm-service-hero {
+  background: linear-gradient(
+    180deg,
+    #eef0fc 0%,
+    #e8e7fb 55%,
+    #dcd5fa 100%
+  );
+}
+
+/* Dark mode */
+[data-theme="dark"] .codm-service-hero {
+  background: linear-gradient(
+    180deg,
+    #04021c 0%,
+    #070522 55%,
+    #0d0a31 100%
+  );
+}
