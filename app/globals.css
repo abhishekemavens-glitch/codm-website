@@ -11390,3 +11390,33 @@ img.codm-footer-logo {
 .codm-experience-section {
 	background: #E8EEF5;
 }
+
+
+
+/* =========================================================
+   SERVICES MEGA MENU HOVER FIX
+========================================================= */
+
+.codm-megamenu {
+  position: absolute;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+/*
+  Invisible bridge between the Services button
+  and the mega menu.
+
+  This prevents the menu from disappearing while
+  the mouse travels down from Services to the menu.
+*/
+.codm-megamenu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20px;
+  height: 20px;
+  background: transparent;
+  pointer-events: auto;
+}
