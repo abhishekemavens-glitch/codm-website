@@ -639,7 +639,9 @@ const closeServicesMenu = () => {
 
     {header.megaMenuEnabled && servicesMenuOpen && (
       <MegaMenu
-        data={{
+  onMouseEnter={openServicesMenu}
+  onMouseLeave={closeServicesMenu}
+  data={{
           enabled: true,
 
           columns: [
