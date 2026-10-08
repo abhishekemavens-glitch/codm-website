@@ -50,15 +50,23 @@ const ICONS: Record<string, string> = {
 
 export default function MegaMenu({
   data,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   data: MegaMenuData;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) {
   if (!data.enabled) {
     return null;
   }
 
   return (
-    <div className="codm-megamenu">
+    <div
+  className="codm-megamenu"
+  onMouseEnter={onMouseEnter}
+  onMouseLeave={onMouseLeave}
+>
       <div className="codm-megamenu-columns">
         {data.columns.map((col, index) => {
           if (!col.title) return null;
