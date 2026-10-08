@@ -11382,19 +11382,33 @@ img.codm-footer-logo {
 }
 
 
+
 /* =========================================================
-   SERVICES MEGA MENU — MAIN HEADER
+   SERVICES MEGA MENU
    ========================================================= */
 
 @media (min-width: 901px) {
 
-  /* Services item must not become the menu's positioning parent */
+  /*
+   * The header-inner is now the positioning parent.
+   */
+  .codm-header-inner {
+    position: relative !important;
+  }
+
+
+  /*
+   * Services itself does NOT position the mega menu.
+   */
   .codm-services-menu-trigger {
     position: static !important;
   }
 
-  /* Mega menu */
-  .codm-services-menu-trigger > .codm-megamenu {
+
+  /*
+   * Center mega menu against header-inner.
+   */
+  .codm-header-inner > .codm-megamenu {
     position: absolute !important;
 
     top: 100% !important;
@@ -11404,6 +11418,7 @@ img.codm-footer-logo {
 
     width: 1120px !important;
     max-width: calc(100vw - 40px) !important;
+    min-width: 0 !important;
 
     margin: 0 !important;
 
@@ -11411,19 +11426,32 @@ img.codm-footer-logo {
 
     z-index: 999999 !important;
   }
-}
 
-.codm-nav-dropdown-icon {
-  display: inline-block;
-  width: 10px;
-  height: 6px;
-  margin-left: 5px;
-  flex-shrink: 0;
 
-  transition: transform 200ms ease;
-  transform-origin: center;
-}
+  /*
+   * Dropdown arrow
+   */
+  .codm-nav-dropdown-icon {
+    display: inline-block !important;
 
-.codm-nav-dropdown-icon-open {
-  transform: rotate(180deg);
+    width: 10px !important;
+    height: 6px !important;
+
+    margin-left: 5px !important;
+
+    flex-shrink: 0 !important;
+
+    transition:
+      transform 200ms ease !important;
+
+    transform-origin: center !important;
+  }
+
+
+  /*
+   * Arrow rotates when mega menu is open.
+   */
+  .codm-nav-dropdown-icon-open {
+    transform: rotate(180deg) !important;
+  }
 }
