@@ -44,7 +44,7 @@ const ICONS: Record<string, string> = {
   sparkle: "✦",
   code: "</>",
   database: "🗄",
-  integration: "⇄",
+  integration: "⇄", 
   support: "◎",
 };
 
