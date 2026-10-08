@@ -5,7 +5,7 @@ export type ServiceHeroData = {
   headline?: string | null;
   description?: string | null;
   primaryLabel?: string | null;
-  primaryUrl?: string | null; 
+  primaryUrl?: string | null;
   secondaryLabel?: string | null;
   secondaryUrl?: string | null;
 };
@@ -25,7 +25,6 @@ export default function ServiceHero({
 }: ServiceHeroProps) {
   const headline = hero?.headline || pageTitle;
   const description = hero?.description;
-
   const eyebrow = hero?.eyebrow;
 
   const showPrimary = Boolean(
@@ -39,11 +38,7 @@ export default function ServiceHero({
   const hasImage = Boolean(imageUrl);
 
   return (
-    <section className="codm-about-hero relative overflow-hidden">
-
-      {/* =====================================================
-          SAME ABOUT HERO CONTAINER / SPACING
-          ===================================================== */}
+    <section className="codm-hero-section relative overflow-hidden">
 
       <div
         className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] ${
@@ -55,6 +50,8 @@ export default function ServiceHero({
 
         {/* =================================================
             LEFT SIDE
+            Breadcrumb + Heading + Description + Buttons
+            ALL IN SAME DIV
             ================================================= */}
 
         <div>
@@ -65,7 +62,6 @@ export default function ServiceHero({
             aria-label="Breadcrumb"
             className="flex items-center gap-2 text-[16px]"
           >
-
             <Link
               href="/"
               className="codm-hero-breadcrumb-link transition-colors"
@@ -114,7 +110,6 @@ export default function ServiceHero({
             >
               {pageTitle}
             </span>
-
           </nav>
 
 
@@ -202,7 +197,7 @@ export default function ServiceHero({
 
 
         {/* =================================================
-            RIGHT SIDE — FEATURED IMAGE
+            RIGHT SIDE — IMAGE
             ================================================= */}
 
         {hasImage && (
