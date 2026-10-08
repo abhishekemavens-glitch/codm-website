@@ -40,178 +40,195 @@ export default function ServiceHero({
   return (
     <section className="codm-hero-section relative overflow-hidden">
 
+      {/* =====================================================
+          HERO CONTAINER
+          ===================================================== */}
+
       <div
-        className={`mx-auto grid max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] ${
-          hasImage
-            ? "min-h-[620px] lg:grid-cols-2"
-            : "min-h-[380px]"
+        className={`mx-auto w-full max-w-[1240px] px-6 pb-20 pt-[150px] ${
+          hasImage ? "min-h-[620px]" : "min-h-[380px]"
         }`}
       >
 
         {/* =================================================
-            LEFT SIDE
-            Breadcrumb + Heading + Description + Buttons
-            ALL IN SAME DIV
+            BREADCRUMB
+            Same horizontal position as Insights
             ================================================= */}
 
-        <div>
-
-          {/* ================= BREADCRUMB ================= */}
-
-          <nav
-            aria-label="Breadcrumb"
-            className="flex items-center gap-2 text-[16px]"
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 text-[16px]"
+        >
+          <Link
+            href="/"
+            className="codm-hero-breadcrumb-link transition-colors"
           >
-            <Link
-              href="/"
-              className="codm-hero-breadcrumb-link transition-colors"
-            >
-              Home
-            </Link>
+            Home
+          </Link>
 
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="codm-hero-chevron"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-
-            <Link
-              href="/services"
-              className="codm-hero-breadcrumb-link transition-colors"
-            >
-              Services
-            </Link>
-
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="codm-hero-chevron"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-
-            <span
-              aria-current="page"
-              className="text-[#8b6cf6]"
-            >
-              {pageTitle}
-            </span>
-          </nav>
-
-
-          {/* ================= EYEBROW ================= */}
-
-          {eyebrow && (
-            <div className="mt-6 flex items-center gap-3">
-
-              <span
-                className="h-px w-8"
-                style={{
-                  background:
-                    "rgba(139,108,246,0.45)",
-                }}
-              />
-
-              <span
-                className="text-[14px] uppercase tracking-[0.02em]"
-                style={{
-                  color: "#8b6cf6",
-                }}
-              >
-                {eyebrow}
-              </span>
-
-              <span
-                className="h-px w-8"
-                style={{
-                  background:
-                    "rgba(139,108,246,0.45)",
-                }}
-              />
-
-            </div>
-          )}
-
-
-          {/* ================= HEADLINE ================= */}
-
-          <h1
-            className={`${
-              eyebrow ? "mt-5" : "mt-6"
-            } max-w-[640px] text-[clamp(40px,5.2vw,68px)] font-normal leading-[1.05] tracking-[-0.035em] text-[var(--foreground)] [text-wrap:balance]`}
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="codm-hero-chevron"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
           >
-            {headline}
-          </h1>
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+
+          <Link
+            href="/services"
+            className="codm-hero-breadcrumb-link transition-colors"
+          >
+            Services
+          </Link>
+
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="codm-hero-chevron"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+
+          <span
+            aria-current="page"
+            className="text-[#8b6cf6]"
+          >
+            {pageTitle}
+          </span>
+        </nav>
 
 
-          {/* ================= DESCRIPTION ================= */}
+        {/* =================================================
+            HERO CONTENT
+            ================================================= */}
 
-          {description && (
-            <p className="codm-hero-body mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65]">
-              {description}
-            </p>
-          )}
+        <div
+          className={`mt-8 grid items-center gap-12 ${
+            hasImage
+              ? "lg:grid-cols-2 lg:gap-16"
+              : ""
+          }`}
+        >
 
+          {/* =================================================
+              LEFT CONTENT
+              ================================================= */}
 
-          {/* ================= BUTTONS ================= */}
+          <div>
 
-          {(showPrimary || showSecondary) && (
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            {/* ================= EYEBROW ================= */}
 
-              {showPrimary && (
-                <Link
-                  href={hero!.primaryUrl!}
-                  className="inline-flex h-[54px] items-center justify-center rounded-full bg-[linear-gradient(90deg,#8b5cf6_0%,#6d4ff0_100%)] px-8 text-[17px] font-medium text-white shadow-[0_10px_30px_-10px_rgba(109,79,240,0.7)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+            {eyebrow && (
+              <div className="flex items-center gap-3">
+
+                <span
+                  className="h-px w-8"
+                  style={{
+                    background:
+                      "rgba(139,108,246,0.45)",
+                  }}
+                />
+
+                <span
+                  className="text-[14px] uppercase tracking-[0.02em]"
+                  style={{
+                    color: "#8b6cf6",
+                  }}
                 >
-                  {hero!.primaryLabel}
-                </Link>
-              )}
+                  {eyebrow}
+                </span>
 
-              {showSecondary && (
-                <Link
-                  href={hero!.secondaryUrl!}
-                  className="codm-hero-secondary-btn inline-flex h-[54px] items-center justify-center rounded-full px-7 text-[17px] font-medium backdrop-blur transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
-                >
-                  {hero!.secondaryLabel}
-                </Link>
-              )}
+                <span
+                  className="h-px w-8"
+                  style={{
+                    background:
+                      "rgba(139,108,246,0.45)",
+                  }}
+                />
+
+              </div>
+            )}
+
+
+            {/* ================= HEADLINE ================= */}
+
+            <h1
+              className={`${
+                eyebrow ? "mt-5" : "mt-0"
+              } max-w-[640px] text-[clamp(40px,5.2vw,68px)] font-normal leading-[1.05] tracking-[-0.035em] text-[var(--foreground)] [text-wrap:balance]`}
+            >
+              {headline}
+            </h1>
+
+
+            {/* ================= DESCRIPTION ================= */}
+
+            {description && (
+              <p className="codm-hero-body mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65]">
+                {description}
+              </p>
+            )}
+
+
+            {/* ================= BUTTONS ================= */}
+
+            {(showPrimary || showSecondary) && (
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+
+                {showPrimary && (
+                  <Link
+                    href={hero!.primaryUrl!}
+                    className="inline-flex h-[54px] items-center justify-center rounded-full bg-[linear-gradient(90deg,#8b5cf6_0%,#6d4ff0_100%)] px-8 text-[17px] font-medium text-white shadow-[0_10px_30px_-10px_rgba(109,79,240,0.7)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+                  >
+                    {hero!.primaryLabel}
+                  </Link>
+                )}
+
+                {showSecondary && (
+                  <Link
+                    href={hero!.secondaryUrl!}
+                    className="codm-hero-secondary-btn inline-flex h-[54px] items-center justify-center rounded-full px-7 text-[17px] font-medium backdrop-blur transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6d4ff0]"
+                  >
+                    {hero!.secondaryLabel}
+                  </Link>
+                )}
+
+              </div>
+            )}
+
+          </div>
+
+
+          {/* =================================================
+              RIGHT SIDE — IMAGE
+              ================================================= */}
+
+          {hasImage && (
+            <div className="flex justify-center lg:justify-end">
+
+              <img
+                src={imageUrl!}
+                alt={imageAlt || pageTitle}
+                className="w-full max-w-[520px] select-none"
+                draggable={false}
+              />
 
             </div>
           )}
 
         </div>
-
-
-        {/* =================================================
-            RIGHT SIDE — IMAGE
-            ================================================= */}
-
-        {hasImage && (
-          <div className="flex justify-center lg:justify-end">
-
-            <img
-              src={imageUrl!}
-              alt={imageAlt || pageTitle}
-              className="w-full max-w-[520px] select-none"
-              draggable={false}
-            />
-
-          </div>
-        )}
 
       </div>
 
