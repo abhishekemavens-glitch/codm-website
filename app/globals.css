@@ -11358,28 +11358,35 @@ img.codm-footer-logo {
 
 
 
+/* =========================================================
+   SERVICES MEGA MENU — HOVER BRIDGE
+   ========================================================= */
+
 @media (min-width: 901px) {
+
   .codm-services-menu-trigger {
-    position: static !important;
+    position: relative !important;
+  }
+
+  .codm-services-menu-trigger::after {
+    content: "";
+    position: absolute;
+
+    left: -30px;
+    right: -30px;
+
+    top: 100%;
+
+    height: 20px;
+
+    background: transparent;
+
+    z-index: 99998;
+
+    pointer-events: auto;
   }
 
   .codm-services-menu-trigger > .codm-megamenu {
-    position: absolute !important;
-
-    top: 100% !important;
-    left: 50% !important;
-    right: auto !important;
-
-    width: 1120px !important;
-    max-width: calc(100vw - 40px) !important;
-    min-width: 0 !important;
-
-    margin: 0 !important;
-
-    transform: translateX(-50%) !important;
-
-    z-index: 999999 !important;
+    z-index: 99999 !important;
   }
 }
-
-
