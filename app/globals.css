@@ -11426,3 +11426,25 @@ img.codm-footer-logo {
     transform: rotate(180deg) !important;
   }
 }
+
+
+
+
+/* =========================================================
+   SERVICES DROPDOWN ARROW
+========================================================= */
+
+.codm-nav-dropdown-icon {
+  display: inline-block !important;
+  width: 10px !important;
+  height: 6px !important;
+  margin-left: 5px !important;
+  flex-shrink: 0 !important;
+  vertical-align: middle !important;
+  overflow: visible !important;
+  transition: transform 0.2s ease !important;
+}
+
+.codm-nav-dropdown-icon-open {
+  transform: rotate(180deg) !important;
+}
