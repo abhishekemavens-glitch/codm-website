@@ -1,7 +1,6 @@
 "use client";
 
- 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
 import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
@@ -107,6 +106,30 @@ export default function Header() {
     });
 
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+
+ const servicesMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(
+  null
+);
+
+const openServicesMenu = () => {
+  if (servicesMenuCloseTimer.current) {
+    clearTimeout(servicesMenuCloseTimer.current);
+    servicesMenuCloseTimer.current = null;
+  }
+
+  setServicesMenuOpen(true);
+};
+
+const closeServicesMenu = () => {
+  if (servicesMenuCloseTimer.current) {
+    clearTimeout(servicesMenuCloseTimer.current);
+  }
+
+  servicesMenuCloseTimer.current = setTimeout(() => {
+    setServicesMenuOpen(false);
+    servicesMenuCloseTimer.current = null;
+  }, 400);
+};
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -504,13 +527,13 @@ export default function Header() {
       {services.label && (
        <div
   className="codm-header-nav-item-wrap codm-services-menu-trigger"
-  onMouseEnter={() => setServicesMenuOpen(true)}
-  onMouseLeave={() => setServicesMenuOpen(false)}
+  onMouseEnter={openServicesMenu}
+onMouseLeave={closeServicesMenu}
 >
           <a
             href={services.url || "#"}
             className="codm-header-nav-link"
-            onFocus={() => setServicesMenuOpen(true)}
+            onFocus={openServicesMenu}
             aria-haspopup={
               header.megaMenuEnabled ? "true" : undefined
             }
