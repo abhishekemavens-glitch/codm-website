@@ -505,7 +505,18 @@ export default function Header() {
        <div
   className="codm-header-nav-item-wrap codm-services-menu-trigger"
   onMouseEnter={() => setServicesMenuOpen(true)}
-  onMouseLeave={() => setServicesMenuOpen(false)}
+  onMouseLeave={(event) => {
+  const nextTarget = event.relatedTarget as Node | null;
+
+  if (
+    nextTarget &&
+    event.currentTarget.contains(nextTarget)
+  ) {
+    return;
+  }
+
+  setServicesMenuOpen(false);
+}}
 >
           <a
             href={services.url || "#"}
