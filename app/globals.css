@@ -11389,17 +11389,4 @@ img.codm-footer-logo {
     z-index: 999999 !important;
   }
 
-  .codm-nav-dropdown-icon {
-    display: inline-block !important;
-    width: 10px !important;
-    height: 6px !important;
-    margin-left: 5px !important;
-    flex-shrink: 0 !important;
-    transition: transform 200ms ease !important;
-    transform-origin: center !important;
-  }
-
-  .codm-nav-dropdown-icon-open {
-    transform: rotate(180deg) !important;
-  }
 }
