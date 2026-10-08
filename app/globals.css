@@ -7331,13 +7331,7 @@ img.codm-footer-logo {
    ABOUT HERO - theme-aware colors
 ========================================================= */
 
-.codm-hero-section {
-  background: linear-gradient(
-    180deg,
-    #ebebfb 0%,
-    #ded7fa 100%
-  );
-}
+
 
 .codm-hero-breadcrumb-link {
   color: #3f4358;
