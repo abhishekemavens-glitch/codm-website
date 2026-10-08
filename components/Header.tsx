@@ -519,27 +519,27 @@ export default function Header() {
       {services.label}
 
       {header.megaMenuEnabled && (
-        <svg
-          className={`codm-nav-dropdown-icon ${
-            servicesMenuOpen
-              ? "codm-nav-dropdown-icon-open"
-              : ""
-          }`}
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M1 1L5 5L9 1"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+  <svg
+    className={`codm-nav-dropdown-icon ${
+      servicesMenuOpen
+        ? "codm-nav-dropdown-icon-open"
+        : ""
+    }`}
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M1 1L5 5L9 1"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)}
     </a>
 
     {header.megaMenuEnabled && servicesMenuOpen && (
