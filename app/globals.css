@@ -4144,23 +4144,25 @@ html[data-theme="dark"] .codm-logo-dark {
    SERVICES MEGA MENU
    ========================================================= */
 
-.codm-services-nav-wrap {
-  position: static !important;
+.codm-header-nav-item-wrap {
+  position: static;
 }
 
-/* Mega menu itself */
-.codm-services-nav-wrap > .codm-megamenu {
-  position: absolute !important;
+.codm-header-nav-item-wrap > .codm-megamenu {
+  position: absolute;
 
-  top: 114px !important;
-  left: 50% !important;
+  top: 100%;
+  left: 50%;
+  right: auto;
 
-  width: min(1120px, calc(100vw - 40px)) !important;
+  width: 1120px;
+  max-width: calc(100vw - 40px);
 
-  margin: 0 !important;
-  transform: translateX(-50%) !important;
+  margin: 0;
 
-  z-index: 99999 !important;
+  transform: translateX(-50%);
+
+  z-index: 999999;
 }
 
 .codm-nav-item:hover .codm-megamenu,
@@ -11530,21 +11532,7 @@ img.codm-footer-logo {
   position: static !important;
 }
 
-.codm-header-nav-item-wrap > .codm-megamenu {
-  position: fixed !important;
 
-  left: 50% !important;
-  right: auto !important;
-
-  width: 1120px !important;
-  max-width: calc(100vw - 40px) !important;
-
-  margin: 0 !important;
-
-  transform: translateX(-50%) !important;
-
-  z-index: 999999 !important;
-}
 
 
 /* Normal header */
@@ -11564,5 +11552,34 @@ img.codm-footer-logo {
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
+}
+
+
+/* =========================================================
+   SERVICES MEGA MENU — FINAL
+   ========================================================= */
+
+/* The nav item itself must NOT become the positioning parent */
+.codm-services-menu-trigger {
+  position: static !important;
+}
+
+/* Mega menu */
+.codm-services-menu-trigger > .codm-megamenu {
+  position: absolute !important;
+
+  top: 100% !important;
+
+  left: 50% !important;
+  right: auto !important;
+
+  width: 1120px !important;
+  max-width: calc(100vw - 40px) !important;
+
+  margin: 0 !important;
+
+  transform: translateX(-50%) !important;
+
+  z-index: 999999 !important;
 }
 
