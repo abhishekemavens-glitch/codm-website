@@ -280,37 +280,24 @@ export default async function ServicePage({
             HERO
         ================================================= */}
 
-        <section
-          className="
-            relative
-            overflow-hidden
-            bg-[#eeecff]
-          "
-        >
+       <section className="codm-hero-section relative overflow-hidden">
 
           {/* Background glow */}
 
-          <div
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              bg-[radial-gradient(circle_at_25%_45%,rgba(123,92,255,0.12),transparent_38%),radial-gradient(circle_at_75%_50%,rgba(123,92,255,0.08),transparent_35%)]
-            "
-          />
+        
 
-          <div
-            className="
-              relative
-              mx-auto
-              max-w-[1250px]
-              px-6
-              pt-20
-              pb-20
-              md:pt-32
-              md:pb-24
-            "
-          >
+         <div
+  className="
+    relative
+    mx-auto
+    max-w-[1250px]
+    px-6
+    pt-20
+    pb-20
+    md:pt-32
+    md:pb-24
+  "
+>
 
             {/* =================================================
                 BREADCRUMB
