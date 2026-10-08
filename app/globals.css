@@ -11587,5 +11587,6 @@ img.codm-footer-logo {
 
 
 .codm-nav-dropdown-icon-open {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
 }
