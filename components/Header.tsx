@@ -505,7 +505,11 @@ export default function Header() {
   <div
   className="codm-header-nav-item-wrap codm-services-nav-wrap"
   onMouseEnter={() => setServicesMenuOpen(true)}
-  onMouseLeave={() => setServicesMenuOpen(false)}
+  onMouseLeave={() => {
+  setTimeout(() => {
+    setServicesMenuOpen(false);
+  }, 250);
+}}
 >
     <a
       href={services.url || "#"}
