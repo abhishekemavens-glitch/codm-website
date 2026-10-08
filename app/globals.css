@@ -4140,30 +4140,7 @@ html[data-theme="dark"] .codm-logo-dark {
   position: relative;
 }
 
-/* =========================================================
-   SERVICES MEGA MENU
-   ========================================================= */
 
-.codm-header-nav-item-wrap {
-  position: static;
-}
-
-.codm-header-nav-item-wrap > .codm-megamenu {
-  position: absolute;
-
-  top: 100%;
-  left: 50%;
-  right: auto;
-
-  width: 1120px;
-  max-width: calc(100vw - 40px);
-
-  margin: 0;
-
-  transform: translateX(-50%);
-
-  z-index: 999999;
-}
 
 .codm-nav-item:hover .codm-megamenu,
 .codm-nav-item:focus-within .codm-megamenu {
@@ -4643,9 +4620,7 @@ html[data-theme="dark"] .codm-logo-dark {
   transform-origin: center;
 }
 
-.codm-nav-dropdown-icon-open {
-  transform: rotate(180deg);
-}
+
 
 /* =========================================================
    MOBILE HAMBURGER TOGGLE
@@ -11381,77 +11356,3 @@ img.codm-footer-logo {
 	background: #E8EEF5;
 }
 
-
-
-/* =========================================================
-   SERVICES MEGA MENU
-   ========================================================= */
-
-@media (min-width: 901px) {
-
-  /*
-   * The header-inner is now the positioning parent.
-   */
-  .codm-header-inner {
-    position: relative !important;
-  }
-
-
-  /*
-   * Services itself does NOT position the mega menu.
-   */
-  .codm-services-menu-trigger {
-    position: static !important;
-  }
-
-
-  /*
-   * Center mega menu against header-inner.
-   */
-  .codm-header-inner > .codm-megamenu {
-    position: absolute !important;
-
-    top: 100% !important;
-
-    left: 50% !important;
-    right: auto !important;
-
-    width: 1120px !important;
-    max-width: calc(100vw - 40px) !important;
-    min-width: 0 !important;
-
-    margin: 0 !important;
-
-    transform: translateX(-50%) !important;
-
-    z-index: 999999 !important;
-  }
-
-
-  /*
-   * Dropdown arrow
-   */
-  .codm-nav-dropdown-icon {
-    display: inline-block !important;
-
-    width: 10px !important;
-    height: 6px !important;
-
-    margin-left: 5px !important;
-
-    flex-shrink: 0 !important;
-
-    transition:
-      transform 200ms ease !important;
-
-    transform-origin: center !important;
-  }
-
-
-  /*
-   * Arrow rotates when mega menu is open.
-   */
-  .codm-nav-dropdown-icon-open {
-    transform: rotate(180deg) !important;
-  }
-}
