@@ -11382,35 +11382,28 @@ img.codm-footer-logo {
 }
 
 
-
-
 /* =========================================================
-   SERVICES MEGA MENU — CLEAN POSITIONING
+   SERVICES MEGA MENU — MAIN HEADER
    ========================================================= */
 
 @media (min-width: 901px) {
 
-  /* Services controls the menu visibility,
-     but NOT its positioning */
-  .codm-services-nav-wrap,
-  .codm-services-menu-trigger,
-  .codm-header-nav-item-wrap {
+  /* Services item must not become the menu's positioning parent */
+  .codm-services-menu-trigger {
     position: static !important;
   }
 
   /* Mega menu */
-  .codm-services-nav-wrap > .codm-megamenu,
-  .codm-services-menu-trigger > .codm-megamenu,
-  .codm-header-nav-item-wrap > .codm-megamenu {
+  .codm-services-menu-trigger > .codm-megamenu {
     position: absolute !important;
 
     top: 100% !important;
+
     left: 50% !important;
     right: auto !important;
 
     width: 1120px !important;
     max-width: calc(100vw - 40px) !important;
-    min-width: 0 !important;
 
     margin: 0 !important;
 
@@ -11418,24 +11411,19 @@ img.codm-footer-logo {
 
     z-index: 999999 !important;
   }
+}
 
-  /* Dropdown arrow */
-  .codm-nav-dropdown-icon {
-    display: inline-block !important;
-    width: 10px !important;
-    height: 6px !important;
+.codm-nav-dropdown-icon {
+  display: inline-block;
+  width: 10px;
+  height: 6px;
+  margin-left: 5px;
+  flex-shrink: 0;
 
-    margin-left: 5px !important;
+  transition: transform 200ms ease;
+  transform-origin: center;
+}
 
-    flex-shrink: 0 !important;
-
-    transition: transform 200ms ease !important;
-
-    transform-origin: center !important;
-  }
-
-  /* Arrow points UP when menu is open */
-  .codm-nav-dropdown-icon-open {
-    transform: rotate(180deg) !important;
-  }
+.codm-nav-dropdown-icon-open {
+  transform: rotate(180deg);
 }
