@@ -11367,3 +11367,9 @@ img.codm-footer-logo {
 html[data-theme="light"] .codm-header {
 	border: none !important;
 }
+
+
+
+.codm-hero-section .mx-auto.grid.max-w-\[1240px\].items-center.gap-12.px-6.pb-20.pt-\[150px\].min-h-\[620px\].lg\:grid-cols-2 {
+	padding-top: 75px;
+}
