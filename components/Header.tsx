@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef } from "react";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
 import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
@@ -107,9 +107,7 @@ export default function Header() {
 
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
 
- const servicesMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(
-  null
-);
+  const servicesMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 const openServicesMenu = () => {
   if (servicesMenuCloseTimer.current) {
@@ -131,6 +129,7 @@ const closeServicesMenu = () => {
   }, 400);
 };
 
+ 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -525,11 +524,11 @@ const closeServicesMenu = () => {
       ================================================= */}
 
       {services.label && (
-       <div
-  className="codm-header-nav-item-wrap codm-services-menu-trigger"
-  onMouseEnter={openServicesMenu}
-onMouseLeave={closeServicesMenu}
->
+  <div
+    className="codm-header-nav-item-wrap codm-services-menu-trigger"
+    onMouseEnter={openServicesMenu}
+    onMouseLeave={closeServicesMenu}
+  >
           <a
             href={services.url || "#"}
             className="codm-header-nav-link"
