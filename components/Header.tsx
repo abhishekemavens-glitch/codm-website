@@ -454,93 +454,166 @@ export default function Header() {
           MAIN HEADER
       ===================================================== */}
 
-    <header
+ <header
   className={`codm-header codm-site-header codm-header-sticky ${
     scrolled ? "codm-header-scrolled" : ""
   }`}
 >
+  <div className="codm-header-inner">
 
-        <div className="codm-header-inner">
+    {/* =================================================
+        LOGO
+    ================================================= */}
 
-
-          {/* =================================================
-              LOGO
-          ================================================= */}
-
-          <a
-            href="/"
-            className="codm-header-logo-link codm-header-logo"
-            aria-label="CODM Home"
-          >
-
-            {header.mainLogoLight && (
-              <img
-                src={header.mainLogoLight}
-                alt="CODM"
-                className="codm-header-logo codm-logo-light"
-              />
-            )}
-
-            {header.mainLogoDark && (
-              <img
-                src={header.mainLogoDark}
-                alt="CODM"
-                className="codm-header-logo codm-logo-dark"
-              />
-            )}
-
-          </a>
-
-
-          {/* =================================================
-              NAVIGATION
-          ================================================= */}
-
-          <nav
-            className="codm-header-nav"
-            aria-label="Main navigation"
-          >
-
-                    {services.label && (
-<div
-  className="codm-header-nav-item-wrap codm-services-menu-trigger"
-  onMouseEnter={() => setServicesMenuOpen(true)}
-  onMouseLeave={() => setServicesMenuOpen(false)}
->
     <a
-      href={services.url || "#"}
-      className="codm-header-nav-link"
-      onFocus={() => setServicesMenuOpen(true)}
-      aria-haspopup={header.megaMenuEnabled ? "true" : undefined}
-      aria-expanded={
-        header.megaMenuEnabled ? servicesMenuOpen : undefined
-      }
+      href="/"
+      className="codm-header-logo-link codm-header-logo"
+      aria-label="CODM Home"
     >
-      {services.label}
+      {header.mainLogoLight && (
+        <img
+          src={header.mainLogoLight}
+          alt="CODM"
+          className="codm-header-logo codm-logo-light"
+        />
+      )}
 
-      {header.megaMenuEnabled && (
-  <svg
-    className={`codm-nav-dropdown-icon ${
-      servicesMenuOpen
-        ? "codm-nav-dropdown-icon-open"
-        : ""
-    }`}
-    width="10"
-    height="6"
-    viewBox="0 0 10 6"
-    fill="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M1 1L5 5L9 1"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)}
+      {header.mainLogoDark && (
+        <img
+          src={header.mainLogoDark}
+          alt="CODM"
+          className="codm-header-logo codm-logo-dark"
+        />
+      )}
     </a>
+
+
+    {/* =================================================
+        NAVIGATION
+    ================================================= */}
+
+    <nav
+      className="codm-header-nav"
+      aria-label="Main navigation"
+    >
+
+      {/* =================================================
+          SERVICES
+      ================================================= */}
+
+      {services.label && (
+        <div
+          className="codm-header-nav-item-wrap codm-services-menu-trigger"
+          onMouseEnter={() => setServicesMenuOpen(true)}
+          onMouseLeave={() => setServicesMenuOpen(false)}
+        >
+          <a
+            href={services.url || "#"}
+            className="codm-header-nav-link"
+            onFocus={() => setServicesMenuOpen(true)}
+            aria-haspopup={
+              header.megaMenuEnabled ? "true" : undefined
+            }
+            aria-expanded={
+              header.megaMenuEnabled
+                ? servicesMenuOpen
+                : undefined
+            }
+          >
+            {services.label}
+
+            {header.megaMenuEnabled && (
+              <svg
+                className={`codm-nav-dropdown-icon ${
+                  servicesMenuOpen
+                    ? "codm-nav-dropdown-icon-open"
+                    : ""
+                }`}
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 1L5 5L9 1"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </a>
+        </div>
+      )}
+
+
+      {/* =================================================
+          INDUSTRIES
+      ================================================= */}
+
+      {industries.label && (
+        <a
+          href={industries.url}
+          className="codm-header-nav-link"
+        >
+          {industries.label}
+        </a>
+      )}
+
+
+      {/* =================================================
+          CASE STUDIES
+      ================================================= */}
+
+      {caseStudies.label && (
+        <a
+          href={caseStudies.url}
+          className="codm-header-nav-link"
+        >
+          {caseStudies.label}
+        </a>
+      )}
+
+
+      {/* =================================================
+          ABOUT
+      ================================================= */}
+
+      {about.label && (
+        <a
+          href={about.url}
+          className="codm-header-nav-link"
+        >
+          {about.label}
+        </a>
+      )}
+
+
+      {/* =================================================
+          INSIGHTS
+      ================================================= */}
+
+      {insights.label && (
+        <a
+          href={insights.url}
+          className="codm-header-nav-link"
+        >
+          {insights.label}
+        </a>
+      )}
+
+    </nav>
+
+
+    {/* =================================================
+        SERVICES MEGA MENU
+
+        IMPORTANT:
+        This is intentionally OUTSIDE <nav>
+        and OUTSIDE the Services wrapper.
+    ================================================= */}
 
     {header.megaMenuEnabled && servicesMenuOpen && (
       <MegaMenu
@@ -551,184 +624,207 @@ export default function Header() {
             {
               icon: header.megaMenuCol1Icon,
               title: header.megaMenuCol1Title,
-              description: header.megaMenuCol1Description,
+              description:
+                header.megaMenuCol1Description,
               links: header.megaMenuCol1Links,
             },
+
             {
               icon: header.megaMenuCol2Icon,
               title: header.megaMenuCol2Title,
-              description: header.megaMenuCol2Description,
+              description:
+                header.megaMenuCol2Description,
               links: header.megaMenuCol2Links,
             },
+
             {
               icon: header.megaMenuCol3Icon,
               title: header.megaMenuCol3Title,
-              description: header.megaMenuCol3Description,
+              description:
+                header.megaMenuCol3Description,
               links: header.megaMenuCol3Links,
             },
           ],
 
-          bannerLabel: header.megaMenuBannerLabel,
-          bannerTitle: header.megaMenuBannerTitle,
+          bannerLabel:
+            header.megaMenuBannerLabel,
+
+          bannerTitle:
+            header.megaMenuBannerTitle,
+
           bannerDescription:
             header.megaMenuBannerDescription,
+
           bannerButtonText:
             header.megaMenuBannerButtonText,
+
           bannerButtonUrl:
             header.megaMenuBannerButtonUrl,
         }}
       />
     )}
-  </div>
-)}
 
-            {industries.label && (
-              <a
-                href={industries.url}
-                className="codm-header-nav-link"
-              >
-                {industries.label}
-              </a>
-            )}
 
-            {caseStudies.label && (
-              <a
-                href={caseStudies.url}
-                className="codm-header-nav-link"
-              >
-                {caseStudies.label}
-              </a>
-            )}
+    {/* =================================================
+        MOBILE MENU
+    ================================================= */}
 
-            {about.label && (
-              <a
-                href={about.url}
-                className="codm-header-nav-link"
-              >
-                {about.label}
-              </a>
-            )}
+    {mobileMenuOpen && (
+      <div className="codm-mobile-menu">
 
-            {insights.label && (
-              <a
-                href={insights.url}
-                className="codm-header-nav-link"
-              >
-                {insights.label}
-              </a>
-            )}
+        {services.label &&
+          (
+            header.megaMenuEnabled &&
+            serviceGroups.length > 0
+          ) ? (
+            <MobileServicesMenu
+              groups={serviceGroups}
+              label={services.label}
+              servicesHref={services.url}
+              onNavigate={() =>
+                setMobileMenuOpen(false)
+              }
+            />
+          ) : (
+            <a
+              href={services.url}
+              className="codm-mobile-menu-link"
+              onClick={() =>
+                setMobileMenuOpen(false)
+              }
+            >
+              {services.label}
+            </a>
+          )
+        }
 
-                  </nav>
 
-        {mobileMenuOpen && (
-  <div className="codm-mobile-menu">
+        {industries.label && (
+          <a
+            href={industries.url}
+            className="codm-mobile-menu-link"
+            onClick={() =>
+              setMobileMenuOpen(false)
+            }
+          >
+            {industries.label}
+          </a>
+        )}
 
-    {/* CHANGE 3 of 3: Services becomes an accordion when the mega menu is on */}
-    {services.label &&
-      (header.megaMenuEnabled && serviceGroups.length > 0 ? (
-        <MobileServicesMenu
-          groups={serviceGroups}
-          label={services.label}
-          servicesHref={services.url}
-          onNavigate={() => setMobileMenuOpen(false)}
-        />
-      ) : (
+
+        {caseStudies.label && (
+          <a
+            href={caseStudies.url}
+            className="codm-mobile-menu-link"
+            onClick={() =>
+              setMobileMenuOpen(false)
+            }
+          >
+            {caseStudies.label}
+          </a>
+        )}
+
+
+        {about.label && (
+          <a
+            href={about.url}
+            className="codm-mobile-menu-link"
+            onClick={() =>
+              setMobileMenuOpen(false)
+            }
+          >
+            {about.label}
+          </a>
+        )}
+
+
+        {insights.label && (
+          <a
+            href={insights.url}
+            className="codm-mobile-menu-link"
+            onClick={() =>
+              setMobileMenuOpen(false)
+            }
+          >
+            {insights.label}
+          </a>
+        )}
+
+      </div>
+    )}
+
+
+    {/* =================================================
+        RIGHT SIDE
+    ================================================= */}
+
+    <div className="codm-header-right">
+
+      {/* Mobile toggle */}
+
+      <button
+        type="button"
+        className={`codm-mobile-toggle ${
+          mobileMenuOpen
+            ? "codm-mobile-toggle-open"
+            : ""
+        }`}
+        onClick={() =>
+          setMobileMenuOpen(
+            (open) => !open
+          )
+        }
+        aria-label="Toggle menu"
+        aria-expanded={mobileMenuOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+
+      {/* Theme toggle */}
+
+      <ThemeToggle />
+
+
+      {/* Header CTA */}
+
+      {header.buttonText && (
         <a
-          href={services.url}
-          className="codm-mobile-menu-link"
-          onClick={() => setMobileMenuOpen(false)}
+          href={header.buttonUrl || "#"}
+          className="codm-header-cta"
         >
-          {services.label}
+          <span>
+            {header.buttonText}
+          </span>
+
+          <span
+            className="codm-header-cta-arrow"
+            aria-hidden="true"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
         </a>
-      ))}
+      )}
 
-    {industries.label && (
-      <a
-        href={industries.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {industries.label}
-      </a>
-    )}
-
-    {caseStudies.label && (
-      <a
-        href={caseStudies.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {caseStudies.label}
-      </a>
-    )}
-
-    {about.label && (
-      <a
-        href={about.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {about.label}
-      </a>
-    )}
-
-    {insights.label && (
-      <a
-        href={insights.url}
-        className="codm-mobile-menu-link"
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        {insights.label}
-      </a>
-    )}
+    </div>
 
   </div>
-)}
-
-          {/* =================================================
-              RIGHT SIDE
-          ================================================= */}
-
-          <div className="codm-header-right">
-
-
-            <button
-    type="button"
-    className={`codm-mobile-toggle ${
-      mobileMenuOpen ? "codm-mobile-toggle-open" : ""
-    }`}
-    onClick={() => setMobileMenuOpen((open) => !open)}
-    aria-label="Toggle menu"
-    aria-expanded={mobileMenuOpen}
-  >
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-  <ThemeToggle />
-
-  {header.buttonText && (
-    <a
-      href={header.buttonUrl || "#"}
-      className="codm-header-cta"
-    >
-      <span>
-        {header.buttonText}
-      </span>
-
-     <span className="codm-header-cta-arrow" aria-hidden="true">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-</span>
-    </a>
-  )}
-
-</div>
-
-        </div>
-
-      </header>
+</header>
 
     </>
   );
