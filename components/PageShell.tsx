@@ -15,7 +15,7 @@ export default function PageShell({ children }: { children: ReactNode }) {
       <Header />
 
       {/* Header is fixed on desktop, so leave room for it there */}
-      <div className="relative z-10 pt-10 min-[901px]:pt-[160px]">
+      <div className="relative z-10">
         {children}
       </div>
 
