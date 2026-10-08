@@ -11476,3 +11476,45 @@ img.codm-footer-logo {
 .codm-header-nav-item-wrap:hover .codm-nav-dropdown-icon {
   transform: rotate(180deg);
 }
+
+
+
+
+/* =========================================================
+   MEGA MENU POSITIONING
+   ========================================================= */
+
+.codm-header-nav-item-wrap {
+  position: static;
+}
+
+.codm-header-nav-item-wrap .codm-megamenu {
+  position: absolute;
+
+  top: 100%;
+  left: 50%;
+
+  width: min(1120px, calc(100vw - 40px));
+
+  transform: translateX(-50%);
+
+  z-index: 99999;
+}
+
+
+/* Normal header */
+.codm-header
+  .codm-header-nav-item-wrap
+  .codm-megamenu {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+/* Sticky header */
+.codm-header-sticky
+  .codm-header-nav-item-wrap
+  .codm-megamenu {
+  left: 50%;
+  transform: translateX(-50%);
+}
