@@ -39,7 +39,7 @@ export default function ServiceHero({
   const hasImage = Boolean(imageUrl);
 
   return (
-    <section className="codm-hero-section relative overflow-hidden">
+    <section className="codm-hero-section codm-service-hero relative overflow-hidden">
 
       {/* =====================================================
           SAME ABOUT HERO CONTAINER / SPACING
