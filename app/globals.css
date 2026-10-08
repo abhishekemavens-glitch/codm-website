@@ -11392,17 +11392,14 @@ img.codm-footer-logo {
 }
 
 /* =========================================================
-   SERVICES MEGA MENU HOVER AREA
+   SERVICES MEGA MENU
 ========================================================= */
 
 .codm-services-nav-wrap {
   position: relative;
 }
 
-/*
- * Small invisible bridge between the Services
- * navigation item and the mega menu.
- */
+/* Invisible hover bridge */
 .codm-services-nav-wrap::after {
   content: "";
   position: absolute;
@@ -11411,6 +11408,28 @@ img.codm-footer-logo {
   top: 100%;
   height: 25px;
   background: transparent;
-  z-index: 999;
+  z-index: 9998;
   pointer-events: auto;
+}
+
+/* Mega menu positioning */
+.codm-services-nav-wrap .codm-megamenu {
+  position: absolute;
+  top: 100%;
+  left: 50vw;
+
+  transform: translateX(-50%);
+
+  width: min(1120px, calc(100vw - 40px));
+
+  z-index: 9999;
+}
+
+/* Dropdown arrow */
+.codm-nav-dropdown-icon {
+  transition: transform 0.2s ease;
+}
+
+.codm-nav-dropdown-icon-open {
+  transform: rotate(180deg);
 }
