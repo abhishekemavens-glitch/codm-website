@@ -11451,12 +11451,28 @@ img.codm-footer-logo {
 
 
 
+/* =========================================================
+   SERVICES DROPDOWN ICON
+   ========================================================= */
 
-.codm-nav-chevron {
-  transition: transform 200ms ease;
+.codm-nav-dropdown-icon {
+  display: inline-block;
+  margin-left: 5px;
+  flex-shrink: 0;
+
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+
+  transform-origin: center;
 }
 
-.codm-nav-item:hover .codm-nav-chevron,
-.codm-nav-item[aria-expanded="true"] .codm-nav-chevron {
+/* Rotate when Services menu is open */
+.codm-nav-dropdown-icon-open {
+  transform: rotate(180deg);
+}
+
+/* Rotate on hover */
+.codm-header-nav-item-wrap:hover .codm-nav-dropdown-icon {
   transform: rotate(180deg);
 }
