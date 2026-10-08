@@ -11354,7 +11354,7 @@ img.codm-footer-logo {
 	background: #E8EEF5;
 }
 
-[data-theme="light"] .codm-service-hero {
+[data-theme="light"] .codm-hero-section
   background: linear-gradient(
     180deg,
     #ECEFFB 0%,
