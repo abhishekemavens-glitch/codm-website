@@ -11448,3 +11448,15 @@ img.codm-footer-logo {
 .codm-nav-dropdown-icon-open {
   transform: rotate(180deg) !important;
 }
+
+
+
+
+.codm-nav-chevron {
+  transition: transform 200ms ease;
+}
+
+.codm-nav-item:hover .codm-nav-chevron,
+.codm-nav-item[aria-expanded="true"] .codm-nav-chevron {
+  transform: rotate(180deg);
+}
