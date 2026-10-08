@@ -11358,17 +11358,3 @@ img.codm-footer-logo {
 
 
 
-
-@media (min-width: 901px) {
-
-  .codm-header-inner {
-    position: relative !important;
-  }
-
-  .codm-services-menu-trigger {
-    position: static !important;
-  }
-
-
-
-}
