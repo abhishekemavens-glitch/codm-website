@@ -4637,6 +4637,12 @@ html[data-theme="dark"] .codm-logo-dark {
   transition: transform 0.25s ease;
 }
 
+.codm-nav-dropdown-icon {
+  display: inline-block;
+  transition: transform 200ms ease;
+  transform-origin: center;
+}
+
 .codm-nav-dropdown-icon-open {
   transform: rotate(180deg);
 }
