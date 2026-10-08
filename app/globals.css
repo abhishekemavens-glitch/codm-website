@@ -11369,24 +11369,6 @@ img.codm-footer-logo {
     position: static !important;
   }
 
-  .codm-header-inner > .codm-megamenu {
-    position: absolute !important;
 
-    top: calc(100% + 4px) !important;
-
-    left: 50% !important;
-    right: auto !important;
-
-    width: 1120px !important;
-    max-width: calc(100vw - 40px) !important;
-
-    min-width: 0 !important;
-
-    margin: 0 !important;
-
-    transform: translateX(-50%) !important;
-
-    z-index: 999999 !important;
-  }
 
 }
