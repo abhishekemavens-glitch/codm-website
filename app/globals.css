@@ -11583,3 +11583,9 @@ img.codm-footer-logo {
   z-index: 999999 !important;
 }
 
+
+
+
+.codm-nav-dropdown-icon-open {
+  display: none;
+}
