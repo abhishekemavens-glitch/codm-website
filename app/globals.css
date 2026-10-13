@@ -11806,3 +11806,14 @@ html[data-theme="light"] .codm-header {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active {
+	color: var(--accent) !important;
+}
+html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::after {
+	transform-origin: 0;
+	transform: translate(-50%)scaleX(1);
+}
