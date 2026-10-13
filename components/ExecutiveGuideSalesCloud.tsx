@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { Reveal } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal"; 
 
 /* =========================================================
    EXECUTIVE GUIDE — "Sales Cloud vs Others"
