@@ -53,7 +53,7 @@ export default function UseCasesSection({
             body: JSON.stringify({
               query: `
                 query GetUseCases {
-                  useCases(first: 50) {
+                  useCases(first: 2000) {
                     nodes {
                       id
                       title
