@@ -1,6 +1,7 @@
 import TableOfContents from "@/components/TableOfContents";
 import ExpertForm from "@/components/ExpertForm";
- 
+import StickyAside from "@/components/StickyAside";
+
 /* =========================================================
    BLOG DETAIL SETTINGS
    ========================================================= */
@@ -8,6 +9,151 @@ import ExpertForm from "@/components/ExpertForm";
 const SITE_URL = "https://codm-frontend.vercel.app";
 
 const YOUTUBE_URL = "https://www.youtube.com/";
+
+const WORDPRESS_GRAPHQL_URL =
+  "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+/* Frontend route of a single blog post. Related / Previous / Next
+   links are built as BLOG_BASE_PATH + "/" + slug.
+   CHANGE THIS if your post pages live somewhere else (e.g. "/insights"). */
+const BLOG_BASE_PATH = "/blogs";
+
+/* How many related blogs to show */
+const RELATED_COUNT = 3;
+
+const normalizeUri = (uri: string) =>
+  uri
+    .replace(/^https?:\/\/[^/]+/i, "")
+    .replace(/\/+$/, "")
+    .toLowerCase();
+
+function blogHref(uri: string) {
+  const slug = normalizeUri(uri).split("/").filter(Boolean).pop() ?? "";
+
+  return `${BLOG_BASE_PATH}/${slug}`;
+}
+
+type PostExtras = {
+  faqs: Faq[];
+  related: ListPost[];
+  previous: ListPost | null;
+  next: ListPost | null;
+};
+
+/* One request for everything this page needs beyond the post itself:
+   the FAQs, related blogs and previous / next blogs. Matching the
+   current post by uri (no nodeByUri) keeps it simple and robust.
+   Fails quietly: the sections just don't render, and the reason is
+   logged on the server (check the Vercel function logs). */
+async function fetchPostExtras(uri: string): Promise<PostExtras> {
+  const empty: PostExtras = {
+    faqs: [],
+    related: [],
+    previous: null,
+    next: null,
+  };
+
+  try {
+    const res = await fetch(WORDPRESS_GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query PostExtras {
+            posts(first: 100) {
+              nodes {
+                databaseId
+                title
+                uri
+                date
+                excerpt
+                blogFaqs {
+                  question
+                  answer
+                }
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
+                }
+                categories {
+                  nodes {
+                    databaseId
+                    name
+                  }
+                }
+              }
+            }
+          }
+        `,
+      }),
+      next: { revalidate: 60 },
+    });
+
+    const json = await res.json();
+
+    if (json.errors) {
+      console.error("PostExtras GraphQL error:", json.errors);
+      return empty;
+    }
+
+    const all: ListPost[] = json?.data?.posts?.nodes ?? [];
+
+    const key = normalizeUri(uri);
+
+    const index = all.findIndex(
+      (p) => normalizeUri(p.uri) === key
+    );
+
+    if (index === -1) {
+      console.error("PostExtras: current post not found for uri", uri);
+      return { ...empty, related: all.slice(0, RELATED_COUNT) };
+    }
+
+    const current = all[index];
+
+    const others = all.filter((_, i) => i !== index);
+
+    const categoryIds = new Set(
+      (current.categories?.nodes ?? []).map((c) => c.databaseId)
+    );
+
+    const sameCategory = others.filter((p) =>
+      (p.categories?.nodes ?? []).some((c) =>
+        categoryIds.has(c.databaseId)
+      )
+    );
+
+    const remaining = others.filter((p) => !sameCategory.includes(p));
+
+    /* posts come newest first: index - 1 is newer, index + 1 is older.
+       Both wrap around, so the buttons always show when 2+ posts exist. */
+    const next =
+      index > 0
+        ? all[index - 1]
+        : all.length > 1
+        ? all[all.length - 1]
+        : null;
+
+    const previous =
+      index < all.length - 1
+        ? all[index + 1]
+        : all.length > 1
+        ? all[0]
+        : null;
+
+    return {
+      faqs: current.blogFaqs ?? [],
+      related: [...sameCategory, ...remaining].slice(0, RELATED_COUNT),
+      previous,
+      next,
+    };
+  } catch (error) {
+    console.error("Failed to load post extras:", error);
+    return empty;
+  }
+}
 
 /* =========================================================
    TYPES
@@ -21,6 +167,27 @@ type TocItem = {
 type Faq = {
   question: string;
   answer: string; // sanitized HTML from WordPress
+};
+
+type ListPost = {
+  databaseId: number;
+  title: string;
+  uri: string;
+  date: string;
+  excerpt: string | null;
+  blogFaqs: Faq[] | null;
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    } | null;
+  } | null;
+  categories: {
+    nodes: {
+      databaseId: number;
+      name: string;
+    }[];
+  } | null;
 };
 
 type BlogPost = {
@@ -253,6 +420,115 @@ function YouTubeIcon() {
    JSON-LD so Google can show the questions in search results.
    ========================================================= */
 
+/* =========================================================
+   RELATED BLOGS + PREVIOUS / NEXT
+   ========================================================= */
+
+function PostCard({ post }: { post: ListPost }) {
+  const img = post.featuredImage?.node;
+
+  const cat = post.categories?.nodes?.[0]?.name;
+
+  const title = decodeEntities(post.title);
+
+  return (
+    <a href={blogHref(post.uri)} className="codm-related-card">
+      <div className="codm-related-media">
+        {img?.sourceUrl && (
+          <img
+            src={img.sourceUrl}
+            alt={img.altText || title}
+            loading="lazy"
+          />
+        )}
+      </div>
+
+      <div className="codm-related-body">
+        {cat && <span className="codm-related-cat">{cat}</span>}
+
+        <h3 className="codm-related-title">{title}</h3>
+
+        <span className="codm-related-date">
+          {formatDate(post.date)}
+        </span>
+      </div>
+    </a>
+  );
+}
+
+function RelatedPosts({ posts }: { posts: ListPost[] }) {
+  if (posts.length === 0) {
+    return null;
+  }
+
+  return (
+    <section
+      className="codm-post-related"
+      aria-labelledby="related-heading"
+    >
+      <h2 id="related-heading" className="codm-post-related-title">
+        Related Blogs
+      </h2>
+
+      <div className="codm-related-grid">
+        {posts.map((p) => (
+          <PostCard key={p.databaseId} post={p} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PostNav({
+  previous,
+  next,
+}: {
+  previous: ListPost | null;
+  next: ListPost | null;
+}) {
+  if (!previous && !next) {
+    return null;
+  }
+
+  return (
+    <nav className="codm-post-nav" aria-label="More blogs">
+      {previous ? (
+        <a
+          href={blogHref(previous.uri)}
+          className="codm-post-nav-link codm-post-nav-prev"
+        >
+          <span className="codm-post-nav-label">
+            &larr; Previous blog
+          </span>
+
+          <span className="codm-post-nav-title">
+            {decodeEntities(previous.title)}
+          </span>
+        </a>
+      ) : (
+        <span />
+      )}
+
+      {next ? (
+        <a
+          href={blogHref(next.uri)}
+          className="codm-post-nav-link codm-post-nav-next"
+        >
+          <span className="codm-post-nav-label">
+            Next blog &rarr;
+          </span>
+
+          <span className="codm-post-nav-title">
+            {decodeEntities(next.title)}
+          </span>
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  );
+}
+
 function FaqSection({ faqs }: { faqs: Faq[] }) {
   if (faqs.length === 0) {
     return null;
@@ -314,7 +590,7 @@ function FaqSection({ faqs }: { faqs: Faq[] }) {
   );
 }
 
-export default function BlogPostDetail({
+export default async function BlogPostDetail({
   post,
   content,
 }: {
@@ -349,7 +625,14 @@ export default function BlogPostDetail({
     items: headingItems,
   } = buildToc(content);
 
-  const faqs = (post.blogFaqs ?? []).filter(
+  const extras = await fetchPostExtras(post.uri);
+
+  const rawFaqs =
+    post.blogFaqs !== undefined
+      ? post.blogFaqs ?? []
+      : extras.faqs;
+
+  const faqs = rawFaqs.filter(
     (faq) => faq?.question?.trim() && faq?.answer?.trim()
   );
 
@@ -524,13 +807,20 @@ export default function BlogPostDetail({
 
           <FaqSection faqs={faqs} />
 
+          {/* PREVIOUS / NEXT */}
+
+          <PostNav
+            previous={extras.previous}
+            next={extras.next}
+          />
+
         </article>
 
         {/* =================================================
             SIDEBAR
         ================================================= */}
 
-        <aside className="codm-post-aside">
+        <StickyAside className="codm-post-aside">
           <div className="codm-post-aside-sticky">
 
           {/* TOC */}
@@ -547,9 +837,14 @@ export default function BlogPostDetail({
 
           </div>
 
-        </aside>
+        </StickyAside>
 
       </div>
+
+
+      {/* RELATED BLOGS */}
+
+      <RelatedPosts posts={extras.related} />
 
     </div>
   );
