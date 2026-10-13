@@ -34,27 +34,21 @@ export default function SectionHeading({
     >
       {/* EYEBROW */}
       {eyebrow && (
+        /* Same eyebrow as "Partners in Success": faded lines, dots next
+           to the text. Uses the existing .pis-eyebrow* styles. */
         <div
-          className="heading-codm-eyebrow-wrap"
+          className="pis-eyebrow"
           style={
             isLeft
               ? { justifyContent: "flex-start", marginLeft: 0 }
               : undefined
           }
         >
-          <span
-            aria-hidden="true"
-            className="heading-codm-eyebrow-line"
-          />
-
-          <span className="heading-codm-eyebrow">
-            {eyebrow}
-          </span>
-
-          <span
-            aria-hidden="true"
-            className="heading-codm-eyebrow-line"
-          />
+          <span className="pis-eyebrow-line" />
+          <span className="pis-eyebrow-dot" />
+          <span>{eyebrow}</span>
+          <span className="pis-eyebrow-dot" />
+          <span className="pis-eyebrow-line pis-eyebrow-line--r" />
         </div>
       )}
 
