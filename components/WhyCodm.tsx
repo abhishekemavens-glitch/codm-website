@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -124,6 +123,8 @@ export default function WhyCodm() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadWhyCodm() {
       try {
         setLoading(true);
@@ -134,6 +135,7 @@ export default function WhyCodm() {
           headers: {
             "Content-Type": "application/json",
           },
+          signal: controller.signal,
           body: JSON.stringify({
             query: `
               query GetWhyCodm {
@@ -181,16 +183,26 @@ export default function WhyCodm() {
         const nodes: WhyCodmItem[] =
           result?.data?.whyCodms?.nodes ?? [];
 
-        setItems(nodes);
+        if (!controller.signal.aborted) {
+          setItems(nodes);
+        }
       } catch (err) {
+        if (controller.signal.aborted) return;
+
         console.error("Failed to load Why CODM:", err);
         setError("Unable to load Why CODM content.");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
     loadWhyCodm();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -198,34 +210,32 @@ export default function WhyCodm() {
       id="why-codm"
       className="why-codm-section relative isolate overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
-      {/* =================================================
-          MOLTEN METAL ANIMATED BACKGROUND
-          Positioned behind the section content.
-          ================================================= */}
+      {/* Animated background layer */}
       <div
-        className="why-codm-molten-background"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden="true"
       >
         <MoltenMetal
           color1="#5227FF"
           color2="#FF9FFC"
           color3="#FFFFFF"
-          speed={0.35}
+          speed={0.25}
           scale={4}
           detail={3}
           glow={1.6}
+          coreSize={0.1}
+          brightness={1.3}
           mouseInteraction={true}
-          opacity={0.8}
+          mouseStrength={0.3}
+          opacity={0.65}
+          className="absolute inset-0 h-full w-full"
         />
       </div>
 
-      {/* =================================================
-          SECTION CONTENT
-          Keep content above the animated background.
-          ================================================= */}
+      {/* Section content */}
       <div className="relative z-10 mx-auto max-w-[1110px] px-5 sm:px-8">
         <div className="mx-auto max-w-[1018px]">
-          {/* SECTION HEADING */}
+          {/* Section heading */}
           <div className="codm-why-heading-in">
             <Reveal distance={20}>
               <SectionHeading
@@ -236,7 +246,7 @@ export default function WhyCodm() {
             </Reveal>
           </div>
 
-          {/* CONTENT CARD */}
+          {/* Content card */}
           <div
             className="
               mx-auto
@@ -257,9 +267,7 @@ export default function WhyCodm() {
               </div>
             ) : error ? (
               <div className="flex min-h-[250px] items-center justify-center p-8">
-                <p className="text-sm text-red-400">
-                  {error}
-                </p>
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             ) : items.length === 0 ? (
               <div className="flex min-h-[250px] items-center justify-center p-8">
@@ -283,7 +291,7 @@ export default function WhyCodm() {
                           : "",
                       ].join(" ")}
                     >
-                      {/* ICON */}
+                      {/* Icon */}
                       <div
                         className="
                           mb-6
@@ -319,7 +327,7 @@ export default function WhyCodm() {
                         )}
                       </div>
 
-                      {/* TITLE */}
+                      {/* Title */}
                       <h3
                         className="
                           text-[16px]
@@ -334,7 +342,7 @@ export default function WhyCodm() {
                         {item.title}
                       </h3>
 
-                      {/* DESCRIPTION */}
+                      {/* Description */}
                       <div
                         className="
                           mt-2
