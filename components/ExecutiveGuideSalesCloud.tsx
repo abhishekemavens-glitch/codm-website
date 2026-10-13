@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 
 /* =========================================================
@@ -150,33 +151,15 @@ export default function ExecutiveGuideSalesCloud({
             ================================================= */}
         <Reveal distance={30} duration={0.8}>
           <div className="max-w-[560px]">
-            {guide.eyebrow && (
-              <p className="flex items-center gap-3 text-[15px] font-normal uppercase tracking-[0.02em] text-[var(--foreground)] opacity-80">
-                <span
-                  aria-hidden="true"
-                  className="relative h-px w-10 bg-[#a5b4fc] after:absolute after:-right-0.5 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rounded-full after:bg-[#a5b4fc] after:content-['']"
-                />
-                {guide.eyebrow}
-                <span
-                  aria-hidden="true"
-                  className="relative h-px w-10 bg-[#a5b4fc] after:absolute after:-left-0.5 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rounded-full after:bg-[#a5b4fc] after:content-['']"
-                />
-              </p>
-            )}
-
-            {(guide.headingLine1 || guide.headingLine2) && (
-              <h2 className="mt-6 text-4xl font-normal leading-[1.25] tracking-[-0.02em] text-[var(--foreground)] md:text-[46px]">
-                {guide.headingLine1}
-                {guide.headingLine1 && guide.headingLine2 && <br />}
-                {guide.headingLine2}
-              </h2>
-            )}
-
-            {guide.intro && (
-              <p className="mt-7 text-[17px] font-normal leading-[1.75] text-[var(--muted)] md:text-lg">
-                {guide.intro}
-              </p>
-            )}
+            {/* Eyebrow + gradient title + description: the shared
+                SectionHeading, so this matches every other section */}
+            <SectionHeading
+              align="left"
+              eyebrow={guide.eyebrow ?? ""}
+              title={guide.headingLine1 ?? ""}
+              gradientText={guide.headingLine2 ?? ""}
+              description={guide.intro ?? undefined}
+            />
 
             {guide.question && (
               <h3 className="mt-8 text-xl font-normal leading-[1.4] tracking-[-0.01em] text-[var(--foreground)] md:text-[24px]">
