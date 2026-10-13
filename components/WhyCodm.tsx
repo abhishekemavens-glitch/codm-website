@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -177,7 +178,8 @@ export default function WhyCodm() {
           throw new Error("Could not load Why CODM content.");
         }
 
-        const nodes = result?.data?.whyCodms?.nodes ?? [];
+        const nodes: WhyCodmItem[] =
+          result?.data?.whyCodms?.nodes ?? [];
 
         setItems(nodes);
       } catch (err) {
@@ -194,29 +196,47 @@ export default function WhyCodm() {
   return (
     <section
       id="why-codm"
-      className="relative overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
+      className="why-codm-section relative isolate overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
-      <div className="mx-auto max-w-[1110px] px-5 sm:px-8">
-        <div className="mx-auto max-w-[1018px]">
+      {/* =================================================
+          MOLTEN METAL ANIMATED BACKGROUND
+          Positioned behind the section content.
+          ================================================= */}
+      <div
+        className="why-codm-molten-background"
+        aria-hidden="true"
+      >
+        <MoltenMetal
+          color1="#5227FF"
+          color2="#FF9FFC"
+          color3="#FFFFFF"
+          speed={0.35}
+          scale={4}
+          detail={3}
+          glow={1.6}
+          mouseInteraction={true}
+          opacity={0.8}
+        />
+      </div>
 
-          {/* =================================================
-              SECTION HEADING
-              codm-why-heading-in fires automatically on mount,
-              no scroll detection needed.
-              ================================================= */}
+      {/* =================================================
+          SECTION CONTENT
+          Keep content above the animated background.
+          ================================================= */}
+      <div className="relative z-10 mx-auto max-w-[1110px] px-5 sm:px-8">
+        <div className="mx-auto max-w-[1018px]">
+          {/* SECTION HEADING */}
           <div className="codm-why-heading-in">
             <Reveal distance={20}>
-  <SectionHeading
-    eyebrow="Why CODM"
-    title="A partner enterprise boards are"
-    gradientText="Comfortable signing off."
-  />
-</Reveal>
+              <SectionHeading
+                eyebrow="Why CODM"
+                title="A partner enterprise boards are"
+                gradientText="Comfortable signing off."
+              />
+            </Reveal>
           </div>
 
-          {/* =================================================
-              CONTENT CARD
-              ================================================= */}
+          {/* CONTENT CARD */}
           <div
             className="
               mx-auto
@@ -248,20 +268,19 @@ export default function WhyCodm() {
                 </p>
               </div>
             ) : (
-               <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item, index) => (
                   <StaggerItem key={item.id} className="h-full">
                     <article
                       className={[
-                        /* BASE */
                         "group relative h-full min-h-[180px] p-7 md:p-8",
                         "border-b border-[var(--border)]",
                         "bg-[var(--surface)]",
-
-                        /* GRID BORDERS */
                         index % 3 !== 2 ? "lg:border-r" : "",
                         index % 2 === 0 ? "md:border-r" : "",
-                        index >= items.length - 3 ? "lg:border-b-0" : "",
+                        index >= items.length - 3
+                          ? "lg:border-b-0"
+                          : "",
                       ].join(" ")}
                     >
                       {/* ICON */}
@@ -337,9 +356,6 @@ export default function WhyCodm() {
               </Stagger>
             )}
           </div>
-
-          
-
         </div>
       </div>
     </section>
