@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
-import './MoltenMetal.css';
 
 type ColorMode = 'molten' | 'ember' | 'frost';
 
