@@ -21,7 +21,7 @@ export interface MagicRingsProps {
   rotation?: number;
   spin?: number;
   tilt?: number;
-  dispersion?: number;
+  dispersion?: number; 
   grain?: number;
   opacity?: number;
   followMouse?: boolean;
