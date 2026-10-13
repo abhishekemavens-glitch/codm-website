@@ -5,14 +5,7 @@ import dynamic from "next/dynamic";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 
-/*
- * Magic Rings (React Bits) - loaded in the browser only, so the
- * WebGL code stays out of the main bundle.
- * File: components/MagicRings.tsx
- */
-const MagicRings = dynamic(() => import("@/components/MagicRings"), {
-  ssr: false,
-});
+import MagicRings from "@/components/MagicRings";
 
 type ContactCTAData = {
   id: string;
