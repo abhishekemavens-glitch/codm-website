@@ -11380,39 +11380,49 @@ html[data-theme="light"] .codm-header {
 
 
 
+
 /* =========================================================
    Add to globals.css (near the other .codm-post-* rules)
    ========================================================= */
 
 /* ---------- Sidebar: TOC + "Talk to our Experts" stay fixed ---------- */
 
-/* The grid cell must stretch for sticky to have room to travel */
+/* The whole aside (TOC + Talk to our Experts form) is sticky.
+   align-self:start is required: a stretched grid/flex child is as tall
+   as the row, so it would have no room to stick. */
 .codm-post-layout {
-  align-items: start;
+  align-items: start !important;
 }
 
 .codm-post-aside {
-  align-self: stretch; /* full height of the article */
-}
-
-.codm-post-aside-sticky {
-  position: sticky;
+  position: sticky !important;
   top: 130px; /* just under the floating header */
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  align-self: start !important;
   max-height: calc(100vh - 150px);
   overflow-y: auto;
   scrollbar-width: none;
 }
 
-.codm-post-aside-sticky::-webkit-scrollbar {
+.codm-post-aside::-webkit-scrollbar {
   display: none;
 }
 
+.codm-post-aside-sticky {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Sticky breaks if any ancestor has overflow:hidden/auto.
+   Use overflow:clip (doesn't create a scroll container) instead. */
+.codm-post,
+.codm-post-layout {
+  overflow: visible !important;
+}
+
 @media (max-width: 1023px) {
-  .codm-post-aside-sticky {
-    position: static;
+  .codm-post-aside {
+    position: static !important;
     max-height: none;
     overflow: visible;
   }
