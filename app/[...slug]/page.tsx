@@ -31,6 +31,7 @@ import SalesforceProducts from "@/components/SalesforceProducts";
 import AiIntelligenceOverview from "@/components/AiIntelligenceOverview"; 
 import TechOverview from "@/components/TechOverview";
 import ProductFeatureSection from "@/components/ProductFeatureSection";
+import PartnerProductExperience from "@/components/PartnerProductExperience";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -1053,17 +1054,18 @@ const showTestimonials =
     </div>
 
     {/* =================================================
-        PRODUCT EXPERIENCE
-        ================================================= */}
+    PRODUCT EXPERIENCE
+    ================================================= */}
 
-    <div className="relative z-10">
-      <ProductExperience />
-    </div>
+<div className="relative z-10">
+  <PartnerProductExperience />
+</div>
 
     {/* =================================================
         TESTIMONIAL
         ================================================= */}
 
+     
     <div className="relative z-10">
       <PartnersInSuccess />
     </div>
