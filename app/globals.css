@@ -11377,3 +11377,137 @@ html[data-theme="light"] .codm-header {
 .codm-hero-section .relative.mx-auto.max-w-\[1250px\].px-6.pt-20.pb-20.md\:pt-32.md\:pb-24 {
 	padding-top: 75px;
 }
+
+
+
+/* =========================================================
+   Add to globals.css (near the other .codm-post-* rules)
+   ========================================================= */
+
+/* ---------- Sidebar: TOC + "Talk to our Experts" stay fixed ---------- */
+
+/* The grid cell must stretch for sticky to have room to travel */
+.codm-post-layout {
+  align-items: start;
+}
+
+.codm-post-aside {
+  align-self: stretch; /* full height of the article */
+}
+
+.codm-post-aside-sticky {
+  position: sticky;
+  top: 130px; /* just under the floating header */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.codm-post-aside-sticky::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .codm-post-aside-sticky {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* ---------- FAQ accordion ---------- */
+
+.codm-post-faq {
+  margin-top: 56px;
+  scroll-margin-top: 130px;
+}
+
+.codm-post-faq-title {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+}
+
+.codm-post-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.codm-post-faq-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.codm-post-faq-item[open] {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(114, 92, 255, 0.08);
+}
+
+.codm-post-faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.codm-post-faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.codm-post-faq-icon {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.codm-post-faq-icon::before,
+.codm-post-faq-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: transform 300ms ease;
+}
+
+.codm-post-faq-icon::after {
+  transform: rotate(90deg);
+}
+
+.codm-post-faq-item[open] .codm-post-faq-icon::after {
+  transform: rotate(0deg);
+}
+
+.codm-post-faq-answer {
+  padding: 0 20px 18px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.codm-post-faq-answer p {
+  margin: 0 0 10px;
+}
+
+.codm-post-faq-answer a {
+  color: var(--accent);
+  text-decoration: underline;
+}
