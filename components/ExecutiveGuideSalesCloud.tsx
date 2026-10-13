@@ -151,13 +151,21 @@ export default function ExecutiveGuideSalesCloud({
         <Reveal distance={30} duration={0.8}>
           <div className="max-w-[560px]">
             {guide.eyebrow && (
-              <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#6D4AFF]">
+              <p className="flex items-center gap-3 text-[15px] font-normal uppercase tracking-[0.02em] text-[var(--foreground)] opacity-80">
+                <span
+                  aria-hidden="true"
+                  className="relative h-px w-10 bg-[#a5b4fc] after:absolute after:-right-0.5 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rounded-full after:bg-[#a5b4fc] after:content-['']"
+                />
                 {guide.eyebrow}
+                <span
+                  aria-hidden="true"
+                  className="relative h-px w-10 bg-[#a5b4fc] after:absolute after:-left-0.5 after:top-1/2 after:h-1.5 after:w-1.5 after:-translate-y-1/2 after:rounded-full after:bg-[#a5b4fc] after:content-['']"
+                />
               </p>
             )}
 
             {(guide.headingLine1 || guide.headingLine2) && (
-              <h2 className="mt-6 text-4xl font-medium leading-[1.12] tracking-[-0.03em] text-[var(--foreground)] md:text-[44px]">
+              <h2 className="mt-6 text-4xl font-normal leading-[1.25] tracking-[-0.02em] text-[var(--foreground)] md:text-[46px]">
                 {guide.headingLine1}
                 {guide.headingLine1 && guide.headingLine2 && <br />}
                 {guide.headingLine2}
@@ -165,19 +173,19 @@ export default function ExecutiveGuideSalesCloud({
             )}
 
             {guide.intro && (
-              <p className="mt-7 text-base leading-7 text-[var(--muted)]">
+              <p className="mt-7 text-[17px] font-normal leading-[1.75] text-[var(--muted)] md:text-lg">
                 {guide.intro}
               </p>
             )}
 
             {guide.question && (
-              <h3 className="mt-8 text-xl font-semibold tracking-[-0.02em] text-[var(--foreground)] md:text-[22px]">
+              <h3 className="mt-8 text-xl font-normal leading-[1.4] tracking-[-0.01em] text-[var(--foreground)] md:text-[24px]">
                 {guide.question}
               </h3>
             )}
 
             {guide.questionBody && (
-              <p className="mt-3 text-[15px] leading-7 text-[var(--muted)]">
+              <p className="mt-3 text-[17px] font-normal leading-[1.75] text-[var(--muted)] md:text-lg">
                 {guide.questionBody}
               </p>
             )}
@@ -185,7 +193,7 @@ export default function ExecutiveGuideSalesCloud({
             {guide.ctaText && (
               <a
                 href={guide.ctaLink || "#"}
-                className="mt-9 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_14px_34px_rgba(99,79,240,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(99,79,240,0.42)]"
+                className="mt-9 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] px-8 py-4 text-sm font-medium uppercase tracking-[0.1em] text-white shadow-[0_14px_34px_rgba(99,79,240,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(99,79,240,0.42)]"
               >
                 <DownloadIcon />
                 <span>{guide.ctaText}</span>
@@ -228,7 +236,7 @@ export default function ExecutiveGuideSalesCloud({
                 )}
 
                 {guide.cardTitle && (
-                  <h4 className="mt-3 text-[27px] font-bold leading-[1.18] tracking-[-0.03em] text-[#0f1230] dark:text-white">
+                  <h4 className="mt-3 text-[27px] font-medium leading-[1.22] tracking-[-0.02em] text-[#0f1230] dark:text-white">
                     {guide.cardTitle}
                   </h4>
                 )}
@@ -252,7 +260,7 @@ export default function ExecutiveGuideSalesCloud({
                           {stat.label}
                         </p>
 
-                        <p className="mt-1.5 text-xl font-bold tracking-[-0.02em] text-[#0f1230] dark:text-white">
+                        <p className="mt-1.5 text-xl font-medium tracking-[-0.01em] text-[#0f1230] dark:text-white">
                           {stat.value}
                         </p>
                       </div>
