@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
-import MagicRings from "@/components/MagicRings";
+import MagicRings from "@/components/MagicRings"; 
 
 type ContactCTAData = {
   id: string;
