@@ -11820,11 +11820,11 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 
 
 
-/* Why CODM — Molten Metal background */
-
+/
 .why-codm-section {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
 }
 
 .why-codm-molten-background {
@@ -11832,12 +11832,6 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  pointer-events: none;
-}
-
-.why-codm-molten-background .molten-metal-container {
-  width: 100%;
-  height: 100%;
 }
 
 .why-codm-molten-background canvas {
@@ -11846,11 +11840,8 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   height: 100%;
 }
 
-/* Keep all section content above the animation */
 .why-codm-section > div:not(.why-codm-molten-background) {
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
-
-
 
