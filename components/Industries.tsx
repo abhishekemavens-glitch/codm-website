@@ -74,7 +74,15 @@ export default function Industries() {
           body: JSON.stringify({
             query: `
               query GetIndustries {
-                industries(first: 20) {
+                industries(
+                  first: 20
+                  where: {
+                    orderby: [
+                      { field: MENU_ORDER, order: ASC }
+                      { field: DATE, order: ASC }
+                    ]
+                  }
+                ) {
                   nodes {
                     id
                     databaseId
