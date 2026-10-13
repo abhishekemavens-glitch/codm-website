@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
+import MagicRings from "@/components/MagicRings";
 
 type ContactCTAData = {
   id: string;
@@ -118,6 +119,32 @@ export default function ContactCTA() {
 
   return (
     <section className="contact-cta">
+      {/* Animated React Bits background — kept behind all CTA content */}
+      <div className="contact-cta-rings" aria-hidden="true">
+        <MagicRings
+          color="#8B5CF6"
+          colorTwo="#6366F1"
+          ringCount={6}
+          motion="pulse"
+          speed={0.65}
+          lineThickness={2}
+          glow={0.8}
+          baseRadius={0.25}
+          radiusStep={0.1}
+          expansion={0.08}
+          opacity={0.65}
+          followMouse={true}
+          mouseInfluence={0.12}
+          hoverScale={1.08}
+          hoverIntensity={0.7}
+          parallax={0.025}
+          clickBurst={true}
+          intro={true}
+          theme="light"
+          className="contact-cta-magic-rings"
+        />
+      </div>
+
       <div className="contact-cta-glow" />
 
       <div className="contact-cta-content">
