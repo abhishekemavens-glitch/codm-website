@@ -118,7 +118,7 @@ export default function KeyCapabilities({
             body: JSON.stringify({
               query: `
                 query GetCapabilities {
-                  capabilities(first: 20) {
+                  capabilities(first: 2000) {
                     nodes {
                       id
                       databaseId
