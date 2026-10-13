@@ -215,21 +215,19 @@ export default function WhyCodm() {
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden="true"
       >
-        <MoltenMetal
-          color1="#5227FF"
-          color2="#FF9FFC"
-          color3="#FFFFFF"
-          speed={0.25}
-          scale={4}
-          detail={3}
-          glow={1.6}
-          coreSize={0.1}
-          brightness={1.3}
-          mouseInteraction={true}
-          mouseStrength={0.3}
-          opacity={0.65}
-          className="absolute inset-0 h-full w-full"
-        />
+        
+<MoltenMetal
+  color1="#5227FF"
+  color2="#FF9FFC"
+  color3="#FFFFFF"
+  speed={0.35}
+  scale={4}
+  detail={3}
+  glow={1.6}
+  mouseInteraction={true}
+  opacity={0.8}
+/>
+
       </div>
 
       {/* Section content */}
