@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
 import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
@@ -94,6 +95,22 @@ function parseLink(value: string = "") {
 
 export default function Header() {
   const scrolled = useStickyNavState(20);
+  const pathname = usePathname();
+
+  /* Active when the path matches exactly, or is a sub-page of it
+     (e.g. "/services/salesforce" still highlights "Services"). */
+  function isActiveLink(url: string) {
+    if (!url || url === "#") return false;
+
+    const clean = url.replace(/\/+$/, "") || "/";
+    const current = (pathname || "/").replace(/\/+$/, "") || "/";
+
+    if (clean === "/") {
+      return current === "/";
+    }
+
+    return current === clean || current.startsWith(clean + "/");
+  }
 
   const [header, setHeader] =
     useState<HeaderData | null>(null);
@@ -137,18 +154,6 @@ const closeServicesMenu = () => {
 
     async function loadHeader() {
       try {
-        /*
-         * =====================================================
-         * HEADER QUERY
-         * =====================================================
-         *
-         * IMPORTANT:
-         * Announcement fields are NOT queried here.
-         *
-         * This means an announcement GraphQL problem
-         * cannot make the complete header disappear.
-         */
-
         const headerResponse = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
@@ -242,18 +247,6 @@ const closeServicesMenu = () => {
           setHeader(headerData);
         }
 
-
-        /*
-         * =====================================================
-         * ANNOUNCEMENT QUERY
-         * =====================================================
-         *
-         * We try this separately.
-         *
-         * If WordPress does not yet expose these fields,
-         * the HEADER itself will still work.
-         */
-
         try {
           const announcementResponse =
             await fetch(
@@ -298,13 +291,6 @@ const closeServicesMenu = () => {
             announcementResult
           );
 
-          /*
-           * If WordPress does not have these fields yet,
-           * only the announcement fails.
-           *
-           * The main header remains visible.
-           */
-
           if (announcementResult.errors) {
             console.warn(
               "Announcement fields are not available in WordPress GraphQL yet:",
@@ -338,11 +324,6 @@ const closeServicesMenu = () => {
           }
 
         } catch (announcementError) {
-          /*
-           * Announcement failure must NEVER
-           * hide the main header.
-           */
-
           console.warn(
             "Announcement could not be loaded:",
             announcementError
@@ -364,23 +345,9 @@ const closeServicesMenu = () => {
     };
   }, []);
 
-
-  /*
-   * =========================================================
-   * HEADER DATA NOT LOADED
-   * =========================================================
-   */
-
   if (!header) {
     return null;
   }
-
-
-  /*
-   * =========================================================
-   * NAVIGATION LINKS
-   * =========================================================
-   */
 
   const services =
     parseLink(header.services);
@@ -396,13 +363,6 @@ const closeServicesMenu = () => {
 
   const insights =
     parseLink(header.insights);
-
-
-  /*
-   * CHANGE 2 of 3
-   * Same WordPress data and same parser the desktop mega menu uses,
-   * converted for the mobile Services accordion.
-   */
 
   const toServiceLinks = (raw: string) =>
     parseMegaMenuLinks(raw).map((link) => ({
@@ -425,19 +385,8 @@ const closeServicesMenu = () => {
     },
   ].filter((group) => group.title && group.links.length > 0);
 
-
-  /*
-   * =========================================================
-   * RENDER
-   * =========================================================
-   */
-
   return (
     <>
-
-      {/* =====================================================
-          ANNOUNCEMENT BAR
-      ===================================================== */}
 
       {announcement.announcementText && (
         <div className="codm-announcement-bar">
@@ -461,8 +410,6 @@ const closeServicesMenu = () => {
                   {announcement.announcementButtonText}
                 </span>
 
-             
-
               </a>
             )}
 
@@ -471,21 +418,12 @@ const closeServicesMenu = () => {
         </div>
       )}
 
-
-      {/* =====================================================
-          MAIN HEADER
-      ===================================================== */}
-
  <header
   className={`codm-header codm-site-header codm-header-sticky ${
     scrolled ? "codm-header-scrolled" : ""
   }`}
 >
   <div className="codm-header-inner">
-
-    {/* =================================================
-        LOGO
-    ================================================= */}
 
     <a
       href="/"
@@ -509,19 +447,10 @@ const closeServicesMenu = () => {
       )}
     </a>
 
-
-    {/* =================================================
-        NAVIGATION
-    ================================================= */}
-
     <nav
       className="codm-header-nav"
       aria-label="Main navigation"
     >
-
-      {/* =================================================
-          SERVICES
-      ================================================= */}
 
       {services.label && (
   <div
@@ -531,7 +460,9 @@ const closeServicesMenu = () => {
   >
           <a
             href={services.url || "#"}
-            className="codm-header-nav-link"
+            className={`codm-header-nav-link ${
+              isActiveLink(services.url) ? "codm-header-nav-link-active" : ""
+            }`}
             onFocus={openServicesMenu}
             aria-haspopup={
               header.megaMenuEnabled ? "true" : undefined
@@ -570,72 +501,51 @@ const closeServicesMenu = () => {
         </div>
       )}
 
-
-      {/* =================================================
-          INDUSTRIES
-      ================================================= */}
-
       {industries.label && (
         <a
           href={industries.url}
-          className="codm-header-nav-link"
+          className={`codm-header-nav-link ${
+            isActiveLink(industries.url) ? "codm-header-nav-link-active" : ""
+          }`}
         >
           {industries.label}
         </a>
       )}
 
-
-      {/* =================================================
-          CASE STUDIES
-      ================================================= */}
-
       {caseStudies.label && (
         <a
           href={caseStudies.url}
-          className="codm-header-nav-link"
+          className={`codm-header-nav-link ${
+            isActiveLink(caseStudies.url) ? "codm-header-nav-link-active" : ""
+          }`}
         >
           {caseStudies.label}
         </a>
       )}
 
-
-      {/* =================================================
-          ABOUT
-      ================================================= */}
-
       {about.label && (
         <a
           href={about.url}
-          className="codm-header-nav-link"
+          className={`codm-header-nav-link ${
+            isActiveLink(about.url) ? "codm-header-nav-link-active" : ""
+          }`}
         >
           {about.label}
         </a>
       )}
 
-
-      {/* =================================================
-          INSIGHTS
-      ================================================= */}
-
       {insights.label && (
         <a
           href={insights.url}
-          className="codm-header-nav-link"
+          className={`codm-header-nav-link ${
+            isActiveLink(insights.url) ? "codm-header-nav-link-active" : ""
+          }`}
         >
           {insights.label}
         </a>
       )}
 
     </nav>
-
-
-    {/* =================================================
-        SERVICES MEGA MENU
-
-        IMPORTANT:
-        This is intentionally OUTSIDE <nav>
-        and OUTSIDE the Services wrapper.
-    ================================================= */}
 
     {header.megaMenuEnabled && servicesMenuOpen && (
       <MegaMenu
@@ -688,11 +598,6 @@ const closeServicesMenu = () => {
       />
     )}
 
-
-    {/* =================================================
-        MOBILE MENU
-    ================================================= */}
-
     {mobileMenuOpen && (
       <div className="codm-mobile-menu">
 
@@ -712,7 +617,9 @@ const closeServicesMenu = () => {
           ) : (
             <a
               href={services.url}
-              className="codm-mobile-menu-link"
+              className={`codm-mobile-menu-link ${
+                isActiveLink(services.url) ? "codm-mobile-menu-link-active" : ""
+              }`}
               onClick={() =>
                 setMobileMenuOpen(false)
               }
@@ -722,11 +629,12 @@ const closeServicesMenu = () => {
           )
         }
 
-
         {industries.label && (
           <a
             href={industries.url}
-            className="codm-mobile-menu-link"
+            className={`codm-mobile-menu-link ${
+              isActiveLink(industries.url) ? "codm-mobile-menu-link-active" : ""
+            }`}
             onClick={() =>
               setMobileMenuOpen(false)
             }
@@ -735,11 +643,12 @@ const closeServicesMenu = () => {
           </a>
         )}
 
-
         {caseStudies.label && (
           <a
             href={caseStudies.url}
-            className="codm-mobile-menu-link"
+            className={`codm-mobile-menu-link ${
+              isActiveLink(caseStudies.url) ? "codm-mobile-menu-link-active" : ""
+            }`}
             onClick={() =>
               setMobileMenuOpen(false)
             }
@@ -748,11 +657,12 @@ const closeServicesMenu = () => {
           </a>
         )}
 
-
         {about.label && (
           <a
             href={about.url}
-            className="codm-mobile-menu-link"
+            className={`codm-mobile-menu-link ${
+              isActiveLink(about.url) ? "codm-mobile-menu-link-active" : ""
+            }`}
             onClick={() =>
               setMobileMenuOpen(false)
             }
@@ -761,11 +671,12 @@ const closeServicesMenu = () => {
           </a>
         )}
 
-
         {insights.label && (
           <a
             href={insights.url}
-            className="codm-mobile-menu-link"
+            className={`codm-mobile-menu-link ${
+              isActiveLink(insights.url) ? "codm-mobile-menu-link-active" : ""
+            }`}
             onClick={() =>
               setMobileMenuOpen(false)
             }
@@ -777,14 +688,7 @@ const closeServicesMenu = () => {
       </div>
     )}
 
-
-    {/* =================================================
-        RIGHT SIDE
-    ================================================= */}
-
     <div className="codm-header-right">
-
-      {/* Mobile toggle */}
 
       <button
         type="button"
@@ -806,13 +710,7 @@ const closeServicesMenu = () => {
         <span></span>
       </button>
 
-
-      {/* Theme toggle */}
-
       <ThemeToggle />
-
-
-      {/* Header CTA */}
 
       {header.buttonText && (
         <a
