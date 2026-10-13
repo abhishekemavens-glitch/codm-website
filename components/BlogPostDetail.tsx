@@ -18,7 +18,14 @@ type TocItem = {
   text: string;
 };
 
+type Faq = {
+  question: string;
+  answer: string; // sanitized HTML from WordPress
+};
+
 type BlogPost = {
+  blogFaqs?: Faq[] | null;
+
   title: string;
 
   excerpt: string | null;
@@ -239,6 +246,74 @@ function YouTubeIcon() {
    BLOG POST DETAIL
    ========================================================= */
 
+/* =========================================================
+   FAQ SECTION
+
+   Native <details> accordion (no client JS needed) + FAQPage
+   JSON-LD so Google can show the questions in search results.
+   ========================================================= */
+
+function FaqSection({ faqs }: { faqs: Faq[] }) {
+  if (faqs.length === 0) {
+    return null;
+  }
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: decodeEntities(stripTags(faq.answer)).trim(),
+      },
+    })),
+  };
+
+  return (
+    <section
+      id="faqs"
+      className="codm-post-faq"
+      aria-labelledby="faqs-heading"
+    >
+      <h2 id="faqs-heading" className="codm-post-faq-title">
+        Frequently Asked Questions
+      </h2>
+
+      <div className="codm-post-faq-list">
+        {faqs.map((faq, index) => (
+          <details
+            key={index}
+            className="codm-post-faq-item"
+            open={index === 0}
+          >
+            <summary className="codm-post-faq-question">
+              <span>{faq.question}</span>
+              <span
+                className="codm-post-faq-icon"
+                aria-hidden="true"
+              />
+            </summary>
+
+            <div
+              className="codm-post-faq-answer"
+              dangerouslySetInnerHTML={{ __html: faq.answer }}
+            />
+          </details>
+        ))}
+      </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+        }}
+      />
+    </section>
+  );
+}
+
 export default function BlogPostDetail({
   post,
   content,
@@ -271,8 +346,20 @@ export default function BlogPostDetail({
 
   const {
     html,
-    items,
+    items: headingItems,
   } = buildToc(content);
+
+  const faqs = (post.blogFaqs ?? []).filter(
+    (faq) => faq?.question?.trim() && faq?.answer?.trim()
+  );
+
+  const items: TocItem[] =
+    faqs.length > 0
+      ? [
+          ...headingItems,
+          { id: "faqs", text: "Frequently Asked Questions" },
+        ]
+      : headingItems;
 
   const shareUrl =
     encodeURIComponent(
@@ -433,6 +520,10 @@ export default function BlogPostDetail({
             />
           )}
 
+          {/* FAQ */}
+
+          <FaqSection faqs={faqs} />
+
         </article>
 
         {/* =================================================
@@ -440,6 +531,7 @@ export default function BlogPostDetail({
         ================================================= */}
 
         <aside className="codm-post-aside">
+          <div className="codm-post-aside-sticky">
 
           {/* TOC */}
 
@@ -452,6 +544,8 @@ export default function BlogPostDetail({
           {/* EXPERT FORM */}
 
           <ExpertForm />
+
+          </div>
 
         </aside>
 
