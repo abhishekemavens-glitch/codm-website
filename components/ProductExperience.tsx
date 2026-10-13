@@ -52,7 +52,7 @@ export default function ProductExperience({
           body: JSON.stringify({
             query: `
               query GetExperienceTabs {
-                experienceTabs(first: 20, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
+                experienceTabs(first: 2000, where: { orderby: { field: MENU_ORDER, order: ASC } }) {
                   nodes {
                     id
                     title
