@@ -5,6 +5,7 @@ import KeyCapabilities from "@/components/KeyCapabilities";
 import UseCasesSection from "@/components/UseCasesSection";
 import ServiceProcess from "@/components/ServiceProcess";
 import ProductExperience from "@/components/ProductExperience";
+import ExecutiveGuideSalesCloud from "@/components/ExecutiveGuideSalesCloud";
 import LatestBlogs from "@/components/LatestBlogs";
 import ContactCTA from "@/components/ContactCTA";
 
@@ -617,6 +618,14 @@ export default async function ServicePage({
     )}
 
 
+   {/* =================================================
+    EXECUTIVE GUIDE - SALES CLOUD
+    ================================================= */}
+
+<section>
+  <ExecutiveGuideSalesCloud />
+</section>
+    
     {/* =================================================
         LATEST BLOGS
         ================================================= */}
