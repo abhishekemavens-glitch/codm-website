@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import SectionHeading from "@/components/SectionHeading";
-import { Reveal, Stagger, StaggerItem } from "@/components/Reveal"; 
+import { Reveal } from "@/components/Reveal";
 // import MoltenMetal from "@/components/MoltenMetal";
 
 type WhyCodmItem = {
@@ -21,6 +22,22 @@ type WhyCodmItem = {
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+/* Where each box flies in from, based on its grid position (3 columns):
+   left column  -> from the left
+   right column -> from the right
+   middle column -> from the top on the first row, from the bottom on the next */
+const SLIDE_DISTANCE = 70;
+
+function getSlideOffset(index: number) {
+  const col = index % 3;
+  const row = Math.floor(index / 3);
+
+  if (col === 0) return { x: -SLIDE_DISTANCE, y: 0 };
+  if (col === 2) return { x: SLIDE_DISTANCE, y: 0 };
+
+  return { x: 0, y: row % 2 === 0 ? -SLIDE_DISTANCE : SLIDE_DISTANCE };
+}
 
 function LightIcon({ type }: { type: string }) {
   const common = "h-7 w-7 text-[var(--accent)]";
@@ -122,6 +139,8 @@ export default function WhyCodm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const reduceMotion = useReducedMotion();
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -210,38 +229,35 @@ export default function WhyCodm() {
       id="why-codm"
       className="why-codm-section relative isolate overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
-      {/* Animated section background (light mode, blends into page colour) */}
-      
-{/* Animated section background disabled temporarily
-<div
-  className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-  aria-hidden="true"
->
-  <MoltenMetal
-    lightMode={true}
-    backgroundColor="#F8FAFC"
-    color1="#5227FF"
-    color2="#FF9FFC"
-    color3="#FFFFFF"
-    speed={0.35}
-    scale={4}
-    detail={3}
-    glow={1.6}
-    coreSize={0.1}
-    swirl={1}
-    fold={-0.2}
-    blackPoint={0.05}
-    brightness={1.3}
-    colorMode="molten"
-    grain={true}
-    grainIntensity={0.05}
-    mouseInteraction={true}
-    mouseStrength={0.3}
-    opacity={0.55}
-  />
-</div>
-*/}
-
+      {/* Animated section background disabled temporarily
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <MoltenMetal
+          lightMode={true}
+          backgroundColor="#F8FAFC"
+          color1="#5227FF"
+          color2="#FF9FFC"
+          color3="#FFFFFF"
+          speed={0.35}
+          scale={4}
+          detail={3}
+          glow={1.6}
+          coreSize={0.1}
+          swirl={1}
+          fold={-0.2}
+          blackPoint={0.05}
+          brightness={1.3}
+          colorMode="molten"
+          grain={true}
+          grainIntensity={0.05}
+          mouseInteraction={true}
+          mouseStrength={0.3}
+          opacity={0.55}
+        />
+      </div>
+      */}
 
       {/* Section content */}
       <div className="relative z-10 mx-auto max-w-[1110px] px-5 sm:px-8">
@@ -257,7 +273,7 @@ export default function WhyCodm() {
             </Reveal>
           </div>
 
-          {/* Content card (plain, no animation) */}
+          {/* Content card (overflow-hidden clips the boxes as they slide in) */}
           <div
             className="
               mx-auto
@@ -287,92 +303,112 @@ export default function WhyCodm() {
                 </p>
               </div>
             ) : (
-              <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item, index) => (
-                  <StaggerItem key={item.id} className="h-full">
-                    <article
-                      className={[
-                        "group relative h-full min-h-[180px] p-7 md:p-8",
-                        "border-b border-[var(--border)]",
-                        "bg-[var(--surface)]",
-                        index % 3 !== 2 ? "lg:border-r" : "",
-                        index % 2 === 0 ? "md:border-r" : "",
-                        index >= items.length - 3
-                          ? "lg:border-b-0"
-                          : "",
-                      ].join(" ")}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {items.map((item, index) => {
+                  const offset = getSlideOffset(index);
+                  const row = Math.floor(index / 3);
+
+                  return (
+                    <motion.div
+                      key={item.id}
+                      className="h-full"
+                      initial={
+                        reduceMotion
+                          ? false
+                          : { opacity: 0, x: offset.x, y: offset.y }
+                      }
+                      whileInView={{ opacity: 1, x: 0, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{
+                        duration: 0.8,
+                        delay: (index % 3) * 0.1 + row * 0.15,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
                     >
-                      {/* Icon */}
-                      <div
-                        className="
-                          mb-6
-                          flex
-                          h-8
-                          w-8
-                          items-center
-                          transition-transform
-                          duration-300
-                          ease-out
-                          group-hover:scale-105
-                        "
+                      <article
+                        className={[
+                          "group relative h-full min-h-[180px] p-7 md:p-8",
+                          "border-b border-[var(--border)]",
+                          "bg-[var(--surface)]",
+                          index % 3 !== 2 ? "lg:border-r" : "",
+                          index % 2 === 0 ? "md:border-r" : "",
+                          index >= items.length - 3
+                            ? "lg:border-b-0"
+                            : "",
+                        ].join(" ")}
                       >
-                        {item.featuredImage?.node?.sourceUrl ? (
-                          <img
-                            src={item.featuredImage.node.sourceUrl}
-                            alt={
-                              item.featuredImage.node.altText ||
-                              item.title
-                            }
-                            className="
-                              h-8
-                              w-8
-                              object-contain
-                              transition-all
-                              duration-300
-                              group-hover:brightness-0
-                              group-hover:invert
-                            "
-                          />
-                        ) : (
-                          <LightIcon type={item.icon} />
-                        )}
-                      </div>
+                        {/* Icon */}
+                        <div
+                          className="
+                            mb-6
+                            flex
+                            h-8
+                            w-8
+                            items-center
+                            transition-transform
+                            duration-300
+                            ease-out
+                            group-hover:scale-105
+                          "
+                        >
+                          {item.featuredImage?.node?.sourceUrl ? (
+                            <img
+                              src={item.featuredImage.node.sourceUrl}
+                              alt={
+                                item.featuredImage.node.altText ||
+                                item.title
+                              }
+                              className="
+                                h-8
+                                w-8
+                                object-contain
+                                transition-all
+                                duration-300
+                                group-hover:brightness-0
+                                group-hover:invert
+                              "
+                            />
+                          ) : (
+                            <LightIcon type={item.icon} />
+                          )}
+                        </div>
 
-                      {/* Title */}
-                      <h3
-                        className="
-                          text-[16px]
-                          font-medium
-                          tracking-[-0.025em]
-                          text-[var(--foreground)]
-                          transition-colors
-                          duration-300
-                          group-hover:text-white
-                        "
-                      >
-                        {item.title}
-                      </h3>
+                        {/* Title */}
+                        <h3
+                          className="
+                            text-[16px]
+                            font-medium
+                            tracking-[-0.025em]
+                            text-[var(--foreground)]
+                            transition-colors
+                            duration-300
+                            group-hover:text-white
+                          "
+                        >
+                          {item.title}
+                        </h3>
 
-                      {/* Description */}
-                      <div
-                        className="
-                          mt-2
-                          max-w-[290px]
-                          text-[11px]
-                          leading-[1.55]
-                          text-[var(--muted)]
-                          transition-colors
-                          duration-300
-                          group-hover:text-white/80
-                        "
-                        dangerouslySetInnerHTML={{
-                          __html: item.content,
-                        }}
-                      />
-                    </article>
-                  </StaggerItem>
-                ))}
-              </Stagger>
+                        {/* Description */}
+                        <div
+                          className="
+                            mt-2
+                            max-w-[290px]
+                            text-[11px]
+                            leading-[1.55]
+                            text-[var(--muted)]
+                            transition-colors
+                            duration-300
+                            group-hover:text-white/80
+                          "
+                          dangerouslySetInnerHTML={{
+                            __html: item.content,
+                          }}
+                        />
+                      </article>
+                    </motion.div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>
