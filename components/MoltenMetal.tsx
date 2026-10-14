@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Renderer, Program, Mesh, Triangle } from "ogl";
 
 type MoltenMetalProps = {
   color1?: string;
@@ -10,10 +11,145 @@ type MoltenMetalProps = {
   scale?: number;
   detail?: number;
   glow?: number;
+  coreSize?: number;
+  swirl?: number;
+  fold?: number;
+  blackPoint?: number;
+  brightness?: number;
+  colorMode?: "molten" | "ember" | "frost";
+  grain?: boolean;
+  grainIntensity?: number;
   mouseInteraction?: boolean;
+  mouseStrength?: number;
   opacity?: number;
+  backgroundColor?: string;
+  lightMode?: boolean;
   className?: string;
 };
+
+const hexToRgb = (hex: string): [number, number, number] => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) return [1, 1, 1];
+  return [
+    parseInt(result[1], 16) / 255,
+    parseInt(result[2], 16) / 255,
+    parseInt(result[3], 16) / 255,
+  ];
+};
+
+const colorModeToFloat = (mode: string) =>
+  mode === "ember" ? 1 : mode === "frost" ? 2 : 0;
+
+const vertex = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+
+const fragment = `#version 300 es
+precision highp float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform float uSpeed;
+uniform float uScale;
+uniform float uDetail;
+uniform float uGlow;
+uniform float uCoreSize;
+uniform float uSwirl;
+uniform float uFold;
+uniform float uBlackPoint;
+uniform float uBrightness;
+uniform float uColorMode;
+uniform float uGrain;
+uniform float uGrainIntensity;
+uniform float uOpacity;
+uniform vec2 uMouse;
+uniform float uMouseStrength;
+uniform bool uEnableMouse;
+uniform vec3 uColor1;
+uniform vec3 uColor2;
+uniform vec3 uColor3;
+uniform vec3 uBackgroundColor;
+uniform bool uLightMode;
+out vec4 fragColor;
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+void main() {
+  float time = iTime * uSpeed;
+  vec2 p = uScale * ((gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y) - 0.5;
+
+  vec2 drift = vec2(0.0);
+  if (uEnableMouse) {
+    drift = (uMouse - 0.5) * uMouseStrength * 2.0;
+  }
+  p += drift;
+
+  vec2 i = p;
+  float c = 0.0;
+  float r = length(p + vec2(sin(time), sin(time * 0.3 + 5.0)) * 0.5);
+  float d = length(p);
+  float rot = d + time + p.x * uSwirl;
+
+  float cosRot = cos(rot);
+  mat2 warp = mat2(cos(rot - sin(time / 5.0)), sin(rot), -sin(cosRot - time), cosRot) * uFold;
+  float glowCore = uGlow * uCoreSize;
+
+  for (float n = 0.0; n < 8.0; n++) {
+    if (n >= uDetail) break;
+    p *= warp;
+    float t = r - time / (n + 3.0);
+    i -= p + vec2(cos(t - i.x - r) + sin(t + i.y), sin(t - i.y) + cos(t + i.x) + r);
+    c += glowCore / length(vec2(sin(i.x + t), cos(i.y + t)));
+  }
+
+  c /= 6.0;
+
+  float intensity = max(c - uBlackPoint, 0.0) * uBrightness;
+
+  float g = clamp(intensity, 0.0, 1.0);
+
+  float mid = 0.5;
+  if (uColorMode > 1.5) {
+    mid = 0.65;
+  } else if (uColorMode > 0.5) {
+    mid = 0.35;
+  }
+
+  vec3 col = mix(uColor1, uColor2, smoothstep(0.0, mid, g));
+  col = mix(col, uColor3, smoothstep(mid, 1.0, g));
+
+  float a = g;
+  if (uGrain > 0.5) {
+    float gr = hash(gl_FragCoord.xy + iTime);
+    a += (gr - 0.5) * uGrainIntensity;
+  }
+  a = clamp(a, 0.0, 1.0) * uOpacity;
+  if (uLightMode) {
+    float signal = 1.0 - exp(-max(c, 0.0) * 6.5);
+    float body = smoothstep(0.075, 0.68, signal);
+    float ridge = smoothstep(0.42, 0.92, signal);
+
+    vec3 lightCol = mix(uColor1, uColor2, smoothstep(0.08, 0.52, signal));
+    lightCol = mix(lightCol, uColor3, smoothstep(0.52, 0.96, signal));
+    lightCol = mix(lightCol, lightCol * 0.72, ridge * 0.24);
+
+    float coverage = body * mix(0.2, 0.86, signal) * uOpacity;
+    if (uGrain > 0.5) {
+      float gr = hash(gl_FragCoord.xy + iTime);
+      coverage += (gr - 0.5) * uGrainIntensity * body * 0.16;
+    }
+    fragColor = vec4(mix(uBackgroundColor, lightCol, clamp(coverage, 0.0, 0.92)), 1.0);
+  } else {
+    fragColor = vec4(col * a, a);
+  }
+}
+`;
+
+const ctxMap = new WeakMap<HTMLElement, { program: Program }>();
 
 export default function MoltenMetal({
   color1 = "#5227FF",
@@ -23,206 +159,211 @@ export default function MoltenMetal({
   scale = 4,
   detail = 3,
   glow = 1.6,
+  coreSize = 0.1,
+  swirl = 1,
+  fold = -0.2,
+  blackPoint = 0.05,
+  brightness = 1.3,
+  colorMode = "molten",
+  grain = true,
+  grainIntensity = 0.05,
   mouseInteraction = true,
-  opacity = 0.8,
+  mouseStrength = 0.3,
+  opacity = 1.0,
+  backgroundColor = "#FFFFFF",
+  lightMode = false,
   className = "",
 }: MoltenMetalProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  // Setup + render loop (runs once)
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const renderer = new Renderer({
+      webgl: 2,
+      alpha: true,
+      premultipliedAlpha: true,
+      antialias: false,
+      dpr: Math.min(window.devicePixelRatio || 1, 2),
+    });
 
-    let animationFrame = 0;
-    let width = 0;
-    let height = 0;
-    let time = 0;
-    let disposed = false;
+    const gl = renderer.gl;
+    gl.clearColor(0, 0, 0, 0);
+    const canvas = gl.canvas as HTMLCanvasElement;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
+    container.appendChild(canvas);
 
-    const pointer = { x: 0.5, y: 0.5 };
-    const target = { x: 0.5, y: 0.5 };
+    const geometry = new Triangle(gl);
+    const program = new Program(gl, {
+      vertex,
+      fragment,
+      uniforms: {
+        iTime: { value: 0 },
+        iResolution: { value: new Float32Array([1, 1]) },
+        uSpeed: { value: 0.35 },
+        uScale: { value: 4 },
+        uDetail: { value: 3 },
+        uGlow: { value: 1.6 },
+        uCoreSize: { value: 0.1 },
+        uSwirl: { value: 1 },
+        uFold: { value: -0.2 },
+        uBlackPoint: { value: 0.05 },
+        uBrightness: { value: 1.3 },
+        uColorMode: { value: 0 },
+        uGrain: { value: 1 },
+        uGrainIntensity: { value: 0.05 },
+        uOpacity: { value: 1.0 },
+        uMouse: { value: new Float32Array([0.5, 0.5]) },
+        uMouseStrength: { value: 0.3 },
+        uEnableMouse: { value: true },
+        uColor1: { value: new Float32Array([1, 1, 1]) },
+        uColor2: { value: new Float32Array([1, 1, 1]) },
+        uColor3: { value: new Float32Array([1, 1, 1]) },
+        uBackgroundColor: { value: new Float32Array([1, 1, 1]) },
+        uLightMode: { value: false },
+      },
+    });
 
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const mesh = new Mesh(gl, { geometry, program });
+    ctxMap.set(container, { program });
 
-      width = rect.width;
-      height = rect.height;
-
-      canvas.width = Math.max(1, Math.round(width * dpr));
-      canvas.height = Math.max(1, Math.round(height * dpr));
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const setSize = () => {
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(1, Math.floor(rect.width));
+      const h = Math.max(1, Math.floor(rect.height));
+      renderer.setSize(w, h);
+      const res = program.uniforms.iResolution.value as Float32Array;
+      res[0] = gl.drawingBufferWidth;
+      res[1] = gl.drawingBufferHeight;
+      renderer.render({ scene: mesh });
     };
 
-    // Listens on window because the canvas has pointer-events: none,
-    // so it can never receive pointer events itself.
-    const onPointerMove = (event: PointerEvent) => {
-      if (!mouseInteraction) return;
+    const ro = new ResizeObserver(setSize);
+    ro.observe(container);
+    setSize();
 
+    const targetMouse = [0.5, 0.5];
+    const currentMouse = [0.5, 0.5];
+
+    // Listens on window so it works even when the layer is pointer-events: none
+    const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
+      targetMouse[0] = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+      targetMouse[1] = Math.min(1, Math.max(0, 1 - (e.clientY - rect.top) / rect.height));
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
-      target.x = Math.min(
-        1,
-        Math.max(0, (event.clientX - rect.left) / rect.width)
-      );
-      target.y = Math.min(
-        1,
-        Math.max(0, (event.clientY - rect.top) / rect.height)
-      );
+    let raf = 0;
+    let isVisible = true;
+    let isPageVisible = !document.hidden;
+    const t0 = performance.now();
+
+    const loop = (t: number) => {
+      program.uniforms.iTime.value = (t - t0) * 0.001;
+      currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
+      currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
+      const m = program.uniforms.uMouse.value as Float32Array;
+      m[0] = currentMouse[0];
+      m[1] = currentMouse[1];
+      renderer.render({ scene: mesh });
+      raf = requestAnimationFrame(loop);
     };
 
-    const drawGlow = (
-      x: number,
-      y: number,
-      radius: number,
-      color: string,
-      alpha: number
-    ) => {
-      const gradient = ctx.createRadialGradient(
-        x,
-        y,
-        0,
-        x,
-        y,
-        Math.max(1, radius)
-      );
-
-      gradient.addColorStop(
-        0,
-        `${color}${Math.round(Math.min(1, alpha) * 255)
-          .toString(16)
-          .padStart(2, "0")}`
-      );
-      gradient.addColorStop(0.35, `${color}55`);
-      gradient.addColorStop(1, `${color}00`);
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+    const tryStart = () => {
+      if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
     };
-
-    const render = () => {
-      if (disposed) return;
-
-      time += 0.008 * Math.max(0, speed);
-
-      pointer.x += (target.x - pointer.x) * 0.035;
-      pointer.y += (target.y - pointer.y) * 0.035;
-
-      ctx.clearRect(0, 0, width, height);
-
-      ctx.fillStyle = "#08080e";
-      ctx.fillRect(0, 0, width, height);
-
-      const unit = Math.max(width, height) / Math.max(1, scale);
-      const count = Math.max(4, Math.min(12, Math.round(4 + detail * 2)));
-
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      ctx.filter = `blur(${Math.max(12, unit * 0.18)}px)`;
-
-      for (let i = 0; i < count; i++) {
-        const phase = (i / count) * Math.PI * 2;
-
-        const x =
-          width *
-          (0.5 +
-            0.32 * Math.sin(time + phase) +
-            (pointer.x - 0.5) * (mouseInteraction ? 0.2 : 0));
-
-        const y =
-          height *
-          (0.5 +
-            0.32 * Math.cos(time * 0.8 + phase * 1.4) +
-            (pointer.y - 0.5) * (mouseInteraction ? 0.2 : 0));
-
-        const radius =
-          unit * (0.65 + 0.3 * Math.sin(time * 1.3 + phase));
-
-        drawGlow(
-          x,
-          y,
-          radius * Math.max(0.2, glow),
-          i % 3 === 0 ? color1 : i % 3 === 1 ? color2 : color3,
-          0.55
-        );
+    const tryStop = () => {
+      if (raf !== 0) {
+        cancelAnimationFrame(raf);
+        raf = 0;
       }
-
-      ctx.restore();
-
-      // Add bright, flowing highlights.
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      ctx.filter = "blur(2px)";
-
-      for (let i = 0; i < 3; i++) {
-        const phase = time * (0.7 + i * 0.15) + i * 2.1;
-        const x = width * (0.5 + 0.3 * Math.sin(phase));
-        const y = height * (0.5 + 0.3 * Math.cos(phase * 1.3));
-
-        const gradient = ctx.createRadialGradient(
-          x,
-          y,
-          0,
-          x,
-          y,
-          unit * 0.4
-        );
-
-        gradient.addColorStop(0, `${color3}bb`);
-        gradient.addColorStop(0.15, `${color2}88`);
-        gradient.addColorStop(1, `${color1}00`);
-
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
-      }
-
-      ctx.restore();
-
-      animationFrame = window.requestAnimationFrame(render);
     };
 
-    resize();
-    window.addEventListener("resize", resize);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) tryStart();
+        else tryStop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(container);
 
-    if (mouseInteraction) {
-      window.addEventListener("pointermove", onPointerMove);
-    }
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) tryStart();
+      else tryStop();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
-    animationFrame = window.requestAnimationFrame(render);
+    tryStart();
 
     return () => {
-      disposed = true;
-      window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", onPointerMove);
+      tryStop();
+      ro.disconnect();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("mousemove", handleMouseMove);
+      ctxMap.delete(container);
+      if (canvas.parentNode === container) container.removeChild(canvas);
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
+  }, []);
+
+  // Prop -> uniform sync
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ctx = ctxMap.get(container);
+    if (!ctx) return;
+    const u = ctx.program.uniforms;
+
+    u.uSpeed.value = speed;
+    u.uScale.value = scale;
+    u.uDetail.value = detail;
+    u.uGlow.value = glow;
+    u.uCoreSize.value = Math.max(coreSize, 0.001);
+    u.uSwirl.value = swirl;
+    u.uFold.value = fold;
+    u.uBlackPoint.value = blackPoint;
+    u.uBrightness.value = brightness;
+    u.uColorMode.value = colorModeToFloat(colorMode);
+    u.uGrain.value = grain ? 1 : 0;
+    u.uGrainIntensity.value = grainIntensity;
+    u.uOpacity.value = opacity;
+    u.uMouseStrength.value = mouseStrength;
+    u.uEnableMouse.value = mouseInteraction;
+    u.uLightMode.value = lightMode;
+
+    const set3 = (target: Float32Array, rgb: [number, number, number]) => {
+      target[0] = rgb[0];
+      target[1] = rgb[1];
+      target[2] = rgb[2];
+    };
+    set3(u.uColor1.value as Float32Array, hexToRgb(color1));
+    set3(u.uColor2.value as Float32Array, hexToRgb(color2));
+    set3(u.uColor3.value as Float32Array, hexToRgb(color3));
+    set3(u.uBackgroundColor.value as Float32Array, hexToRgb(backgroundColor));
   }, [
-    color1,
-    color2,
-    color3,
-    speed,
-    scale,
-    detail,
-    glow,
-    mouseInteraction,
+    color1, color2, color3, speed, scale, detail, glow, coreSize, swirl, fold,
+    blackPoint, brightness, colorMode, grain, grainIntensity, mouseInteraction,
+    mouseStrength, opacity, backgroundColor, lightMode,
   ]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
+    <div
+      ref={containerRef}
       className={className}
       style={{
-        display: "block",
+        position: "relative",
         width: "100%",
         height: "100%",
-        opacity,
-        pointerEvents: "none",
+        overflow: "hidden",
       }}
     />
   );
