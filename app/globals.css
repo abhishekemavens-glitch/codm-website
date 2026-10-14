@@ -11866,3 +11866,12 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	width: 45px;
 	height: 45px;
 }
+
+.custom-technology .items-start .rounded-full {
+	width: 55px;
+	height: 55px;
+}
+.custom-technology .items-start .rounded-full svg {
+	width: 40px;
+	height: 40px;
+}
