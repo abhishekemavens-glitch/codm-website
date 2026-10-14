@@ -11843,3 +11843,9 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 }
 
  
+
+
+.codm-alt-section .codm-feature-row .codm-feature-icon svg {
+	width: 45px;
+	height: 45px;
+}
