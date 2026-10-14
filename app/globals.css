@@ -11919,3 +11919,247 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     overflow: visible;
   }
 }
+
+
+
+
+
+
+
+/* Mega Menu: screenshot-inspired layout */
+.codm-megamenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: min(1240px, calc(100vw - 60px));
+  box-sizing: border-box;
+  padding: 28px 36px 24px;
+  background: #fff;
+  border: 1px solid #eee9ff;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 22px 55px rgba(35, 25, 75, 0.12);
+  color: #111827;
+}
+
+.codm-megamenu-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2.8fr) minmax(120px, 1fr)
+    minmax(150px, 1.1fr) minmax(140px, 1fr);
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e8e3f7;
+}
+
+.codm-megamenu-column {
+  min-width: 0;
+}
+
+.codm-megamenu-column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 27px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e8e3f7;
+  color: #7350ff;
+}
+
+.codm-megamenu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.codm-megamenu-column-title {
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.7px;
+}
+
+.codm-megamenu-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.codm-megamenu-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.codm-megamenu-links-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.codm-megamenu-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 0;
+  color: #111827;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.codm-megamenu-link:hover {
+  color: #7350ff;
+}
+
+.codm-megamenu-link-dot {
+  display: none;
+}
+
+.codm-megamenu-link-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.codm-megamenu-link-arrow {
+  opacity: 0;
+  color: #7350ff;
+  transition: opacity 0.2s ease;
+}
+
+.codm-megamenu-link:hover .codm-megamenu-link-arrow {
+  opacity: 1;
+}
+
+/* G-Cloud promotional banner */
+.codm-megamenu-banner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+  min-width: 0;
+}
+
+.codm-megamenu-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-width: 0;
+  padding: 15px 20px;
+  border: 1px solid #e7ddff;
+  border-radius: 15px;
+  background: linear-gradient(105deg, #f8f5ff, #fff 70%, #f5f1ff);
+}
+
+.codm-megamenu-banner-label {
+  flex: 0 0 42px;
+  max-width: 42px;
+  padding-left: 7px;
+  border-left: 1px solid #777;
+  color: #333;
+  font-size: 8px;
+  line-height: 1.15;
+}
+
+.codm-megamenu-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+
+.codm-megamenu-banner-title {
+  color: #171b2b;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.codm-megamenu-banner-description {
+  color: #4b5568;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.codm-megamenu-banner-button,
+.codm-megamenu-all-services {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 13px 18px;
+  color: #7350ff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.codm-megamenu-all-services {
+  border: 1px solid #cfc0ff;
+  border-radius: 13px;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .codm-megamenu {
+    width: calc(100vw - 32px);
+    padding: 24px;
+  }
+
+  .codm-megamenu-columns {
+    grid-template-columns: minmax(0, 2fr) minmax(100px, 1fr);
+    gap: 24px;
+  }
+
+  .codm-megamenu-banner {
+    flex-wrap: wrap;
+  }
+
+  .codm-megamenu-banner-left {
+    flex-basis: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .codm-megamenu {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .codm-megamenu-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .codm-megamenu-links-split {
+    gap: 12px;
+  }
+
+  .codm-megamenu-banner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .codm-megamenu-banner-left {
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  .codm-megamenu-banner-button,
+  .codm-megamenu-all-services {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
