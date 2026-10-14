@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Renderer, Program, Mesh, Triangle } from "ogl"; 
+import { Renderer, Program, Mesh, Triangle } from "ogl";
 
 type MoltenMetalProps = {
   color1?: string;
@@ -181,19 +181,19 @@ export default function MoltenMetal({
     const container = containerRef.current;
     if (!container) return;
 
+    // dpr fixed at 1: avoids canvas/viewport size mismatches on scaled
+    // displays and keeps the full-section shader cheap to render.
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: 1,
     });
 
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     const canvas = gl.canvas as HTMLCanvasElement;
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
     canvas.style.display = "block";
     container.appendChild(canvas);
 
@@ -232,10 +232,15 @@ export default function MoltenMetal({
     ctxMap.set(container, { program });
 
     const setSize = () => {
-      const rect = container.getBoundingClientRect();
-      const w = Math.max(1, Math.floor(rect.width));
-      const h = Math.max(1, Math.floor(rect.height));
+      const w = Math.max(1, Math.floor(container.clientWidth));
+      const h = Math.max(1, Math.floor(container.clientHeight));
       renderer.setSize(w, h);
+
+      // Force the canvas to always fill the container, whatever
+      // pixel sizes the renderer applied.
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+
       const res = program.uniforms.iResolution.value as Float32Array;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
@@ -245,6 +250,11 @@ export default function MoltenMetal({
     const ro = new ResizeObserver(setSize);
     ro.observe(container);
     setSize();
+
+    // Re-measure once layout has settled (fonts, scrollbars, images)
+    const settleRaf = requestAnimationFrame(setSize);
+    window.addEventListener("resize", setSize);
+    window.addEventListener("load", setSize);
 
     const targetMouse = [0.5, 0.5];
     const currentMouse = [0.5, 0.5];
@@ -305,9 +315,12 @@ export default function MoltenMetal({
 
     return () => {
       tryStop();
+      cancelAnimationFrame(settleRaf);
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("resize", setSize);
+      window.removeEventListener("load", setSize);
       window.removeEventListener("mousemove", handleMouseMove);
       ctxMap.delete(container);
       if (canvas.parentNode === container) container.removeChild(canvas);
