@@ -194,7 +194,8 @@ export default function MoltenMetal({
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     const canvas = gl.canvas as HTMLCanvasElement;
-    canvas.style.display = "block";
+    canvas.style.cssText =
+      "position:absolute;inset:0;display:block;width:100%;height:100%;";
     container.appendChild(canvas);
 
     const geometry = new Triangle(gl);
@@ -231,15 +232,21 @@ export default function MoltenMetal({
     const mesh = new Mesh(gl, { geometry, program });
     ctxMap.set(container, { program });
 
+    let lastW = 0;
+    let lastH = 0;
+
     const setSize = () => {
       const w = Math.max(1, Math.floor(container.clientWidth));
       const h = Math.max(1, Math.floor(container.clientHeight));
+      if (w === lastW && h === lastH) return;
+      lastW = w;
+      lastH = h;
+
       renderer.setSize(w, h);
 
-      // Force the canvas to always fill the container, whatever
-      // pixel sizes the renderer applied.
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
+      // Override the pixel sizes ogl writes so the canvas always fills the container
+      canvas.style.cssText =
+        "position:absolute;inset:0;display:block;width:100%;height:100%;";
 
       const res = program.uniforms.iResolution.value as Float32Array;
       res[0] = gl.drawingBufferWidth;
@@ -274,6 +281,7 @@ export default function MoltenMetal({
     const t0 = performance.now();
 
     const loop = (t: number) => {
+      setSize(); // keeps size correct even if a resize event is missed
       program.uniforms.iTime.value = (t - t0) * 0.001;
       currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
       currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
