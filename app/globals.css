@@ -6668,8 +6668,9 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
 }
 
 [data-theme="light"] #why-codm article {
-  background: transparent !important;
-  border-color: #e8eef5 !important;
+	background: 0 0 !important;
+	border-color: #e8eef5 !important;
+	background: #ffffff94 !important;
 }
 
 /* ---------- Light-mode hover: lavender, dark text, visible icon ---------- */
