@@ -220,8 +220,8 @@ function AiIcon() {
 function CustomTechIcon() {
   return (
     <svg
-      width="26"
-      height="26"
+      width="45"
+      height="45"
       viewBox="0 0 26 26"
       fill="none"
       aria-hidden="true"
