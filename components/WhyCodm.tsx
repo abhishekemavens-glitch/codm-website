@@ -211,33 +211,37 @@ export default function WhyCodm() {
       className="why-codm-section relative isolate overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
       {/* Animated section background (light mode, blends into page colour) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-        aria-hidden="true"
-      >
-        <MoltenMetal
-          lightMode={true}
-          backgroundColor="#F8FAFC"
-          color1="#5227FF"
-          color2="#FF9FFC"
-          color3="#FFFFFF"
-          speed={0.35}
-          scale={4}
-          detail={3}
-          glow={1.6}
-          coreSize={0.1}
-          swirl={1}
-          fold={-0.2}
-          blackPoint={0.05}
-          brightness={1.3}
-          colorMode="molten"
-          grain={true}
-          grainIntensity={0.05}
-          mouseInteraction={true}
-          mouseStrength={0.3}
-          opacity={0.55}
-        />
-      </div>
+      
+{/* Animated section background disabled temporarily
+<div
+  className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+  aria-hidden="true"
+>
+  <MoltenMetal
+    lightMode={true}
+    backgroundColor="#F8FAFC"
+    color1="#5227FF"
+    color2="#FF9FFC"
+    color3="#FFFFFF"
+    speed={0.35}
+    scale={4}
+    detail={3}
+    glow={1.6}
+    coreSize={0.1}
+    swirl={1}
+    fold={-0.2}
+    blackPoint={0.05}
+    brightness={1.3}
+    colorMode="molten"
+    grain={true}
+    grainIntensity={0.05}
+    mouseInteraction={true}
+    mouseStrength={0.3}
+    opacity={0.55}
+  />
+</div>
+*/}
+
 
       {/* Section content */}
       <div className="relative z-10 mx-auto max-w-[1110px] px-5 sm:px-8">
