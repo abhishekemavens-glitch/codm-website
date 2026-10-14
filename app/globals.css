@@ -12257,3 +12257,22 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     box-sizing: border-box;
   }
 }
+
+
+
+/* Force the four mega menu columns into one row */
+.codm-megamenu .codm-megamenu-columns {
+  display: grid !important;
+  grid-template-columns:
+    minmax(0, 2.2fr)
+    minmax(0, 1fr)
+    minmax(0, 1.15fr)
+    minmax(0, 1fr) !important;
+  grid-template-rows: auto !important;
+  grid-auto-flow: column !important;
+}
+
+.codm-megamenu .codm-megamenu-column {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
