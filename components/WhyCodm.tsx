@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
-import MoltenMetal from "@/components/MoltenMetal"; 
+import MoltenMetal from "@/components/MoltenMetal";
 
 type WhyCodmItem = {
   id: string;
@@ -210,26 +210,6 @@ export default function WhyCodm() {
       id="why-codm"
       className="why-codm-section relative isolate overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
-      {/* Animated background layer */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-        aria-hidden="true"
-      >
-        
-<MoltenMetal
-  color1="#5227FF"
-  color2="#FF9FFC"
-  color3="#FFFFFF"
-  speed={0.35}
-  scale={4}
-  detail={3}
-  glow={1.6}
-  mouseInteraction={true}
-  opacity={0.8}
-/>
-
-      </div>
-
       {/* Section content */}
       <div className="relative z-10 mx-auto max-w-[1110px] px-5 sm:px-8">
         <div className="mx-auto max-w-[1018px]">
@@ -247,6 +227,8 @@ export default function WhyCodm() {
           {/* Content card */}
           <div
             className="
+              relative
+              isolate
               mx-auto
               mt-10
               max-w-[1018px]
@@ -257,110 +239,130 @@ export default function WhyCodm() {
               bg-[var(--surface)]
             "
           >
-            {loading ? (
-              <div className="flex min-h-[250px] items-center justify-center">
-                <p className="text-sm text-[var(--muted)]">
-                  Loading Why CODM...
-                </p>
-              </div>
-            ) : error ? (
-              <div className="flex min-h-[250px] items-center justify-center p-8">
-                <p className="text-sm text-red-400">{error}</p>
-              </div>
-            ) : items.length === 0 ? (
-              <div className="flex min-h-[250px] items-center justify-center p-8">
-                <p className="text-sm text-[var(--muted)]">
-                  No Why CODM items have been published in WordPress.
-                </p>
-              </div>
-            ) : (
-              <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item, index) => (
-                  <StaggerItem key={item.id} className="h-full">
-                    <article
-                      className={[
-                        "group relative h-full min-h-[180px] p-7 md:p-8",
-                        "border-b border-[var(--border)]",
-                        "bg-[var(--surface)]",
-                        index % 3 !== 2 ? "lg:border-r" : "",
-                        index % 2 === 0 ? "md:border-r" : "",
-                        index >= items.length - 3
-                          ? "lg:border-b-0"
-                          : "",
-                      ].join(" ")}
-                    >
-                      {/* Icon */}
-                      <div
-                        className="
-                          mb-6
-                          flex
-                          h-8
-                          w-8
-                          items-center
-                          transition-transform
-                          duration-300
-                          ease-out
-                          group-hover:scale-105
-                        "
-                      >
-                        {item.featuredImage?.node?.sourceUrl ? (
-                          <img
-                            src={item.featuredImage.node.sourceUrl}
-                            alt={
-                              item.featuredImage.node.altText ||
-                              item.title
-                            }
-                            className="
-                              h-8
-                              w-8
-                              object-contain
-                              transition-all
-                              duration-300
-                              group-hover:brightness-0
-                              group-hover:invert
-                            "
-                          />
-                        ) : (
-                          <LightIcon type={item.icon} />
-                        )}
-                      </div>
+            {/* Animated card background */}
+            <div
+              className="pointer-events-none absolute inset-0 z-0"
+              aria-hidden="true"
+            >
+              <MoltenMetal
+                color1="#5227FF"
+                color2="#FF9FFC"
+                color3="#FFFFFF"
+                speed={0.35}
+                scale={4}
+                detail={3}
+                glow={1.6}
+                mouseInteraction={true}
+                opacity={0.35}
+              />
+            </div>
 
-                      {/* Title */}
-                      <h3
-                        className="
-                          text-[16px]
-                          font-medium
-                          tracking-[-0.025em]
-                          text-[var(--foreground)]
-                          transition-colors
-                          duration-300
-                          group-hover:text-white
-                        "
+            {/* Card content */}
+            <div className="relative z-10">
+              {loading ? (
+                <div className="flex min-h-[250px] items-center justify-center">
+                  <p className="text-sm text-[var(--muted)]">
+                    Loading Why CODM...
+                  </p>
+                </div>
+              ) : error ? (
+                <div className="flex min-h-[250px] items-center justify-center p-8">
+                  <p className="text-sm text-red-400">{error}</p>
+                </div>
+              ) : items.length === 0 ? (
+                <div className="flex min-h-[250px] items-center justify-center p-8">
+                  <p className="text-sm text-[var(--muted)]">
+                    No Why CODM items have been published in WordPress.
+                  </p>
+                </div>
+              ) : (
+                <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {items.map((item, index) => (
+                    <StaggerItem key={item.id} className="h-full">
+                      <article
+                        className={[
+                          "group relative h-full min-h-[180px] p-7 md:p-8",
+                          "border-b border-[var(--border)]",
+                          index % 3 !== 2 ? "lg:border-r" : "",
+                          index % 2 === 0 ? "md:border-r" : "",
+                          index >= items.length - 3
+                            ? "lg:border-b-0"
+                            : "",
+                        ].join(" ")}
                       >
-                        {item.title}
-                      </h3>
+                        {/* Icon */}
+                        <div
+                          className="
+                            mb-6
+                            flex
+                            h-8
+                            w-8
+                            items-center
+                            transition-transform
+                            duration-300
+                            ease-out
+                            group-hover:scale-105
+                          "
+                        >
+                          {item.featuredImage?.node?.sourceUrl ? (
+                            <img
+                              src={item.featuredImage.node.sourceUrl}
+                              alt={
+                                item.featuredImage.node.altText ||
+                                item.title
+                              }
+                              className="
+                                h-8
+                                w-8
+                                object-contain
+                                transition-all
+                                duration-300
+                                group-hover:brightness-0
+                                group-hover:invert
+                              "
+                            />
+                          ) : (
+                            <LightIcon type={item.icon} />
+                          )}
+                        </div>
 
-                      {/* Description */}
-                      <div
-                        className="
-                          mt-2
-                          max-w-[290px]
-                          text-[11px]
-                          leading-[1.55]
-                          text-[var(--muted)]
-                          transition-colors
-                          duration-300
-                          group-hover:text-white/80
-                        "
-                        dangerouslySetInnerHTML={{
-                          __html: item.content,
-                        }}
-                      />
-                    </article>
-                  </StaggerItem>
-                ))}
-              </Stagger>
-            )}
+                        {/* Title */}
+                        <h3
+                          className="
+                            text-[16px]
+                            font-medium
+                            tracking-[-0.025em]
+                            text-[var(--foreground)]
+                            transition-colors
+                            duration-300
+                            group-hover:text-white
+                          "
+                        >
+                          {item.title}
+                        </h3>
+
+                        {/* Description */}
+                        <div
+                          className="
+                            mt-2
+                            max-w-[290px]
+                            text-[11px]
+                            leading-[1.55]
+                            text-[var(--muted)]
+                            transition-colors
+                            duration-300
+                            group-hover:text-white/80
+                          "
+                          dangerouslySetInnerHTML={{
+                            __html: item.content,
+                          }}
+                        />
+                      </article>
+                    </StaggerItem>
+                  ))}
+                </Stagger>
+              )}
+            </div>
           </div>
         </div>
       </div>
