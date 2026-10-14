@@ -6615,13 +6615,7 @@ html .codm-header .codm-header-cta:hover .codm-header-cta-arrow {
 }
 
 /* Wider container: 1240px of content, like the design */
-#why-codm > div {
-  max-width: 1304px !important;
-}
 
-#why-codm > div > div {
-  max-width: 1240px !important;
-}
 
 /* ---------- Heading ---------- */
 #why-codm h2 {
