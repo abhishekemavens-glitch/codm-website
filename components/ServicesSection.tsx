@@ -5,10 +5,7 @@ import dynamic from "next/dynamic";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
-// three.js is heavy and browser-only, so load it lazily on the client
-const Antigravity = dynamic(() => import("@/components/Antigravity"), {
-  ssr: false,
-});
+
 
 type Service = {
   id: string;
