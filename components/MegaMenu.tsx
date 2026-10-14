@@ -18,6 +18,240 @@ type MegaMenuData = {
   bannerButtonUrl: string;
 };
 
+type MegaMenuLink = {
+  label: string;
+  url: string;
+};
+
+
+const BASE_URL = "https://codm-frontend.vercel.app";
+
+const URLS: Record<string, string> = {
+  // Salesforce CRM
+  "Salesforce CRM":
+    `${BASE_URL}/services/salesforce-crm`,
+
+  "Salesforce Education Cloud":
+    `${BASE_URL}/services/salesforce-crm`,
+
+  "Salesforce Financial Services":
+    `${BASE_URL}/services/sales-force-financial-services-cloud`,
+
+  "Salesforce Financial Services Cloud":
+    `${BASE_URL}/services/sales-force-financial-services-cloud`,
+
+  "Salesforce Health & Insurance Cloud":
+    `${BASE_URL}/services/health-cloud`,
+
+  "Health Cloud":
+    `${BASE_URL}/services/health-cloud`,
+
+  "Salesforce Data Cloud":
+    `${BASE_URL}/services/data-cloud`,
+
+  "Data Cloud":
+    `${BASE_URL}/services/data-cloud`,
+
+  "Salesforce Marketing Cloud":
+    `${BASE_URL}/services/marketing-cloud`,
+
+  "Marketing Cloud":
+    `${BASE_URL}/services/marketing-cloud`,
+
+  "Salesforce Sales Cloud":
+    `${BASE_URL}/services/sales-cloud`,
+
+  "Sales Cloud":
+    `${BASE_URL}/services/sales-cloud`,
+
+  "Salesforce Service Cloud":
+    `${BASE_URL}/services/service-cloud`,
+
+  "Service Cloud":
+    `${BASE_URL}/services/service-cloud`,
+
+  "Salesforce Energy and Utilities Cloud":
+    `${BASE_URL}/services/energy-utilities-cloud`,
+
+  "Energy Utilities & Cloud":
+    `${BASE_URL}/services/energy-utilities-cloud`,
+
+  "Salesforce Manufacturing Cloud":
+    `${BASE_URL}/services/manufacturing-cloud`,
+
+  "Manufacturing Cloud":
+    `${BASE_URL}/services/manufacturing-cloud`,
+
+  "Salesforce Nonprofit Cloud":
+    `${BASE_URL}/services/non-profit-cloud`,
+
+  "Non Profit Cloud":
+    `${BASE_URL}/services/non-profit-cloud`,
+
+  // Data and Integration
+  "API Integration":
+    `${BASE_URL}/services/api-integration`,
+
+  "Data Integration":
+    `${BASE_URL}/services/data-integration-migration`,
+
+  "Data Migration":
+    `${BASE_URL}/services/data-integration-migration`,
+
+  "Data Integration/Migration":
+    `${BASE_URL}/services/data-integration-migration`,
+
+  "Data Integration and Migration":
+    `${BASE_URL}/services/data-integration-migration`,
+
+  // Development
+  "CRM Development":
+    `${BASE_URL}/services/salesforce-crm`,
+
+  "Building LLM":
+    `${BASE_URL}/services/building-llm`,
+
+  ".NET Application":
+    `${BASE_URL}/services/net-application`,
+
+  ".Net Application":
+    `${BASE_URL}/services/net-application`,
+
+  "React Application":
+    `${BASE_URL}/services/react-application`,
+
+  "Python Application":
+    `${BASE_URL}/services/python-application`,
+
+  // Support
+  "Technical Support":
+    `${BASE_URL}/services/technical-support`,
+
+  "Deployment Support":
+    `${BASE_URL}/services/technical-support`,
+};
+
+
+const MENU_COLUMNS: {
+  icon: string;
+  title: string;
+  links: MegaMenuLink[];
+}[] = [
+  {
+    icon: "cloud",
+    title: "SALESFORCE CRM",
+    links: [
+      {
+        label: "Salesforce Education Cloud",
+        url: URLS["Salesforce Education Cloud"],
+      },
+      {
+        label: "Salesforce Financial Services",
+        url: URLS["Salesforce Financial Services"],
+      },
+      {
+        label: "Salesforce Health & Insurance Cloud",
+        url: URLS["Salesforce Health & Insurance Cloud"],
+      },
+      {
+        label: "Salesforce Data Cloud",
+        url: URLS["Salesforce Data Cloud"],
+      },
+      {
+        label: "Salesforce Marketing Cloud",
+        url: URLS["Salesforce Marketing Cloud"],
+      },
+      {
+        label: "Salesforce Sales Cloud",
+        url: URLS["Salesforce Sales Cloud"],
+      },
+      {
+        label: "Salesforce Service Cloud",
+        url: URLS["Salesforce Service Cloud"],
+      },
+      {
+        label: "Salesforce Energy and Utilities Cloud",
+        url: URLS["Salesforce Energy and Utilities Cloud"],
+      },
+      {
+        label: "Salesforce Manufacturing Cloud",
+        url: URLS["Salesforce Manufacturing Cloud"],
+      },
+      {
+        label: "Salesforce Nonprofit Cloud",
+        url: URLS["Salesforce Nonprofit Cloud"],
+      },
+    ],
+  },
+  {
+    icon: "database",
+    title: "DATA",
+    links: [
+      {
+        label: "API Integration",
+        url: URLS["API Integration"],
+      },
+      {
+        label: "Data Integration",
+        url: URLS["Data Integration"],
+      },
+      {
+        label: "Data Migration",
+        url: URLS["Data Migration"],
+      },
+    ],
+  },
+  {
+    icon: "code",
+    title: "DEVELOPMENT",
+    links: [
+      {
+        label: "CRM Development",
+        url: URLS["CRM Development"],
+      },
+      {
+        label: "Building LLM",
+        url: URLS["Building LLM"],
+      },
+      {
+        label: ".NET Application",
+        url: URLS[".NET Application"],
+      },
+      {
+        label: "React Application",
+        url: URLS["React Application"],
+      },
+      {
+        label: "Python Application",
+        url: URLS["Python Application"],
+      },
+    ],
+  },
+  {
+    icon: "support",
+    title: "SUPPORT",
+    links: [
+      {
+        label: "Technical Support",
+        url: URLS["Technical Support"],
+      },
+      {
+        label: "Deployment Support",
+        url: URLS["Deployment Support"],
+      },
+    ],
+  },
+];
+
+const ICONS: Record<string, string> = {
+  cloud: "☁",
+  sparkle: "✦",
+  code: "</>",
+  database: "▤",
+  integration: "⇄",
+  support: "◎",
+};
+
 export function parseMegaMenuLinks(value: string = "") {
   return value
     .split("\n")
@@ -29,25 +263,19 @@ export function parseMegaMenuLinks(value: string = "") {
       if (pipeIndex === -1) {
         return {
           label: line,
-          url: "#",
+          url: URLS[line] || "#",
         };
       }
 
+      const label = line.substring(0, pipeIndex).trim();
+      const suppliedUrl = line.substring(pipeIndex + 1).trim();
+
       return {
-        label: line.substring(0, pipeIndex).trim(),
-        url: line.substring(pipeIndex + 1).trim() || "#",
+        label,
+        url: URLS[label] || suppliedUrl || "#",
       };
     });
 }
-
-const ICONS: Record<string, string> = {
-  cloud: "☁",
-  sparkle: "✦",
-  code: "</>",
-  database: "🗄",
-  integration: "⇄",
-  support: "◎",
-};
 
 export default function MegaMenu({
   data,
@@ -58,57 +286,7 @@ export default function MegaMenu({
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }) {
-  if (!data.enabled) {
-    return null;
-  }
-
-  // Updated CODM service links
-  const serviceLinks: Record<string, string> = {
-    "Salesforce CRM":
-      "https://codm-frontend.vercel.app/services/salesforce-crm",
-
-    "Energy Utilities & Cloud":
-      "https://codm-frontend.vercel.app/services/energy-utilities-cloud",
-
-    "Non Profit Cloud":
-      "https://codm-frontend.vercel.app/services/non-profit-cloud",
-
-    "Manufacturing Cloud":
-      "https://codm-frontend.vercel.app/services/manufacturing-cloud",
-
-    "Marketing Cloud":
-      "https://codm-frontend.vercel.app/services/marketing-cloud",
-
-    "Data Integration/Migration":
-      "https://codm-frontend.vercel.app/services/data-integration-migration",
-
-    "Data Integration":
-      "https://codm-frontend.vercel.app/services/data-integration-migration",
-
-    "Data Migration":
-      "https://codm-frontend.vercel.app/services/data-integration-migration",
-
-    "API Integration":
-      "https://codm-frontend.vercel.app/services/api-integration",
-
-    "CRM Development":
-      "https://codm-frontend.vercel.app/services/salesforce-crm",
-
-    "Building LLM":
-      "https://codm-frontend.vercel.app/services/building-llm",
-
-    ".NET Application":
-      "https://codm-frontend.vercel.app/services/net-application",
-
-    "React Application":
-      "https://codm-frontend.vercel.app/services/react-application",
-
-    "Python Application":
-      "https://codm-frontend.vercel.app/services/python-application",
-
-    "Technical Support":
-      "https://codm-frontend.vercel.app/services/technical-support",
-  };
+  if (!data.enabled) return null;
 
   return (
     <div
@@ -117,28 +295,24 @@ export default function MegaMenu({
       onMouseLeave={onMouseLeave}
     >
       <div className="codm-megamenu-columns">
-        {data.columns.map((col, index) => {
-          if (!col.title) return null;
+        {MENU_COLUMNS.map((col) => {
+          const isSalesforce = col.title === "SALESFORCE CRM";
 
-          const links = parseMegaMenuLinks(col.links).map((link) => ({
-            ...link,
-            url:
-              serviceLinks[link.label] ||
-              link.url,
-          }));
-
-          const splitLinks =
-            links.length > 6
-              ? [
-                  links.slice(0, Math.ceil(links.length / 2)),
-                  links.slice(Math.ceil(links.length / 2)),
-                ]
-              : [links];
+          const splitLinks = isSalesforce
+            ? [
+                col.links.slice(0, 5),
+                col.links.slice(5),
+              ]
+            : [col.links];
 
           return (
             <div
-              key={index}
-              className="codm-megamenu-column"
+              key={col.title}
+              className={`codm-megamenu-column ${
+                isSalesforce
+                  ? "codm-megamenu-column-salesforce"
+                  : ""
+              }`}
             >
               <div className="codm-megamenu-column-header">
                 <span className="codm-megamenu-icon">
@@ -149,57 +323,47 @@ export default function MegaMenu({
                   <div className="codm-megamenu-column-title">
                     {col.title}
                   </div>
-
-                  {col.description && (
-                    <div className="codm-megamenu-column-description">
-                      {col.description}
-                    </div>
-                  )}
                 </div>
               </div>
 
-              {links.length > 6 ? (
+              {isSalesforce ? (
                 <div className="codm-megamenu-links-split">
-                  {splitLinks.map(
-                    (columnLinks, columnIndex) => (
-                      <ul
-                        key={columnIndex}
-                        className="codm-megamenu-links"
-                      >
-                        {columnLinks.map(
-                          (link, linkIndex) => (
-                            <li key={linkIndex}>
-                              <a
-                                href={link.url}
-                                className="codm-megamenu-link"
-                              >
-                                <span
-                                  className="codm-megamenu-link-dot"
-                                  aria-hidden="true"
-                                />
+                  {splitLinks.map((columnLinks, columnIndex) => (
+                    <ul
+                      key={columnIndex}
+                      className="codm-megamenu-links"
+                    >
+                      {columnLinks.map((link) => (
+                        <li key={link.label}>
+                          <a
+                            href={link.url}
+                            className="codm-megamenu-link"
+                          >
+                            <span
+                              className="codm-megamenu-link-dot"
+                              aria-hidden="true"
+                            />
 
-                                <span className="codm-megamenu-link-text">
-                                  {link.label}
-                                </span>
+                            <span className="codm-megamenu-link-text">
+                              {link.label}
+                            </span>
 
-                                <span
-                                  className="codm-megamenu-link-arrow"
-                                  aria-hidden="true"
-                                >
-                                  ›
-                                </span>
-                              </a>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )
-                  )}
+                            <span
+                              className="codm-megamenu-link-arrow"
+                              aria-hidden="true"
+                            >
+                              ›
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
                 </div>
               ) : (
                 <ul className="codm-megamenu-links">
-                  {links.map((link, linkIndex) => (
-                    <li key={linkIndex}>
+                  {col.links.map((link) => (
+                    <li key={link.label}>
                       <a
                         href={link.url}
                         className="codm-megamenu-link"
@@ -229,37 +393,40 @@ export default function MegaMenu({
         })}
       </div>
 
-      {data.bannerTitle && (
-        <div className="codm-megamenu-banner">
-          <div className="codm-megamenu-banner-left">
-            {data.bannerLabel && (
-              <span className="codm-megamenu-banner-label">
-                {data.bannerLabel}
-              </span>
-            )}
+      <div className="codm-megamenu-banner">
+        <div className="codm-megamenu-banner-left">
+          <span className="codm-megamenu-banner-label">
+            Government Commercial Agency Supplier
+          </span>
 
+          <div className="codm-megamenu-banner-content">
             <span className="codm-megamenu-banner-title">
-              {data.bannerTitle}
+              G-Cloud 15 · Lot 3: Cloud Support
             </span>
 
-            {data.bannerDescription && (
-              <span className="codm-megamenu-banner-description">
-                {data.bannerDescription}
-              </span>
-            )}
+            <span className="codm-megamenu-banner-description">
+              Salesforce, AI, integration, data and cloud
+              application services for the public sector
+            </span>
           </div>
-
-          {data.bannerButtonText && (
-            <a
-              href={data.bannerButtonUrl || "#"}
-              className="codm-megamenu-banner-button"
-            >
-              <span>{data.bannerButtonText}</span>
-              <span aria-hidden="true">→</span>
-            </a>
-          )}
         </div>
-      )}
+
+        <a
+          href={`${BASE_URL}/services/technical-support`}
+          className="codm-megamenu-banner-button"
+        >
+          <span>Explore G-Cloud 15</span>
+          <span aria-hidden="true">→</span>
+        </a>
+
+        <a
+          href={`${BASE_URL}/services/salesforce-crm`}
+          className="codm-megamenu-all-services"
+        >
+          <span>View all services</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   );
 }
