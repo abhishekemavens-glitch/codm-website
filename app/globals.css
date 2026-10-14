@@ -11822,3 +11822,22 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   height: 100%;
   overflow: hidden;
 }
+
+
+/* Paint the gradient on each word, so it moves with the word's animation */
+.heading-codm-title-gradient,
+.heading-codm-title-gradient.codm-gradient-text {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.heading-codm-title-gradient .codm-word {
+  display: inline-block;
+  background: linear-gradient(90deg, #5b6bff 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
