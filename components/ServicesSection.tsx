@@ -1,11 +1,9 @@
+
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
-
-
 
 type Service = {
   id: string;
@@ -21,10 +19,12 @@ type Service = {
   } | null;
 };
 
+const WORDPRESS_GRAPHQL_URL = "/api/wordpress";
+
 /* =========================================================
    FALLBACK SERVICE ICONS
-   Used only when no Featured Image exists in WordPress.
-   ========================================================= */
+   Used when no Featured Image exists in WordPress.
+========================================================= */
 
 function ServiceIcon({ type }: { type: string }) {
   const common =
@@ -132,33 +132,17 @@ function ServiceIcon({ type }: { type: string }) {
 
 /* =========================================================
    SERVICES SECTION
-   ========================================================= */
+   Antigravity background animation removed.
+========================================================= */
 
 export default function ServicesSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [inView, setInView] = useState(false);
-
-  /* Pause the particle animation while the section is off-screen */
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0 }
-    );
-    io.observe(el);
-
-    return () => io.disconnect();
-  }, []);
 
   /* =======================================================
      LOAD SERVICES FROM WORDPRESS
-     ======================================================= */
+  ======================================================= */
 
   useEffect(() => {
     async function loadServices() {
@@ -166,7 +150,7 @@ export default function ServicesSection() {
         setLoading(true);
         setError("");
 
-        const response = await fetch("/api/wordpress", {
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -203,7 +187,9 @@ export default function ServicesSection() {
         });
 
         if (!response.ok) {
-          throw new Error(`WordPress request failed: ${response.status}`);
+          throw new Error(
+            `WordPress request failed: ${response.status}`
+          );
         }
 
         const result = await response.json();
@@ -213,7 +199,8 @@ export default function ServicesSection() {
           throw new Error("Could not load Services.");
         }
 
-        const nodes = result?.data?.services?.nodes ?? [];
+        const nodes: Service[] =
+          result?.data?.services?.nodes ?? [];
 
         setServices(nodes);
       } catch (err) {
@@ -229,7 +216,6 @@ export default function ServicesSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="services"
       className="
         relative
@@ -242,41 +228,8 @@ export default function ServicesSection() {
         md:py-[86px]
       "
     >
-      {/* Antigravity particle background (follows the cursor over the section) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden="true"
-      >
-        <Antigravity
-          eventSource={sectionRef}
-          paused={!inView}
-          count={260}
-          magnetRadius={9}
-          ringRadius={9}
-          waveSpeed={0.4}
-          waveAmplitude={1}
-          particleSize={1.3}
-          lerpSpeed={0.1}
-          color="#7C5CFF"
-          autoAnimate={true}
-          particleVariance={1}
-          rotationSpeed={0}
-          depthFactor={1}
-          pulseSpeed={3}
-          particleShape="capsule"
-          fieldStrength={10}
-        />
-      </div>
-
-      <div
-        className="
-          relative
-          z-10
-          mx-auto
-          max-w-[1060px]
-          px-6
-        "
-      >
+      <div className="relative z-10 mx-auto max-w-[1060px] px-6">
+        {/* SECTION HEADING */}
         <Reveal distance={20}>
           <SectionHeading
             eyebrow="What We Do"
@@ -289,7 +242,9 @@ export default function ServicesSection() {
         {/* LOADING */}
         {loading && (
           <div className="flex min-h-[300px] items-center justify-center">
-            <p className="text-sm text-[var(--muted)]">Loading services...</p>
+            <p className="text-sm text-[var(--muted)]">
+              Loading services...
+            </p>
           </div>
         )}
 
@@ -367,13 +322,10 @@ export default function ServicesSection() {
                       <img
                         src={service.featuredImage.node.sourceUrl}
                         alt={
-                          service.featuredImage.node.altText || service.title
+                          service.featuredImage.node.altText ||
+                          service.title
                         }
-                        className="
-                          h-[28px]
-                          w-[28px]
-                          object-contain
-                        "
+                        className="h-[28px] w-[28px] object-contain"
                       />
                     ) : (
                       <ServiceIcon type={service.icon} />
@@ -443,8 +395,13 @@ export default function ServicesSection() {
           >
             Discuss your roadmap
 
-            <span className="codm-cta-arrow " aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <span className="codm-cta-arrow" aria-hidden="true">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+              >
                 <path
                   d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
                   stroke="currentColor"
