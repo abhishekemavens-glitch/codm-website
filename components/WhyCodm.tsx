@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal"; 
 import MoltenMetal from "@/components/MoltenMetal";
 
 type WhyCodmItem = {
