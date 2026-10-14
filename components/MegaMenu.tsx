@@ -1,3 +1,4 @@
+
 "use client";
 
 type MegaMenuColumn = {
@@ -44,7 +45,7 @@ const ICONS: Record<string, string> = {
   sparkle: "✦",
   code: "</>",
   database: "🗄",
-  integration: "⇄", 
+  integration: "⇄",
   support: "◎",
 };
 
@@ -61,25 +62,78 @@ export default function MegaMenu({
     return null;
   }
 
+  // Updated CODM service links
+  const serviceLinks: Record<string, string> = {
+    "Salesforce CRM":
+      "https://codm-frontend.vercel.app/services/salesforce-crm",
+
+    "Energy Utilities & Cloud":
+      "https://codm-frontend.vercel.app/services/energy-utilities-cloud",
+
+    "Non Profit Cloud":
+      "https://codm-frontend.vercel.app/services/non-profit-cloud",
+
+    "Manufacturing Cloud":
+      "https://codm-frontend.vercel.app/services/manufacturing-cloud",
+
+    "Marketing Cloud":
+      "https://codm-frontend.vercel.app/services/marketing-cloud",
+
+    "Data Integration/Migration":
+      "https://codm-frontend.vercel.app/services/data-integration-migration",
+
+    "Data Integration":
+      "https://codm-frontend.vercel.app/services/data-integration-migration",
+
+    "Data Migration":
+      "https://codm-frontend.vercel.app/services/data-integration-migration",
+
+    "API Integration":
+      "https://codm-frontend.vercel.app/services/api-integration",
+
+    "CRM Development":
+      "https://codm-frontend.vercel.app/services/salesforce-crm",
+
+    "Building LLM":
+      "https://codm-frontend.vercel.app/services/building-llm",
+
+    ".NET Application":
+      "https://codm-frontend.vercel.app/services/net-application",
+
+    "React Application":
+      "https://codm-frontend.vercel.app/services/react-application",
+
+    "Python Application":
+      "https://codm-frontend.vercel.app/services/python-application",
+
+    "Technical Support":
+      "https://codm-frontend.vercel.app/services/technical-support",
+  };
+
   return (
     <div
-  className="codm-megamenu"
-  onMouseEnter={onMouseEnter}
-  onMouseLeave={onMouseLeave}
->
+      className="codm-megamenu"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div className="codm-megamenu-columns">
         {data.columns.map((col, index) => {
           if (!col.title) return null;
 
-          const links = parseMegaMenuLinks(col.links);
+          const links = parseMegaMenuLinks(col.links).map((link) => ({
+            ...link,
+            url:
+              serviceLinks[link.label] ||
+              link.url,
+          }));
 
-const splitLinks =
-  links.length > 6
-    ? [
-        links.slice(0, Math.ceil(links.length / 2)),
-        links.slice(Math.ceil(links.length / 2)),
-      ]
-    : [links];
+          const splitLinks =
+            links.length > 6
+              ? [
+                  links.slice(0, Math.ceil(links.length / 2)),
+                  links.slice(Math.ceil(links.length / 2)),
+                ]
+              : [links];
 
           return (
             <div
@@ -105,67 +159,71 @@ const splitLinks =
               </div>
 
               {links.length > 6 ? (
-  <div className="codm-megamenu-links-split">
-    {splitLinks.map((columnLinks, columnIndex) => (
-      <ul
-        key={columnIndex}
-        className="codm-megamenu-links"
-      >
-        {columnLinks.map((link, linkIndex) => (
-          <li key={linkIndex}>
-            <a
-              href={link.url}
-              className="codm-megamenu-link"
-            >
-              <span
-                className="codm-megamenu-link-dot"
-                aria-hidden="true"
-              />
+                <div className="codm-megamenu-links-split">
+                  {splitLinks.map(
+                    (columnLinks, columnIndex) => (
+                      <ul
+                        key={columnIndex}
+                        className="codm-megamenu-links"
+                      >
+                        {columnLinks.map(
+                          (link, linkIndex) => (
+                            <li key={linkIndex}>
+                              <a
+                                href={link.url}
+                                className="codm-megamenu-link"
+                              >
+                                <span
+                                  className="codm-megamenu-link-dot"
+                                  aria-hidden="true"
+                                />
 
-              <span className="codm-megamenu-link-text">
-                {link.label}
-              </span>
+                                <span className="codm-megamenu-link-text">
+                                  {link.label}
+                                </span>
 
-              <span
-                className="codm-megamenu-link-arrow"
-                aria-hidden="true"
-              >
-                ›
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    ))}
-  </div>
-) : (
-  <ul className="codm-megamenu-links">
-    {links.map((link, linkIndex) => (
-      <li key={linkIndex}>
-        <a
-          href={link.url}
-          className="codm-megamenu-link"
-        >
-          <span
-            className="codm-megamenu-link-dot"
-            aria-hidden="true"
-          />
+                                <span
+                                  className="codm-megamenu-link-arrow"
+                                  aria-hidden="true"
+                                >
+                                  ›
+                                </span>
+                              </a>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    )
+                  )}
+                </div>
+              ) : (
+                <ul className="codm-megamenu-links">
+                  {links.map((link, linkIndex) => (
+                    <li key={linkIndex}>
+                      <a
+                        href={link.url}
+                        className="codm-megamenu-link"
+                      >
+                        <span
+                          className="codm-megamenu-link-dot"
+                          aria-hidden="true"
+                        />
 
-          <span className="codm-megamenu-link-text">
-            {link.label}
-          </span>
+                        <span className="codm-megamenu-link-text">
+                          {link.label}
+                        </span>
 
-          <span
-            className="codm-megamenu-link-arrow"
-            aria-hidden="true"
-          >
-            ›
-          </span>
-        </a>
-      </li>
-    ))}
-  </ul>
-)}
+                        <span
+                          className="codm-megamenu-link-arrow"
+                          aria-hidden="true"
+                        >
+                          ›
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           );
         })}
@@ -197,10 +255,7 @@ const splitLinks =
               className="codm-megamenu-banner-button"
             >
               <span>{data.bannerButtonText}</span>
-
-              <span aria-hidden="true">
-                →
-              </span>
+              <span aria-hidden="true">→</span>
             </a>
           )}
         </div>
