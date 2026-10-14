@@ -12297,3 +12297,74 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     justify-content: center;
   }
 }
+
+/* =========================================================
+   MEGA MENU FINAL OVERRIDES (keep at the very bottom)
+   ========================================================= */
+
+.codm-megamenu.codm-megamenu {
+  width: min(1400px, calc(100vw - 48px)) !important;
+  max-width: none !important;
+  padding: 34px 40px 30px !important;
+}
+
+/* Column proportions and spacing */
+.codm-megamenu.codm-megamenu .codm-megamenu-columns {
+  grid-template-columns:
+    minmax(0, 2.3fr)
+    minmax(0, 1.1fr)
+    minmax(0, 1.2fr)
+    minmax(0, 1fr) !important;
+  padding-bottom: 28px !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-column {
+  padding: 0 28px !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-column:first-child {
+  padding-left: 0 !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-column:last-child {
+  padding-right: 0 !important;
+}
+
+/* Links: no clipping, arrow pushed to the right edge */
+.codm-megamenu.codm-megamenu .codm-megamenu-link {
+  overflow: visible !important;
+  padding: 10px 12px !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-link-text {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-link-arrow {
+  margin-left: auto !important;
+  padding-left: 8px;
+}
+
+/* Banner typography (matches the design) */
+.codm-megamenu.codm-megamenu .codm-megamenu-banner-label {
+  width: 170px !important;
+  font-size: 17px !important;
+  line-height: 1.15 !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-banner-title {
+  font-size: 22px !important;
+  line-height: 1.3 !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-banner-description {
+  font-size: 14.5px !important;
+  line-height: 1.55 !important;
+}
+
+.codm-megamenu.codm-megamenu .codm-megamenu-banner-button {
+  font-size: 18px !important;
+}
+
