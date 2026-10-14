@@ -7652,13 +7652,13 @@ img.codm-footer-logo {
   min-width: 180px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 4px 14px;
   color: #9ca3af;
   background: #fafafa;
 }
 
 .case-studies-search span {
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .case-studies-search input {
