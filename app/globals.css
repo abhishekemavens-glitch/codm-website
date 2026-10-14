@@ -11926,346 +11926,108 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 
 
 
-/* Mega Menu: screenshot-inspired layout */
+/* =========================================================
+   CODM MEGA MENU (single source of truth)
+   ========================================================= */
+
 .codm-megamenu {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  width: min(1240px, calc(100vw - 60px));
-  box-sizing: border-box;
-  padding: 28px 36px 24px;
-  background: #fff;
-  border: 1px solid #eee9ff;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 22px 55px rgba(35, 25, 75, 0.12);
-  color: #111827;
-}
-
-.codm-megamenu-columns {
-  display: grid;
-  grid-template-columns: minmax(0, 2.8fr) minmax(120px, 1fr)
-    minmax(150px, 1.1fr) minmax(140px, 1fr);
-  gap: 32px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid #e8e3f7;
-}
-
-.codm-megamenu-column {
-  min-width: 0;
-}
-
-.codm-megamenu-column-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 27px;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #e8e3f7;
-  color: #7350ff;
-}
-
-.codm-megamenu-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-}
-
-.codm-megamenu-column-title {
-  font-size: 13px;
-  font-weight: 750;
-  letter-spacing: 0.7px;
-}
-
-.codm-megamenu-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
-}
-
-.codm-megamenu-links li {
-  margin: 0;
-  padding: 0;
-}
-
-.codm-megamenu-links-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 24px;
-}
-
-.codm-megamenu-link {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 8px 0;
-  color: #111827;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-.codm-megamenu-link:hover {
-  color: #7350ff;
-}
-
-.codm-megamenu-link-dot {
-  display: none;
-}
-
-.codm-megamenu-link-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.codm-megamenu-link-arrow {
-  opacity: 0;
-  color: #7350ff;
-  transition: opacity 0.2s ease;
-}
-
-.codm-megamenu-link:hover .codm-megamenu-link-arrow {
-  opacity: 1;
-}
-
-/* G-Cloud promotional banner */
-.codm-megamenu-banner {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-top: 18px;
-  min-width: 0;
-}
-
-.codm-megamenu-banner-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex: 1;
-  min-width: 0;
-  padding: 15px 20px;
-  border: 1px solid #e7ddff;
-  border-radius: 15px;
-  background: linear-gradient(105deg, #f8f5ff, #fff 70%, #f5f1ff);
-}
-
-.codm-megamenu-banner-label {
-  flex: 0 0 42px;
-  max-width: 42px;
-  padding-left: 7px;
-  border-left: 1px solid #777;
-  color: #333;
-  font-size: 8px;
-  line-height: 1.15;
-}
-
-.codm-megamenu-banner-content {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-  flex: 1;
-}
-
-.codm-megamenu-banner-title {
-  color: #171b2b;
-  font-size: 15px;
-  font-weight: 750;
-  line-height: 1.4;
-}
-
-.codm-megamenu-banner-description {
-  color: #4b5568;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.codm-megamenu-banner-button,
-.codm-megamenu-all-services {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex-shrink: 0;
-  padding: 13px 18px;
-  color: #7350ff;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.codm-megamenu-all-services {
-  border: 1px solid #cfc0ff;
-  border-radius: 13px;
-}
-
-/* Tablet */
-@media (max-width: 1000px) {
-  .codm-megamenu {
-    width: calc(100vw - 32px);
-    padding: 24px;
-  }
-
-  .codm-megamenu-columns {
-    grid-template-columns: minmax(0, 2fr) minmax(100px, 1fr);
-    gap: 24px;
-  }
-
-  .codm-megamenu-banner {
-    flex-wrap: wrap;
-  }
-
-  .codm-megamenu-banner-left {
-    flex-basis: 100%;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .codm-megamenu {
-    position: static;
-    transform: none;
-    width: 100%;
-    max-height: 75vh;
-    overflow-y: auto;
-    padding: 20px;
-    border-radius: 0 0 16px 16px;
-  }
-
-  .codm-megamenu-columns {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
-  }
-
-  .codm-megamenu-links-split {
-    gap: 12px;
-  }
-
-  .codm-megamenu-banner {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .codm-megamenu-banner-left {
-    align-items: flex-start;
-    padding: 14px;
-  }
-
-  .codm-megamenu-banner-button,
-  .codm-megamenu-all-services {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-
-
-/* =========================================
-   CODM MEGA MENU — DESKTOP LAYOUT FIX
-========================================= */
-
-.codm-megamenu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
 
   width: min(1240px, calc(100vw - 40px));
-  max-height: calc(100vh - 70px);
+  max-height: calc(100vh - 90px);
   overflow-x: hidden;
   overflow-y: auto;
-
   box-sizing: border-box;
-  padding: 26px 28px 22px;
+  padding: 28px 32px 24px;
 
-  background: #f5f1ff;
+  background: linear-gradient(160deg, #f6f2ff 0%, #ece4ff 100%);
   border: 1px solid #dcd0ff;
   border-radius: 22px;
-  box-shadow: 0 18px 50px rgba(75, 45, 160, 0.12);
-
-  z-index: 1000;
+  box-shadow: 0 18px 50px rgba(75, 45, 160, 0.14);
+  color: #111827;
 }
 
-/* Force all four sections into one desktop row */
+/* ---------- Columns ---------- */
+
 .codm-megamenu .codm-megamenu-columns {
-  display: grid !important;
-
+  display: grid;
   grid-template-columns:
-    minmax(0, 2.15fr)
-    minmax(0, 0.9fr)
-    minmax(0, 1.05fr)
-    minmax(0, 0.9fr) !important;
-
-  align-items: start;
-  gap: 20px;
-
+    minmax(0, 2.2fr)
+    minmax(0, 1fr)
+    minmax(0, 1.15fr)
+    minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch; /* equal-height columns, so dividers run full height */
   width: 100%;
-  padding-bottom: 22px;
+  padding-bottom: 24px;
   border-bottom: 1px solid #e2d9ff;
 }
 
-/* Prevent Support from wrapping to a new row */
 .codm-megamenu .codm-megamenu-column {
-  display: block;
   min-width: 0;
-  width: 100%;
-  grid-column: auto;
-  align-self: start;
+  padding: 0 28px;
 }
 
-/* Section headings */
+.codm-megamenu .codm-megamenu-column:first-child {
+  padding-left: 0;
+}
+
+.codm-megamenu .codm-megamenu-column:last-child {
+  padding-right: 0;
+}
+
+.codm-megamenu .codm-megamenu-column + .codm-megamenu-column {
+  border-left: 1px solid #e0d6ff;
+}
+
+/* ---------- Column header ---------- */
+
 .codm-megamenu .codm-megamenu-column-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-
+  gap: 12px;
   min-height: 52px;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   padding: 0 0 12px;
-
   border-bottom: 1px solid #e3d9ff;
   color: #171326;
 }
 
-/* Keep icons compact */
 .codm-megamenu .codm-megamenu-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   flex: 0 0 40px;
   width: 40px;
   height: 40px;
-
   border: 1px solid #b8a1ff;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.45);
-
+  background: rgba(255, 255, 255, 0.5);
   color: #7350ff;
-  font-size: 19px;
+  font-size: 18px;
 }
 
-/* Heading typography */
 .codm-megamenu .codm-megamenu-column-title {
-  font-size: 15px;
-  line-height: 1.35;
-  font-weight: 650;
-  letter-spacing: 0.3px;
-  overflow-wrap: anywhere;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  white-space: nowrap;          /* never break "DEVELOPMENT" mid-word */
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
-/* Salesforce: two link columns inside its main column */
+/* ---------- Links ---------- */
+
 .codm-megamenu .codm-megamenu-links-split {
-  display: grid !important;
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
-  gap: 12px;
+  gap: 24px;
 }
 
 .codm-megamenu .codm-megamenu-links {
@@ -12280,21 +12042,16 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   padding: 0;
 }
 
-/* Service links */
 .codm-megamenu .codm-megamenu-link {
   display: flex;
   align-items: flex-start;
-  gap: 5px;
-
-  padding: 8px 0;
-
+  gap: 6px;
+  padding: 7px 0;
   color: #111827;
-  text-decoration: none;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 450;
-  line-height: 1.5;
-
-  overflow-wrap: anywhere;
+  line-height: 1.45;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
@@ -12302,69 +12059,68 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   color: #7350ff;
 }
 
+.codm-megamenu .codm-megamenu-link-dot {
+  display: none;
+}
+
 .codm-megamenu .codm-megamenu-link-text {
   flex: 1;
   min-width: 0;
-}
-
-.codm-megamenu .codm-megamenu-link-dot {
-  display: none;
 }
 
 .codm-megamenu .codm-megamenu-link-arrow {
   flex: 0 0 auto;
   opacity: 0;
   color: #7350ff;
+  transition: opacity 0.2s ease;
 }
 
-.codm-megamenu .codm-megamenu-link:hover
-.codm-megamenu-link-arrow {
+.codm-megamenu .codm-megamenu-link:hover .codm-megamenu-link-arrow {
   opacity: 1;
 }
 
-/* =========================================
-   BOTTOM PROMOTIONAL BANNER
-========================================= */
+/* ---------- Bottom banner ---------- */
 
+/* Outer wrapper: no box of its own (removes the box-inside-a-box) */
 .codm-megamenu .codm-megamenu-banner {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 14px;
-
   width: 100%;
   min-width: 0;
-  margin-top: 18px;
+  margin-top: 20px;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
+/* The one bordered box: label + title + description */
 .codm-megamenu .codm-megamenu-banner-left {
   display: flex;
   align-items: center;
-  gap: 14px;
-
+  justify-content: flex-start !important;
+  gap: 16px;
   flex: 1 1 auto;
   min-width: 0;
-  padding: 14px 16px;
-
+  padding: 14px 18px;
   border: 1px solid #e2d7ff;
   border-radius: 15px;
-
-  background: linear-gradient(
-    110deg,
-    #f7f3ff,
-    #ffffff,
-    #f3edff
-  );
+  background: linear-gradient(110deg, #f7f3ff, #ffffff, #f3edff);
 }
 
 .codm-megamenu .codm-megamenu-banner-label {
-  flex: 0 0 42px;
-  max-width: 42px;
-
-  padding-left: 6px;
+  display: block;
+  flex: 0 0 auto;
+  width: auto !important;
+  max-width: 92px;
+  margin: 0 !important;
+  padding-left: 8px;
   border-left: 1px solid #888;
-
-  font-size: 8px;
-  line-height: 1.2;
+  color: #333;
+  font-size: 8.5px;
+  line-height: 1.25;
+  text-align: left;
 }
 
 .codm-megamenu .codm-megamenu-banner-content {
@@ -12376,43 +12132,58 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 }
 
 .codm-megamenu .codm-megamenu-banner-title {
+  color: #171b2b;
   font-size: 14px;
-  line-height: 1.4;
   font-weight: 700;
+  line-height: 1.4;
 }
 
 .codm-megamenu .codm-megamenu-banner-description {
+  color: #4b5568;
   font-size: 12px;
   line-height: 1.5;
 }
 
+/* Buttons */
 .codm-megamenu .codm-megamenu-banner-button,
 .codm-megamenu .codm-megamenu-all-services {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-
+  gap: 8px;
   flex: 0 0 auto;
-  padding: 12px 15px;
-
+  padding: 12px 18px;
   border-radius: 12px;
-  color: #7350ff;
-
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 650;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.codm-megamenu .codm-megamenu-all-services {
-  border: 1px solid #c9b8ff;
-  background: #fff;
+/* "Explore G-Cloud 15": filled purple, WHITE text */
+.codm-megamenu .codm-megamenu-banner-button {
+  background: linear-gradient(135deg, #7c5cff, #5a3df0) !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  box-shadow: 0 8px 20px rgba(90, 61, 240, 0.25) !important;
 }
 
-/* =========================================
-   TABLET
-========================================= */
+.codm-megamenu .codm-megamenu-banner-button:hover {
+  filter: brightness(1.06);
+}
+
+/* "View all services": white with purple outline */
+.codm-megamenu .codm-megamenu-all-services {
+  background: #ffffff;
+  color: #7350ff;
+  border: 1px solid #c9b8ff;
+}
+
+.codm-megamenu .codm-megamenu-all-services:hover {
+  background: #f5f1ff;
+}
+
+/* ---------- Tablet ---------- */
 
 @media (max-width: 1050px) {
   .codm-megamenu {
@@ -12421,9 +12192,18 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   }
 
   .codm-megamenu .codm-megamenu-columns {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
+  }
+
+  .codm-megamenu .codm-megamenu-column,
+  .codm-megamenu .codm-megamenu-column:first-child,
+  .codm-megamenu .codm-megamenu-column:last-child {
+    padding: 0;
+  }
+
+  .codm-megamenu .codm-megamenu-column + .codm-megamenu-column {
+    border-left: 0;
   }
 
   .codm-megamenu .codm-megamenu-banner {
@@ -12435,9 +12215,7 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   }
 }
 
-/* =========================================
-   MOBILE
-========================================= */
+/* ---------- Mobile ---------- */
 
 @media (max-width: 600px) {
   .codm-megamenu {
@@ -12445,17 +12223,15 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     left: auto;
     top: auto;
     transform: none;
-
     width: 100%;
     max-height: 75vh;
     overflow-y: auto;
-
     padding: 18px;
     border-radius: 0 0 18px 18px;
   }
 
   .codm-megamenu .codm-megamenu-columns {
-    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
   }
 
@@ -12472,6 +12248,7 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   .codm-megamenu .codm-megamenu-banner-left {
     flex-basis: auto;
     align-items: flex-start;
+    padding: 14px;
   }
 
   .codm-megamenu .codm-megamenu-banner-button,
