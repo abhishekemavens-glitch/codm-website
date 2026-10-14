@@ -143,8 +143,8 @@ function SalesforceIcon() {
     <img
       src="https://lightyellow-echidna-411021.hostingersite.com/wp-content/uploads/2026/08/image-257.png"
       alt="Salesforce"
-      width={26}
-      height={26}
+      width={45}
+      height={45}
       style={{ display: "block", objectFit: "contain" }}
     />
   );
@@ -158,8 +158,8 @@ function SalesforceIcon() {
 function AiIcon() {
   return (
     <svg
-      width="26"
-      height="26"
+      width="45"
+      height="45"
       viewBox="0 0 26 26"
       fill="none"
       aria-hidden="true"
