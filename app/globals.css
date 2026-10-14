@@ -11819,3 +11819,11 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 }
 
 
+
+
+.molten-metal-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
