@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import MoltenMetal from "@/components/MoltenMetal";
 
 type Service = {
   id: string;
@@ -17,8 +18,6 @@ type Service = {
     } | null;
   } | null;
 };
-
-
 
 /* =========================================================
    FALLBACK SERVICE ICONS
@@ -75,14 +74,8 @@ function ServiceIcon({ type }: { type: string }) {
         className={common}
       >
         <ellipse cx="12" cy="5" rx="7" ry="3" />
-
-        <path
-          d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5"
-        />
-
-        <path
-          d="M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"
-        />
+        <path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5" />
+        <path d="M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7" />
       </svg>
     );
   }
@@ -96,16 +89,8 @@ function ServiceIcon({ type }: { type: string }) {
         strokeWidth="1.5"
         className={common}
       >
-        <rect
-          x="6"
-          y="6"
-          width="12"
-          height="12"
-          rx="2"
-        />
-
+        <rect x="6" y="6" width="12" height="12" rx="2" />
         <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" />
-
         <path d="M10 10h4v4h-4z" />
       </svg>
     );
@@ -121,23 +106,10 @@ function ServiceIcon({ type }: { type: string }) {
         className={common}
       >
         <circle cx="7" cy="15" r="2.5" />
-
         <circle cx="17" cy="9" r="2.5" />
-
-        <path
-          d="M9.2 13.7 14.8 10.3"
-          strokeLinecap="round"
-        />
-
-        <path
-          d="M7 12V7"
-          strokeLinecap="round"
-        />
-
-        <path
-          d="M17 12v5"
-          strokeLinecap="round"
-        />
+        <path d="M9.2 13.7 14.8 10.3" strokeLinecap="round" />
+        <path d="M7 12V7" strokeLinecap="round" />
+        <path d="M17 12v5" strokeLinecap="round" />
       </svg>
     );
   }
@@ -150,35 +122,23 @@ function ServiceIcon({ type }: { type: string }) {
       strokeWidth="1.5"
       className={common}
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="8"
-      />
-
-      <path
-        d="M8 12h8M12 8v8"
-        strokeLinecap="round"
-      />
+      <circle cx="12" cy="12" r="8" />
+      <path d="M8 12h8M12 8v8" strokeLinecap="round" />
     </svg>
   );
 }
-
 
 /* =========================================================
    SERVICES SECTION
    ========================================================= */
 
 export default function ServicesSection() {
-  const [services, setServices] =
-    useState<Service[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [loading, setLoading] =
-    useState(true);
-
-  const [error, setError] =
-    useState("");
-
+  // Only the hovered/focused card mounts a MoltenMetal canvas
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   /* =======================================================
      LOAD SERVICES FROM WORDPRESS
@@ -190,94 +150,59 @@ export default function ServicesSection() {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-  "/api/wordpress",
-  {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({
-              query: `
-                query GetServices {
-
-                  services(
-                    first: 20
-                    where: {
-                      orderby: {
-                        field: DATE
-                        order: ASC
-                      }
+        const response = await fetch("/api/wordpress", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query GetServices {
+                services(
+                  first: 20
+                  where: {
+                    orderby: {
+                      field: DATE
+                      order: ASC
                     }
-                  ) {
-
-                    nodes {
-
-                      id
-                      databaseId
-                      title
-                      content
-                      icon
-
-                      featuredImage {
-                        node {
-                          sourceUrl
-                          altText
-                        }
-                      }
-
-                    }
-
                   }
-
+                ) {
+                  nodes {
+                    id
+                    databaseId
+                    title
+                    content
+                    icon
+                    featuredImage {
+                      node {
+                        sourceUrl
+                        altText
+                      }
+                    }
+                  }
                 }
-              `,
-            }),
-          }
-        );
+              }
+            `,
+          }),
+        });
 
         if (!response.ok) {
-          throw new Error(
-            `WordPress request failed: ${response.status}`
-          );
+          throw new Error(`WordPress request failed: ${response.status}`);
         }
 
-        const result =
-          await response.json();
-
-        console.log(
-          "SERVICES DATA:",
-          result
-        );
+        const result = await response.json();
 
         if (result.errors) {
-          console.error(
-            "Services GraphQL Error:",
-            result.errors
-          );
-
-          throw new Error(
-            "Could not load Services."
-          );
+          console.error("Services GraphQL Error:", result.errors);
+          throw new Error("Could not load Services.");
         }
 
-        const nodes =
-          result?.data?.services?.nodes ?? [];
+        const nodes = result?.data?.services?.nodes ?? [];
 
         setServices(nodes);
-
       } catch (err) {
-        console.error(
-          "Failed to load Services:",
-          err
-        );
-
-        setError(
-          "Unable to load Services."
-        );
-
+        console.error("Failed to load Services:", err);
+        setError("Unable to load Services.");
       } finally {
         setLoading(false);
       }
@@ -285,7 +210,6 @@ export default function ServicesSection() {
 
     loadServices();
   }, []);
-
 
   return (
     <section
@@ -299,7 +223,6 @@ export default function ServicesSection() {
         md:py-[86px]
       "
     >
-
       <div
         className="
           mx-auto
@@ -307,161 +230,117 @@ export default function ServicesSection() {
           px-6
         "
       >
+        <Reveal distance={20}>
+          <SectionHeading
+            eyebrow="What We Do"
+            title="Engineering the systems that run"
+            gradientText="modern enterprises."
+            description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+          />
+        </Reveal>
 
-    <Reveal distance={20}>
-  <SectionHeading
-    eyebrow="What We Do"
-    title="Engineering the systems that run"
-    gradientText="modern enterprises."
-    description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
-  />
-</Reveal>
-
-        {/* =================================================
-            LOADING
-            ================================================= */}
-
+        {/* LOADING */}
         {loading && (
-
-          <div
-            className="
-              flex
-              min-h-[300px]
-              items-center
-              justify-center
-            "
-          >
-
-            <p
-              className="
-                text-sm
-                text-[var(--muted)]
-              "
-            >
-              Loading services...
-            </p>
-
+          <div className="flex min-h-[300px] items-center justify-center">
+            <p className="text-sm text-[var(--muted)]">Loading services...</p>
           </div>
-
         )}
 
-
-        {/* =================================================
-            ERROR
-            ================================================= */}
-
+        {/* ERROR */}
         {!loading && error && (
-
-          <div
-            className="
-              flex
-              min-h-[300px]
-              items-center
-              justify-center
-            "
-          >
-
-            <p
-              className="
-                text-sm
-                text-red-400
-              "
-            >
-              {error}
-            </p>
-
+          <div className="flex min-h-[300px] items-center justify-center">
+            <p className="text-sm text-red-400">{error}</p>
           </div>
-
         )}
 
+        {/* EMPTY */}
+        {!loading && !error && services.length === 0 && (
+          <div className="flex min-h-[300px] items-center justify-center">
+            <p className="text-sm text-[var(--muted)]">
+              No services have been published in WordPress.
+            </p>
+          </div>
+        )}
 
-        {/* =================================================
-            EMPTY
-            ================================================= */}
-
-        {!loading &&
-          !error &&
-          services.length === 0 && (
-
-            <div
-              className="
-                flex
-                min-h-[300px]
-                items-center
-                justify-center
-              "
-            >
-
-              <p
-                className="
-                  text-sm
-                  text-[var(--muted)]
-                "
-              >
-                No services have been published in WordPress.
-              </p>
-
-            </div>
-
-          )}
-
-
-        {/* =================================================
-            SERVICES
-            ================================================= */}
-
-                    {/* =================================================
-            SERVICES
-            ================================================= */}
-
-        {!loading &&
-          !error &&
-          services.length > 0 && (
-            <Stagger
-              className="
-                mt-9
-                grid
-                w-full
-                grid-cols-1
-                gap-4
-                sm:grid-cols-2
-                lg:grid-cols-3
-              "
-            >
-              {services.map((service) => (
-                <StaggerItem
-                  key={service.id}
-                  className="h-full"
+        {/* SERVICES */}
+        {!loading && !error && services.length > 0 && (
+          <Stagger
+            className="
+              mt-9
+              grid
+              w-full
+              grid-cols-1
+              gap-4
+              sm:grid-cols-2
+              lg:grid-cols-3
+            "
+          >
+            {services.map((service) => (
+              <StaggerItem key={service.id} className="h-full">
+                <article
+                  onMouseEnter={() => setActiveId(service.id)}
+                  onMouseLeave={() => setActiveId(null)}
+                  onFocus={() => setActiveId(service.id)}
+                  onBlur={() => setActiveId(null)}
+                  className="
+                    group
+                    relative
+                    isolate
+                    h-full
+                    min-h-[166px]
+                    w-full
+                    overflow-hidden
+                    rounded-[18px]
+                    border
+                    border-[var(--border)]
+                    bg-[var(--surface)]
+                    px-[22px]
+                    py-[22px]
+                    transition-all
+                    duration-500
+                    ease-out
+                    hover:-translate-y-[2px]
+                    hover:border-[var(--accent)]/40
+                    hover:bg-gradient-to-br
+                    hover:from-[#11143a]
+                    hover:via-[#24206f]
+                    hover:to-[#5038e8]
+                    hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
+                  "
                 >
-                  <article
+                  {/* Hover animation layer (mounted only for the active card) */}
+                  <div
                     className="
-                      group
-                      h-full
-                      min-h-[166px]
-                      w-full
-                      rounded-[18px]
-                      border
-                      border-[var(--border)]
-                      bg-[var(--surface)]
-                      px-[22px]
-                      py-[22px]
-                      transition-all
-                      duration-500
-                      ease-out
-                      hover:-translate-y-[2px]
-                      hover:border-[var(--accent)]/40
-                      hover:bg-gradient-to-br
-                      hover:from-[#11143a]
-                      hover:via-[#24206f]
-                      hover:to-[#5038e8]
-                      hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
+                      pointer-events-none
+                      absolute
+                      inset-0
+                      z-0
+                      opacity-0
+                      transition-opacity
+                      duration-700
+                      group-hover:opacity-100
+                      group-focus-within:opacity-100
                     "
+                    aria-hidden="true"
                   >
+                    {activeId === service.id && (
+                      <MoltenMetal
+                        color1="#5227FF"
+                        color2="#FF9FFC"
+                        color3="#FFFFFF"
+                        speed={0.5}
+                        scale={4}
+                        detail={3}
+                        glow={1.6}
+                        mouseInteraction={true}
+                        opacity={0.55}
+                      />
+                    )}
+                  </div>
 
-                    {/* =================================================
-                        FEATURED IMAGE / ICON
-                        ================================================= */}
-
+                  {/* Card content */}
+                  <div className="relative z-10">
+                    {/* FEATURED IMAGE / ICON */}
                     <div
                       className="
                         mb-[18px]
@@ -489,16 +368,11 @@ export default function ServicesSection() {
                           "
                         />
                       ) : (
-                        <ServiceIcon
-                          type={service.icon}
-                        />
+                        <ServiceIcon type={service.icon} />
                       )}
                     </div>
 
-                    {/* =================================================
-                        TITLE
-                        ================================================= */}
-
+                    {/* TITLE */}
                     <h3
                       className="
                         text-[14px]
@@ -513,10 +387,7 @@ export default function ServicesSection() {
                       {service.title}
                     </h3>
 
-                    {/* =================================================
-                        DESCRIPTION
-                        ================================================= */}
-
+                    {/* DESCRIPTION */}
                     <div
                       className="
                         mt-[7px]
@@ -532,27 +403,15 @@ export default function ServicesSection() {
                         __html: service.content,
                       }}
                     />
+                  </div>
+                </article>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        )}
 
-                  </article>
-                </StaggerItem>
-              ))}
-            </Stagger>
-
-          )}
-
-
-        {/* =================================================
-            CTA
-            ================================================= */}
-
-        <div
-          className="
-            mt-7
-            flex
-            justify-center
-          "
-        >
-
+        {/* CTA */}
+        <div className="mt-7 flex justify-center">
           <a
             href="/contact"
             className="
@@ -575,23 +434,22 @@ export default function ServicesSection() {
               hover:bg-[var(--accent)]/[0.06]
             "
           >
-
             Discuss your roadmap
 
-     
-
-             <span className="codm-cta-arrow " aria-hidden="true">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-</span>
-
+            <span className="codm-cta-arrow " aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
           </a>
-
         </div>
-
       </div>
-
     </section>
   );
 }
