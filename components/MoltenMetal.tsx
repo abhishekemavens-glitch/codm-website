@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -29,7 +28,7 @@ export default function MoltenMetal({
   className = "",
 }: MoltenMetalProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
- 
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -59,13 +58,22 @@ export default function MoltenMetal({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
+    // Listens on window because the canvas has pointer-events: none,
+    // so it can never receive pointer events itself.
     const onPointerMove = (event: PointerEvent) => {
       if (!mouseInteraction) return;
 
       const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
 
-      target.x = (event.clientX - rect.left) / rect.width;
-      target.y = (event.clientY - rect.top) / rect.height;
+      target.x = Math.min(
+        1,
+        Math.max(0, (event.clientX - rect.left) / rect.width)
+      );
+      target.y = Math.min(
+        1,
+        Math.max(0, (event.clientY - rect.top) / rect.height)
+      );
     };
 
     const drawGlow = (
@@ -157,7 +165,12 @@ export default function MoltenMetal({
         const y = height * (0.5 + 0.3 * Math.cos(phase * 1.3));
 
         const gradient = ctx.createRadialGradient(
-          x, y, 0, x, y, unit * 0.4
+          x,
+          y,
+          0,
+          x,
+          y,
+          unit * 0.4
         );
 
         gradient.addColorStop(0, `${color3}bb`);
@@ -177,7 +190,7 @@ export default function MoltenMetal({
     window.addEventListener("resize", resize);
 
     if (mouseInteraction) {
-      canvas.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointermove", onPointerMove);
     }
 
     animationFrame = window.requestAnimationFrame(render);
@@ -186,7 +199,7 @@ export default function MoltenMetal({
       disposed = true;
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("resize", resize);
-      canvas.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointermove", onPointerMove);
     };
   }, [
     color1,
