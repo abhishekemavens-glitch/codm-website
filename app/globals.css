@@ -11407,12 +11407,12 @@ html[data-theme="light"] .codm-header {
 }
 
 .codm-post-aside {
-  position: sticky !important;
-  top: 130px; /* just under the floating header */
-  align-self: start !important;
-  max-height: calc(100vh - 150px);
-  overflow-y: auto;
-  scrollbar-width: none;
+	scrollbar-width: none;
+	/* max-height: calc(100vh - 150px); */
+	top: 130px;
+	overflow-y: auto;
+	align-self: start !important;
+	position: sticky !important;
 }
 
 .codm-post-aside::-webkit-scrollbar {
