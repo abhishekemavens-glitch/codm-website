@@ -11819,29 +11819,3 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 }
 
 
-
-/
-.why-codm-section {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.why-codm-molten-background {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.why-codm-molten-background canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.why-codm-section > div:not(.why-codm-molten-background) {
-  position: relative;
-  z-index: 10;
-}
-
