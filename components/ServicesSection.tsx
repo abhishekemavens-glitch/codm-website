@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
-import MoltenMetal from "@/components/MoltenMetal";
+
+// three.js is heavy and browser-only, so load it lazily on the client
+const Antigravity = dynamic(() => import("@/components/Antigravity"), {
+  ssr: false,
+});
 
 type Service = {
   id: string;
@@ -133,12 +138,26 @@ function ServiceIcon({ type }: { type: string }) {
    ========================================================= */
 
 export default function ServicesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [inView, setInView] = useState(false);
 
-  // Only the hovered/focused card mounts a MoltenMetal canvas
-  const [activeId, setActiveId] = useState<string | null>(null);
+  /* Pause the particle animation while the section is off-screen */
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(el);
+
+    return () => io.disconnect();
+  }, []);
 
   /* =======================================================
      LOAD SERVICES FROM WORDPRESS
@@ -213,9 +232,12 @@ export default function ServicesSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="
         relative
+        isolate
+        overflow-hidden
         bg-[var(--background)]
         py-[72px]
         transition-colors
@@ -223,8 +245,36 @@ export default function ServicesSection() {
         md:py-[86px]
       "
     >
+      {/* Antigravity particle background (follows the cursor over the section) */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden="true"
+      >
+        <Antigravity
+          eventSource={sectionRef}
+          paused={!inView}
+          count={260}
+          magnetRadius={9}
+          ringRadius={9}
+          waveSpeed={0.4}
+          waveAmplitude={1}
+          particleSize={1.3}
+          lerpSpeed={0.1}
+          color="#7C5CFF"
+          autoAnimate={true}
+          particleVariance={1}
+          rotationSpeed={0}
+          depthFactor={1}
+          pulseSpeed={3}
+          particleShape="capsule"
+          fieldStrength={10}
+        />
+      </div>
+
       <div
         className="
+          relative
+          z-10
           mx-auto
           max-w-[1060px]
           px-6
@@ -278,24 +328,18 @@ export default function ServicesSection() {
             {services.map((service) => (
               <StaggerItem key={service.id} className="h-full">
                 <article
-                  onMouseEnter={() => setActiveId(service.id)}
-                  onMouseLeave={() => setActiveId(null)}
-                  onFocus={() => setActiveId(service.id)}
-                  onBlur={() => setActiveId(null)}
                   className="
                     group
-                    relative
-                    isolate
                     h-full
                     min-h-[166px]
                     w-full
-                    overflow-hidden
                     rounded-[18px]
                     border
                     border-[var(--border)]
-                    bg-[var(--surface)]
+                    bg-[var(--surface)]/70
                     px-[22px]
                     py-[22px]
+                    backdrop-blur-[2px]
                     transition-all
                     duration-500
                     ease-out
@@ -308,102 +352,68 @@ export default function ServicesSection() {
                     hover:shadow-[0_20px_60px_rgba(80,56,232,0.20)]
                   "
                 >
-                  {/* Hover animation layer (mounted only for the active card) */}
+                  {/* FEATURED IMAGE / ICON */}
                   <div
                     className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      z-0
-                      opacity-0
-                      transition-opacity
-                      duration-700
-                      group-hover:opacity-100
-                      group-focus-within:opacity-100
+                      mb-[18px]
+                      flex
+                      h-[28px]
+                      w-[28px]
+                      items-center
+                      justify-start
+                      transition-all
+                      duration-300
+                      group-hover:scale-105
                     "
-                    aria-hidden="true"
                   >
-                    {activeId === service.id && (
-                      <MoltenMetal
-                        color1="#5227FF"
-                        color2="#FF9FFC"
-                        color3="#FFFFFF"
-                        speed={0.5}
-                        scale={4}
-                        detail={3}
-                        glow={1.6}
-                        mouseInteraction={true}
-                        opacity={0.55}
+                    {service.featuredImage?.node?.sourceUrl ? (
+                      <img
+                        src={service.featuredImage.node.sourceUrl}
+                        alt={
+                          service.featuredImage.node.altText || service.title
+                        }
+                        className="
+                          h-[28px]
+                          w-[28px]
+                          object-contain
+                        "
                       />
+                    ) : (
+                      <ServiceIcon type={service.icon} />
                     )}
                   </div>
 
-                  {/* Card content */}
-                  <div className="relative z-10">
-                    {/* FEATURED IMAGE / ICON */}
-                    <div
-                      className="
-                        mb-[18px]
-                        flex
-                        h-[28px]
-                        w-[28px]
-                        items-center
-                        justify-start
-                        transition-all
-                        duration-300
-                        group-hover:scale-105
-                      "
-                    >
-                      {service.featuredImage?.node?.sourceUrl ? (
-                        <img
-                          src={service.featuredImage.node.sourceUrl}
-                          alt={
-                            service.featuredImage.node.altText ||
-                            service.title
-                          }
-                          className="
-                            h-[28px]
-                            w-[28px]
-                            object-contain
-                          "
-                        />
-                      ) : (
-                        <ServiceIcon type={service.icon} />
-                      )}
-                    </div>
+                  {/* TITLE */}
+                  <h3
+                    className="
+                      text-[14px]
+                      font-semibold
+                      tracking-[-0.02em]
+                      text-[var(--foreground)]
+                      transition-colors
+                      duration-300
+                      group-hover:text-white
+                    "
+                  >
+                    {service.title}
+                  </h3>
 
-                    {/* TITLE */}
-                    <h3
-                      className="
-                        text-[14px]
-                        font-semibold
-                        tracking-[-0.02em]
-                        text-[var(--foreground)]
-                        transition-colors
-                        duration-300
-                        group-hover:text-white
-                      "
-                    >
-                      {service.title}
-                    </h3>
-
-                    {/* DESCRIPTION */}
-                    <div
-                      className="
-                        mt-[7px]
-                        max-w-[285px]
-                        text-[11px]
-                        leading-[1.5]
-                        text-[var(--muted)]
-                        transition-colors
-                        duration-300
-                        group-hover:text-white/70
-                      "
-                      dangerouslySetInnerHTML={{
-                        __html: service.content,
-                      }}
-                    />
-                  </div>
+                  {/* DESCRIPTION */}
+                  <div
+                    className="
+                      mt-[7px]
+                      max-w-[285px]
+                      text-[11px]
+                      leading-[1.5]
+                      text-[var(--muted)]
+                      transition-colors
+                      duration-300
+                      group-hover:text-white/70
+                    "
+                    dangerouslySetInnerHTML={{
+                      __html: service.content,
+                    }}
+                  />
                 </article>
               </StaggerItem>
             ))}
