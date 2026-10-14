@@ -11219,12 +11219,27 @@ img.codm-footer-logo {
   }
 }
 
+.intelligence-sect svg {
+	width: 40px;
+	height: 40px;
+}
+.intelligence-sect h3 {
+	color: #475569 !important;
+}
+.intelligence-sect p {
+	font-size: 16px;
+	line-height: 22px;
+}
+.product-feature-grid {
+	margin: 50px 0px 0px;
+}
+
 .product-feature-image-frame {
-  position: relative;
-  padding: 12px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #eceafc, #d9d3fb);
-  box-shadow: 0 30px 60px rgba(79, 70, 229, 0.16);
+	/* background: linear-gradient(135deg,#eceafc,#d9d3fb); */
+	/* border-radius: 20px; */
+	/* padding: 12px; */
+	/* position: relative; */
+	/* box-shadow: 0 30px 60px #4f46e529; */
 }
 
 .product-feature-image-frame img {
