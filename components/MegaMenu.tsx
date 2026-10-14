@@ -20,43 +20,70 @@ type MegaMenuData = {
 };
 
 /* =============================================================
-   SERVICE URL OVERRIDES
-   Matched by link label (ignores case, spaces and punctuation).
-   If a label matches, this URL wins over the WordPress one.
+   COLUMNS DEFINED IN CODE
+   Set USE_CODE_COLUMNS to false to use the WordPress columns.
+   Links without a page yet go to /services until you have the
+   real URL (edit the line, format: Label|url).
    ============================================================= */
+
+const USE_CODE_COLUMNS = true;
 
 const BASE_URL = "https://codm-frontend.vercel.app/services";
 
-const SERVICE_URLS: Record<string, string> = {
-  "Technical Support": `${BASE_URL}/technical-support`,
-  "Python Application": `${BASE_URL}/python-application`,
-  "React Application": `${BASE_URL}/react-application`,
-  ".NET Application": `${BASE_URL}/net-application`,
-  "Building LLM": `${BASE_URL}/building-llm`,
-  "Salesforce CRM": `${BASE_URL}/salesforce-crm`,
-  "Data Integration/Migration": `${BASE_URL}/data-integration-migration`,
-  "Data Integration": `${BASE_URL}/data-integration-migration`,
-  "Data Migration": `${BASE_URL}/data-integration-migration`,
-  "API Integration": `${BASE_URL}/api-integration`,
-  "Energy Utilities & Cloud": `${BASE_URL}/energy-utilities-cloud`,
-  "Salesforce Energy and Utilities Cloud": `${BASE_URL}/energy-utilities-cloud`,
-  "Non Profit Cloud": `${BASE_URL}/non-profit-cloud`,
-  "Salesforce Nonprofit Cloud": `${BASE_URL}/non-profit-cloud`,
-  "Manufacturing Cloud": `${BASE_URL}/manufacturing-cloud`,
-  "Salesforce Manufacturing Cloud": `${BASE_URL}/manufacturing-cloud`,
-  "Marketing Cloud": `${BASE_URL}/marketing-cloud`,
-  "Salesforce Marketing Cloud": `${BASE_URL}/marketing-cloud`,
-};
+const CODE_COLUMNS: MegaMenuColumn[] = [
+  {
+    icon: "cloud",
+    title: "Salesforce CRM",
+    description: "",
+    links: [
+      "Salesforce Education Cloud|/services",
+      "Salesforce Financial Services|/services",
+      "Salesforce Health & Insurance Cloud|/services",
+      "Salesforce Data Cloud|/services",
+      `Salesforce Marketing Cloud|${BASE_URL}/marketing-cloud`,
+      "Salesforce Sales Cloud|/services",
+      "Salesforce Service Cloud|/services",
+      `Salesforce Energy and Utilities Cloud|${BASE_URL}/energy-utilities-cloud`,
+      `Salesforce Manufacturing Cloud|${BASE_URL}/manufacturing-cloud`,
+      `Salesforce Nonprofit Cloud|${BASE_URL}/non-profit-cloud`,
+    ].join("\n"),
+  },
+  {
+    icon: "database",
+    title: "Data",
+    description: "",
+    links: [
+      `API Integration|${BASE_URL}/api-integration`,
+      `Data Integration|${BASE_URL}/data-integration-migration`,
+      `Data Migration|${BASE_URL}/data-integration-migration`,
+    ].join("\n"),
+  },
+  {
+    icon: "code",
+    title: "Development",
+    description: "",
+    links: [
+      "CRM Development|/services",
+      `Building LLM|${BASE_URL}/building-llm`,
+      `.NET Application|${BASE_URL}/net-application`,
+      `React Application|${BASE_URL}/react-application`,
+      `Python Application|${BASE_URL}/python-application`,
+    ].join("\n"),
+  },
+  {
+    icon: "support",
+    title: "Support",
+    description: "",
+    links: [
+      `Technical Support|${BASE_URL}/technical-support`,
+      "Deployment Support|/services",
+    ].join("\n"),
+  },
+];
 
-const normalizeLabel = (label: string) =>
-  label.toLowerCase().replace(/[^a-z0-9]/g, "");
-
-const SERVICE_URL_LOOKUP: Record<string, string> = Object.fromEntries(
-  Object.entries(SERVICE_URLS).map(([label, url]) => [
-    normalizeLabel(label),
-    url,
-  ])
-);
+/* =============================================================
+   LINK PARSING
+   ============================================================= */
 
 export function parseMegaMenuLinks(value: string = "") {
   return value
@@ -66,17 +93,13 @@ export function parseMegaMenuLinks(value: string = "") {
     .map((line) => {
       const pipeIndex = line.indexOf("|");
 
-      const label =
-        pipeIndex === -1 ? line : line.substring(0, pipeIndex).trim();
-
-      const wordpressUrl =
-        pipeIndex === -1
-          ? "#"
-          : line.substring(pipeIndex + 1).trim() || "#";
+      if (pipeIndex === -1) {
+        return { label: line, url: "#" };
+      }
 
       return {
-        label,
-        url: SERVICE_URL_LOOKUP[normalizeLabel(label)] ?? wordpressUrl,
+        label: line.substring(0, pipeIndex).trim(),
+        url: line.substring(pipeIndex + 1).trim() || "#",
       };
     });
 }
@@ -89,6 +112,11 @@ const ICONS: Record<string, string> = {
   integration: "⇄",
   support: "◎",
 };
+
+/* Removes a trailing arrow from WordPress button text, because the
+   component adds its own arrow. */
+const stripTrailingArrow = (text: string) =>
+  text.replace(/\s*[→›»>]+\s*$/, "").trim();
 
 export default function MegaMenu({
   data,
@@ -103,6 +131,8 @@ export default function MegaMenu({
     return null;
   }
 
+  const columns = USE_CODE_COLUMNS ? CODE_COLUMNS : data.columns;
+
   return (
     <div
       className="codm-megamenu"
@@ -110,7 +140,7 @@ export default function MegaMenu({
       onMouseLeave={onMouseLeave}
     >
       <div className="codm-megamenu-columns">
-        {data.columns.map((col, index) => {
+        {columns.map((col, index) => {
           if (!col.title) return null;
 
           const links = parseMegaMenuLinks(col.links);
@@ -227,7 +257,7 @@ export default function MegaMenu({
                 href={data.bannerButtonUrl || "#"}
                 className="codm-megamenu-banner-button"
               >
-                <span>{data.bannerButtonText}</span>
+                <span>{stripTrailingArrow(data.bannerButtonText)}</span>
 
                 <span aria-hidden="true">→</span>
               </a>
