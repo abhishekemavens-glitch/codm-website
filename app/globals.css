@@ -10785,7 +10785,7 @@ img.codm-footer-logo {
 
 .codm-post-author,
 .codm-post-share {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .codm-post-avatar-fallback {
@@ -10813,40 +10813,40 @@ img.codm-footer-logo {
 }
 
 .codm-toc-title {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .codm-toc-list a {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .codm-toc-num {
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .codm-expert-title {
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .codm-expert-field > span {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .codm-expert-field input,
 .codm-expert-field textarea {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .codm-expert-submit {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .codm-expert-error {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .codm-expert-form-success p {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 /* Keep the mobile breakpoints proportionally larger too */
