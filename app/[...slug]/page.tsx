@@ -113,6 +113,7 @@ const PAGES_WITH_CTA = [
   "insights",
   "partner",
   "products",
+   "careers",
 ];
 
 /* =========================================================
