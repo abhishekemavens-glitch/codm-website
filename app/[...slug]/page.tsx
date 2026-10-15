@@ -46,6 +46,7 @@ const PAGES_WITH_TESTIMONIALS = [
   "services",
   "industries",
   "partner",
+  "careers",
 ];
 
 /*
@@ -56,7 +57,7 @@ const PAGES_WITH_BLOG = [
   "services",
   "industries",
   "partner",
-   "products",
+  "products",
 ];
 
 /*
