@@ -2,6 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
+import { Reveal } from "@/components/Reveal";
 
 const GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -260,41 +262,47 @@ export default function CareerValues() {
     return () => controller.abort();
   }, []);
 
+  /* "Working at CODM." -> "Working at" + gradient "CODM." */
+  const headingWords = heading.trim().split(/\s+/);
+  const headingEnd =
+    headingWords.length > 1 ? headingWords[headingWords.length - 1] : "";
+  const headingStart =
+    headingWords.length > 1
+      ? headingWords.slice(0, -1).join(" ")
+      : heading;
+
   return (
     <section
       id="working-at-codm"
-      className="relative overflow-hidden bg-white px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24"
+      className="relative overflow-hidden bg-[var(--background)] px-5 py-16 transition-colors duration-500 sm:px-8 sm:py-20 lg:px-12 lg:py-24"
     >
       <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-violet-100/50 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-sky-100/40 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl">
-        {/* Section heading */}
-        <div className="mb-10 flex flex-col justify-between gap-6 md:mb-14 md:flex-row md:items-end">
-          <div className="max-w-3xl">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-violet-700">
-              Life at CODM
-            </p>
+        {/* Section heading: shared SectionHeading (same eyebrow, font,
+            weight and gradient as every other section) + link on the right */}
+        <Reveal distance={20}>
+          <div className="mb-10 flex flex-col justify-between gap-6 md:mb-14 md:flex-row md:items-start">
+            <SectionHeading
+              align="left"
+              eyebrow="Life at CODM"
+              title={headingStart}
+              gradientText={headingEnd}
+              description={intro}
+            />
 
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-              {heading}
-            </h2>
-
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              {intro}
-            </p>
+            <a
+              href="#open-positions"
+              className="inline-flex w-fit shrink-0 items-center gap-2 text-sm font-medium text-[#6D4AFF] transition-all duration-300 hover:gap-3 md:mt-14"
+            >
+              View Open Positions
+              <span aria-hidden="true" className="text-base">
+                →
+              </span>
+            </a>
           </div>
-
-          <a
-            href="#open-positions"
-            className="inline-flex w-fit shrink-0 items-center gap-2 text-sm font-semibold text-slate-900 transition-colors hover:text-violet-700"
-          >
-            View Open Positions
-            <span aria-hidden="true" className="text-lg">
-              →
-            </span>
-          </a>
-        </div>
+        </Reveal>
 
         {/* Loading state */}
         {loading && (
@@ -351,7 +359,7 @@ export default function CareerValues() {
                         src={imageUrl}
                         alt={imageAlt}
                         loading="lazy"
-                        className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
                       <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/70">
@@ -362,16 +370,13 @@ export default function CareerValues() {
 
                   <div className="relative z-10 flex flex-1 flex-col px-5 pb-6 pt-2 sm:px-6">
                     <div className="mb-2 flex items-center justify-between gap-3">
-                      <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+                      <h3 className="text-xl font-normal leading-tight tracking-[-0.02em] text-slate-900 sm:text-[22px]">
                         {value.title}
                       </h3>
-                      <span className="shrink-0 text-xs font-medium tabular-nums text-slate-400">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
                     </div>
 
                     <div
-                      className="career-value-content text-[13px] leading-[1.65] text-slate-600 sm:text-sm"
+                      className="career-value-content text-[12.5px] leading-[1.6] text-slate-600"
                       dangerouslySetInnerHTML={{
                         __html: value.content || "",
                       }}
@@ -406,35 +411,36 @@ export default function CareerValues() {
         }
 
         .career-value-card {
-          flex: 0 1 250px;
+          flex: 0 1 262px;
           min-width: 0;
-          min-height: 330px;
+          min-height: 360px;
           transform: rotate(0deg);
           transform-origin: center bottom;
+          box-shadow: 0 18px 44px rgba(60, 40, 140, 0.12);
         }
 
         .career-value-card + .career-value-card {
-          margin-left: -38px;
+          margin-left: -52px;
         }
 
         .career-value-card:nth-child(1) {
-          transform: translateY(8px) rotate(-3deg);
+          transform: translateY(14px) rotate(-4deg);
         }
 
         .career-value-card:nth-child(2) {
-          transform: translateY(-3px) rotate(-1.5deg);
+          transform: translateY(2px) rotate(-1.5deg);
         }
 
         .career-value-card:nth-child(3) {
-          transform: translateY(-9px) rotate(0deg);
+          transform: translateY(-4px) rotate(0deg);
         }
 
         .career-value-card:nth-child(4) {
-          transform: translateY(-3px) rotate(1.5deg);
+          transform: translateY(0) rotate(0.6deg);
         }
 
         .career-value-card:nth-child(5) {
-          transform: translateY(8px) rotate(3deg);
+          transform: translateY(8px) rotate(2deg);
         }
 
         .career-value-card:hover {
