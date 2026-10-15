@@ -3,7 +3,8 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 type Service = {
   id: string;
@@ -266,7 +267,7 @@ export default function ServicesSection() {
 
         {/* SERVICES */}
         {!loading && !error && services.length > 0 && (
-          <Stagger
+          <div
             className="
               mt-9
               grid
@@ -277,8 +278,14 @@ export default function ServicesSection() {
               lg:grid-cols-3
             "
           >
-            {services.map((service) => (
-              <StaggerItem key={service.id} className="h-full">
+            {services.map((service, index) => (
+              <AnimateOnScroll
+                key={service.id}
+                animation="fadeInUp"
+                /* 3 columns on desktop: stagger within each row */
+                delay={(index % 3) * 120}
+                className="h-full"
+              >
                 <article
                   className="
                     group
@@ -364,9 +371,9 @@ export default function ServicesSection() {
                     }}
                   />
                 </article>
-              </StaggerItem>
+              </AnimateOnScroll>
             ))}
-          </Stagger>
+          </div>
         )}
 
         {/* CTA */}
