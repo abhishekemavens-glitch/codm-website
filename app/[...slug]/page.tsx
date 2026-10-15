@@ -33,6 +33,7 @@ import TechOverview from "@/components/TechOverview";
 import ProductFeatureSection from "@/components/ProductFeatureSection";
 import PartnerProductExperience from "@/components/PartnerProductExperience";
 import CareerHighlights from "@/components/CareerHighlights";
+import CareerValues from "@/components/CareerValues";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -930,11 +931,17 @@ const showCTA =
           CAREERS PAGE — CAREER HIGHLIGHTS
       ================================================= */}
 
-      {isCareersPage && (
-        <div className="relative z-10">
-          <CareerHighlights />
-        </div>
-      )}
+     {isCareersPage && (
+  <>
+    <div className="relative z-10">
+      <CareerHighlights />
+    </div>
+
+    <div className="relative z-10">
+      <CareerValues />
+    </div>
+  </>
+)}
 
 
        
