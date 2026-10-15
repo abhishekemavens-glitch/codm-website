@@ -47,6 +47,7 @@ const PAGES_WITH_TESTIMONIALS = [
   "industries",
   "partner",
   "careers",
+  "carrers",
 ];
 
 /*
@@ -116,6 +117,7 @@ const PAGES_WITH_CTA = [
   "partner",
   "products",
   "careers",
+  "carrers",
 ];
 
 /* =========================================================
@@ -778,8 +780,11 @@ console.log("SERVICE DEBUG:", {
    const isProductsPage =
   currentSlug === "products";
 
-   const isCareersPage =
-  currentSlug === "careers";
+   
+const isCareersPage =
+  currentSlug === "careers" ||
+  currentSlug === "carrers";
+
 
    
   /* =======================================================
