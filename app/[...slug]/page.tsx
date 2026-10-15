@@ -35,6 +35,8 @@ import PartnerProductExperience from "@/components/PartnerProductExperience";
 import CareerHighlights from "@/components/CareerHighlights";
 import CareerValues from "@/components/CareerValues";
 import CareersSection from "@/components/CareersSection";
+import CareersSection from "@/components/GeneralApplication";
+
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -944,6 +946,10 @@ const showCTA =
 
     <div className="relative z-10">
       <CareersSection />
+    </div>
+
+     <div className="relative z-10">
+      <GeneralApplication />
     </div>
   </>
 )}
