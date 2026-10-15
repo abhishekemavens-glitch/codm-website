@@ -50,8 +50,6 @@ const PAGES_WITH_TESTIMONIALS = [
   "services",
   "industries",
   "partner",
-  "careers",
-  "carrers",
 ];
 
 /*
@@ -120,8 +118,6 @@ const PAGES_WITH_CTA = [
   "insights",
   "partner",
   "products",
-  "careers",
-  "carrers",
 ];
 
 /* =========================================================
