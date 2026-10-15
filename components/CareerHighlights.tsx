@@ -181,9 +181,30 @@ export default function CareerHighlights() {
     return () => controller.abort();
   }, []);
 
-  if (loading || features.length === 0) {
-    return null;
-  }
+  if (loading) {
+  return (
+    <section className="relative z-10 px-5 py-8 sm:px-6">
+      <div className="mx-auto max-w-[1100px] text-center text-[var(--muted)]">
+        Loading career highlights...
+      </div>
+    </section>
+  );
+}
+
+if (features.length === 0) {
+  return (
+    <section className="relative z-10 px-5 py-8 sm:px-6">
+      <div className="mx-auto max-w-[1100px] rounded-[20px] border border-[var(--border)] bg-[var(--surface)]/80 p-6 text-center">
+        <h2 className="text-xl font-semibold text-[var(--foreground)]">
+          Why Work With CODM?
+        </h2>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          Career highlights could not be loaded. Please check the WordPress GraphQL data.
+        </p>
+      </div>
+    </section>
+  );
+}
 
   return (
     <section
