@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Target, TrendingUp, Users } from "lucide-react";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -25,16 +24,79 @@ function FeatureIcon({ name }: { name: string | null }) {
 
   switch (name) {
     case "target":
-      return <Target className={iconClass} aria-hidden="true" />;
+      return (
+        <svg
+          className={iconClass}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1" />
+          <path d="M12 12 19 5" />
+          <path d="M15 5h4v4" />
+        </svg>
+      );
 
     case "chart-no-axes-combined":
-      return <TrendingUp className={iconClass} aria-hidden="true" />;
+      return (
+        <svg
+          className={iconClass}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M3 3v18h18" />
+          <path d="m7 14 4-4 4 3 6-7" />
+          <path d="M16 6h5v5" />
+        </svg>
+      );
 
     case "users":
-      return <Users className={iconClass} aria-hidden="true" />;
+      return (
+        <svg
+          className={iconClass}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="10" cy="7" r="4" />
+          <path d="M20 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      );
 
     default:
-      return <Target className={iconClass} aria-hidden="true" />;
+      return (
+        <svg
+          className={iconClass}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1" />
+        </svg>
+      );
   }
 }
 
@@ -160,12 +222,7 @@ export default function CareerHighlights() {
               />
             )}
 
-            <div
-              className="
-                shrink-0 text-[#7854FF]
-                [&_svg]:stroke-[1.8]
-              "
-            >
+            <div className="shrink-0 text-[#7854FF]">
               <FeatureIcon name={feature.iconName} />
             </div>
 
