@@ -923,15 +923,12 @@ const showTestimonials =
     CAREERS PAGE — CAREER HIGHLIGHTS
 ================================================= */}
 
-{isCareersPage && (
-   
-  <div className="relative z-10">
-    <CareerHighlights />
-  </div>
+      {isCareersPage && (
+        <div className="relative z-10">
+          <CareerHighlights />
+        </div>
+      )}
 
-   <div className="relative z-10">
-        <ContactCTA />
-      </div>
    
 )}
 
