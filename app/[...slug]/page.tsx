@@ -919,9 +919,9 @@ const showTestimonials =
         imageAlt={image?.altText}
       />
 
-{/* =================================================
-    CAREERS PAGE — CAREER HIGHLIGHTS
-================================================= */}
+      {/* =================================================
+          CAREERS PAGE — CAREER HIGHLIGHTS
+      ================================================= */}
 
       {isCareersPage && (
         <div className="relative z-10">
@@ -929,8 +929,6 @@ const showTestimonials =
         </div>
       )}
 
-   
-)}
 
        
       {/* =================================================
