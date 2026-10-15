@@ -114,7 +114,7 @@ const PAGES_WITH_CTA = [
   "insights",
   "partner",
   "products",
-   "careers",
+  "careers",
 ];
 
 /* =========================================================
@@ -759,9 +759,7 @@ console.log("SERVICE DEBUG:", {
   ======================================================= */
 
   const currentSlug =
-    slug.length === 1
-      ? slug[0].toLowerCase()
-      : "";
+  slug.length === 1 ? slug[0].toLowerCase() : "";
 
   /* =======================================================
      PAGE IDENTIFICATION
@@ -897,9 +895,12 @@ const showTestimonials =
    * LET'S BUILD
    */
 
-  const showCTA =
-  (slug.length === 1 && PAGES_WITH_CTA.includes(currentSlug)) ||
+  
+const showCTA =
+  (slug.length === 1 &&
+    PAGES_WITH_CTA.includes(currentSlug)) ||
   isServiceDetailPage;
+
 
   /* =======================================================
      RENDER
