@@ -243,28 +243,41 @@ export default function CareersSection() {
             HEADER: title + filters + search
             ================================================= */}
         <Reveal distance={20}>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              {s?.eyebrow && (
-                <div className="pis-eyebrow" style={{ justifyContent: "flex-start", marginLeft: 0 }}>
-                  <span className="pis-eyebrow-line" />
-                  <span className="pis-eyebrow-dot" />
-                  <span>{s.eyebrow}</span>
-                  <span className="pis-eyebrow-dot" />
-                  <span className="pis-eyebrow-line pis-eyebrow-line--r" />
-                </div>
-              )}
-
-              <h2 className="mt-3 text-[34px] font-normal leading-[1.15] tracking-[-0.02em] text-[var(--foreground)] md:text-[40px]">
-                {s?.title}
-                {s?.title && s?.gradientText && " "}
-                {s?.gradientText && (
-                  <span className="heading-codm-title-gradient codm-gradient-text">
-                    {s.gradientText}
-                  </span>
-                )}
-              </h2>
+          {/* eyebrow sits above the whole row, like the design */}
+          {s?.eyebrow && (
+            <div className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#6D4AFF]">
+              <span
+                aria-hidden="true"
+                className="h-px w-9 bg-gradient-to-r from-transparent to-[#8B5CF6]/70"
+              />
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-[#8B5CF6]"
+              />
+              <span>{s.eyebrow}</span>
             </div>
+          )}
+
+          {/* heading + filters + search share one row, vertically centred */}
+          <div className="mt-3 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <h2 className="text-[34px] font-normal leading-[1.15] tracking-[-0.02em] text-[var(--foreground)] md:text-[40px]">
+              {s?.title}
+              {s?.title && s?.gradientText && " "}
+              {s?.gradientText && (
+                <span
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(90deg, #4F5DFF 0%, #8B5CF6 60%, #A78BFA 100%)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    color: "transparent",
+                  }}
+                >
+                  {s.gradientText}
+                </span>
+              )}
+            </h2>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               {/* FILTER PILLS */}
