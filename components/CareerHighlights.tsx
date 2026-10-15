@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-type CareerFeature = {
+type CareerFeature = { 
   databaseId: number;
   title: string;
   content: string;
