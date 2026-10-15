@@ -504,12 +504,10 @@ export default function WhyCodm() {
                           className="
                             mt-2
                             max-w-[290px]
-                            text-[11px]
                             leading-[1.55]
                             text-[var(--muted)]
                             transition-colors
                             duration-300
-                            group-hover:text-white/80
                           "
                           dangerouslySetInnerHTML={{
                             __html: item.content,
