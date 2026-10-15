@@ -299,13 +299,13 @@ export default function CareerValues() {
         {/* Loading state */}
         {loading && (
           <div
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            className="career-values-fan career-values-fan-loading"
             aria-label="Loading career values"
           >
             {Array.from({ length: 5 }).map((_, index) => (
               <div
                 key={index}
-                className="h-[340px] animate-pulse rounded-3xl bg-slate-100"
+                className="career-value-skeleton h-[340px] animate-pulse rounded-3xl bg-slate-100"
               />
             ))}
           </div>
@@ -321,9 +321,9 @@ export default function CareerValues() {
           </div>
         )}
 
-        {/* Career value cards */}
+        {/* Career value cards: overlapping illustrated fan layout */}
         {!loading && !error && values.length > 0 && (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="career-values-fan">
             {values.map((value, index) => {
               const style = CARD_STYLES[index % CARD_STYLES.length];
               const imageUrl =
@@ -335,48 +335,48 @@ export default function CareerValues() {
               return (
                 <article
                   key={value.databaseId}
-                  className={`group relative isolate flex min-h-[360px] flex-col overflow-hidden rounded-3xl border border-black/[0.04] ${style.background} p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-7`}
+                  className={`career-value-card group relative flex flex-col overflow-hidden rounded-[24px] border border-white/70 ${style.background} shadow-lg transition-all duration-300 hover:z-20 hover:-translate-y-3 hover:shadow-2xl`}
+                  style={{ zIndex: index + 1 }}
                 >
-                  {/* Decorative background */}
                   <div
-                    className={`pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full ${style.decoration} blur-2xl transition-transform duration-500 group-hover:scale-125`}
+                    className={`pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full ${style.decoration} blur-2xl`}
                   />
-
                   <div
                     className={`pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${style.accent} to-transparent`}
                   />
 
-                  <div className="relative z-10 flex items-start justify-between gap-4">
-                    <CareerIcon name={value.iconName} />
-
-                    <span className="text-sm font-medium tabular-nums text-slate-400">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                  <div className="relative z-10 flex h-[172px] items-center justify-center px-4 pt-4">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={imageAlt}
+                        loading="lazy"
+                        className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/70">
+                        <CareerIcon name={value.iconName} />
+                      </div>
+                    )}
                   </div>
 
-                  <div className="relative z-10 mt-6">
-                    <h3 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
-                      {value.title}
-                    </h3>
+                  <div className="relative z-10 flex flex-1 flex-col px-5 pb-6 pt-2 sm:px-6">
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <h3 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+                        {value.title}
+                      </h3>
+                      <span className="shrink-0 text-xs font-medium tabular-nums text-slate-400">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
 
                     <div
-                      className="career-value-content mt-3 text-sm leading-7 text-slate-600 sm:text-base"
+                      className="career-value-content text-[13px] leading-[1.65] text-slate-600 sm:text-sm"
                       dangerouslySetInnerHTML={{
                         __html: value.content || "",
                       }}
                     />
                   </div>
-
-                  {imageUrl && (
-                    <div className="relative z-10 mt-auto flex min-h-[150px] items-end justify-center pt-6">
-                      <img
-                        src={imageUrl}
-                        alt={imageAlt}
-                        loading="lazy"
-                        className="h-40 w-full rounded-2xl object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                      />
-                    </div>
-                  )}
                 </article>
               );
             })}
@@ -397,6 +397,59 @@ export default function CareerValues() {
       </div>
 
       <style jsx>{`
+        .career-values-fan {
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+          padding: 1.5rem 0 2rem;
+          isolation: isolate;
+        }
+
+        .career-value-card {
+          flex: 0 1 250px;
+          min-width: 0;
+          min-height: 330px;
+          transform: rotate(0deg);
+          transform-origin: center bottom;
+        }
+
+        .career-value-card + .career-value-card {
+          margin-left: -38px;
+        }
+
+        .career-value-card:nth-child(1) {
+          transform: translateY(8px) rotate(-3deg);
+        }
+
+        .career-value-card:nth-child(2) {
+          transform: translateY(-3px) rotate(-1.5deg);
+        }
+
+        .career-value-card:nth-child(3) {
+          transform: translateY(-9px) rotate(0deg);
+        }
+
+        .career-value-card:nth-child(4) {
+          transform: translateY(-3px) rotate(1.5deg);
+        }
+
+        .career-value-card:nth-child(5) {
+          transform: translateY(8px) rotate(3deg);
+        }
+
+        .career-value-card:hover {
+          transform: translateY(-12px) rotate(0deg);
+        }
+
+        .career-values-fan-loading {
+          gap: 1rem;
+        }
+
+        .career-value-skeleton {
+          flex: 0 1 250px;
+          min-width: 0;
+        }
+
         .career-value-content :global(p) {
           margin: 0;
         }
@@ -404,6 +457,36 @@ export default function CareerValues() {
         .career-value-content :global(a) {
           color: inherit;
           text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+          .career-values-fan {
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding: 1.5rem 0.5rem 2rem;
+            scroll-snap-type: x proximity;
+            scrollbar-width: thin;
+          }
+
+          .career-value-card {
+            flex: 0 0 250px;
+            scroll-snap-align: center;
+          }
+
+          .career-value-card + .career-value-card {
+            margin-left: -28px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .career-values-fan {
+            margin-right: -1.25rem;
+            padding-right: 1.25rem;
+          }
+
+          .career-value-card {
+            flex-basis: 235px;
+          }
         }
       `}</style>
     </section>
