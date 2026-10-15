@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
+import AnimateOnScroll from "@/components/AnimateOnScroll"; 
 
 type Service = {
   id: string;
