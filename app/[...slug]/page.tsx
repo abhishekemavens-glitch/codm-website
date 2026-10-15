@@ -32,6 +32,7 @@ import AiIntelligenceOverview from "@/components/AiIntelligenceOverview";
 import TechOverview from "@/components/TechOverview";
 import ProductFeatureSection from "@/components/ProductFeatureSection";
 import PartnerProductExperience from "@/components/PartnerProductExperience";
+import CareerHighlights from "@/components/CareerHighlights";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -778,6 +779,9 @@ console.log("SERVICE DEBUG:", {
    const isProductsPage =
   currentSlug === "products";
 
+   const isCareersPage =
+  currentSlug === "careers";
+
    
   /* =======================================================
      WORDPRESS CONTENT
@@ -915,6 +919,23 @@ const showTestimonials =
         imageAlt={image?.altText}
       />
 
+{/* =================================================
+    CAREERS PAGE — CAREER HIGHLIGHTS
+================================================= */}
+
+{isCareersPage && (
+   
+  <div className="relative z-10">
+    <CareerHighlights />
+  </div>
+
+   <div className="relative z-10">
+        <ContactCTA />
+      </div>
+   
+)}
+
+       
       {/* =================================================
           WORDPRESS CONTENT
       ================================================= */}
