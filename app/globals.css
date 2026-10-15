@@ -6,7 +6,7 @@
 @import "tailwindcss"; 
 @import "animate.css";
 .overview-sect .heading-codm-wrap .heading-codm-title .codm-word-stagger {
-	display: none;
+	display: none; 
 } 
 /* =========================================================
    GLOBAL RESET & BASE
