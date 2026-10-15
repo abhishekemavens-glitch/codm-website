@@ -35,7 +35,7 @@ import PartnerProductExperience from "@/components/PartnerProductExperience";
 import CareerHighlights from "@/components/CareerHighlights";
 import CareerValues from "@/components/CareerValues";
 import CareersSection from "@/components/CareersSection";
-import CareersSection from "@/components/GeneralApplication";
+import GeneralApplication from "@/components/GeneralApplication";
 
 
 /* =========================================================
