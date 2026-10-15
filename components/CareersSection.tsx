@@ -245,18 +245,17 @@ export default function CareersSection() {
         <Reveal distance={20}>
           {/* eyebrow sits above the whole row, like the design */}
           {s?.eyebrow && (
-            <div className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#6D4AFF]">
-              <span
-                aria-hidden="true"
-                className="h-px w-9 bg-gradient-to-r from-transparent to-[#8B5CF6]/70"
-              />
-              <span
-                aria-hidden="true"
-                className="h-1.5 w-1.5 rounded-full bg-[#8B5CF6]"
-              />
-              <span>{s.eyebrow}</span>
-            </div>
-          )}
+  <div
+    className="pis-eyebrow"
+    style={{ justifyContent: "flex-start", marginLeft: 0 }}
+  >
+    <span className="pis-eyebrow-line" />
+    <span className="pis-eyebrow-dot" />
+    <span>{s.eyebrow}</span>
+    <span className="pis-eyebrow-dot" />
+    <span className="pis-eyebrow-line pis-eyebrow-line--r" />
+  </div>
+)}
 
           {/* heading + filters + search share one row, vertically centred */}
           <div className="mt-3 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
