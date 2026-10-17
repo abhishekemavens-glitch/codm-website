@@ -611,9 +611,11 @@ function CodeBlockSection({
   title?: string | null;
   code?: string | null;
 }) {
-  if (!title || !code) {
-    return null;
-  }
+  if (!code?.trim()) {
+  return null;
+}
+
+const sectionTitle = title?.trim() || "Integration Framework";
 
   return (
     <section className="codm-post-codeblock" aria-labelledby="codeblock-heading">
