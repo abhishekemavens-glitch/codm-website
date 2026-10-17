@@ -36,6 +36,7 @@ import CareerHighlights from "@/components/CareerHighlights";
 import CareerValues from "@/components/CareerValues";
 import CareersSection from "@/components/CareersSection";
 import GeneralApplication from "@/components/GeneralApplication";
+import ContactStats from "@/components/ContactStats";
 
 
 /* =========================================================
@@ -926,6 +927,18 @@ const showCTA =
         imageAlt={image?.altText}
       />
 
+      {/* =================================================
+          CONTACT PAGE — CONTACT STATISTICS
+      ================================================= */}
+
+      {slug.length === 1 &&
+        slug[0].toLowerCase() === "contact-us" && (
+          <div className="relative z-10">
+            <ContactStats />
+          </div>
+        )}
+
+       
       {/* =================================================
           CAREERS PAGE — CAREER HIGHLIGHTS
       ================================================= */}
