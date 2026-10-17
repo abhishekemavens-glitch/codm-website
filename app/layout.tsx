@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "../context/ThemeContext";
 import ScrollReset from "../components/ScrollReset";
+import PageLoader from "../components/PageLoader";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -21,6 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <PageLoader />
+
         <ScrollReset />
 
         <ThemeProvider>
