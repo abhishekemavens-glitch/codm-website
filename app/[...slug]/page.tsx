@@ -700,9 +700,17 @@ const page = wordpressPage ?? service;
  * Only try a blog post if neither a Page nor
  * Service was found.
  */
+const isBlogDetailPage =
+  slug.length === 2 &&
+  slug[0].toLowerCase() === "blogs";
+
+const postSlug = isBlogDetailPage
+  ? [slug[1]]
+  : slug;
+
 const post =
   !page
-    ? await getPost(slug)
+    ? await getPost(postSlug)
     : null;
 
 console.log("SERVICE DEBUG:", {
