@@ -928,19 +928,21 @@ const showCTA =
         imageAlt={image?.altText}
       />
 
-      {/* =================================================
-          CONTACT PAGE — CONTACT STATISTICS
+         {/* =================================================
+          CONTACT PAGE — STATISTICS & DIRECT CONNECTIONS
       ================================================= */}
 
       {slug.length === 1 &&
         slug[0].toLowerCase() === "contact-us" && (
-          <div className="relative z-10">
-            <ContactStats />
-          </div>
+          <>
+            <div className="relative z-10">
+              <ContactStats />
+            </div>
 
-           <div className="relative z-10">
+            <div className="relative z-10">
               <DirectConnections />
             </div>
+          </>
         )}
 
        
