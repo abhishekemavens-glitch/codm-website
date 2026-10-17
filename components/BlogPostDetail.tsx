@@ -438,6 +438,12 @@ function PostCard({ post }: { post: ListPost }) {
 
   const title = decodeEntities(post.title);
 
+   console.log("BLOG CODE BLOCK DEBUG:", {
+  postTitle: post.title,
+  codeBlockTitle: post.codeBlockTitle,
+  codeBlockSnippetLength: post.codeBlockSnippet?.length ?? 0,
+});
+
   return (
     <a href={blogHref(post.uri)} className="codm-related-card">
       <div className="codm-related-media">
