@@ -12466,3 +12466,53 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     border-left: 0;
   }
 }
+
+
+.codm-post-codeblock {
+  margin-top: 36px;
+}
+
+.codm-post-codeblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.codm-post-codeblock-title {
+  margin: 0;
+  color: #26344d;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.codm-code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid #d9e0ea;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.codm-code-copy-btn:hover {
+  background: #f1f5f9;
+}
+
+.codm-post-codeblock-pre {
+  margin: 0;
+  padding: 20px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #334155;
+  white-space: pre;
+}
