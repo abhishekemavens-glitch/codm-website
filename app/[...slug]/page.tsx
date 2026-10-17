@@ -175,6 +175,9 @@ type WpPost = {
   uri: string;
   date: string;
 
+codeBlockTitle: string | null;
+  codeBlockSnippet: string | null;
+
   featuredImage: {
     node: {
       sourceUrl: string;
