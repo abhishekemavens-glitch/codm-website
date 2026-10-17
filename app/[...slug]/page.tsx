@@ -40,6 +40,7 @@ import ContactStats from "@/components/ContactStats";
 import DirectConnections from "@/components/DirectConnections";
 import ContactForm from "@/components/ContactForm";
 import NextSteps from "@/components/NextSteps";
+import GlobalFootprint from "@/components/GlobalFootprint";
 
 
 /* =========================================================
@@ -951,6 +952,10 @@ const showCTA =
 
               <div className="relative z-10">
         <NextSteps />
+      </div>
+
+      <div className="relative z-10">
+       <GlobalFootprint />
       </div>
              
           </>
