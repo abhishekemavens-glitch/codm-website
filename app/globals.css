@@ -12369,3 +12369,100 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   font-size: 18px !important;
 }
 
+/* =====================================================
+   CONTACT STATS STRIP
+   Add to globals.css. Uses your existing theme variables
+   (--background, --foreground, --muted, --border) so it
+   follows light/dark mode automatically.
+   ===================================================== */
+
+.codm-stats {
+  background: var(--background);
+  padding: 45px 24px;
+}
+
+.codm-stats-inner {
+  max-width: 1720px;
+  margin: 0 auto;
+}
+
+.codm-stats-placeholder {
+  min-height: 80px;
+}
+
+/* ---------- mobile: one stat per row ---------- */
+
+.codm-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 32px;
+}
+
+.codm-stat-cell {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 80px;
+}
+
+.codm-stat-value {
+  font-size: clamp(44px, 4.2vw, 64px);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--foreground);
+}
+
+.codm-stat-label {
+  margin: 0;
+  max-width: 200px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* ---------- tablet: two per row ---------- */
+
+@media (min-width: 640px) {
+  .codm-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .codm-stat-cell:nth-child(odd) {
+    padding-left: 0;
+    padding-right: 32px;
+    border-left: 0;
+  }
+
+  .codm-stat-cell:nth-child(even) {
+    padding-left: 32px;
+    padding-right: 0;
+    border-left: 1px solid var(--border);
+  }
+}
+
+/* ---------- desktop: one row, thin dividers ---------- */
+
+@media (min-width: 1024px) {
+  .codm-stats {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+
+  .codm-stats-grid {
+    grid-template-columns: repeat(var(--stat-cols, 4), 1fr);
+    row-gap: 40px;
+  }
+
+  .codm-stat-cell:nth-child(n) {
+    padding-left: 40px;
+    padding-right: 24px;
+    border-left: 1px solid var(--border);
+  }
+
+  .codm-stat-cell:nth-child(4n + 1) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
