@@ -38,6 +38,7 @@ import CareersSection from "@/components/CareersSection";
 import GeneralApplication from "@/components/GeneralApplication";
 import ContactStats from "@/components/ContactStats";
 import DirectConnections from "@/components/DirectConnections";
+import ContactForm from "@/components/ContactForm";
 
 
 /* =========================================================
@@ -942,6 +943,11 @@ const showCTA =
             <div className="relative z-10">
               <DirectConnections />
             </div>
+
+              <div className="relative z-10">
+        <ContactForm />
+      </div>
+             
           </>
         )}
 
