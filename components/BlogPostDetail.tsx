@@ -1,7 +1,8 @@
 import TableOfContents from "@/components/TableOfContents";
 import ExpertForm from "@/components/ExpertForm";
 import StickyAside from "@/components/StickyAside";
- 
+import CopyCodeButton from "@/components/CopyCodeButton";
+
 /* =========================================================
    BLOG DETAIL SETTINGS
    ========================================================= */
@@ -192,6 +193,12 @@ type ListPost = {
 
 type BlogPost = {
   blogFaqs?: Faq[] | null;
+
+  /* Per-post code block (e.g. "Integration Framework"), shown after
+     the FAQ. Both are optional -- the section just doesn't render
+     when either is empty. */
+  codeBlockTitle?: string | null;
+  codeBlockSnippet?: string | null;
 
   title: string;
 
@@ -590,6 +597,41 @@ function FaqSection({ faqs }: { faqs: Faq[] }) {
   );
 }
 
+/* =========================================================
+   CODE BLOCK SECTION (e.g. "Integration Framework")
+
+   Per-post, optional. Renders only when both a title and a
+   snippet are set in WordPress. Shown right after the FAQ.
+   ========================================================= */
+
+function CodeBlockSection({
+  title,
+  code,
+}: {
+  title?: string | null;
+  code?: string | null;
+}) {
+  if (!title || !code) {
+    return null;
+  }
+
+  return (
+    <section className="codm-post-codeblock" aria-labelledby="codeblock-heading">
+      <div className="codm-post-codeblock-header">
+        <h2 id="codeblock-heading" className="codm-post-codeblock-title">
+          {title}
+        </h2>
+
+        <CopyCodeButton code={code} />
+      </div>
+
+      <pre className="codm-post-codeblock-pre">
+        <code>{code}</code>
+      </pre>
+    </section>
+  );
+}
+
 export default async function BlogPostDetail({
   post,
   content,
@@ -807,6 +849,18 @@ export default async function BlogPostDetail({
 
           <FaqSection faqs={faqs} />
 
+          {/* INTEGRATION FRAMEWORK / CODE BLOCK -- shown after the FAQ */}
+
+          <CodeBlockSection
+            title={post.codeBlockTitle}
+            code={post.codeBlockSnippet}
+          />
+
+          {/* TALK TO OUR EXPERTS -- moved here from the sidebar,
+              so it now sits after the FAQ / code block */}
+
+          <ExpertForm />
+
           {/* PREVIOUS / NEXT */}
 
           <PostNav
@@ -830,10 +884,6 @@ export default async function BlogPostDetail({
               items={items}
             />
           )}
-
-          {/* EXPERT FORM */}
-
-          <ExpertForm />
 
           </div>
 
