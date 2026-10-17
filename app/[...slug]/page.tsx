@@ -37,6 +37,7 @@ import CareerValues from "@/components/CareerValues";
 import CareersSection from "@/components/CareersSection";
 import GeneralApplication from "@/components/GeneralApplication";
 import ContactStats from "@/components/ContactStats";
+import DirectConnections from "@/components/DirectConnections";
 
 
 /* =========================================================
@@ -936,6 +937,10 @@ const showCTA =
           <div className="relative z-10">
             <ContactStats />
           </div>
+
+           <div className="relative z-10">
+              <DirectConnections />
+            </div>
         )}
 
        
