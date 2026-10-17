@@ -288,6 +288,8 @@ const POST_FIELDS = `
   excerpt
   uri
   date
+  codeBlockTitle
+  codeBlockSnippet
 
   featuredImage {
     node {
