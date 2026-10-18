@@ -477,7 +477,6 @@ async function getPost(
   return data?.post ?? null;
 }
 
-
 /* =========================================================
    GET WORDPRESS CASE STUDY
    /case-studies/<slug>
@@ -521,6 +520,10 @@ type WpCaseStudy = {
   } | null;
 };
 
+/*
+ * Case studies expose the featured image through the MediaItem
+ * type, so the fields must be requested with an inline fragment.
+ */
 const CASE_STUDY_FIELDS = `
   title
   content
@@ -585,7 +588,6 @@ async function getCaseStudy(
 
   return data?.caseStudy ?? null;
 }
-
 
 /* =========================================================
    FIX WORDPRESS LINKS
@@ -713,25 +715,35 @@ export async function generateMetadata({
    * =======================================================
    */
 
-  if (
-    slug.length === 2 &&
-    slug[0].toLowerCase() === "case-studies"
-  ) {
-    const caseStudy = await getCaseStudy(slug[1]);
-
-    if (caseStudy) {
-      return {
-        title: `${caseStudy.title} | CODM`,
-      };
-    }
-  }
-   
   const post = await getPost(slug);
 
   if (post) {
     return {
       title: `${post.title} | CODM`,
     };
+  }
+
+  /*
+   * =======================================================
+   * CASE STUDY: /case-studies/<slug>  or  /<slug>
+   * =======================================================
+   */
+
+  const caseStudySlugForMeta =
+    slug.length === 2 && slug[0].toLowerCase() === "case-studies"
+      ? slug[1]
+      : slug.length === 1
+      ? slug[0]
+      : null;
+
+  if (caseStudySlugForMeta) {
+    const caseStudy = await getCaseStudy(caseStudySlugForMeta);
+
+    if (caseStudy) {
+      return {
+        title: `${caseStudy.title} | CODM`,
+      };
+    }
   }
 
   /*
@@ -834,18 +846,25 @@ const postSlug = isBlogDetailPage
   ? [slug[1]]
   : slug;
 
-const isCaseStudyDetailPage =
-  slug.length === 2 &&
-  slug[0].toLowerCase() === "case-studies";
-
-const caseStudy =
-  !page && isCaseStudyDetailPage
-    ? await getCaseStudy(slug[1])
+const post =
+  !page
+    ? await getPost(postSlug)
     : null;
 
-const post =
-  !page && !caseStudy
-    ? await getPost(postSlug)
+/*
+ * Case study: /case-studies/<slug>  or  /<slug>
+ * Only tried when no page and no blog post matched.
+ */
+const caseStudySlug =
+  slug.length === 2 && slug[0].toLowerCase() === "case-studies"
+    ? slug[1]
+    : slug.length === 1
+    ? slug[0]
+    : null;
+
+const caseStudy =
+  !page && !post && caseStudySlug
+    ? await getCaseStudy(caseStudySlug)
     : null;
 
 console.log("SERVICE DEBUG:", {
@@ -859,6 +878,12 @@ console.log("SERVICE DEBUG:", {
   /*
    * =======================================================
    * BLOG DETAIL PAGE
+   * =======================================================
+   */
+
+  /*
+   * =======================================================
+   * CASE STUDY DETAIL PAGE
    * =======================================================
    */
 
@@ -876,7 +901,7 @@ console.log("SERVICE DEBUG:", {
       </PageShell>
     );
   }
-   
+
  if (!page && post) {
   return (
     <PageShell>
