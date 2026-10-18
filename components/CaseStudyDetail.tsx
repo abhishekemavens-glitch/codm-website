@@ -88,6 +88,10 @@ async function fetchCaseStudyExtras(
                     }
                   }
                 }
+                caseStudyCategories {
+                  databaseId
+                  name
+                }
               }
             }
           }
@@ -103,7 +107,18 @@ async function fetchCaseStudyExtras(
       return empty;
     }
 
-    const all: ListCaseStudy[] = json?.data?.caseStudies?.nodes ?? [];
+    const all: ListCaseStudy[] = (
+      json?.data?.caseStudies?.nodes ?? []
+    ).map(
+      (
+        item: ListCaseStudy & {
+          caseStudyCategories?: { databaseId: number; name: string }[] | null;
+        }
+      ) => ({
+        ...item,
+        categories: { nodes: item.caseStudyCategories ?? [] },
+      })
+    );
     const key = normalizeUri(uri);
     const index = all.findIndex((p) => normalizeUri(p.uri) === key);
 
