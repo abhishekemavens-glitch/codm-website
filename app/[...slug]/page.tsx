@@ -548,20 +548,6 @@ const CASE_STUDY_FIELDS = `
     }
   }
 
-  categories {
-    nodes {
-      name
-    }
-  }
-
-  author {
-    node {
-      name
-      avatar {
-        url
-      }
-    }
-  }
 `;
 
 async function getCaseStudy(
