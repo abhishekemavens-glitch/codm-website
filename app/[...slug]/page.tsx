@@ -548,14 +548,31 @@ const CASE_STUDY_FIELDS = `
     }
   }
 
+  caseStudyAuthor {
+    name
+    avatarUrl
+  }
+
+  caseStudyCategories {
+    databaseId
+    name
+  }
 `;
+
+type RawCaseStudy = Omit<WpCaseStudy, "categories" | "author"> & {
+  caseStudyAuthor?: {
+    name?: string | null;
+    avatarUrl?: string | null;
+  } | null;
+  caseStudyCategories?: { name: string }[] | null;
+};
 
 async function getCaseStudy(
   slug: string
 ): Promise<WpCaseStudy | null> {
   const data =
     await wpFetch<{
-      caseStudy: WpCaseStudy | null;
+      caseStudy: RawCaseStudy | null;
     }>(
       `
         query GetCaseStudy($slug: ID!) {
@@ -572,7 +589,26 @@ async function getCaseStudy(
       }
     );
 
-  return data?.caseStudy ?? null;
+  const raw = data?.caseStudy;
+
+  if (!raw) {
+    return null;
+  }
+
+  const { caseStudyAuthor, caseStudyCategories, ...rest } = raw;
+
+  return {
+    ...rest,
+    categories: { nodes: caseStudyCategories ?? [] },
+    author: caseStudyAuthor
+      ? {
+          node: {
+            name: caseStudyAuthor.name,
+            avatar: { url: caseStudyAuthor.avatarUrl },
+          },
+        }
+      : null,
+  };
 }
 
 /* =========================================================
