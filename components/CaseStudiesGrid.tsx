@@ -121,6 +121,7 @@ export default function CaseStudiesGrid() {
           }
 
           const result: CaseStudiesResponse = await response.json();
+          console.log("CASE STUDIES API RESPONSE:", result);
 
           if (result.errors) {
             console.error("GraphQL Error:", result.errors);
