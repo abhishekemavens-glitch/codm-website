@@ -82,8 +82,10 @@ async function fetchCaseStudyExtras(
                 excerpt
                 featuredImage {
                   node {
-                    sourceUrl
-                    altText
+                    ... on MediaItem {
+                      sourceUrl
+                      altText
+                    }
                   }
                 }
                 categories {
