@@ -17,14 +17,6 @@ type CaseStudy = {
       altText?: string;
     } | null;
   } | null;
-
-  categories?: {
-    nodes: { name: string }[];
-  } | null;
-
-  tags?: {
-    nodes: { name: string }[];
-  } | null;
 };
 
 type CaseStudiesResponse = {
