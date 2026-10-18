@@ -476,6 +476,120 @@ async function getPost(
   return data?.post ?? null;
 }
 
+
+/* =========================================================
+   GET WORDPRESS CASE STUDY
+   /case-studies/<slug>
+========================================================= */
+
+type WpCaseStudy = {
+  title: string;
+  content: string | null;
+  excerpt: string | null;
+  uri: string;
+  date: string;
+
+  caseStudyFaqs: {
+    question: string;
+    answer: string;
+  }[] | null;
+
+  codeBlockTitle: string | null;
+  codeBlockSnippet: string | null;
+
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    } | null;
+  } | null;
+
+  categories: {
+    nodes: {
+      name: string;
+    }[];
+  } | null;
+
+  author?: {
+    node?: {
+      name?: string | null;
+      avatar?: {
+        url?: string | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
+/*
+ * Case studies expose the featured image through the MediaItem
+ * type, so the fields must be requested with an inline fragment.
+ */
+const CASE_STUDY_FIELDS = `
+  title
+  content
+  excerpt
+  uri
+  date
+
+  caseStudyFaqs {
+    question
+    answer
+  }
+
+  codeBlockTitle
+  codeBlockSnippet
+
+  featuredImage {
+    node {
+      ... on MediaItem {
+        sourceUrl
+        altText
+      }
+    }
+  }
+
+  categories {
+    nodes {
+      name
+    }
+  }
+
+  author {
+    node {
+      name
+      avatar {
+        url
+      }
+    }
+  }
+`;
+
+async function getCaseStudy(
+  slug: string
+): Promise<WpCaseStudy | null> {
+  const data =
+    await wpFetch<{
+      caseStudy: WpCaseStudy | null;
+    }>(
+      `
+        query GetCaseStudy($slug: ID!) {
+          caseStudy(
+            id: $slug
+            idType: SLUG
+          ) {
+            ${CASE_STUDY_FIELDS}
+          }
+        }
+      `,
+      {
+        slug,
+      }
+    );
+
+  return data?.caseStudy ?? null;
+}
+
+
 /* =========================================================
    FIX WORDPRESS LINKS
 ========================================================= */
