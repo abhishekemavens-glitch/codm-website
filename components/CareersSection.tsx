@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Reveal } from "@/components/Reveal";
+import ApplyModal, { type ApplyFormSettings } from "@/components/ApplyModal";
 
 /* =========================================================
    CAREERS — "Explore opportunities"
@@ -42,8 +43,6 @@ type Settings = {
   cardButtonText: string | null;
   cardButtonLink: string | null;
 };
-
-const isExternal = (href: string) => /^(https?:)?\/\//i.test(href);
 
 function Tag({
   icon,
@@ -120,6 +119,9 @@ export default function CareersSection() {
   const [loaded, setLoaded] = useState(false);
   const [department, setDepartment] = useState("");
   const [query, setQuery] = useState("");
+  const [formSettings, setFormSettings] = useState<ApplyFormSettings | null>(null);
+  // popup: null = closed, { role: null } = "Send us your profile"
+  const [applyFor, setApplyFor] = useState<{ role: Role | null } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -144,6 +146,15 @@ export default function CareersSection() {
                   cardText
                   cardButtonText
                   cardButtonLink
+                }
+                applicationForm {
+                  roleTitle
+                  profileTitle
+                  intro
+                  submitText
+                  privacyText
+                  successTitle
+                  successText
                 }
                 jobRoles(
                   first: 100
@@ -179,6 +190,7 @@ export default function CareersSection() {
         if (!cancelled) {
           setSettings(result.data?.careersSection ?? null);
           setRoles(result.data?.jobRoles?.nodes ?? []);
+          setFormSettings(result.data?.applicationForm ?? null);
         }
       } catch (error) {
         console.error("Failed to load careers:", error);
@@ -230,8 +242,6 @@ export default function CareersSection() {
   }
 
   const s = settings;
-
-  const cardLink = s?.cardButtonLink || "#";
 
   return (
     <section
@@ -350,8 +360,6 @@ export default function CareersSection() {
             )}
 
             {visible.map((role) => {
-              const href = role.roleLink || "#";
-
               return (
                 <article
                   key={role.id}
@@ -375,16 +383,14 @@ export default function CareersSection() {
                     </div>
                   </div>
 
-                  <a
-                    href={href}
-                    {...(isExternal(href)
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
+                  <button
+                    type="button"
+                    onClick={() => setApplyFor({ role })}
                     className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-full border border-[#6D4AFF]/60 px-6 py-2.5 text-[14px] font-medium text-[#6D4AFF] transition-all duration-300 hover:border-transparent hover:bg-gradient-to-r hover:from-[#6D4AFF] hover:to-[#8B5CF6] hover:text-white sm:self-center"
                   >
                     {s?.viewButtonText || "View role"}
                     <ArrowIcon />
-                  </a>
+                  </button>
                 </article>
               );
             })}
@@ -421,21 +427,27 @@ export default function CareersSection() {
               )}
 
               {s?.cardButtonText && (
-                <a
-                  href={cardLink}
-                  {...(isExternal(cardLink)
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
+                <button
+                  type="button"
+                  onClick={() => setApplyFor({ role: null })}
                   className="mt-8 inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] px-7 py-3.5 text-[14px] font-medium text-white shadow-[0_14px_34px_rgba(99,79,240,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(99,79,240,0.42)]"
                 >
                   {s.cardButtonText}
                   <ArrowIcon />
-                </a>
+                </button>
               )}
             </aside>
           )}
         </div>
       </div>
+
+      <ApplyModal
+        open={applyFor !== null}
+        onClose={() => setApplyFor(null)}
+        role={applyFor?.role ?? null}
+        roleOptions={roles.map((r) => r.title)}
+        settings={formSettings}
+      />
     </section>
   );
 }
