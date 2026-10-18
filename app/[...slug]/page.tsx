@@ -41,6 +41,7 @@ import DirectConnections from "@/components/DirectConnections";
 import ContactForm from "@/components/ContactForm";
 import NextSteps from "@/components/NextSteps";
 import GlobalFootprint from "@/components/GlobalFootprint";
+import CaseStudyDetail from "@/components/CaseStudyDetail";
 
 
 /* =========================================================
@@ -520,10 +521,6 @@ type WpCaseStudy = {
   } | null;
 };
 
-/*
- * Case studies expose the featured image through the MediaItem
- * type, so the fields must be requested with an inline fragment.
- */
 const CASE_STUDY_FIELDS = `
   title
   content
@@ -716,6 +713,19 @@ export async function generateMetadata({
    * =======================================================
    */
 
+  if (
+    slug.length === 2 &&
+    slug[0].toLowerCase() === "case-studies"
+  ) {
+    const caseStudy = await getCaseStudy(slug[1]);
+
+    if (caseStudy) {
+      return {
+        title: `${caseStudy.title} | CODM`,
+      };
+    }
+  }
+   
   const post = await getPost(slug);
 
   if (post) {
@@ -824,8 +834,17 @@ const postSlug = isBlogDetailPage
   ? [slug[1]]
   : slug;
 
+const isCaseStudyDetailPage =
+  slug.length === 2 &&
+  slug[0].toLowerCase() === "case-studies";
+
+const caseStudy =
+  !page && isCaseStudyDetailPage
+    ? await getCaseStudy(slug[1])
+    : null;
+
 const post =
-  !page
+  !page && !caseStudy
     ? await getPost(postSlug)
     : null;
 
@@ -843,6 +862,21 @@ console.log("SERVICE DEBUG:", {
    * =======================================================
    */
 
+  if (!page && caseStudy) {
+    return (
+      <PageShell>
+        <CaseStudyDetail
+          caseStudy={caseStudy}
+          content={fixLinks(caseStudy.content ?? "")}
+        />
+
+        <div className="relative z-10">
+          <ContactCTA />
+        </div>
+      </PageShell>
+    );
+  }
+   
  if (!page && post) {
   return (
     <PageShell>
