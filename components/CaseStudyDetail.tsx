@@ -88,12 +88,6 @@ async function fetchCaseStudyExtras(
                     }
                   }
                 }
-                categories {
-                  nodes {
-                    databaseId
-                    name
-                  }
-                }
               }
             }
           }
