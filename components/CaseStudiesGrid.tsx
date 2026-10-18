@@ -27,9 +27,9 @@ type CaseStudy = {
   } | null;
 };
 
-type PostsResponse = {
+type CaseStudiesResponse = {
   data?: {
-    posts?: {
+    caseStudies?: {
       nodes: CaseStudy[];
       pageInfo: {
         hasNextPage: boolean;
@@ -50,7 +50,7 @@ export default function CaseStudiesGrid() {
   const [selectedProduct, setSelectedProduct] = useState("");
 
   useEffect(() => {
-    async function fetchAllPosts() {
+    async function fetchAllCaseStudies() {
       try {
         const allItems: CaseStudy[] = [];
 
@@ -65,8 +65,8 @@ export default function CaseStudiesGrid() {
             },
             body: JSON.stringify({
               query: `
-                query AllPosts($after: String) {
-                  posts(
+                query AllCaseStudies($after: String) {
+                  caseStudies(
                     first: 100
                     after: $after
                     where: {
@@ -120,23 +120,23 @@ export default function CaseStudiesGrid() {
             );
           }
 
-          const result: PostsResponse = await response.json();
+          const result: CaseStudiesResponse = await response.json();
 
           if (result.errors) {
             console.error("GraphQL Error:", result.errors);
             break;
           }
 
-          const posts = result.data?.posts;
+          const caseStudies = result.data?.caseStudies;
 
-          if (!posts) {
+          if (!caseStudies) {
             break;
           }
 
-          allItems.push(...posts.nodes);
+          allItems.push(...caseStudies.nodes);
 
-          hasNextPage = posts.pageInfo.hasNextPage;
-          after = posts.pageInfo.endCursor;
+          hasNextPage = caseStudies.pageInfo.hasNextPage;
+          after = caseStudies.pageInfo.endCursor;
 
           if (hasNextPage && !after) {
             console.error(
@@ -148,13 +148,13 @@ export default function CaseStudiesGrid() {
 
         setItems(allItems);
       } catch (error) {
-        console.error("Unable to load posts:", error);
+        console.error("Unable to load case studies:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchAllPosts();
+    fetchAllCaseStudies();
   }, []);
 
   /*
