@@ -278,7 +278,12 @@ export default function Footer() {
  
   // Match the requested footer: Services shows "Building LLM";
   // the AI & LLM Overview column keeps its original WordPress links.
-  const services = parseLinks(footer.services).map((item) =>
+  const services = parseLinks(footer.services)
+  .filter((item) => {
+    const label = item.label.trim().toLowerCase();
+    return label !== "react application" && label !== "technical support";
+  })
+  .map((item) =>
     item.label.trim().toLowerCase() === "ai & llm overview"
       ? { label: "Building LLM", url: "/services/building-llm" }
       : item
