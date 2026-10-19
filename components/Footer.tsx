@@ -434,28 +434,31 @@ export default function Footer() {
 
 
  {aiLlm.length > 2 && (
-            <>
-              <div className="codm-footer-subheading">
-                <span>
-                  {aiLlm[2].label}
-                </span>
+  <>
+    <div className="codm-footer-subheading">
+      <span>Energy & Utilities Cloud</span>
+      <span>⌄</span>
+    </div>
 
-                <span>⌄</span>
-              </div>
-
-              <ul className="codm-footer-links">
-
-                {aiLlm.slice(3).map((item, index) => (
-                  <li key={index}>
-                    <a href={item.url}>
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-
-              </ul>
-            </>
-          )}
+    <ul className="codm-footer-links">
+      <li>
+        <a href="/services/net-application">
+          .NET Application Development
+        </a>
+      </li>
+      <li>
+        <a href="/services/python-application">
+          Python Application Development
+        </a>
+      </li>
+      <li>
+        <a href="/services/react-application">
+          React Application Development
+        </a>
+      </li>
+    </ul>
+  </>
+)}
           
         </FooterAccordion>
 
