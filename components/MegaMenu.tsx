@@ -93,7 +93,7 @@ const URLS: Record<string, string> = {
   // Support
   "Technical Support": `${BASE_URL}/services/technical-support`,
 
-  "Deployment Support": `${BASE_URL}/services/technical-support`,
+  "Deployment Support": `${BASE_URL}/services/deployment-support`,
 };
 
 const MENU_COLUMNS: {
