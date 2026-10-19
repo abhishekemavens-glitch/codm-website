@@ -286,25 +286,32 @@ export default function Footer() {
         : [...current, id]
     );
 
-  // Match the requested footer: Services shows "Building LLM";
-  // the AI & LLM Overview column keeps its original WordPress links.
-  const services = parseLinks(footer.services).map((item) =>
-    item.label.trim().toLowerCase() === "ai & llm overview"
-      ? { label: "Building LLM", url: "/services/building-llm" }
-      : item
-  );
+  // Services stays a separate list. Rename "AI & LLM Overview" to "Building LLM"
+  // if that legacy label is still present in WordPress.
+  const services = parseLinks(footer.services);
 
-  // Keep the original AI & LLM Overview links from WordPress.
-  const aiLlm = parseLinks(footer.aiLlm);
-
-  // Exact Industries list shown in the user's reference screenshot.
+  // Show the requested four links under the AI & LLM Overview heading.
+  const aiLlm: FooterLink[] = [
+    { label: "Marketing Cloud", url: "/services/marketing-cloud" },
+    {
+      label: "Health & Insurance Cloud",
+      url: "/services/healthcare-insurance",
+    },
+    {
+      label: "Energy & Utilities Cloud",
+      url: "/services/energy-utilities",
+    },
+    { label: "Nonprofit Cloud", url: "/services/non-profit-cloud" },
+  ];
+  // Use the intended industry list instead of outdated WordPress footer values.
+  // This prevents service links such as "Financial Services" from appearing here.
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
     { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
-    { label: "CRM Development", url: "/services/salesforce-crm" },
-    { label: "Python Application", url: "/services/python-application" },
-    { label: "Technical Support", url: "/services/technical-support" },
-    { label: "Deployment Support", url: "/services/deployment-support" },
+    { label: "Education Cloud", url: "/industries/education-cloud" },
+    { label: "Nonprofit", url: "/industries/non-profit" },
+    { label: "Energy & Utilities", url: "/industries/energy-utilities" },
+    { label: "Government & Public Sector", url: "/industries/government" },
   ];
   const company = parseLinks(footer.company);
 
@@ -436,24 +443,6 @@ export default function Footer() {
             </li>
             <li>
               <a href="/services/non-profit-cloud">Nonprofit Cloud</a>
-            </li>
-            <li>
-              <a href="/services/custom-development">Custom Development</a>
-            </li>
-            <li>
-              <a href="/services/net-application">
-                .NET Application Development
-              </a>
-            </li>
-            <li>
-              <a href="/services/python-application">
-                Python Application Development
-              </a>
-            </li>
-            <li>
-              <a href="/services/react-application">
-                React Application Development
-              </a>
             </li>
           </ul>
         </FooterAccordion>
