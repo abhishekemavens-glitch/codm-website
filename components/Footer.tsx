@@ -43,7 +43,7 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
   "Building LLM": "/services/building-llm", 
-  "Marketing Cloud": "/services/marketing-cloud",
+  "LLM & Custom AI Development": "/services/building-llm",
   "Salesforce Sales Cloud": "/services/sales-cloud",
   "Custom Development": "/services/custom-development",
   ".NET Application": "/services/net-application",
@@ -53,18 +53,18 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application Development": "/services/react-application",
 
   // Industries 
-  "Healthcare & Insurance": "/services/healthcare-insurance",
-  Manufacturing: "/services/manufacturing-cloud",
-  "Higher Education": "/services/education-cloud",
+  "Healthcare & Insurance": "/industries/healthcare-insurance",
+  Manufacturing: "/industries/manufacturing-cloud",
+  "Higher Education": "/industries/education-cloud",
   Education: "/industries/higher-education",
-  "Energy & Utilities": "/services/energy-utilities",
-  "Energy and Utilities": "/services/energy-utilities",
-  Government: "/services/government",
-  "Public Sector": "/services/government",
-  "Healthcare & Insurance Cloud": "/services/healthcare-insurance",
-  "CRM Development": "/services/salesforce-crm",
+  "Energy & Utilities": "/industries/energy-utilities",
+  "Energy and Utilities": "/industries/energy-utilities",
+  Government: "/industries/government",
+  "Public Sector": "/industries/government",
+  "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
+  "Manufacturing Cloud": "/industries/manufacturing",
   Nonprofit: "/services/non-profit-cloud",
-  "Nonprofit Cloud": "/services/non-profit",
+  "Nonprofit Cloud": "/industries/non-profit",
 
   // Company
   About: "/about",
@@ -284,37 +284,36 @@ export default function Footer() {
         : [...current, id]
     );
 
- const services = parseLinks(footer.services).map((item) => {
-  const replacements: Record<string, string> = {
-    "ai & llm overview": "Building LLM",
-    "financial services": "Marketing Cloud",
-    "healthcare & insurance": "Health & Insurance Cloud",
-    "energy & utilities": "Energy & Utilities Cloud",
-    nonprofit: "Nonprofit Cloud",
-  };
-
-  const label = item.label.trim().toLowerCase();
-
-  return replacements[label]
-    ? {
-        label: replacements[label],
-        url:
-          label === "ai & llm overview"
-            ? "/services/building-llm"
-            : item.url,
-      }
-    : item;
-});
+  const services = parseLinks(footer.services).flatMap((item) =>
+    item.label.trim().toLowerCase() === "ai & llm overview"
+      ? [
+          {
+            label: "LLM & Custom AI Development",
+            url: "/services/building-llm",
+          },
+          { label: "Marketing Cloud", url: "/services/marketing-cloud" },
+          {
+            label: "Health & Insurance Cloud",
+            url: "/services/healthcare-insurance",
+          },
+          {
+            label: "Energy & Utilities Cloud",
+            url: "/services/energy-utilities",
+          },
+          { label: "Nonprofit Cloud", url: "/services/non-profit-cloud" },
+        ]
+      : [item]
+  );
   const aiLlm = parseLinks(footer.aiLlm);
   // Use the intended industry list instead of outdated WordPress footer values.
   // This prevents service links such as "Financial Services" from appearing here.
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
-    { label: "Manufacturing Cloud", url: "/services/manufacturing-cloud" },
-    { label: "CRM Development", url: "/services/salesforce-crm" },
-    { label: "Python Application", url: "/services/python-application" },
-    { label: "Technical Support", url: "/services/technical-support" },
-    { label: "Deployment Support", url: "/services/deployment-support" },
+    { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
+    { label: "Education Cloud", url: "/industries/education-cloud" },
+    { label: "Nonprofit", url: "/industries/non-profit" },
+    { label: "Energy & Utilities", url: "/industries/energy-utilities" },
+    { label: "Government & Public Sector", url: "/industries/government" },
   ];
   const company = parseLinks(footer.company);
 
