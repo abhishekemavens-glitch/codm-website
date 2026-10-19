@@ -479,7 +479,7 @@ async function getPost(
 
 /* =========================================================
    GET WORDPRESS CASE STUDY
-   /case-studies/<slug>
+   /<slug>
 ========================================================= */
 
 type WpCaseStudy = {
