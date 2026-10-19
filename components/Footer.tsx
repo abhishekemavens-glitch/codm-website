@@ -23,10 +23,27 @@ type FooterData = {
   copyright: string;
 };
 
+type FooterLink = { label: string; url: string };
+
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-function parseLinks(value: string) {
+function normalizeInternalUrl(url: string) {
+  const trimmed = url.trim();
+
+  if (!trimmed || trimmed === "#") return "#";
+
+  if (
+    /^(https?:\/\/|mailto:|tel:|#)/i.test(trimmed) ||
+    trimmed.startsWith("//")
+  ) {
+    return trimmed;
+  }
+
+  return `/${trimmed.replace(/^\/+/, "")}`;
+}
+
+function parseLinks(value: string = ""): FooterLink[] {
   if (!value) return [];
 
   return value
@@ -37,25 +54,16 @@ function parseLinks(value: string) {
       const separatorIndex = line.indexOf("|");
 
       if (separatorIndex === -1) {
-        return {
-          label: line,
-          url: "#",
-        };
+        return { label: line, url: "#" };
       }
 
       return {
         label: line.substring(0, separatorIndex).trim(),
-        url: line.substring(separatorIndex + 1).trim(),
+        url: normalizeInternalUrl(line.substring(separatorIndex + 1).trim()),
       };
     });
 }
 
-/*
- * One footer link column.
- *  - Desktop: looks like a normal heading, always expanded (CSS).
- *  - Mobile (<= 700px): heading becomes a toggle, list is collapsed
- *    until tapped (CSS + isOpen).
- */
 function FooterAccordion({
   id,
   title,
@@ -84,18 +92,10 @@ function FooterAccordion({
           onClick={onToggle}
         >
           <span>{title}</span>
-
-          <span
-            className="codm-footer-accordion-chevron"
-            aria-hidden="true"
-          />
+          <span className="codm-footer-accordion-chevron" aria-hidden="true" />
         </button>
       </h3>
-
-      <div
-        id={`footer-panel-${id}`}
-        className="codm-footer-accordion-panel"
-      >
+      <div id={`footer-panel-${id}`} className="codm-footer-accordion-panel">
         {children}
       </div>
     </div>
@@ -104,18 +104,16 @@ function FooterAccordion({
 
 export default function Footer() {
   const [footer, setFooter] = useState<FooterData | null>(null);
-
-  /* Which mobile sections are open. Empty = all closed. */
   const [openSections, setOpenSections] = useState<string[]>([]);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function loadFooter() {
       try {
         const response = await fetch(WORDPRESS_GRAPHQL_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             query: `
               query Footer {
@@ -148,9 +146,11 @@ export default function Footer() {
           }),
         });
 
-        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(`Footer request failed: ${response.status}`);
+        }
 
-        console.log("FOOTER DATA:", result);
+        const result = await response.json();
 
         if (result.errors) {
           console.error("Footer GraphQL Error:", result.errors);
@@ -158,21 +158,19 @@ export default function Footer() {
         }
 
         const data = result?.data?.codmFooters?.nodes?.[0];
-
-        if (data) {
-          setFooter(data);
-        }
+        if (data && !cancelled) setFooter(data);
       } catch (error) {
         console.error("Failed to load Footer:", error);
       }
     }
 
     loadFooter();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  if (!footer) {
-    return null;
-  }
+  if (!footer) return null;
 
   const toggleSection = (id: string) =>
     setOpenSections((current) =>
@@ -200,29 +198,33 @@ export default function Footer() {
     footer.certificationLogo4,
   ].filter(Boolean);
 
+  const linkedinUrl =
+    footer.linkedin || "https://www.linkedin.com/company/codm-software-limited/";
+  const twitterUrl = footer.twitter || "https://twitter.com/";
+  const youtubeUrl =
+    footer.youtube || "https://www.youtube.com/channel/UC7fU84Na9QuC7dPDVMpuGVQ";
+
   return (
     <footer className="codm-footer">
-
       <div className="codm-footer-main">
-
         {/* BRAND */}
         <div className="codm-footer-brand">
-
           <div className="codm-footer-logo">
-           {footer.mainLogo && (
-  <img
-    src={footer.mainLogo}
-    alt="CODM"
-    className="codm-footer-logo"
-  />
-)}
+            {footer.mainLogo && (
+              <a href="/" aria-label="CODM Home">
+                <img
+                  src={footer.mainLogo}
+                  alt="CODM"
+                  className="codm-footer-logo"
+                />
+              </a>
+            )}
           </div>
 
           <div className="codm-footer-social">
-
-            {footer.linkedin && (
+            {linkedinUrl && (
               <a
-                href={footer.linkedin}
+                href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -232,10 +234,9 @@ export default function Footer() {
                 </svg>
               </a>
             )}
-
-            {footer.twitter && (
+            {twitterUrl && (
               <a
-                href={footer.twitter}
+                href={twitterUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X"
@@ -245,10 +246,9 @@ export default function Footer() {
                 </svg>
               </a>
             )}
-
-            {footer.youtube && (
+            {youtubeUrl && (
               <a
-                href={footer.youtube}
+                href={youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
@@ -258,16 +258,12 @@ export default function Footer() {
                 </svg>
               </a>
             )}
-
           </div>
 
-          <p className="codm-footer-description">
-            {footer.description}
-          </p>
+          <p className="codm-footer-description">{footer.description}</p>
 
           {leftLogos.length > 0 && (
             <div className="codm-footer-left-logos">
-
               {leftLogos.map((logo, index) => (
                 <img
                   key={index}
@@ -276,12 +272,9 @@ export default function Footer() {
                   className="codm-footer-left-logo"
                 />
               ))}
-
             </div>
           )}
-
         </div>
-
 
         {/* SERVICES */}
         <FooterAccordion
@@ -291,18 +284,13 @@ export default function Footer() {
           onToggle={() => toggleSection("services")}
         >
           <ul className="codm-footer-links">
-
             {services.map((item, index) => (
-              <li key={index}>
-                <a href={item.url}>
-                  {item.label}
-                </a>
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
               </li>
             ))}
-
           </ul>
         </FooterAccordion>
-
 
         {/* AI & LLM */}
         <FooterAccordion
@@ -312,43 +300,29 @@ export default function Footer() {
           onToggle={() => toggleSection("ai-llm")}
         >
           <ul className="codm-footer-links">
-
             {aiLlm.slice(0, 2).map((item, index) => (
-              <li key={index}>
-                <a href={item.url}>
-                  {item.label}
-                </a>
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
               </li>
             ))}
-
           </ul>
-
 
           {aiLlm.length > 2 && (
             <>
               <div className="codm-footer-subheading">
-                <span>
-                  {aiLlm[2].label}
-                </span>
-
-                <span>⌄</span>
+                <span>{aiLlm[2].label}</span>
+                <span aria-hidden="true">⌄</span>
               </div>
-
               <ul className="codm-footer-links">
-
                 {aiLlm.slice(3).map((item, index) => (
-                  <li key={index}>
-                    <a href={item.url}>
-                      {item.label}
-                    </a>
+                  <li key={`${item.label}-${index}`}>
+                    <a href={item.url}>{item.label}</a>
                   </li>
                 ))}
-
               </ul>
             </>
           )}
         </FooterAccordion>
-
 
         {/* INDUSTRIES */}
         <FooterAccordion
@@ -358,18 +332,13 @@ export default function Footer() {
           onToggle={() => toggleSection("industries")}
         >
           <ul className="codm-footer-links">
-
             {industries.map((item, index) => (
-              <li key={index}>
-                <a href={item.url}>
-                  {item.label}
-                </a>
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
               </li>
             ))}
-
           </ul>
         </FooterAccordion>
-
 
         {/* COMPANY */}
         <FooterAccordion
@@ -379,28 +348,31 @@ export default function Footer() {
           onToggle={() => toggleSection("company")}
         >
           <ul className="codm-footer-links">
+            {company.map((item, index) => {
+              const label = item.label.trim().toLowerCase();
+              const url =
+                label === "contact"
+                  ? "/contact-us"
+                  : label === "career" || label === "careers"
+                    ? "/careers"
+                    : label === "blogs" || label === "blog"
+                      ? "/insights"
+                      : item.url;
 
-            {company.map((item, index) => (
-              <li key={index}>
-                <a href={item.url}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-
+              return (
+                <li key={`${item.label}-${index}`}>
+                  <a href={url}>{item.label}</a>
+                </li>
+              );
+            })}
           </ul>
         </FooterAccordion>
-
       </div>
 
-
       {/* CERTIFICATIONS */}
-
       {certificationLogos.length > 0 && (
         <div className="codm-footer-certifications">
-
           <div className="codm-footer-certification-list">
-
             {certificationLogos.map((logo, index) => (
               <img
                 key={index}
@@ -409,23 +381,14 @@ export default function Footer() {
                 className="codm-footer-certification-logo"
               />
             ))}
-
           </div>
-
         </div>
       )}
 
-
       {/* COPYRIGHT */}
-
       <div className="codm-footer-bottom">
-
-        <p>
-          {footer.copyright}
-        </p>
-
+        <p>{footer.copyright}</p>
       </div>
-
     </footer>
   );
 }
