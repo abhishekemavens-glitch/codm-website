@@ -275,7 +275,7 @@ export default function Footer() {
         ? current.filter((item) => item !== id)
         : [...current, id]
     );
-
+ 
   // Match the requested footer: Services shows "Building LLM";
   // the AI & LLM Overview column keeps its original WordPress links.
   const services = parseLinks(footer.services).map((item) =>
