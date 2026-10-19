@@ -43,7 +43,7 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
   "Building LLM": "/services/building-llm", 
-  "LLM & Custom AI Development": "/services/building-llm",
+  "Marketing Cloud": "/services/marketing-cloud",
   "Salesforce Sales Cloud": "/services/sales-cloud",
   "Custom Development": "/services/custom-development",
   ".NET Application": "/services/net-application",
@@ -284,11 +284,27 @@ export default function Footer() {
         : [...current, id]
     );
 
-  const services = parseLinks(footer.services).map((item) =>
-    item.label.trim().toLowerCase() === "ai & llm overview"
-      ? { label: "Building LLM", url: "/services/building-llm" }
-      : item
-  );
+ const services = parseLinks(footer.services).map((item) => {
+  const replacements: Record<string, string> = {
+    "ai & llm overview": "Building LLM",
+    "financial services": "Marketing Cloud",
+    "healthcare & insurance": "Health & Insurance Cloud",
+    "energy & utilities": "Energy & Utilities Cloud",
+    nonprofit: "Nonprofit Cloud",
+  };
+
+  const label = item.label.trim().toLowerCase();
+
+  return replacements[label]
+    ? {
+        label: replacements[label],
+        url:
+          label === "ai & llm overview"
+            ? "/services/building-llm"
+            : item.url,
+      }
+    : item;
+});
   const aiLlm = parseLinks(footer.aiLlm);
   // Use the intended industry list instead of outdated WordPress footer values.
   // This prevents service links such as "Financial Services" from appearing here.
