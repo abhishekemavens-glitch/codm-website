@@ -198,11 +198,11 @@ export default function Footer() {
     footer.certificationLogo4,
   ].filter(Boolean);
 
-  const linkedinUrl =
-    footer.linkedin || "https://www.linkedin.com/company/codm-software-limited/";
-  const twitterUrl = footer.twitter || "https://twitter.com/";
+  // Use fixed social URLs so WordPress values cannot override them.
+  const linkedinUrl = "https://www.linkedin.com/company/codm-software-limited/";
+  const twitterUrl = "https://x.com/";
   const youtubeUrl =
-    footer.youtube || "https://www.youtube.com/channel/UC7fU84Na9QuC7dPDVMpuGVQ";
+    "https://www.youtube.com/channel/UC7fU84Na9QuC7dPDVMpuGVQ";
 
   return (
     <footer className="codm-footer">
