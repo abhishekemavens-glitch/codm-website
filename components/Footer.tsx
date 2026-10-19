@@ -343,52 +343,38 @@ export default function Footer() {
         </FooterAccordion>
 
         {/* AI & LLM */}
-        <FooterAccordion
-          id="ai-llm"
-          title="AI & LLM Overview"
-          isOpen={openSections.includes("ai-llm")}
-          onToggle={() => toggleSection("ai-llm")}
-        >
-          <ul className="codm-footer-links">
-            {aiLlm.slice(0, 2).map((item, index) => (
-              <li key={`${item.label}-${index}`}>
-                <a href={item.url}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-
-          {aiLlm.length > 2 && (
-            <>
-              <div className="codm-footer-subheading">
-                <span>{aiLlm[2].label}</span>
-                <span aria-hidden="true">⌄</span>
-              </div>
-              <ul className="codm-footer-links">
-                {aiLlm.slice(3).map((item, index) => (
-                  <li key={`${item.label}-${index}`}>
-                    <a href={item.url}>{item.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </>
+<FooterAccordion
+  id="ai-llm"
+  title="AI & LLM Overview"
+  isOpen={openSections.includes("ai-llm")}
+  onToggle={() => toggleSection("ai-llm")}
+>
+  <ul className="codm-footer-links">
+    {aiLlm
+      .filter((item) => item.label.trim().toLowerCase() !== "development")
+      .map((item, index) => (
+        <li key={`${item.label}-${index}`}>
+          {item.label === "Custom Development" ? (
+            <span className="codm-footer-subheading">
+              {item.label}
+            </span>
+          ) : (
+            <a href={item.url}>{item.label}</a>
           )}
-        </FooterAccordion>
+        </li>
+      ))}
+  </ul>
+</FooterAccordion>
 
-        {/* INDUSTRIES */}
-        <FooterAccordion
-          id="industries"
-          title="Industries"
-          isOpen={openSections.includes("industries")}
-          onToggle={() => toggleSection("industries")}
-        >
-          <ul className="codm-footer-links">
-            {industries.map((item, index) => (
-              <li key={`${item.label}-${index}`}>
-                <a href={item.url}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </FooterAccordion>
+     {/* INDUSTRIES */}
+<FooterAccordion
+  id="industries"
+  title="Industries"
+  isOpen={openSections.includes("industries")}
+  onToggle={() => toggleSection("industries")}
+>
+  {/* Industry links removed */}
+</FooterAccordion>
 
         {/* COMPANY */}
         <FooterAccordion
