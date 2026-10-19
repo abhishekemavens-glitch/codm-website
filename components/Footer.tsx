@@ -59,12 +59,12 @@ const FOOTER_URLS: Record<string, string> = {
   Education: "/industries/higher-education",
   "Energy & Utilities": "/services/energy-utilities",
   "Energy and Utilities": "/services/energy-utilities",
-  Government: "/industries/government",
-  "Public Sector": "/industries/government",
-  "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
-  "Manufacturing Cloud": "/industries/manufacturing",
+  Government: "/services/government",
+  "Public Sector": "/services/government",
+  "Healthcare & Insurance Cloud": "/services/healthcare-insurance",
+  "CRM Development": "/services/salesforce-crm",
   Nonprofit: "/services/non-profit-cloud",
-  "Nonprofit Cloud": "/industries/non-profit",
+  "Nonprofit Cloud": "/services/non-profit",
 
   // Company
   About: "/about",
@@ -295,10 +295,10 @@ export default function Footer() {
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
     { label: "Manufacturing Cloud", url: "/services/manufacturing-cloud" },
-    { label: "Education Cloud", url: "/services/education-cloud" },
-    { label: "Nonprofit", url: "/services/non-profit" },
-    { label: "Energy & Utilities", url: "/services/energy-utilities" },
-    { label: "Government & Public Sector", url: "/services/government" },
+    { label: "CRM Development", url: "/services/salesforce-crm" },
+    { label: "Python Application", url: "/services/python-application" },
+    { label: "Technical Support", url: "/services/technical-support" },
+    { label: "Deployment Support", url: "/services/deployment-support" },
   ];
   const company = parseLinks(footer.company);
 
