@@ -407,15 +407,15 @@ export default function Footer() {
           </ul>
         </FooterAccordion>
 
-        {/* INDUSTRIES */}
-        <FooterAccordion
-          id="industries"
-          title="Industries"
-          isOpen={openSections.includes("industries")}
-          onToggle={() => toggleSection("industries")}
-        >
-          {/* Industry links removed */}
-        </FooterAccordion>
+       {/* INDUSTRIES */}
+<FooterAccordion
+  id="industries"
+  title="Industries"
+  isOpen={openSections.includes("industries")}
+  onToggle={() => toggleSection("industries")}
+>
+  <></>
+</FooterAccordion>
 
         {/* COMPANY */}
         <FooterAccordion
