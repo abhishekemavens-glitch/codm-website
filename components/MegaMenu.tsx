@@ -28,7 +28,7 @@ const URLS: Record<string, string> = {
   // Salesforce CRM
   "Salesforce CRM": `${BASE_URL}/services/salesforce-crm`,
 
-  "Salesforce Education Cloud": `${BASE_URL}/services/salesforce-crm`,
+  "Salesforce Education Cloud": `${BASE_URL}/services/education-cloud`,
 
   "Salesforce Financial Services": `${BASE_URL}/services/sales-force-financial-services-cloud`,
 
