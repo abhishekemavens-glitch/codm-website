@@ -452,65 +452,51 @@ const closeServicesMenu = () => {
       aria-label="Main navigation"
     >
 
-      {services.label && (
+     {services.label && (
   <div
     className="codm-header-nav-item-wrap codm-services-menu-trigger"
     onMouseEnter={openServicesMenu}
     onMouseLeave={closeServicesMenu}
   >
-          <a
-            href={services.url || "#"}
-            className={`codm-header-nav-link ${
-              isActiveLink(services.url) ? "codm-header-nav-link-active" : ""
-            }`}
-            onFocus={openServicesMenu}
-            aria-haspopup={
-              header.megaMenuEnabled ? "true" : undefined
-            }
-            aria-expanded={
-              header.megaMenuEnabled
-                ? servicesMenuOpen
-                : undefined
-            }
-          >
-            {services.label}
-
-          <div
-  className={`codm-header-nav-link ${
-    isActiveLink(services.url) ? "codm-header-nav-link-active" : ""
-  }`}
-  onFocus={openServicesMenu}
-  aria-haspopup={header.megaMenuEnabled ? "true" : undefined}
-  aria-expanded={
-    header.megaMenuEnabled ? servicesMenuOpen : undefined
-  }
-  tabIndex={0}
-  role="button"
->
-  {services.label}
-
-  {header.megaMenuEnabled && (
-    <svg
-      className={`codm-nav-dropdown-icon ${
-        servicesMenuOpen ? "codm-nav-dropdown-icon-open" : ""
+    <div
+      className={`codm-header-nav-link ${
+        isActiveLink(services.url)
+          ? "codm-header-nav-link-active"
+          : ""
       }`}
-      width="10"
-      height="6"
-      viewBox="0 0 10 6"
-      fill="none"
-      aria-hidden="true"
+      onFocus={openServicesMenu}
+      aria-haspopup={header.megaMenuEnabled ? "true" : undefined}
+      aria-expanded={
+        header.megaMenuEnabled ? servicesMenuOpen : undefined
+      }
+      tabIndex={0}
+      role="button"
     >
-      <path
-        d="M1 1L5 5L9 1"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )}
-</div>
+      {services.label}
+
+      {header.megaMenuEnabled && (
+        <svg
+          className={`codm-nav-dropdown-icon ${
+            servicesMenuOpen ? "codm-nav-dropdown-icon-open" : ""
+          }`}
+          width="10"
+          height="6"
+          viewBox="0 0 10 6"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M1 1L5 5L9 1"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       )}
+    </div>
+  </div>
+)}
 
       {industries.label && (
         <a
