@@ -42,7 +42,7 @@ const FOOTER_URLS: Record<string, string> = {
   "Data Migration": "/services/data-integration-migration",
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
-  "Building LLM": "/services/building-llm",
+  "Building LLM": "/services/building-llm", 
   "LLM & Custom AI Development": "/services/building-llm",
   "Salesforce Sales Cloud": "/services/sales-cloud",
   "Custom Development": "/services/custom-development",
