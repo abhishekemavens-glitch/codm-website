@@ -412,6 +412,7 @@ export default function Footer() {
           </ul>
         </FooterAccordion>
 
+       
         {/* AI & LLM */}
         <FooterAccordion
           id="ai-llm"
@@ -420,21 +421,43 @@ export default function Footer() {
           onToggle={() => toggleSection("ai-llm")}
         >
           <ul className="codm-footer-links">
-            {aiLlm
-              .filter((item) => item.label.trim().toLowerCase() !== "development")
-              .map((item, index) => (
-                <li key={`${item.label}-${index}`}>
-                  {item.label === "Custom Development" ? (
-                    <span className="codm-footer-subheading">
-                      {item.label}
-                    </span>
-                  ) : (
-                    <a href={item.url}>{item.label}</a>
-                  )}
-                </li>
-              ))}
+            <li>
+              <a href="/services/marketing-cloud">Marketing Cloud</a>
+            </li>
+            <li>
+              <a href="/services/healthcare-insurance">
+                Health &amp; Insurance Cloud
+              </a>
+            </li>
+            <li>
+              <a href="/services/energy-utilities">
+                Energy &amp; Utilities Cloud
+              </a>
+            </li>
+            <li>
+              <a href="/services/non-profit-cloud">Nonprofit Cloud</a>
+            </li>
+            <li>
+              <a href="/services/custom-development">Custom Development</a>
+            </li>
+            <li>
+              <a href="/services/net-application">
+                .NET Application Development
+              </a>
+            </li>
+            <li>
+              <a href="/services/python-application">
+                Python Application Development
+              </a>
+            </li>
+            <li>
+              <a href="/services/react-application">
+                React Application Development
+              </a>
+            </li>
           </ul>
         </FooterAccordion>
+
 
        {/* INDUSTRIES */}
         <FooterAccordion
