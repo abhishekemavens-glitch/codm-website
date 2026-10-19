@@ -284,14 +284,18 @@ export default function Footer() {
         : [...current, id]
     );
 
-  const services = parseLinks(footer.services);
+  const services = parseLinks(footer.services).map((item) =>
+    item.label.trim().toLowerCase() === "ai & llm overview"
+      ? { label: "Building LLM", url: "/services/building-llm" }
+      : item
+  );
   const aiLlm = parseLinks(footer.aiLlm);
   // Use the intended industry list instead of outdated WordPress footer values.
   // This prevents service links such as "Financial Services" from appearing here.
   const industries: FooterLink[] = [
-    { label: "Healthcare & Insurance", url: "/industries/healthcare-insurance" },
-    { label: "Manufacturing", url: "/industries/manufacturing" },
-    { label: "Higher Education", url: "/industries/higher-education" },
+    { label: "Sales Cloud", url: "/services/sales-cloud" },
+    { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
+    { label: "Education Cloud", url: "/industries/education-cloud" },
     { label: "Nonprofit", url: "/industries/non-profit" },
     { label: "Energy & Utilities", url: "/industries/energy-utilities" },
     { label: "Government & Public Sector", url: "/industries/government" },
