@@ -52,7 +52,7 @@ const FOOTER_URLS: Record<string, string> = {
   "Python Application Development": "/services/python-application",
   "React Application Development": "/services/react-application",
 
-  // Industries
+  // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
   Manufacturing: "/industries/manufacturing",
   "Higher Education": "/industries/higher-education",
