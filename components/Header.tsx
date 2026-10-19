@@ -713,10 +713,14 @@ const closeServicesMenu = () => {
       <ThemeToggle />
 
       {header.buttonText && (
-        <a
-          href={header.buttonUrl || "#"}
-          className="codm-header-cta"
-        >
+  <a
+    href={
+      header.buttonText.toLowerCase().includes("contact")
+        ? "/contact-us"
+        : header.buttonUrl || "#"
+    }
+    className="codm-header-cta"
+  >
           <span>
             {header.buttonText}
           </span>
