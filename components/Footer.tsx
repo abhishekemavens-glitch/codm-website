@@ -294,11 +294,11 @@ export default function Footer() {
   // This prevents service links such as "Financial Services" from appearing here.
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
-    { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
-    { label: "Education Cloud", url: "/industries/education-cloud" },
-    { label: "Nonprofit", url: "/industries/non-profit" },
-    { label: "Energy & Utilities", url: "/industries/energy-utilities" },
-    { label: "Government & Public Sector", url: "/industries/government" },
+    { label: "Manufacturing Cloud", url: "/services/manufacturing-cloud" },
+    { label: "Education Cloud", url: "/services/education-cloud" },
+    { label: "Nonprofit", url: "/services/non-profit" },
+    { label: "Energy & Utilities", url: "/services/energy-utilities" },
+    { label: "Government & Public Sector", url: "/services/government" },
   ];
   const company = parseLinks(footer.company);
 
