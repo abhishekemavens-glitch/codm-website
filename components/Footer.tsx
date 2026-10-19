@@ -42,9 +42,9 @@ const FOOTER_URLS: Record<string, string> = {
   "Data Migration": "/services/data-integration-migration",
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
-  "AI & LLM Overview": "/services/ai-llm-overview",
+  "Building LLM": "/services/building-llm",
   "LLM & Custom AI Development": "/services/building-llm",
-  "Business Process Automation": "/services/business-process-automation",
+  "Salesforce Sales Cloud": "/services/sales-cloud",
   "Custom Development": "/services/custom-development",
   ".NET Application": "/services/net-application",
   ".NET Application Development": "/services/net-application",
@@ -54,8 +54,8 @@ const FOOTER_URLS: Record<string, string> = {
 
   // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
-  Manufacturing: "/industries/manufacturing",
-  "Higher Education": "/industries/higher-education",
+  Manufacturing: "/industries/manufacturing-cloud",
+  "Higher Education": "/industries/education-cloud",
   Education: "/industries/higher-education",
   "Energy & Utilities": "/industries/energy-utilities",
   "Energy and Utilities": "/industries/energy-utilities",
@@ -63,7 +63,7 @@ const FOOTER_URLS: Record<string, string> = {
   "Public Sector": "/industries/government",
   "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
   "Manufacturing Cloud": "/industries/manufacturing",
-  Nonprofit: "/industries/non-profit",
+  Nonprofit: "/services/non-profit-cloud",
   "Nonprofit Cloud": "/industries/non-profit",
 
   // Company
