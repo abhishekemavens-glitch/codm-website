@@ -43,14 +43,6 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
   "Building LLM": "/services/building-llm", 
-  "LLM & Custom AI Development": "/services/building-llm",
-  "Salesforce Sales Cloud": "/services/sales-cloud",
-  "Custom Development": "/services/custom-development",
-  ".NET Application": "/services/net-application",
-  ".NET Application Development": "/services/net-application",
-  "Python Application": "/services/python-application",
-  "Python Application Development": "/services/python-application",
-  "React Application Development": "/services/react-application",
 
   // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
@@ -421,6 +413,7 @@ export default function Footer() {
           </ul>
         </FooterAccordion>
 
+
         {/* AI & LLM */}
         <FooterAccordion
           id="ai-llm"
@@ -429,19 +422,22 @@ export default function Footer() {
           onToggle={() => toggleSection("ai-llm")}
         >
           <ul className="codm-footer-links">
-            {aiLlm
-              .filter((item) => item.label.trim().toLowerCase() !== "development")
-              .map((item, index) => (
-                <li key={`${item.label}-${index}`}>
-                  {item.label === "Custom Development" ? (
-                    <span className="codm-footer-subheading">
-                      {item.label}
-                    </span>
-                  ) : (
-                    <a href={item.url}>{item.label}</a>
-                  )}
-                </li>
-              ))}
+            <li>
+              <a href="/services/marketing-cloud">Marketing Cloud</a>
+            </li>
+            <li>
+              <a href="/services/healthcare-insurance">
+                Health &amp; Insurance Cloud
+              </a>
+            </li>
+            <li>
+              <a href="/services/energy-utilities">
+                Energy &amp; Utilities Cloud
+              </a>
+            </li>
+            <li>
+              <a href="/services/non-profit-cloud">Nonprofit Cloud</a>
+            </li>
           </ul>
         </FooterAccordion>
 
