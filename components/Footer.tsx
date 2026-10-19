@@ -431,6 +431,32 @@ export default function Footer() {
               </li>
             ))}
           </ul>
+
+
+ {aiLlm.length > 2 && (
+            <>
+              <div className="codm-footer-subheading">
+                <span>
+                  {aiLlm[2].label}
+                </span>
+
+                <span>⌄</span>
+              </div>
+
+              <ul className="codm-footer-links">
+
+                {aiLlm.slice(3).map((item, index) => (
+                  <li key={index}>
+                    <a href={item.url}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+
+              </ul>
+            </>
+          )}
+          
         </FooterAccordion>
 
        {/* INDUSTRIES */}
