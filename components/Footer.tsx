@@ -286,18 +286,16 @@ export default function Footer() {
 
   const services = parseLinks(footer.services);
   const aiLlm = parseLinks(footer.aiLlm);
-  const industriesFromWordPress = parseLinks(footer.industries);
-  const industries =
-    industriesFromWordPress.length > 0
-      ? industriesFromWordPress
-      : [
-          { label: "Healthcare & Insurance", url: "/industries/healthcare-insurance" },
-          { label: "Manufacturing", url: "/industries/manufacturing" },
-          { label: "Higher Education", url: "/industries/higher-education" },
-          { label: "Nonprofit", url: "/industries/non-profit" },
-          { label: "Energy & Utilities", url: "/industries/energy-utilities" },
-          { label: "Government & Public Sector", url: "/industries/government" },
-        ];
+  // Use the intended industry list instead of outdated WordPress footer values.
+  // This prevents service links such as "Financial Services" from appearing here.
+  const industries: FooterLink[] = [
+    { label: "Healthcare & Insurance", url: "/industries/healthcare-insurance" },
+    { label: "Manufacturing", url: "/industries/manufacturing" },
+    { label: "Higher Education", url: "/industries/higher-education" },
+    { label: "Nonprofit", url: "/industries/non-profit" },
+    { label: "Energy & Utilities", url: "/industries/energy-utilities" },
+    { label: "Government & Public Sector", url: "/industries/government" },
+  ];
   const company = parseLinks(footer.company);
 
   const leftLogos = [
