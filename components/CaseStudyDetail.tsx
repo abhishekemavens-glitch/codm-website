@@ -18,7 +18,7 @@ const WORDPRESS_GRAPHQL_URL =
 
 /* Frontend route of a single case study. Matches the "case-studies"
    rewrite slug set on the Case Study post type in WordPress. */
-const CASE_STUDY_BASE_PATH = "/case-studies";
+const CASE_STUDY_BASE_PATH = "";
 
 const RELATED_COUNT = 3;
 
@@ -82,15 +82,15 @@ async function fetchCaseStudyExtras(
                 excerpt
                 featuredImage {
                   node {
-                    ... on MediaItem {
-                      sourceUrl
-                      altText
-                    }
+                    sourceUrl
+                    altText
                   }
                 }
-                caseStudyCategories {
-                  databaseId
-                  name
+                categories {
+                  nodes {
+                    databaseId
+                    name
+                  }
                 }
               }
             }
@@ -107,18 +107,7 @@ async function fetchCaseStudyExtras(
       return empty;
     }
 
-    const all: ListCaseStudy[] = (
-      json?.data?.caseStudies?.nodes ?? []
-    ).map(
-      (
-        item: ListCaseStudy & {
-          caseStudyCategories?: { databaseId: number; name: string }[] | null;
-        }
-      ) => ({
-        ...item,
-        categories: { nodes: item.caseStudyCategories ?? [] },
-      })
-    );
+    const all: ListCaseStudy[] = json?.data?.caseStudies?.nodes ?? [];
     const key = normalizeUri(uri);
     const index = all.findIndex((p) => normalizeUri(p.uri) === key);
 
