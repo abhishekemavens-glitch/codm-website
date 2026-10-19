@@ -709,40 +709,34 @@ const closeServicesMenu = () => {
 
       <ThemeToggle />
 
-      {header.buttonText && (
+    {header.buttonText && (
   <a
-    href={
-      header.buttonText.toLowerCase().includes("contact")
-        ? "/contact-us"
-        : header.buttonUrl || "#"
-    }
+    href="/contact-us"
     className="codm-header-cta"
   >
-          <span>
-            {header.buttonText}
-          </span>
+    <span>{header.buttonText}</span>
 
-          <span
-            className="codm-header-cta-arrow"
-            aria-hidden="true"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-            >
-              <path
-                d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </a>
-      )}
+    <span
+      className="codm-header-cta-arrow"
+      aria-hidden="true"
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+      >
+        <path
+          d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  </a>
+)}
 
     </div>
 
