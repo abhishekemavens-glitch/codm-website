@@ -43,6 +43,14 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application": "/services/react-application",
   "Technical Support": "/services/technical-support",
   "Building LLM": "/services/building-llm", 
+  "LLM & Custom AI Development": "/services/building-llm",
+  "Salesforce Sales Cloud": "/services/sales-cloud",
+  "Custom Development": "/services/custom-development",
+  ".NET Application": "/services/net-application",
+  ".NET Application Development": "/services/net-application",
+  "Python Application": "/services/python-application",
+  "Python Application Development": "/services/python-application",
+  "React Application Development": "/services/react-application",
 
   // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
@@ -144,10 +152,12 @@ function parseLinks(value: string = ""): FooterLink[] {
         ? ""
         : line.substring(separatorIndex + 1).trim();
 
-    // Replace the retired footer item with Products.
+    // Replace retired/renamed footer labels.
     const displayLabel = /^white\s*label\s*programme$/i.test(label)
       ? "Products"
-      : label;
+      : /^ai\s*&\s*llm\s*overview$/i.test(label)
+        ? "Building LLM"
+        : label;
 
     const mappedUrl =
       FOOTER_URLS[displayLabel] ||
@@ -276,36 +286,25 @@ export default function Footer() {
         : [...current, id]
     );
 
-  const services = parseLinks(footer.services).flatMap((item) =>
+  // Match the requested footer: Services shows "Building LLM";
+  // the AI & LLM Overview column keeps its original WordPress links.
+  const services = parseLinks(footer.services).map((item) =>
     item.label.trim().toLowerCase() === "ai & llm overview"
-      ? [
-          {
-            label: "LLM & Custom AI Development",
-            url: "/services/building-llm",
-          },
-          { label: "Marketing Cloud", url: "/services/marketing-cloud" },
-          {
-            label: "Health & Insurance Cloud",
-            url: "/services/healthcare-insurance",
-          },
-          {
-            label: "Energy & Utilities Cloud",
-            url: "/services/energy-utilities",
-          },
-          { label: "Nonprofit Cloud", url: "/services/non-profit-cloud" },
-        ]
-      : [item]
+      ? { label: "Building LLM", url: "/services/building-llm" }
+      : item
   );
+
+  // Keep the original AI & LLM Overview links from WordPress.
   const aiLlm = parseLinks(footer.aiLlm);
-  // Use the intended industry list instead of outdated WordPress footer values.
-  // This prevents service links such as "Financial Services" from appearing here.
+
+  // Exact Industries list shown in the user's reference screenshot.
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
     { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
-    { label: "Education Cloud", url: "/industries/education-cloud" },
-    { label: "Nonprofit", url: "/industries/non-profit" },
-    { label: "Energy & Utilities", url: "/industries/energy-utilities" },
-    { label: "Government & Public Sector", url: "/industries/government" },
+    { label: "CRM Development", url: "/services/salesforce-crm" },
+    { label: "Python Application", url: "/services/python-application" },
+    { label: "Technical Support", url: "/services/technical-support" },
+    { label: "Deployment Support", url: "/services/deployment-support" },
   ];
   const company = parseLinks(footer.company);
 
@@ -413,7 +412,6 @@ export default function Footer() {
           </ul>
         </FooterAccordion>
 
-
         {/* AI & LLM */}
         <FooterAccordion
           id="ai-llm"
@@ -422,22 +420,19 @@ export default function Footer() {
           onToggle={() => toggleSection("ai-llm")}
         >
           <ul className="codm-footer-links">
-            <li>
-              <a href="/services/marketing-cloud">Marketing Cloud</a>
-            </li>
-            <li>
-              <a href="/services/healthcare-insurance">
-                Health &amp; Insurance Cloud
-              </a>
-            </li>
-            <li>
-              <a href="/services/energy-utilities">
-                Energy &amp; Utilities Cloud
-              </a>
-            </li>
-            <li>
-              <a href="/services/non-profit-cloud">Nonprofit Cloud</a>
-            </li>
+            {aiLlm
+              .filter((item) => item.label.trim().toLowerCase() !== "development")
+              .map((item, index) => (
+                <li key={`${item.label}-${index}`}>
+                  {item.label === "Custom Development" ? (
+                    <span className="codm-footer-subheading">
+                      {item.label}
+                    </span>
+                  ) : (
+                    <a href={item.url}>{item.label}</a>
+                  )}
+                </li>
+              ))}
           </ul>
         </FooterAccordion>
 
