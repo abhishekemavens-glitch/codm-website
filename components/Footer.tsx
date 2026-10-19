@@ -84,37 +84,79 @@ function normalizeUrl(url: string) {
   return `/${trimmed.replace(/^\/+/, "")}`;
 }
 
+/*
+ * WordPress sometimes stores "Development" on its own line right after
+ * ".NET Application" / "Python Application" / "React Application".
+ * Join those lines so each one reads as a single item, e.g.
+ * ".NET Application Development", keeping the link of the line it joins.
+ */
+function mergeContinuationLines(lines: string[]): string[] {
+  const merged: string[] = [];
+
+  for (const line of lines) {
+    const isStrayDevelopment = /^development$/i.test(line);
+
+    if (isStrayDevelopment && merged.length > 0) {
+      const previous = merged[merged.length - 1];
+      const pipeIndex = previous.indexOf("|");
+      const previousLabel = (
+        pipeIndex === -1 ? previous : previous.substring(0, pipeIndex)
+      ).trim();
+
+      // Already ends with "Development" (e.g. "Custom Development"):
+      // the extra line is a duplicate, so drop it.
+      if (/development$/i.test(previousLabel)) {
+        continue;
+      }
+
+      merged[merged.length - 1] =
+        pipeIndex === -1
+          ? `${previousLabel} Development`
+          : `${previousLabel} Development|${previous.substring(pipeIndex + 1)}`;
+
+      continue;
+    }
+
+    merged.push(line);
+  }
+
+  return merged;
+}
+
 function parseLinks(value: string = ""): FooterLink[] {
   if (!value) return [];
 
-  return value
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const separatorIndex = line.indexOf("|");
-      const label =
-        separatorIndex === -1
-          ? line.trim()
-          : line.substring(0, separatorIndex).trim();
-      const suppliedUrl =
-        separatorIndex === -1
-          ? ""
-          : line.substring(separatorIndex + 1).trim();
+  const lines = mergeContinuationLines(
+    value
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+  );
 
-      const mappedUrl =
-        FOOTER_URLS[label] ||
-        FOOTER_URLS[
-          label
-            .replace(/\s+/g, " ")
-            .trim()
-        ];
+  return lines.map((line) => {
+    const separatorIndex = line.indexOf("|");
+    const label =
+      separatorIndex === -1
+        ? line.trim()
+        : line.substring(0, separatorIndex).trim();
+    const suppliedUrl =
+      separatorIndex === -1
+        ? ""
+        : line.substring(separatorIndex + 1).trim();
 
-      return {
-        label,
-        url: normalizeUrl(mappedUrl || suppliedUrl || "#"),
-      };
-    });
+    const mappedUrl =
+      FOOTER_URLS[label] ||
+      FOOTER_URLS[
+        label
+          .replace(/\s+/g, " ")
+          .trim()
+      ];
+
+    return {
+      label,
+      url: normalizeUrl(mappedUrl || suppliedUrl || "#"),
+    };
+  });
 }
 
 function FooterAccordion({
@@ -235,7 +277,6 @@ export default function Footer() {
 
   const services = parseLinks(footer.services);
   const aiLlm = parseLinks(footer.aiLlm);
-  const industries = parseLinks(footer.industries);
   const company = parseLinks(footer.company);
 
   const leftLogos = [
@@ -343,38 +384,38 @@ export default function Footer() {
         </FooterAccordion>
 
         {/* AI & LLM */}
-<FooterAccordion
-  id="ai-llm"
-  title="AI & LLM Overview"
-  isOpen={openSections.includes("ai-llm")}
-  onToggle={() => toggleSection("ai-llm")}
->
-  <ul className="codm-footer-links">
-    {aiLlm
-      .filter((item) => item.label.trim().toLowerCase() !== "development")
-      .map((item, index) => (
-        <li key={`${item.label}-${index}`}>
-          {item.label === "Custom Development" ? (
-            <span className="codm-footer-subheading">
-              {item.label}
-            </span>
-          ) : (
-            <a href={item.url}>{item.label}</a>
-          )}
-        </li>
-      ))}
-  </ul>
-</FooterAccordion>
+        <FooterAccordion
+          id="ai-llm"
+          title="AI & LLM Overview"
+          isOpen={openSections.includes("ai-llm")}
+          onToggle={() => toggleSection("ai-llm")}
+        >
+          <ul className="codm-footer-links">
+            {aiLlm
+              .filter((item) => item.label.trim().toLowerCase() !== "development")
+              .map((item, index) => (
+                <li key={`${item.label}-${index}`}>
+                  {item.label === "Custom Development" ? (
+                    <span className="codm-footer-subheading">
+                      {item.label}
+                    </span>
+                  ) : (
+                    <a href={item.url}>{item.label}</a>
+                  )}
+                </li>
+              ))}
+          </ul>
+        </FooterAccordion>
 
-     {/* INDUSTRIES */}
-<FooterAccordion
-  id="industries"
-  title="Industries"
-  isOpen={openSections.includes("industries")}
-  onToggle={() => toggleSection("industries")}
->
-  {/* Industry links removed */}
-</FooterAccordion>
+        {/* INDUSTRIES */}
+        <FooterAccordion
+          id="industries"
+          title="Industries"
+          isOpen={openSections.includes("industries")}
+          onToggle={() => toggleSection("industries")}
+        >
+          {/* Industry links removed */}
+        </FooterAccordion>
 
         {/* COMPANY */}
         <FooterAccordion
