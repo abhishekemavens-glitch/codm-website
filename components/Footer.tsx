@@ -53,12 +53,12 @@ const FOOTER_URLS: Record<string, string> = {
   "React Application Development": "/services/react-application",
 
   // Industries 
-  "Healthcare & Insurance": "/industries/healthcare-insurance",
-  Manufacturing: "/industries/manufacturing-cloud",
-  "Higher Education": "/industries/education-cloud",
+  "Healthcare & Insurance": "/services/healthcare-insurance",
+  Manufacturing: "/services/manufacturing-cloud",
+  "Higher Education": "/services/education-cloud",
   Education: "/industries/higher-education",
-  "Energy & Utilities": "/industries/energy-utilities",
-  "Energy and Utilities": "/industries/energy-utilities",
+  "Energy & Utilities": "/services/energy-utilities",
+  "Energy and Utilities": "/services/energy-utilities",
   Government: "/industries/government",
   "Public Sector": "/industries/government",
   "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
