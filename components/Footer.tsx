@@ -60,7 +60,7 @@ const FOOTER_URLS: Record<string, string> = {
 
   // Company
   About: "/about",
-  "White Label Programme": "/white-label-programme",
+  "Products": "/products",
   "Case Studies": "/case-studies",
   Career: "/careers",
   Careers: "/careers",
