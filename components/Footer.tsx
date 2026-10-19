@@ -56,7 +56,17 @@ const FOOTER_URLS: Record<string, string> = {
   "Healthcare & Insurance": "/industries/healthcare-insurance",
   Manufacturing: "/industries/manufacturing",
   "Higher Education": "/industries/higher-education",
-  Nonprofit: "/industries/non-profit",
+  "Education": "/industries/higher-education",
+  "Energy & Utilities": "/industries/energy-utilities",
+  "Energy and Utilities": "/industries/energy-utilities",
+  "Government": "/industries/government",
+  "Public Sector": "/industries/government",
+  "Financial Services": "/industries/financial-services",
+  "Education Cloud": "/industries/higher-education",
+  "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
+  "Manufacturing Cloud": "/industries/manufacturing",
+  "Nonprofit": "/industries/non-profit",
+  "Nonprofit Cloud": "/industries/non-profit",
 
   // Company
   About: "/about",
@@ -144,16 +154,17 @@ function parseLinks(value: string = ""): FooterLink[] {
         ? ""
         : line.substring(separatorIndex + 1).trim();
 
+    // Replace the retired footer item with Products.
+    const displayLabel = /^white\s*label\s*programme$/i.test(label)
+      ? "Products"
+      : label;
+
     const mappedUrl =
-      FOOTER_URLS[label] ||
-      FOOTER_URLS[
-        label
-          .replace(/\s+/g, " ")
-          .trim()
-      ];
+      FOOTER_URLS[displayLabel] ||
+      FOOTER_URLS[displayLabel.replace(/\s+/g, " ").trim()];
 
     return {
-      label,
+      label: displayLabel,
       url: normalizeUrl(mappedUrl || suppliedUrl || "#"),
     };
   });
@@ -277,6 +288,18 @@ export default function Footer() {
 
   const services = parseLinks(footer.services);
   const aiLlm = parseLinks(footer.aiLlm);
+  const industriesFromWordPress = parseLinks(footer.industries);
+  const industries =
+    industriesFromWordPress.length > 0
+      ? industriesFromWordPress
+      : [
+          { label: "Healthcare & Insurance", url: "/industries/healthcare-insurance" },
+          { label: "Manufacturing", url: "/industries/manufacturing" },
+          { label: "Higher Education", url: "/industries/higher-education" },
+          { label: "Nonprofit", url: "/industries/non-profit" },
+          { label: "Energy & Utilities", url: "/industries/energy-utilities" },
+          { label: "Government & Public Sector", url: "/industries/government" },
+        ];
   const company = parseLinks(footer.company);
 
   const leftLogos = [
@@ -408,14 +431,20 @@ export default function Footer() {
         </FooterAccordion>
 
        {/* INDUSTRIES */}
-<FooterAccordion
-  id="industries"
-  title="Industries"
-  isOpen={openSections.includes("industries")}
-  onToggle={() => toggleSection("industries")}
->
-  <></>
-</FooterAccordion>
+        <FooterAccordion
+          id="industries"
+          title="Industries"
+          isOpen={openSections.includes("industries")}
+          onToggle={() => toggleSection("industries")}
+        >
+          <ul className="codm-footer-links">
+            {industries.map((item, index) => (
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </FooterAccordion>
 
         {/* COMPANY */}
         <FooterAccordion
