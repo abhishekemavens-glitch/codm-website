@@ -41,7 +41,7 @@ const FOOTER_URLS: Record<string, string> = {
   "Data Integration": "/services/data-integration-migration",
   "Data Migration": "/services/data-integration-migration",
   "React Application": "/services/react-application",
-  "  "Building LLM": "/services/building-llm", 
+  "Building LLM": "/services/building-llm", 
 
   // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
