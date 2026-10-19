@@ -41,16 +41,7 @@ const FOOTER_URLS: Record<string, string> = {
   "Data Integration": "/services/data-integration-migration",
   "Data Migration": "/services/data-integration-migration",
   "React Application": "/services/react-application",
-  "Technical Support": "/services/technical-support",
-  "Building LLM": "/services/building-llm", 
-  "LLM & Custom AI Development": "/services/building-llm",
-  "Salesforce Sales Cloud": "/services/sales-cloud",
-  "Custom Development": "/services/custom-development",
-  ".NET Application": "/services/net-application",
-  ".NET Application Development": "/services/net-application",
-  "Python Application": "/services/python-application",
-  "Python Application Development": "/services/python-application",
-  "React Application Development": "/services/react-application",
+  "  "Building LLM": "/services/building-llm", 
 
   // Industries 
   "Healthcare & Insurance": "/industries/healthcare-insurance",
@@ -307,7 +298,6 @@ export default function Footer() {
     { label: "Sales Cloud", url: "/services/sales-cloud" },
     { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
     { label: "CRM Development", url: "/services/salesforce-crm" },
-    { label: "Python Application", url: "/services/python-application" },
     { label: "Technical Support", url: "/services/technical-support" },
     { label: "Deployment Support", url: "/services/deployment-support" },
   ];
@@ -436,7 +426,7 @@ export default function Footer() {
  {aiLlm.length > 2 && (
   <>
     <div className="codm-footer-subheading">
-      <span>Energy & Utilities Cloud</span>
+      <span>Custom Development</span>
       <span>⌄</span>
     </div>
 
