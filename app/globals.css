@@ -9929,17 +9929,12 @@ img.codm-footer-logo {
    ========================================================= */
 
 .codm-post-content img {
-  display: block;
-
-  width: 100%;
-
-  max-width: 100%;
-
-  height: auto;
-
-  margin: 23px 0;
-
-  border-radius: 8px;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	/* margin: 23px 0; */
+	display: block;
 }
 
 
@@ -12832,10 +12827,10 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 }
 
 .codm-post-content .integration-feature__icon img {
-  width: 26px;
-  height: 26px;
-  border-radius: 0;
-  object-fit: contain;
+	/* object-fit: contain; */
+	/* border-radius: 0; */
+	/* width: 26px; */
+	/* height: 26px; */
 }
 
 .codm-post-content .integration-feature__content h3 {
