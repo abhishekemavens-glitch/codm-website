@@ -12984,3 +12984,8 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   .codm-expert-form form { grid-template-columns: 1fr; }
   .codm-expert-form { padding: 22px; }
 }
+
+
+.border-bottom {
+	border-bottom: 1px solid #dee2e6;
+}
