@@ -9577,23 +9577,14 @@ img.codm-footer-logo {
    ========================================================= */
 
 .codm-post-title {
-  width: 100%;
-
-  margin: 0;
-
-  color: #17213a;
-
-  font-size: clamp(
-    42px,
-    4vw,
-    54px
-  );
-
-  line-height: 1.02;
-
-  font-weight: 400;
-
-  letter-spacing: -0.045em;
+	color: #0F172A;
+	letter-spacing: -2%;
+	width: 100%;
+	margin: 0;
+	font-size: 56px;
+	font-weight: 500;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	line-height: 64px;
 }
 
 
@@ -9725,28 +9716,18 @@ img.codm-footer-logo {
 
 
 .codm-post-share > a {
-  width: 22px;
-  height: 22px;
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex: 0 0 22px;
-
-  border-radius: 50%;
-
-  background: #111827;
-
-  color: #ffffff;
-
-  text-decoration: none;
-
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+	color: #fff;
+	background: #0A0E2A;
+	border-radius: 50%;
+	flex: 0 0 33px;
+	justify-content: center;
+	align-items: center;
+	width: 33px;
+	height: 33px;
+	text-decoration: none;
+	transition: transform .2s,opacity .2s;
+	display: inline-flex;
+	border: 1px solid#96A0FF2E;
 }
 
 
@@ -9819,7 +9800,13 @@ img.codm-footer-logo {
 .codm-post-content p {
   margin: 0 0 17px;
 }
-
+.codm-post-content p {
+	margin: 0 0 17px;
+	color: #64748B;
+	font-size: 18px;
+	line-height: 26px;
+	font-weight: 400;
+}
 
 /* =========================================================
    H2
@@ -9828,20 +9815,23 @@ img.codm-footer-logo {
 .codm-post-content h2 {
   margin: 32px 0 12px;
 
-  color: #26344d;
-
-  font-size: 22px;
+    color: #0F172A;
+	font-weight: 500;
+	font-size: 32px;
 
   line-height: 1.2;
-
-  font-weight: 500;
 
   letter-spacing: -0.025em;
 
   scroll-margin-top: 110px;
 }
 
-
+.codm-post-content h2 {
+	margin-top: 2.4rem;
+	color: #0F172A;
+	font-weight: 500;
+	font-size: 32px;
+}
 /* =========================================================
    H3
    ========================================================= */
@@ -9899,10 +9889,10 @@ img.codm-footer-logo {
    STRONG
    ========================================================= */
 
-.codm-post-content strong {
-  color: #34425a;
-
-  font-weight: 600;
+.codm-post-content h2 strong {
+	color: #0F172A;
+	font-weight: 500;
+	font-size: 32px;
 }
 
 
@@ -10057,15 +10047,11 @@ img.codm-footer-logo {
    ========================================================= */
 
 .codm-toc-title {
-  margin: 0 0 12px;
-
-  color: #64728a;
-
-  font-size: 12px;
-
-  line-height: 1.3;
-
-  font-weight: 500;
+	color: #64748B;
+	margin: 0 0 14px;
+	font-size: 20px;
+	font-weight: 500;
+	font-family: Plus Jakarta Sans,sans-serif !important;
 }
 
 
@@ -10766,21 +10752,30 @@ img.codm-footer-logo {
    ========================================================= */
 
 .codm-post-meta {
-  font-size: 13px;
+	font-size: 14px;
+	color: #9AA3B8;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	font-weight: 500;
 }
 
 .codm-post-excerpt {
-	font-size: 16px;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	font-size: 18px;
+	display: -webkit-box;
 	overflow: hidden;
+	color: #6B7388;
+	font-weight: 400;
+	font-family: Inter,sans-serif !important;
 }
 
-.codm-post-author,
-.codm-post-share {
-  font-size: 16px;
+.codm-post-author, .codm-post-share {
+	/* font-size: 16px; */
+	font-size: 14px;
+	color: #9AA3B8;
+	font-family: Plus Jakarta Sans,sans-serif !important;
+	font-weight: 500;
 }
 
 .codm-post-avatar-fallback {
@@ -12957,24 +12952,25 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 
 /* ---------- Table of contents card ---------- */
 .codm-toc {
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
+	border: 1px solid #C5D0DC;
+	background: var(--surface);
+	border-radius: 16px;
+	padding: 20px 15px;
 }
 
 .codm-toc-title { margin: 0 0 14px; font-size: 0.95rem; font-weight: 600; color: var(--foreground); }
 .codm-toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
 
 .codm-toc-list a {
-  display: flex;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: var(--muted);
-  transition: background 200ms ease, color 200ms ease;
+	color: #6B7388;
+	border-radius: 10px;
+	/* gap: 10px; */
+	padding: 8px 10px;
+	font-size: 14px;
+	line-height: 1.4;
+	transition: background .2s,color .2s;
+	display: flex;
+	font-family: Inter,sans-serif !important;
 }
 
 .codm-toc-list a:hover { background: rgba(114, 92, 255, 0.08); color: var(--foreground); }
