@@ -12504,7 +12504,7 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   margin: 0;
   padding: 20px;
   border-radius: 10px;
-  background: #f1f5f9;
+  /* background: #f1f5f9; */
   overflow-x: auto;
   font-size: 13px;
   line-height: 1.6;
