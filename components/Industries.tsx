@@ -25,25 +25,6 @@ const WORDPRESS_GRAPHQL_URL =
 /** Time (ms) between automatic industry changes. 7000 = 7 seconds. */
 const AUTO_ROTATE_MS = 7000;
 
-/** Keep each industry only once (by slug, then by title). */
-function dedupeIndustries(list: Industry[]): Industry[] {
-  const seenSlugs = new Set<string>();
-  const seenTitles = new Set<string>();
-  const out: Industry[] = [];
-
-  for (const item of list) {
-    const slug = (item.slug || "").trim().toLowerCase();
-    const title = (item.title || "").trim().toLowerCase();
-    if ((slug && seenSlugs.has(slug)) || (title && seenTitles.has(title))) {
-      continue;
-    }
-    if (slug) seenSlugs.add(slug);
-    if (title) seenTitles.add(title);
-    out.push(item);
-  }
-  return out;
-}
-
 export default function Industries() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
@@ -89,7 +70,7 @@ export default function Industries() {
   };
 
   /* ---------------------------------------------------------
-     LOAD INDUSTRIES (de-duplicated)
+     LOAD INDUSTRIES (all entries shown)
      --------------------------------------------------------- */
   useEffect(() => {
     async function loadIndustries() {
@@ -138,7 +119,7 @@ export default function Industries() {
           return;
         }
 
-        setIndustries(dedupeIndustries(result.data.industries.nodes));
+        setIndustries(result.data.industries.nodes);
       } catch (error) {
         console.error("Failed to load industries:", error);
       } finally {
