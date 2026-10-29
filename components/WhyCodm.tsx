@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
@@ -23,7 +23,7 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 /* =========================================================
-   ENTRANCE DIRECTIONS (3-column grid)
+   ENTRANCE DIRECTIONS (desktop 3-column grid only)
    left column  -> from the left
    right column -> from the right
    middle column -> from the top (first row), bottom (next row)
@@ -246,6 +246,9 @@ function AnimatedBackground({ reduceMotion }: { reduceMotion: boolean }) {
 
 /* =========================================================
    WHY CODM SECTION
+   Desktop (lg+): 3-column grid.
+   Tablet / mobile: swipeable slider (2 cards on tablet,
+   1 card + a peek of the next on mobile) with arrows + dots.
    ========================================================= */
 
 export default function WhyCodm() {
@@ -255,6 +258,77 @@ export default function WhyCodm() {
 
   const reduceMotion = useReducedMotion() ?? false;
 
+  /* true on lg+ screens (grid layout), false on tablet/mobile (slider) */
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  /* ---------------- slider state ---------------- */
+  const trackRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const updateSlider = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    setCanPrev(track.scrollLeft > 2);
+    setCanNext(track.scrollLeft + track.clientWidth < track.scrollWidth - 2);
+
+    // active dot = the slide whose left edge is closest to the track's left
+    let closest = 0;
+    let best = Infinity;
+    slideRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const d = Math.abs(el.offsetLeft - track.offsetLeft - track.scrollLeft);
+      if (d < best) {
+        best = d;
+        closest = i;
+      }
+    });
+    setActiveSlide(closest);
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    updateSlider();
+    track.addEventListener("scroll", updateSlider, { passive: true });
+
+    const ro = new ResizeObserver(updateSlider);
+    ro.observe(track);
+
+    return () => {
+      track.removeEventListener("scroll", updateSlider);
+      ro.disconnect();
+    };
+  }, [items.length, updateSlider]);
+
+  const goToSlide = (index: number) => {
+    const track = trackRef.current;
+    const el = slideRefs.current[index];
+    if (!track || !el) return;
+    track.scrollTo({
+      left: el.offsetLeft - track.offsetLeft,
+      behavior: "smooth",
+    });
+  };
+
+  const stepSlide = (dir: 1 | -1) => {
+    const next = Math.min(items.length - 1, Math.max(0, activeSlide + dir));
+    goToSlide(next);
+  };
+
+  /* ---------------- data ---------------- */
   useEffect(() => {
     const controller = new AbortController();
 
@@ -345,6 +419,8 @@ export default function WhyCodm() {
     e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
   };
 
+  const hasItems = !loading && !error && items.length > 0;
+
   return (
     <section
       id="why-codm"
@@ -367,19 +443,16 @@ export default function WhyCodm() {
             </Reveal>
           </div>
 
-          {/* Content card (clips the boxes as they slide in) */}
+          {/* Content area.
+              lg+: one big rounded card (clips the boxes as they slide in)
+              below lg: no outer card — each box is its own card in a slider */}
           <div
-            className="
-              mx-auto
-              mt-10
-              max-w-[1018px]
-              overflow-hidden
-              rounded-[24px]
-              border
-              border-[var(--border)]
-              bg-[var(--surface)]/70
-              backdrop-blur-[2px]
-            "
+            className={
+              "mx-auto mt-10 max-w-[1018px] " +
+              (hasItems
+                ? "lg:overflow-hidden lg:rounded-[24px] lg:border lg:border-[var(--border)] lg:bg-[var(--surface)]/70 lg:backdrop-blur-[2px]"
+                : "overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)]/70 backdrop-blur-[2px]")
+            }
           >
             {loading ? (
               <div className="flex min-h-[250px] items-center justify-center">
@@ -398,130 +471,237 @@ export default function WhyCodm() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item, index) => (
-                  <motion.div
-                    key={item.id}
-                    className="h-full"
-                    variants={boxVariants}
-                    custom={getOffset(index)}
-                    initial={reduceMotion ? false : "hidden"}
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                  >
-                    <article
-                      onMouseMove={handleMouseMove}
-                      className={[
-                        "group relative h-full min-h-[180px] overflow-hidden p-7 md:p-8",
-                        "border-b border-[var(--border)]",
-                        "transition-all duration-500 ease-out",
-                        "hover:bg-gradient-to-br hover:from-[#11143a] hover:via-[#24206f] hover:to-[#5038e8]",
-                        index % 3 !== 2 ? "lg:border-r" : "",
-                        index % 2 === 0 ? "md:border-r" : "",
-                        index >= items.length - 3
-                          ? "lg:border-b-0"
-                          : "",
-                      ].join(" ")}
+              <>
+                <div
+                  ref={trackRef}
+                  className="
+                    codm-why-track
+                    flex
+                    snap-x
+                    snap-mandatory
+                    gap-4
+                    overflow-x-auto
+                    overscroll-x-contain
+                    scroll-smooth
+                    pb-1
+                    lg:grid
+                    lg:grid-cols-3
+                    lg:gap-0
+                    lg:snap-none
+                    lg:overflow-visible
+                    lg:pb-0
+                  "
+                >
+                  {items.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      ref={(el) => {
+                        slideRefs.current[index] = el;
+                      }}
+                      className="h-auto w-[84%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:h-full lg:w-auto"
+                      variants={boxVariants}
+                      custom={getOffset(index)}
+                      initial={
+                        reduceMotion || !isDesktop ? false : "hidden"
+                      }
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.2 }}
                     >
-                      {/* Cursor-follow glow */}
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                        style={{
-                          background:
-                            "radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(170,150,255,0.35), transparent 70%)",
-                        }}
-                      />
-
-                      {/* Gradient line that sweeps along the bottom on hover */}
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-[#7C5CFF] to-[#FF9FFC] transition-transform duration-500 ease-out group-hover:scale-x-100"
-                      />
-
-                      {/* Box content */}
-                      <div className="relative z-10">
-                        {/* Icon */}
-                        <motion.div
-                          variants={contentVariants}
-                          className="mb-6"
-                        >
-                          <div
-                            className="
-                              flex
-                              h-8
-                              w-8
-                              items-center
-                              transition-transform
-                              duration-300
-                              ease-out
-                              group-hover:-rotate-6
-                              group-hover:scale-110
-                            "
-                          >
-                            {item.featuredImage?.node?.sourceUrl ? (
-                              <img
-                                src={item.featuredImage.node.sourceUrl}
-                                alt={
-                                  item.featuredImage.node.altText ||
-                                  item.title
-                                }
-                                className="
-                                  h-8
-                                  w-8
-                                  object-contain
-                                  transition-all
-                                  duration-300
-                                  group-hover:brightness-0
-                                  group-hover:invert
-                                "
-                              />
-                            ) : (
-                              <LightIcon type={item.icon} />
-                            )}
-                          </div>
-                        </motion.div>
-
-                        {/* Title */}
-                        <motion.h3
-                          variants={contentVariants}
-                          className="
-                            text-[16px]
-                            font-medium
-                            tracking-[-0.025em]
-                            text-[var(--foreground)]
-                            transition-colors
-                            duration-300
-                            group-hover:text-white
-                          "
-                        >
-                          {item.title}
-                        </motion.h3>
-
-                        {/* Description */}
-                        <motion.div
-                          variants={contentVariants}
-                          className="
-                            mt-2
-                            max-w-[290px]
-                            leading-[1.55]
-                            text-[var(--muted)]
-                            transition-colors
-                            duration-300
-                          "
-                          dangerouslySetInnerHTML={{
-                            __html: item.content,
+                      <article
+                        onMouseMove={handleMouseMove}
+                        className={[
+                          "group relative h-full min-h-[180px] overflow-hidden p-7 md:p-8",
+                          /* slider: each box is its own rounded, bordered card */
+                          "rounded-[20px] border border-[var(--border)] bg-[var(--surface)]/70",
+                          /* desktop: flat cells inside the big card */
+                          "lg:rounded-none lg:border-l-0 lg:border-t-0 lg:bg-transparent",
+                          index % 3 === 2 ? "lg:border-r-0" : "",
+                          index >= items.length - 3 ? "lg:border-b-0" : "",
+                          "transition-all duration-500 ease-out",
+                          "hover:bg-gradient-to-br hover:from-[#11143a] hover:via-[#24206f] hover:to-[#5038e8]",
+                        ].join(" ")}
+                      >
+                        {/* Cursor-follow glow */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          style={{
+                            background:
+                              "radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(170,150,255,0.35), transparent 70%)",
                           }}
                         />
-                      </div>
-                    </article>
-                  </motion.div>
-                ))}
-              </div>
+
+                        {/* Gradient line that sweeps along the bottom on hover */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-[#7C5CFF] to-[#FF9FFC] transition-transform duration-500 ease-out group-hover:scale-x-100"
+                        />
+
+                        {/* Box content */}
+                        <div className="relative z-10">
+                          {/* Icon */}
+                          <motion.div
+                            variants={contentVariants}
+                            className="mb-6"
+                          >
+                            <div
+                              className="
+                                flex
+                                h-8
+                                w-8
+                                items-center
+                                transition-transform
+                                duration-300
+                                ease-out
+                                group-hover:-rotate-6
+                                group-hover:scale-110
+                              "
+                            >
+                              {item.featuredImage?.node?.sourceUrl ? (
+                                <img
+                                  src={item.featuredImage.node.sourceUrl}
+                                  alt={
+                                    item.featuredImage.node.altText ||
+                                    item.title
+                                  }
+                                  className="
+                                    h-8
+                                    w-8
+                                    object-contain
+                                    transition-all
+                                    duration-300
+                                    group-hover:brightness-0
+                                    group-hover:invert
+                                  "
+                                />
+                              ) : (
+                                <LightIcon type={item.icon} />
+                              )}
+                            </div>
+                          </motion.div>
+
+                          {/* Title */}
+                          <motion.h3
+                            variants={contentVariants}
+                            className="
+                              text-[16px]
+                              font-medium
+                              tracking-[-0.025em]
+                              text-[var(--foreground)]
+                              transition-colors
+                              duration-300
+                              group-hover:text-white
+                            "
+                          >
+                            {item.title}
+                          </motion.h3>
+
+                          {/* Description */}
+                          <motion.div
+                            variants={contentVariants}
+                            className="
+                              mt-2
+                              max-w-[290px]
+                              leading-[1.55]
+                              text-[var(--muted)]
+                              transition-colors
+                              duration-300
+                            "
+                            dangerouslySetInnerHTML={{
+                              __html: item.content,
+                            }}
+                          />
+                        </div>
+                      </article>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Slider controls — tablet & mobile only */}
+                <div className="mt-5 flex items-center justify-center gap-4 lg:hidden">
+                  <button
+                    type="button"
+                    aria-label="Previous"
+                    onClick={() => stepSlide(-1)}
+                    disabled={!canPrev}
+                    className="codm-why-arrow"
+                  >
+                    {"←"}
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    {items.map((item, i) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        aria-label={`Go to item ${i + 1}`}
+                        aria-current={i === activeSlide}
+                        onClick={() => goToSlide(i)}
+                        className={
+                          "h-2 rounded-full transition-all duration-300 " +
+                          (i === activeSlide
+                            ? "w-6 bg-[var(--accent)]"
+                            : "w-2 bg-[var(--border)]")
+                        }
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    aria-label="Next"
+                    onClick={() => stepSlide(1)}
+                    disabled={!canNext}
+                    className="codm-why-arrow"
+                  >
+                    {"→"}
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .codm-why-track {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .codm-why-track::-webkit-scrollbar {
+          display: none;
+        }
+
+        .codm-why-arrow {
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--foreground);
+          font-size: 14px;
+          cursor: pointer;
+          transition:
+            opacity 250ms ease,
+            border-color 250ms ease,
+            color 250ms ease;
+        }
+
+        .codm-why-arrow:hover:not(:disabled) {
+          border-color: var(--accent);
+          color: var(--accent);
+        }
+
+        .codm-why-arrow:disabled {
+          opacity: 0.35;
+          cursor: default;
+        }
+      `}</style>
     </section>
   );
 }
