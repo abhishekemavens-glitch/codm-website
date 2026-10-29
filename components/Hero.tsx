@@ -23,10 +23,7 @@ type HeroData = {
   button2Text: string;
   button2Url: string;
 
-  logo1: string;
-  logo2: string;
-  logo3: string;
-  logo4: string;
+  heroLogos?: { light?: string | null; dark?: string | null }[] | null;
 
   videoId?: string;
   videoUrl?: string;
@@ -81,10 +78,10 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
                     button1Url
                     button2Text
                     button2Url
-                    logo1
-                    logo2
-                    logo3
-                    logo4
+                    heroLogos {
+                      light
+                      dark
+                    }
                     videoId
                     videoUrl
                     featuredImage {
@@ -223,15 +220,14 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
      LOGOS
      ========================================= */
 
-  const logos = [
-    hero.logo1,
-    hero.logo2,
-    hero.logo3,
-    hero.logo4,
-  ].filter(
-    (logo): logo is string =>
-      Boolean(logo)
-  );
+  /* Each logo has a light-mode image and an optional dark-mode image.
+     If no dark image is uploaded in WordPress, the normal one is used. */
+  const logos = (hero.heroLogos ?? [])
+    .map((logo) => ({
+      light: logo?.light || "",
+      dark: logo?.dark || "",
+    }))
+    .filter((logo) => Boolean(logo.light || logo.dark));
 
   /* =========================================
      HERO
@@ -305,29 +301,68 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
     `}
     style={{ transitionDelay: "0.05s" }}
   >
-            {logos.map((logo, index) => (
-              <div
-                key={`${logo}-${index}`}
-                className="
-                  flex
-                  h-10
-                  min-w-[70px]
-                  items-center
-                  justify-center
-                "
-              >
-                <img
-                  src={logo}
-                  alt=""
+            {logos.map((logo, index) => {
+              const light = logo.light || logo.dark || "";
+              const dark = logo.dark || logo.light || "";
+              const hasSeparateDark = Boolean(
+                logo.light && logo.dark && logo.light !== logo.dark
+              );
+
+              return (
+                <div
+                  key={`${light}-${index}`}
                   className="
-                    max-h-10
-                    w-auto
-                    max-w-[140px]
-                    object-contain
+                    flex
+                    h-10
+                    min-w-[70px]
+                    items-center
+                    justify-center
                   "
-                />
-              </div>
-            ))}
+                >
+                  {hasSeparateDark ? (
+                    <>
+                      {/* Light mode */}
+                      <img
+                        src={light}
+                        alt=""
+                        className="
+                          max-h-10
+                          w-auto
+                          max-w-[140px]
+                          object-contain
+                          dark:hidden
+                        "
+                      />
+
+                      {/* Dark mode */}
+                      <img
+                        src={dark}
+                        alt=""
+                        className="
+                          hidden
+                          max-h-10
+                          w-auto
+                          max-w-[140px]
+                          object-contain
+                          dark:block
+                        "
+                      />
+                    </>
+                  ) : (
+                    <img
+                      src={light}
+                      alt=""
+                      className="
+                        max-h-10
+                        w-auto
+                        max-w-[140px]
+                        object-contain
+                      "
+                    />
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 
