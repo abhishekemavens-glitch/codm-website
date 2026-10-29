@@ -23,7 +23,7 @@ type Blog = {
 };
 
 /** Where the "View all" button goes. Change if your blogs page lives elsewhere. */
-const ALL_BLOGS_URL = "/blogs";
+const ALL_BLOGS_URL = "/insights";
 
 export default function LatestBlogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
