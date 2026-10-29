@@ -663,7 +663,7 @@ export default function WhyCodm() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .codm-why-track {
           scrollbar-width: none;
           -ms-overflow-style: none;
