@@ -162,6 +162,22 @@ const closeServicesMenu = () => {
     }
   }, []);
 
+  /* While the announcement bar is closed, tell the page (via a class on
+     <html>) so the header can sit at the very top instead of leaving a gap. */
+  const announcementClosed =
+    !!announcement.announcementText &&
+    dismissedText === announcement.announcementText;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "codm-announcement-closed",
+      announcementClosed
+    );
+    return () => {
+      document.documentElement.classList.remove("codm-announcement-closed");
+    };
+  }, [announcementClosed]);
+
   const dismissAnnouncement = () => {
     setDismissedText(announcement.announcementText);
     try {
@@ -810,6 +826,18 @@ const closeServicesMenu = () => {
         .codm-announcement-close:hover {
           opacity: 1;
           background: rgba(114, 92, 255, 0.12);
+        }
+
+        /* Announcement closed: your .codm-header rule hard-codes top: 44px
+           (the bar height), so move the header to the top when the bar is gone. */
+        html.codm-announcement-closed .codm-header,
+        html.codm-announcement-closed .codm-site-header,
+        html.codm-announcement-closed .codm-header-sticky,
+        html.codm-announcement-closed .codm-header-scrolled {
+          top: 0 !important;
+        }
+        .codm-header {
+          transition: top 300ms ease;
         }
 
         /* Theme toggle: keep it visible on tablet + mobile,
