@@ -39,8 +39,73 @@ type HeroData = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
+/* Detects the site's current theme (follows the theme toggle).
+   Checks the usual signals (a "dark" class, data-theme, color-scheme),
+   and falls back to how dark the page background actually is. */
+function detectDark(): boolean {
+  if (typeof document === "undefined") return false;
+
+  const html = document.documentElement;
+  const body = document.body;
+
+  const attr = (
+    html.getAttribute("data-theme") ||
+    html.getAttribute("data-mode") ||
+    body?.getAttribute("data-theme") ||
+    ""
+  ).toLowerCase();
+
+  if (attr === "dark") return true;
+  if (attr === "light") return false;
+
+  if (html.classList.contains("dark") || body?.classList.contains("dark")) {
+    return true;
+  }
+  if (html.classList.contains("light") || body?.classList.contains("light")) {
+    return false;
+  }
+
+  // Fallback: measure the real background colour.
+  const probe = getComputedStyle(body || html).backgroundColor;
+  const match = probe.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (match) {
+    const [r, g, b] = [Number(match[1]), Number(match[2]), Number(match[3])];
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.5;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function useIsDark() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsDark(detectDark());
+    update();
+
+    const observer = new MutationObserver(update);
+    const opts = {
+      attributes: true,
+      attributeFilter: ["class", "data-theme", "data-mode", "style"],
+    };
+    observer.observe(document.documentElement, opts);
+    if (document.body) observer.observe(document.body, opts);
+
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", update);
+
+    return () => {
+      observer.disconnect();
+      mq.removeEventListener("change", update);
+    };
+  }, []);
+
+  return isDark;
+}
+
 export default function Hero() {
   const heroMediaRef = useScrollScale();
+  const isDark = useIsDark();
 
 const { ref: heroRevealRef, isVisible: heroVisible } =
   useRevealSequence<HTMLDivElement>(0);
@@ -302,15 +367,13 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
     style={{ transitionDelay: "0.05s" }}
   >
             {logos.map((logo, index) => {
-              const light = logo.light || logo.dark || "";
-              const dark = logo.dark || logo.light || "";
-              const hasSeparateDark = Boolean(
-                logo.light && logo.dark && logo.light !== logo.dark
-              );
+              const src =
+                (isDark ? logo.dark || logo.light : logo.light || logo.dark) ||
+                "";
 
               return (
                 <div
-                  key={`${light}-${index}`}
+                  key={`${src}-${index}`}
                   className="
                     flex
                     h-10
@@ -319,47 +382,16 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
                     justify-center
                   "
                 >
-                  {hasSeparateDark ? (
-                    <>
-                      {/* Light mode */}
-                      <img
-                        src={light}
-                        alt=""
-                        className="
-                          max-h-10
-                          w-auto
-                          max-w-[140px]
-                          object-contain
-                          dark:hidden
-                        "
-                      />
-
-                      {/* Dark mode */}
-                      <img
-                        src={dark}
-                        alt=""
-                        className="
-                          hidden
-                          max-h-10
-                          w-auto
-                          max-w-[140px]
-                          object-contain
-                          dark:block
-                        "
-                      />
-                    </>
-                  ) : (
-                    <img
-                      src={light}
-                      alt=""
-                      className="
-                        max-h-10
-                        w-auto
-                        max-w-[140px]
-                        object-contain
-                      "
-                    />
-                  )}
+                  <img
+                    src={src}
+                    alt=""
+                    className="
+                      max-h-10
+                      w-auto
+                      max-w-[140px]
+                      object-contain
+                    "
+                  />
                 </div>
               );
             })}
