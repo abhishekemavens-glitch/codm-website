@@ -2435,7 +2435,7 @@ html.dark .codm-announcement-link {
   .codm-header + main,
   .codm-header ~ main,
   .codm-header + .codm-hero {
-    padding-top: 104px !important;
+    padding-top: 0px !important;
   }
 }
 
@@ -4917,7 +4917,7 @@ html[data-theme="dark"] .codm-logo-dark {
 	border: none !important;
 }
 [data-theme="light"] #hero {
-	margin: 15% 0 0;
+	margin: 5% 0 0;
 }
 
 #hero .codm-hero-title {
@@ -5781,9 +5781,11 @@ html[data-theme="dark"] .codm-logo-dark {
 }
 
 /* Mobile: tap the heading to open/close */
-@media (max-width: 700px) {
+@media (max-width: 1023px) {
 
-  .codm-footer-main {
+   .codm-footer-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 0;
   }
 
