@@ -2188,10 +2188,7 @@ header a {
    DARK MODE
    ========================================================= */
 
-[data-theme="dark"] .codm-header-cta {
-  background: #ffffff !important;
-  color: #101424 !important;
-}
+
 
 [data-theme="dark"] .codm-header-cta:hover {
   background: #735cff !important;
