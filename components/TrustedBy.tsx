@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 type TrustedLogo = {
@@ -21,6 +21,56 @@ const WORDPRESS_GRAPHQL_URL =
 export default function TrustedBy() {
   const [logos, setLogos] = useState<TrustedLogo[]>([]);
   const [loading, setLoading] = useState(true);
+
+  /* ---------- slider (tablet + mobile); desktop keeps the wrapped grid ---------- */
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [pages, setPages] = useState(1);
+  const [activePage, setActivePage] = useState(0);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const updateSlider = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    setCanPrev(el.scrollLeft > 2);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+
+    const total = Math.max(1, Math.ceil(el.scrollWidth / el.clientWidth - 0.05));
+    setPages(total);
+    setActivePage(
+      Math.min(total - 1, Math.round(el.scrollLeft / el.clientWidth))
+    );
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    updateSlider();
+    el.addEventListener("scroll", updateSlider, { passive: true });
+
+    const ro = new ResizeObserver(updateSlider);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+
+    return () => {
+      el.removeEventListener("scroll", updateSlider);
+      ro.disconnect();
+    };
+  }, [logos.length, updateSlider]);
+
+  const scrollByPage = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
+  };
+
+  const goToPage = (page: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollTo({ left: page * el.clientWidth, behavior: "smooth" });
+  };
 
   useEffect(() => {
     async function loadTrustedLogos() {
@@ -134,24 +184,47 @@ export default function TrustedBy() {
             </p>
           </div>
                ) : (
+          <>
+          <div
+            ref={trackRef}
+            className="
+              codm-tb-track
+              overflow-x-auto
+              overscroll-x-contain
+              scroll-smooth
+              snap-x
+              snap-mandatory
+              pb-2
+              lg:snap-none
+              lg:overflow-visible
+              lg:pb-0
+            "
+          >
           <Stagger
             className="
               mx-auto
               flex
-              max-w-[1060px]
-              flex-wrap
+              w-max
+              flex-nowrap
               items-center
-              justify-center
               gap-[14px]
+              px-1
+              lg:w-auto
+              lg:max-w-[1060px]
+              lg:flex-wrap
+              lg:justify-center
+              lg:px-0
             "
           >
             {logos.map((logo) => (
                 <StaggerItem key={logo.id}>
               <div
                 className="
+                  snap-start
                   flex
                   h-[70px]
                   w-[190px]
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -197,9 +270,86 @@ export default function TrustedBy() {
                    </StaggerItem>
             ))}
                </Stagger>
+          </div>
+
+          {/* Slider controls: tablet + mobile only */}
+          {pages > 1 && (
+            <div className="mt-5 flex items-center justify-center gap-4 lg:hidden">
+              <button
+                type="button"
+                aria-label="Previous"
+                onClick={() => scrollByPage(-1)}
+                disabled={!canPrev}
+                className="codm-tb-arrow"
+              >
+                {"\u2190"}
+              </button>
+
+              <div className="flex items-center gap-2">
+                {Array.from({ length: pages }).map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Go to page ${i + 1}`}
+                    aria-current={i === activePage}
+                    onClick={() => goToPage(i)}
+                    className={
+                      "h-2 rounded-full transition-all duration-300 " +
+                      (i === activePage
+                        ? "w-6 bg-[var(--accent)]"
+                        : "w-2 bg-[var(--border)]")
+                    }
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                aria-label="Next"
+                onClick={() => scrollByPage(1)}
+                disabled={!canNext}
+                className="codm-tb-arrow"
+              >
+                {"\u2192"}
+              </button>
+            </div>
+          )}
+          </>
         )}
 
       </div>
+      <style>{`
+        .codm-tb-track {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .codm-tb-track::-webkit-scrollbar {
+          display: none;
+        }
+        .codm-tb-arrow {
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--foreground);
+          font-size: 14px;
+          cursor: pointer;
+          transition: opacity 250ms ease, border-color 250ms ease, color 250ms ease;
+        }
+        .codm-tb-arrow:hover:not(:disabled) {
+          border-color: var(--accent);
+          color: var(--accent);
+        }
+        .codm-tb-arrow:disabled {
+          opacity: 0.35;
+          cursor: default;
+        }
+      `}</style>
     </section>
   );
 }
