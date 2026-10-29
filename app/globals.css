@@ -1025,14 +1025,15 @@ span {
 }
 
 .latest-blogs .blog-categories span {
-	color: #9AA3B8;
-	border: 1px solid #dce1e9;
+	color: #475569;
+	border: 1px solid #475569;
 	border-radius: 3px;
 	align-items: center;
 	padding: 5px 8px;
 	font-size: 14px;
 	line-height: 1;
 	display: inline-flex;
+	font-weight: 500;
 }
 
 .latest-blogs .blog-image {
