@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import AnimateOnScroll from "@/components/AnimateOnScroll"; 
@@ -142,6 +142,67 @@ export default function ServicesSection() {
   const [error, setError] = useState("");
 
   /* =======================================================
+     SLIDER (tablet + mobile). Desktop (lg+) stays a grid.
+  ======================================================= */
+
+  const trackRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const updateSlider = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    setCanPrev(track.scrollLeft > 2);
+    setCanNext(track.scrollLeft + track.clientWidth < track.scrollWidth - 2);
+
+    let closest = 0;
+    let best = Infinity;
+    slideRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const d = Math.abs(el.offsetLeft - track.offsetLeft - track.scrollLeft);
+      if (d < best) {
+        best = d;
+        closest = i;
+      }
+    });
+    setActiveSlide(closest);
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    updateSlider();
+    track.addEventListener("scroll", updateSlider, { passive: true });
+
+    const ro = new ResizeObserver(updateSlider);
+    ro.observe(track);
+
+    return () => {
+      track.removeEventListener("scroll", updateSlider);
+      ro.disconnect();
+    };
+  }, [services.length, updateSlider]);
+
+  const goToSlide = (index: number) => {
+    const track = trackRef.current;
+    const el = slideRefs.current[index];
+    if (!track || !el) return;
+    track.scrollTo({
+      left: el.offsetLeft - track.offsetLeft,
+      behavior: "smooth",
+    });
+  };
+
+  const stepSlide = (dir: 1 | -1) => {
+    const next = Math.min(services.length - 1, Math.max(0, activeSlide + dir));
+    goToSlide(next);
+  };
+
+  /* =======================================================
      LOAD SERVICES FROM WORDPRESS
   ======================================================= */
 
@@ -267,20 +328,37 @@ export default function ServicesSection() {
 
         {/* SERVICES */}
         {!loading && !error && services.length > 0 && (
+          <>
           <div
+            ref={trackRef}
             className="
+              codm-svc-track
               mt-9
-              grid
+              flex
               w-full
-              grid-cols-1
+              snap-x
+              snap-mandatory
               gap-4
-              sm:grid-cols-2
+              overflow-x-auto
+              overscroll-x-contain
+              scroll-smooth
+              pb-2
+              lg:grid
               lg:grid-cols-3
+              lg:snap-none
+              lg:overflow-visible
+              lg:pb-0
             "
           >
             {services.map((service, index) => (
-              <AnimateOnScroll
+              <div
                 key={service.id}
+                ref={(el) => {
+                  slideRefs.current[index] = el;
+                }}
+                className="w-[84%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:w-auto"
+              >
+              <AnimateOnScroll
                 animation="fadeInUp"
                 /* 3 columns on desktop: stagger within each row */
                 delay={(index % 3) * 120}
@@ -372,8 +450,51 @@ export default function ServicesSection() {
                   />
                 </article>
               </AnimateOnScroll>
+              </div>
             ))}
           </div>
+
+          {/* Slider controls: tablet + mobile only */}
+          <div className="mt-5 flex items-center justify-center gap-4 lg:hidden">
+            <button
+              type="button"
+              aria-label="Previous"
+              onClick={() => stepSlide(-1)}
+              disabled={!canPrev}
+              className="codm-svc-arrow"
+            >
+              {"\u2190"}
+            </button>
+
+            <div className="flex items-center gap-2">
+              {services.map((service, i) => (
+                <button
+                  key={service.id}
+                  type="button"
+                  aria-label={`Go to service ${i + 1}`}
+                  aria-current={i === activeSlide}
+                  onClick={() => goToSlide(i)}
+                  className={
+                    "h-2 rounded-full transition-all duration-300 " +
+                    (i === activeSlide
+                      ? "w-6 bg-[var(--accent)]"
+                      : "w-2 bg-[var(--border)]")
+                  }
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              aria-label="Next"
+              onClick={() => stepSlide(1)}
+              disabled={!canNext}
+              className="codm-svc-arrow"
+            >
+              {"\u2192"}
+            </button>
+          </div>
+          </>
         )}
 
         {/* CTA */}
@@ -421,6 +542,38 @@ export default function ServicesSection() {
           </a>
         </div>
       </div>
+      <style>{`
+        .codm-svc-track {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .codm-svc-track::-webkit-scrollbar {
+          display: none;
+        }
+        .codm-svc-arrow {
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--foreground);
+          font-size: 14px;
+          cursor: pointer;
+          transition: opacity 250ms ease, border-color 250ms ease, color 250ms ease;
+        }
+        .codm-svc-arrow:hover:not(:disabled) {
+          border-color: var(--accent);
+          color: var(--accent);
+        }
+        .codm-svc-arrow:disabled {
+          opacity: 0.35;
+          cursor: default;
+        }
+      `}</style>
     </section>
   );
 }
