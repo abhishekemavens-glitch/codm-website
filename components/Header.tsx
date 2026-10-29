@@ -149,6 +149,31 @@ const closeServicesMenu = () => {
  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  /* Announcement bar: can be closed with the X button.
+     The choice is remembered per announcement text, so a NEW
+     announcement (different text) appears again automatically. */
+  const [dismissedText, setDismissedText] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setDismissedText(localStorage.getItem("codm-announcement-dismissed"));
+    } catch {
+      /* storage blocked: bar simply stays dismissible for this visit */
+    }
+  }, []);
+
+  const dismissAnnouncement = () => {
+    setDismissedText(announcement.announcementText);
+    try {
+      localStorage.setItem(
+        "codm-announcement-dismissed",
+        announcement.announcementText
+      );
+    } catch {
+      /* ignore */
+    }
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -388,7 +413,8 @@ const closeServicesMenu = () => {
   return (
     <>
 
-      {announcement.announcementText && (
+      {announcement.announcementText &&
+        dismissedText !== announcement.announcementText && (
         <div className="codm-announcement-bar">
 
           <div className="codm-announcement-inner">
@@ -412,6 +438,22 @@ const closeServicesMenu = () => {
 
               </a>
             )}
+
+            <button
+              type="button"
+              className="codm-announcement-close"
+              onClick={dismissAnnouncement}
+              aria-label="Close announcement"
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <path
+                  d="M1 1l8 8M9 1L1 9"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
 
           </div>
 
@@ -707,7 +749,9 @@ const closeServicesMenu = () => {
         <span></span>
       </button>
 
-      <ThemeToggle />
+      <div className="codm-header-theme-toggle">
+        <ThemeToggle />
+      </div>
 
     {header.buttonText && (
   <a
@@ -743,6 +787,48 @@ const closeServicesMenu = () => {
   </div>
 </header>
 
+
+      <style>{`
+        /* Announcement close button */
+        .codm-announcement-close {
+          flex: none;
+          width: 22px;
+          height: 22px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 8px;
+          padding: 0;
+          border: 0;
+          border-radius: 999px;
+          background: transparent;
+          color: inherit;
+          opacity: 0.6;
+          cursor: pointer;
+          transition: opacity 200ms ease, background 200ms ease;
+        }
+        .codm-announcement-close:hover {
+          opacity: 1;
+          background: rgba(114, 92, 255, 0.12);
+        }
+
+        /* Theme toggle: keep it visible on tablet + mobile,
+           sitting just before the hamburger button */
+        @media (max-width: 1023px) {
+          .codm-header-right .codm-header-theme-toggle {
+            display: flex !important;
+            align-items: center;
+            order: -1;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          .codm-header-right .codm-header-theme-toggle > * {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
     </>
   );
 }
