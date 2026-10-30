@@ -381,18 +381,24 @@ export default function Footer() {
 
           <p className="codm-footer-description">{footer.description}</p>
 
-          {leftLogos.length > 0 && (
-            <div className="codm-footer-left-logos">
-              {leftLogos.map((logo, index) => (
-                <img
-                  key={index}
-                  src={logo}
-                  alt=""
-                  className="codm-footer-left-logo"
-                />
-              ))}
-            </div>
-          )}
+          
+{leftLogos.length > 0 && (
+  <div className="codm-footer-left-logos">
+    {leftLogos.map((logo, index) => (
+      <div
+        key={`${logo}-${index}`}
+        className="codm-footer-logo-item"
+      >
+        <img
+          src={logo}
+          alt=""
+          className="codm-footer-left-logo"
+        />
+      </div>
+    ))}
+  </div>
+)}
+
         </div>
 
         {/* SERVICES */}
