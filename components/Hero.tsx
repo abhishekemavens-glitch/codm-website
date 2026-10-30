@@ -371,29 +371,25 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
                 (isDark ? logo.dark || logo.light : logo.light || logo.dark) ||
                 "";
 
-              return (
-                <div
-                  key={`${src}-${index}`}
-                  className="
-                    flex
-                    h-10
-                    min-w-[70px]
-                    items-center
-                    justify-center
-                  "
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    className="
-                      max-h-10
-                      w-auto
-                      max-w-[140px]
-                      object-contain
-                    "
-                  />
-                </div>
-              );
+             
+return (
+  <div
+    key={`${src}-${index}`}
+    className="codm-hero-logo-item relative flex h-10 min-w-[70px] items-center justify-center px-5"
+  >
+    <img
+      src={src}
+      alt=""
+      className="
+        max-h-10
+        w-auto
+        max-w-[140px]
+        object-contain
+      "
+    />
+  </div>
+);
+
             })}
           </div>
         )}
