@@ -351,31 +351,46 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
             ========================================= */}
 
         {logos.length > 0 && (
-          <div
-            className={`
-              codm-hero-logos
-              codm-reveal
-              ${heroVisible ? "codm-visible" : ""}
-              mb-10
-            `}
-            style={{ transitionDelay: "0.05s" }}
-          >
+  <div
+    className={`
+      codm-hero-logos
+      codm-reveal
+      ${heroVisible ? "codm-visible" : ""}
+      mb-8
+      flex
+      flex-wrap
+      items-center
+      justify-center
+      gap-5
+      md:gap-7
+    `}
+    style={{ transitionDelay: "0.05s" }}
+  >
             {logos.map((logo, index) => {
-              const src = (
-                isDark
-                  ? logo.dark || logo.light
-                  : logo.light || logo.dark
-              ) || "";
+              const src =
+                (isDark ? logo.dark || logo.light : logo.light || logo.dark) ||
+                "";
 
               return (
                 <div
                   key={`${src}-${index}`}
-                  className="codm-hero-logo-item"
+                  className="
+                    flex
+                    h-10
+                    min-w-[70px]
+                    items-center
+                    justify-center
+                  "
                 >
                   <img
                     src={src}
                     alt=""
-                    className="codm-hero-logo-image"
+                    className="
+                      max-h-10
+                      w-auto
+                      max-w-[140px]
+                      object-contain
+                    "
                   />
                 </div>
               );
