@@ -12989,3 +12989,58 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 .border-bottom {
 	border-bottom: 1px solid #dee2e6;
 }
+
+
+
+
+
+.codm-footer-left-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0;
+}
+
+.codm-footer-left-logos > div {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 18px;
+}
+
+.codm-footer-left-logos > div:not(:last-child)::after {
+  content: "";
+  background: linear-gradient(
+    #0000 0%,
+    #725cff66 50%,
+    #0000 100%
+  );
+  width: 1px;
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  right: 0;
+}
+
+.codm-footer-left-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 55px;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .codm-footer-left-logos > div {
+    padding: 0 10px;
+  }
+
+  .codm-footer-left-logo {
+    height: 40px;
+  }
+}
