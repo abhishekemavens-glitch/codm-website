@@ -13109,3 +13109,24 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   }
 }
 
+
+/* Industries section - Dark mode text colors */
+
+[data-theme="dark"] .codm-industries-section .heading-codm-description {
+  color: #D8DBE9 !important;
+}
+
+/* Industry tab labels */
+[data-theme="dark"] .codm-industries-section .codm-industry-pill:not(.codm-industry-pill-active) {
+  color: #F1F1F1 !important;
+}
+
+/* Active industry tab */
+[data-theme="dark"] .codm-industries-section .codm-industry-pill-active {
+  color: #F1F1F1 !important;
+}
+
+/* Health & Insurance Cloud content heading */
+[data-theme="dark"] .codm-industries-section .codm-industry-title {
+  color: #F1F1F1 !important;
+}
