@@ -351,30 +351,34 @@ const { ref: heroRevealRef, isVisible: heroVisible } =
             ========================================= */}
 
         {logos.length > 0 && (
- 
-
-      
+          <div
+            className={`
+              codm-hero-logos
+              codm-reveal
+              ${heroVisible ? "codm-visible" : ""}
+              mb-10
+            `}
+            style={{ transitionDelay: "0.05s" }}
+          >
             {logos.map((logo, index) => {
-              const src =
-                (isDark ? logo.dark || logo.light : logo.light || logo.dark) ||
-                "";
+              const src = (
+                isDark
+                  ? logo.dark || logo.light
+                  : logo.light || logo.dark
+              ) || "";
 
-             
-return (
-  
-<div
-  key={`${src}-${index}`}
-  className="codm-hero-logo-item"
->
-  <img
-    src={src}
-    alt=""
-    className="codm-hero-logo-image"
-  />
-</div>
-
-);
-
+              return (
+                <div
+                  key={`${src}-${index}`}
+                  className="codm-hero-logo-item"
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    className="codm-hero-logo-image"
+                  />
+                </div>
+              );
             })}
           </div>
         )}
