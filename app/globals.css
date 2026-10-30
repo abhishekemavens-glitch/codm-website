@@ -12995,18 +12995,116 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 
 
 
-/* Hero logo separators - Light and Dark mode */
+/* =========================================
+   CODM HERO LOGOS - FINAL DESIGN
+   Light + Dark Mode
+========================================= */
 
-.codm-hero-logos > .codm-hero-logo-item:not(:last-child)::after {
+.codm-hero-logos {
+  display: grid !important;
+  grid-template-columns: 1fr 1.15fr 1.8fr 1.3fr;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 40px;
+  gap: 0 !important;
+}
+
+/* Individual logo containers */
+.codm-hero-logo-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  height: 110px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Logo images */
+.codm-hero-logo-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+/* Salesforce */
+.codm-hero-logo-item:nth-child(1) img {
+  max-width: 125px;
+}
+
+/* Government G-Cloud */
+.codm-hero-logo-item:nth-child(2) img {
+  max-width: 125px;
+}
+
+/* Google Cloud */
+.codm-hero-logo-item:nth-child(3) img {
+  max-width: 240px;
+}
+
+/* ISO */
+.codm-hero-logo-item:nth-child(4) img {
+  max-width: 150px;
+}
+
+/* Vertical purple gradient separators */
+.codm-hero-logo-item:not(:last-child)::after {
   content: "";
-  background: linear-gradient(
-    #0000 0%,
-    #725cff66 50%,
-    #0000 100%
-  );
-  width: 1px;
   position: absolute;
-  top: 2px;
-  bottom: 2px;
+  top: 10px;
+  bottom: 10px;
   right: 0;
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #725cff66 50%,
+    transparent 100%
+  );
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .codm-hero-logos {
+    max-width: 650px;
+  }
+
+  .codm-hero-logo-item {
+    height: 85px;
+    padding: 0 12px;
+  }
+
+  .codm-hero-logo-image {
+    max-height: 60px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .codm-hero-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 12px;
+  }
+
+  .codm-hero-logo-item {
+    height: 65px;
+    padding: 0 12px;
+  }
+
+  .codm-hero-logo-image {
+    max-height: 48px;
+  }
+
+  .codm-hero-logo-item:nth-child(2)::after {
+    display: none;
+  }
 }
