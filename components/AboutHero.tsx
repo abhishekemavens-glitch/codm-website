@@ -253,9 +253,6 @@ export default function AboutHero({
 
   </div>
 </div>
-
-                </div>
-              </div>
             ) : (
               /* =================================================
                  ALL OTHER PAGES
