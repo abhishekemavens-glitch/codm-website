@@ -254,7 +254,6 @@ export default function AboutHero({
   </div>
 </div>
 
-                  </div>
                 </div>
               </div>
             ) : (
