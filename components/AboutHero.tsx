@@ -121,110 +121,138 @@ export default function AboutHero({
                  Rotating technology ecosystem
                  ================================================= */
               <div className="codm-about-orbit-wrapper">
-                <div className="codm-about-orbit">
+  <div className="codm-tech-orbit">
 
-                  {/* Background rings */}
-                  <div className="codm-about-orbit-ring codm-ring-outer" />
-                  <div className="codm-about-orbit-ring codm-ring-middle" />
-                  <div className="codm-about-orbit-ring codm-ring-inner" />
+    {/* Background glow */}
+    <div className="codm-tech-glow" />
 
-                  {/* Center CODM */}
-                  <div className="codm-about-center">
-                    <div className="codm-about-center-logo">
-                      cod<span>m</span>
-                    </div>
-                  </div>
+    {/* Background rings */}
+    <div className="codm-tech-ring codm-tech-ring-outer" />
+    <div className="codm-tech-ring codm-tech-ring-middle" />
+    <div className="codm-tech-ring codm-tech-ring-inner" />
 
-                  {/* Rotating elements */}
-                  <div className="codm-about-rotator">
+    {/* Connecting lines */}
+    <svg
+      className="codm-tech-connections"
+      viewBox="0 0 520 520"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M260 260 L260 65" />
+      <path d="M260 260 L105 170" />
+      <path d="M260 260 L415 250" />
+      <path d="M260 260 L115 350" />
+      <path d="M260 260 L290 435" />
 
-                    {/* Salesforce */}
-                    <div className="codm-about-orbit-item codm-about-salesforce">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <img
-                            src="https://cdn.simpleicons.org/salesforce/00A1E0"
-                            alt="Salesforce"
-                          />
-                        </div>
-                        <span>Salesforce</span>
-                      </div>
-                    </div>
+      <circle cx="260" cy="65" r="5" />
+      <circle cx="105" cy="170" r="5" />
+      <circle cx="415" cy="250" r="5" />
+      <circle cx="115" cy="350" r="5" />
+      <circle cx="290" cy="435" r="5" />
+    </svg>
 
-                    {/* Agentforce */}
-                    <div className="codm-about-orbit-item codm-about-agentforce">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <img
-                            src="https://cdn.simpleicons.org/salesforce/00A1E0"
-                            alt="Agentforce"
-                          />
-                        </div>
-                        <span>Agentforce</span>
-                      </div>
-                    </div>
+    {/* Center CODM */}
+    <div className="codm-tech-center">
+      <div className="codm-tech-center-logo">
+        <span>cod</span><span>m</span>
+      </div>
+      <small>TECHNOLOGY</small>
+    </div>
 
-                    {/* AI LLM */}
-                    <div className="codm-about-orbit-item codm-about-llm">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <span className="codm-about-ai-icon">
-                            AI
-                          </span>
-                        </div>
-                        <span>AI LLM</span>
-                      </div>
-                    </div>
+    {/* AI */}
+    <div className="codm-tech-node codm-node-ai">
+      <div className="codm-tech-node-circle">
+        <svg viewBox="0 0 48 48" fill="none">
+          <path
+            d="M24 5C18 5 14 10 14 15C8 16 6 21 8 26C5 32 10 39 17 39H31C38 39 43 32 40 26C42 20 38 15 33 15C33 9 29 5 24 5Z"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <path
+            d="M24 12V36M15 19L20 23M33 19L28 23M15 30L20 27M33 30L28 27"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <circle cx="24" cy="24" r="3" fill="currentColor" />
+        </svg>
+      </div>
+      <span>AI</span>
+    </div>
 
-                    {/* .NET */}
-                    <div className="codm-about-orbit-item codm-about-dotnet">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <img
-                            src="https://cdn.simpleicons.org/dotnet/512BD4"
-                            alt=".NET"
-                          />
-                        </div>
-                        <span>.Net</span>
-                      </div>
-                    </div>
+    {/* Salesforce */}
+    <div className="codm-tech-node codm-node-salesforce">
+      <div className="codm-tech-node-circle">
+        <img
+          src="https://cdn.simpleicons.org/salesforce/0176D3"
+          alt="Salesforce"
+        />
+      </div>
+      <span>Salesforce</span>
+    </div>
 
-                    {/* Python */}
-                    <div className="codm-about-orbit-item codm-about-python">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <img
-                            src="https://cdn.simpleicons.org/python/3776AB"
-                            alt="Python"
-                          />
-                        </div>
-                        <span>Python</span>
-                      </div>
-                    </div>
+    {/* Automation */}
+    <div className="codm-tech-node codm-node-automation">
+      <div className="codm-tech-node-circle">
+        <svg viewBox="0 0 48 48" fill="none">
+          <path
+            d="M24 5V10M24 38V43M5 24H10M38 24H43M10.5 10.5L14 14M34 34L37.5 37.5M37.5 10.5L34 14M14 34L10.5 37.5"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="24"
+            cy="24"
+            r="13"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          />
+          <circle cx="24" cy="24" r="5" fill="currentColor" />
+        </svg>
+      </div>
+      <span>Automation</span>
+    </div>
 
-                    {/* MemberClicks */}
-                    <div className="codm-about-orbit-item codm-about-memberclicks">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <span className="codm-about-member-icon">
-                            MC
-                          </span>
-                        </div>
-                        <span>MemberClicks</span>
-                      </div>
-                    </div>
+    {/* Data */}
+    <div className="codm-tech-node codm-node-data">
+      <div className="codm-tech-node-circle">
+        <svg viewBox="0 0 48 48" fill="none">
+          <ellipse
+            cx="24"
+            cy="11"
+            rx="15"
+            ry="6"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <path
+            d="M9 11V36C9 39 16 42 24 42S39 39 39 36V11M9 23C9 27 16 30 24 30S39 27 39 23"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+      <span>Data</span>
+    </div>
 
-                    {/* Automation */}
-                    <div className="codm-about-orbit-item codm-about-automation">
-                      <div className="codm-about-orbit-content">
-                        <div className="codm-about-logo-circle">
-                          <span className="codm-about-automation-icon">
-                            ⚙
-                          </span>
-                        </div>
-                        <span>Automation</span>
-                      </div>
-                    </div>
+    {/* Integration */}
+    <div className="codm-tech-node codm-node-integration">
+      <div className="codm-tech-node-circle">
+        <svg viewBox="0 0 48 48" fill="none">
+          <path
+            d="M17 8H22V17H26V8H31V17C31 20 29 22 26 22H25V27H30C33 27 35 29 35 32V36H40V41H30V32H25V41H15V36H20V32C20 29 22 27 25 27V22H22C19 22 17 20 17 17V8Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+      <span>Integration</span>
+    </div>
+
+  </div>
+</div>
 
                   </div>
                 </div>
