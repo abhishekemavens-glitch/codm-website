@@ -13753,3 +13753,33 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     animation: none !important;
   }
 }
+.codm-tech-rotator {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  animation: codmTechOrbitRotate 30s linear infinite;
+  will-change: transform;
+}
+
+@keyframes codmTechOrbitRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.codm-tech-orbit:hover .codm-tech-rotator {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-tech-rotator {
+    animation: none !important;
+  }
+}
+
+	[data-theme="dark"] .pis-eyebrow {
+	color: #D8DBE9;
+}
