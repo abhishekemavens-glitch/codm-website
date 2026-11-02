@@ -131,13 +131,12 @@ export default function AboutHero({
     <div className="codm-tech-ring codm-tech-ring-middle" />
     <div className="codm-tech-ring codm-tech-ring-inner" />
 
-    {/* Connecting lines */}
-    <svg
-      className="codm-tech-connections"
-      viewBox="0 0 520 520"
-      fill="none"
-      aria-hidden="true"
-    >
+    {/* Rotating technology elements */}
+<div className="codm-tech-rotator">
+
+  {/* Connecting lines */}
+  <svg
+    className="codm-tech-connections"
       <path d="M260 260 L260 65" />
       <path d="M260 260 L105 170" />
       <path d="M260 260 L415 250" />
@@ -249,10 +248,12 @@ export default function AboutHero({
         </svg>
       </div>
       <span>Integration</span>
-    </div>
-
-  </div>
 </div>
+
+</div> {/* End rotating technology elements */}
+
+</div> {/* End codm-tech-orbit */}
+</div> {/* End codm-about-orbit-wrapper */}
             ) : (
               /* =================================================
                  ALL OTHER PAGES
