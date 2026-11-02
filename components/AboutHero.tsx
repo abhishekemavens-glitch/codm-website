@@ -257,11 +257,12 @@ export default function AboutHero({
     </div>
     {/* End rotating technology elements */}
 
-  </div>
-  {/* End codm-tech-orbit */}
+ </div>
+{/* End codm-tech-orbit */}
 
 </div>
-{/* End codm-about-orbit-wrapper */}
+
+            ) : (
               /* =================================================
                  ALL OTHER PAGES
                  Normal static featured image
