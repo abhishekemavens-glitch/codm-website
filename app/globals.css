@@ -13130,3 +13130,30 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 [data-theme="dark"] .codm-industries-section .codm-industry-title {
   color: #F1F1F1 !important;
 }
+
+
+
+/* Dark mode – Salesforce Services Mega Menu */
+
+[data-theme="dark"] .codm-megamenu-column-salesforce
+.codm-megamenu-column-title {
+  color: #F7F8FC !important;
+}
+
+/* Salesforce subheading */
+[data-theme="dark"] .codm-megamenu-column-salesforce
+.codm-megamenu-column-description {
+  color: #D8DBE9 !important;
+}
+
+/* Salesforce service links / point headings */
+[data-theme="dark"] .codm-megamenu-column-salesforce
+.codm-megamenu-link-text {
+  color: #D8DBE9 !important;
+}
+
+/* Keep text readable on hover */
+[data-theme="dark"] .codm-megamenu-column-salesforce
+.codm-megamenu-link:hover .codm-megamenu-link-text {
+  color: #F7F8FC !important;
+}
