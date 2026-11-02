@@ -135,20 +135,12 @@ export default function AboutHero({
 <div className="codm-tech-rotator">
 
   {/* Connecting lines */}
-  <svg
-    className="codm-tech-connections"
-      <path d="M260 260 L260 65" />
-      <path d="M260 260 L105 170" />
-      <path d="M260 260 L415 250" />
-      <path d="M260 260 L115 350" />
-      <path d="M260 260 L290 435" />
-
-      <circle cx="260" cy="65" r="5" />
-      <circle cx="105" cy="170" r="5" />
-      <circle cx="415" cy="250" r="5" />
-      <circle cx="115" cy="350" r="5" />
-      <circle cx="290" cy="435" r="5" />
-    </svg>
+<svg
+  className="codm-tech-connections"
+  viewBox="0 0 520 520"
+  fill="none"
+  aria-hidden="true"
+>
 
     {/* Center CODM */}
     <div className="codm-tech-center">
