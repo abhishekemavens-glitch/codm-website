@@ -13357,3 +13357,18 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 [data-theme="dark"] .case-studies-grid .case-study-card .case-study-content h3 {
 	color: #F7F8FC;
 }
+
+
+
+[data-theme="dark"] .case-studies-grid-section .case-studies-grid .case-study-card {
+	background: #1B2038;
+	border-color: #232845;
+}
+[data-theme="dark"] .case-studies-grid-section .case-studies-grid .case-study-card .case-study-content .case-study-category {
+	color: #6B7388;
+}
+[data-theme="dark"] .case-studies-grid-section .case-studies-grid .case-study-card .case-study-content h3 {
+	color: #F7F8FC;
+	font-size: 20px;
+	font-weight: 500;
+}
