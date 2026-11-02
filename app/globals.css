@@ -13157,3 +13157,174 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 .codm-megamenu-link:hover .codm-megamenu-link-text {
   color: #F7F8FC !important;
 }
+
+
+/* =========================================
+   DARK MODE – G-CLOUD 15 BANNER
+========================================= */
+
+[data-theme="dark"] .codm-megamenu-banner {
+  display: grid !important;
+  grid-template-columns: 220px 1fr 350px;
+  align-items: center;
+  gap: 0;
+  padding: 20px 36px !important;
+  min-height: 140px;
+  background: linear-gradient(
+    110deg,
+    #101126 0%,
+    #151633 55%,
+    #201d50 100%
+  ) !important;
+  border: 1px solid #29284e !important;
+  border-radius: 22px !important;
+  color: #F7F8FC !important;
+}
+
+/* Left – Government Supplier */
+
+[data-theme="dark"] .codm-megamenu-banner-label {
+  padding: 8px 24px 8px 16px;
+  border-left: 3px solid #7550FF;
+  border-right: 1px solid #29284e;
+  color: #F7F8FC !important;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-label em {
+  display: block;
+  color: #A7A8BC !important;
+  font-weight: 400;
+}
+
+/* Center – G-Cloud Content */
+
+[data-theme="dark"] .codm-megamenu-banner-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 32px !important;
+  gap: 10px;
+  border-right: 1px solid #29284e;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-title {
+  color: #F7F8FC !important;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-title i {
+  color: #7954FF !important;
+  font-style: normal;
+  padding: 0 5px;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-description {
+  color: #BFC2D6 !important;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* Right – CTA */
+
+[data-theme="dark"] .codm-megamenu-banner-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #FFFFFF !important;
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+[data-theme="dark"] .codm-megamenu-banner-button:hover {
+  color: #987AFF !important;
+}
+
+/* Hide secondary button to match reference */
+
+[data-theme="dark"] .codm-megamenu-all-services {
+  display: none !important;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+  [data-theme="dark"] .codm-megamenu-banner {
+    grid-template-columns: 160px 1fr 230px;
+    padding: 18px 22px !important;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-content {
+    padding: 0 20px !important;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-title {
+    font-size: 20px;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-description {
+    font-size: 15px;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-button {
+    font-size: 18px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  [data-theme="dark"] .codm-megamenu-banner {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 22px !important;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-label {
+    border-right: none;
+    border-bottom: 1px solid #29284e;
+    padding-bottom: 16px;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-content {
+    padding: 0 !important;
+    border-right: none;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-title {
+    font-size: 20px;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-description {
+    font-size: 15px;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-actions {
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  [data-theme="dark"] .codm-megamenu-banner-button {
+    font-size: 19px;
+  }
+}
