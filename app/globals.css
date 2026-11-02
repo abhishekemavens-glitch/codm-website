@@ -13383,3 +13383,340 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	color: #A7B0C2;
 }
 	
+
+
+/* ==========================================
+   CODM ABOUT PAGE – TECHNOLOGY ORBIT
+========================================== */
+
+.codm-about-orbit-wrapper {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
+}
+
+.codm-tech-orbit {
+  position: relative;
+  width: 520px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  isolation: isolate;
+}
+
+/* Background glow */
+
+.codm-tech-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(91, 74, 255, 0.24) 0%,
+    rgba(45, 91, 255, 0.10) 42%,
+    transparent 72%
+  );
+  filter: blur(20px);
+  z-index: -1;
+}
+
+/* Orbit rings */
+
+.codm-tech-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.codm-tech-ring-outer {
+  inset: 5%;
+  border: 1px solid rgba(92, 113, 255, 0.35);
+}
+
+.codm-tech-ring-middle {
+  inset: 17%;
+  border: 1px solid rgba(92, 113, 255, 0.22);
+}
+
+.codm-tech-ring-inner {
+  inset: 29%;
+  background: radial-gradient(
+    circle,
+    rgba(110, 77, 255, 0.15),
+    rgba(110, 77, 255, 0.04)
+  );
+  box-shadow: 0 0 45px rgba(105, 80, 255, 0.12);
+}
+
+/* Connecting lines */
+
+.codm-tech-connections {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: visible;
+}
+
+.codm-tech-connections path {
+  stroke: #7778FF;
+  stroke-width: 1.5;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 5px #655BFF);
+}
+
+.codm-tech-connections circle {
+  fill: #FFFFFF;
+  stroke: #7778FF;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 7px #655BFF);
+}
+
+/* Center CODM logo */
+
+.codm-tech-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle,
+    #29245D 0%,
+    #171638 65%,
+    #101126 100%
+  );
+  border: 2px solid rgba(125, 111, 255, 0.8);
+  box-shadow:
+    0 0 0 9px rgba(105, 86, 255, 0.10),
+    0 0 30px rgba(101, 88, 255, 0.55),
+    inset 0 0 25px rgba(116, 92, 255, 0.2);
+  z-index: 5;
+}
+
+.codm-tech-center-logo {
+  font-size: 43px;
+  font-weight: 600;
+  letter-spacing: -3px;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.codm-tech-center-logo span:last-child {
+  color: #8B75FF;
+}
+
+.codm-tech-center small {
+  margin-top: 5px;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #C6C6F4;
+}
+
+/* Technology nodes */
+
+.codm-tech-node {
+  position: absolute;
+  width: 105px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 4;
+}
+
+.codm-tech-node-circle {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(
+    circle,
+    #FFFFFF 0%,
+    #F2F4FF 75%,
+    #DFE5FF 100%
+  );
+  border: 2px solid #B4C2FF;
+  box-shadow:
+    0 0 12px rgba(79, 112, 255, 0.65),
+    0 0 30px rgba(79, 112, 255, 0.38),
+    0 0 45px rgba(137, 98, 255, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.codm-tech-node:hover .codm-tech-node-circle {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 20px rgba(79, 112, 255, 0.9),
+    0 0 45px rgba(137, 98, 255, 0.55);
+}
+
+.codm-tech-node-circle img {
+  width: 43px;
+  height: 43px;
+  object-fit: contain;
+}
+
+.codm-tech-node-circle svg {
+  width: 43px;
+  height: 43px;
+  color: #386BFF;
+}
+
+.codm-tech-node > span {
+  margin-top: 8px;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(105, 105, 255, 0.5);
+}
+
+/* Node positions */
+
+.codm-node-ai {
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.codm-node-salesforce {
+  top: 25%;
+  left: 0%;
+}
+
+.codm-node-automation {
+  top: 40%;
+  right: 0%;
+}
+
+.codm-node-data {
+  bottom: 17%;
+  left: 2%;
+}
+
+.codm-node-integration {
+  bottom: 0%;
+  left: 56%;
+  transform: translateX(-50%);
+}
+
+/* ==========================================
+   TABLET RESPONSIVE
+========================================== */
+
+@media (max-width: 1024px) {
+  .codm-about-orbit-wrapper {
+    max-width: 460px;
+  }
+
+  .codm-tech-center {
+    width: 125px;
+    height: 125px;
+  }
+
+  .codm-tech-center-logo {
+    font-size: 37px;
+  }
+
+  .codm-tech-node-circle {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+  .codm-about-orbit-wrapper {
+    max-width: 390px;
+    margin-top: 25px;
+  }
+
+  .codm-tech-center {
+    width: 112px;
+    height: 112px;
+  }
+
+  .codm-tech-center-logo {
+    font-size: 33px;
+  }
+
+  .codm-tech-node {
+    width: 85px;
+  }
+
+  .codm-tech-node-circle {
+    width: 62px;
+    height: 62px;
+  }
+
+  .codm-tech-node-circle img,
+  .codm-tech-node-circle svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .codm-tech-node > span {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .codm-about-orbit-wrapper {
+    max-width: 340px;
+  }
+
+  .codm-tech-node {
+    width: 72px;
+  }
+
+  .codm-tech-node-circle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .codm-tech-node-circle img,
+  .codm-tech-node-circle svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .codm-tech-node > span {
+    font-size: 10px;
+  }
+
+  .codm-tech-center {
+    width: 96px;
+    height: 96px;
+  }
+
+  .codm-tech-center-logo {
+    font-size: 29px;
+  }
+
+  .codm-tech-center small {
+    font-size: 7px;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-tech-node-circle {
+    transition: none;
+  }
+}
