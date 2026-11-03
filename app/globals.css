@@ -13905,3 +13905,17 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     max-width: 340px;
   }
 }
+
+
+[data-theme="dark"] .codm-capabilities-section {
+	background: #060816;
+}
+[data-theme="dark"] .codm-usecases-visible {
+	background: #0D1023;
+}
+[data-theme="dark"] .codm-process-section-wrap {
+	background: #060816;
+}
+[data-theme="dark"] .codm-experience-visible {
+	background: #0D1023;
+}
