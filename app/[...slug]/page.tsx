@@ -1174,7 +1174,7 @@ const showCTA =
           CAREERS PAGE — CAREER HIGHLIGHTS
       ================================================= */}
  
-     {isCareerPage && (
+     {isCareersPage && (
   <>
     <div className="relative z-10">
       <CareerHighlights />
