@@ -356,7 +356,7 @@ export default function ServicesSection() {
                 ref={(el) => {
                   slideRefs.current[index] = el;
                 }}
-                className="w-[84%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:w-auto"
+                className="w-[100%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:w-auto"
               >
               <AnimateOnScroll
                 animation="fadeInUp"
