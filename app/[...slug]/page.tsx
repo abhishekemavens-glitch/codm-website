@@ -43,7 +43,6 @@ import NextSteps from "@/components/NextSteps";
 import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
 import IndustryExpertise from "@/components/IndustryExpertise";
-import ServiceProcess from "@/components/ServiceProcess";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -1236,12 +1235,7 @@ const showCTA =
   </>
 )}
 
-{/* Service Process */}
-{servicePage?.processEnabled && (
-  <section className="relative z-10">
-    <ServiceProcess serviceSlug={serviceSlug} />
-  </section>
-)}
+
 
        
       {/* =================================================
