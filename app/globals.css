@@ -13803,22 +13803,9 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   width: 100%;
   height: auto;
   object-fit: contain;
-  display: none;
 }
 
-/* Light mode */
-.codm-orbit-light {
-  display: block;
-}
 
-/* Dark mode */
-[data-theme="dark"] .codm-orbit-light {
-  display: none;
-}
-
-[data-theme="dark"] .codm-orbit-dark {
-  display: block;
-}
 
 /* Responsive */
 @media (max-width: 1024px) {
