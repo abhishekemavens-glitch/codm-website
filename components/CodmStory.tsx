@@ -30,6 +30,9 @@ const WORDPRESS_GRAPHQL_URL =
 /* =========================================================
    ICONS
 ========================================================= */
+/* =========================================================
+   ICONS
+========================================================= */
 
 function SalesforceIcon() {
   return (
@@ -38,11 +41,15 @@ function SalesforceIcon() {
       alt="Salesforce"
       width={56}
       height={56}
-      style={{ display: "block", objectFit: "contain" }}
+      style={{
+        display: "block",
+        width: "56px",
+        height: "56px",
+        objectFit: "contain",
+      }}
     />
   );
 }
-
 
 function GlobeIcon() {
   return (
@@ -54,44 +61,14 @@ function GlobeIcon() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <circle
-        cx="21"
-        cy="21"
-        r="18"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-      />
-
-      <ellipse
-        cx="21"
-        cy="21"
-        rx="8"
-        ry="18"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-      />
-
-      <path
-        d="M3 21H39"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-      />
-
-      <path
-        d="M6 12.5H36"
-        stroke="#8B7CFF"
-        strokeWidth="1.4"
-      />
-
-      <path
-        d="M6 29.5H36"
-        stroke="#8B7CFF"
-        strokeWidth="1.4"
-      />
+      <circle cx="21" cy="21" r="18" stroke="#8B7CFF" strokeWidth="1.8" />
+      <ellipse cx="21" cy="21" rx="8" ry="18" stroke="#8B7CFF" strokeWidth="1.8" />
+      <path d="M3 21H39" stroke="#8B7CFF" strokeWidth="1.8" />
+      <path d="M6 12.5H36" stroke="#8B7CFF" strokeWidth="1.4" />
+      <path d="M6 29.5H36" stroke="#8B7CFF" strokeWidth="1.4" />
     </svg>
   );
 }
-
 
 function CertifiedIcon() {
   return (
@@ -109,35 +86,6 @@ function CertifiedIcon() {
     />
   );
 }
-
-      {/* Person */}
-      <circle
-        cx="21"
-        cy="17"
-        r="4"
-        stroke="#8B7CFF"
-        strokeWidth="1.7"
-      />
-
-      <path
-        d="M14.5 29C15.6 25.9 17.8 24.3 21 24.3C24.2 24.3 26.4 25.9 27.5 29"
-        stroke="#8B7CFF"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-
-      {/* Verification */}
-      <path
-        d="M29.5 27.5L32 30L36 25.5"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 
 function BadgeIcon({ type }: { type: string }) {
   const normalized = type?.toLowerCase().trim();
