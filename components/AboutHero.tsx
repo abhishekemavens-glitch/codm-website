@@ -123,7 +123,7 @@ export default function AboutHero({
          <div className="codm-about-orbit-wrapper">
   <div className="codm-about-visual">
     <img
-      src="/images/codm-orbit-dark.png"
+      src="/codm-orbit-dark.png"
       alt="CODM Technology Ecosystem"
       className="codm-orbit-image"
       draggable={false}
