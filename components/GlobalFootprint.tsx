@@ -1,79 +1,110 @@
 "use client";
- 
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, type FormEvent } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 
 /* =========================================================
-   OUR GLOBAL FOOTPRINT — "Local presence. Global perspective."
+   CONTACT FORM — "Ambition meets possibility."
 
-   All content comes from WordPress (codm-headless.php):
-     - heading, intro, labels -> Offices > Section settings
-     - the offices            -> Offices > All Offices (ordered by "Order")
-   The map + directions link are built from each office's address.
-   Hidden if no offices are published.
+   Content comes from WordPress (codm-headless.php):
+   Contact Cards > Contact Form. The form posts straight to
+   Salesforce Web-to-Lead (URL + org ID are set in WordPress).
 
-   Usage:  <GlobalFootprint />
-   Place at: components/GlobalFootprint.tsx
+   Usage:  <ContactForm />
+   Place at: components/ContactForm.tsx
    ========================================================= */
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-type Office = {
-  id: string;
-  title: string;
-  tagline: string | null;
-  region: string | null;
-  greeting: string | null;
-  address: string | null;
-  phone: string | null;
-  hours: string | null;
-  mapUrl: string | null;
-  directionsUrl: string | null;
-  isDefault: boolean | null;
+type LinkRow = {
+  icon: string | null;
+  label: string | null;
+  value: string | null;
+  href: string | null;
 };
 
-type Settings = {
+type Content = {
   eyebrow: string | null;
   title: string | null;
   gradientText: string | null;
   intro: string | null;
-  findLabel: string | null;
-  touchLabel: string | null;
+  links: LinkRow[] | null;
+  hours: string | null;
+  formTitle: string | null;
+  requiredNote: string | null;
+  services: string[] | null;
   buttonText: string | null;
+  privacyLines: string[] | null;
+  successTitle: string | null;
+  successText: string | null;
+  sfUrl: string | null;
+  sfOid: string | null;
+  leadSource: string | null;
 };
 
-const splitLines = (value: string | null | undefined) =>
-  (value ?? "")
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+type Status = "idle" | "sending" | "sent" | "error";
 
-function Arrow({ className = "" }: { className?: string }) {
+const isExternal = (href: string) => /^(https?:)?\/\//i.test(href);
+
+function RowIcon({ name }: { name: string | null }) {
+  const common = {
+    width: 26,
+    height: 26,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+    className: "text-[#6D4AFF]",
+  };
+
+  if (name === "phone") {
+    return (
+      <svg {...common}>
+        <path d="M6.6 3.5h2.7l1.4 3.8-1.8 1.3a11 11 0 0 0 5.5 5.5l1.3-1.8 3.8 1.4v2.7a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z" />
+      </svg>
+    );
+  }
+
+  if (name === "pin") {
+    return (
+      <svg {...common}>
+        <path d="M12 21s7-5.6 7-11a7 7 0 0 0-14 0c0 5.4 7 11 7 11Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+    );
+  }
+
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" />
+    <svg {...common}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />
     </svg>
   );
 }
 
-export default function GlobalFootprint() {
-  const [settings, setSettings] = useState<Settings | null>(null);
-  const [offices, setOffices] = useState<Office[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
+const fieldClass =
+  "w-full border-0 border-b border-[var(--border)] bg-[var(--foreground)]/[0.04] px-4 py-4 text-[15px] text-[var(--foreground)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[#6D4AFF] focus:bg-[var(--foreground)]/[0.06]";
+
+const labelClass =
+  "mb-3 block text-[14px] font-medium text-[var(--foreground)]";
+
+function Req() {
+  return (
+    <span className="text-[#6D4AFF]" aria-hidden="true">
+      {" "}
+      *
+    </span>
+  );
+}
+
+export default function ContactForm() {
+  const [content, setContent] = useState<Content | null>(null);
+  const [status, setStatus] = useState<Status>("idle");
 
   useEffect(() => {
     let cancelled = false;
@@ -85,38 +116,24 @@ export default function GlobalFootprint() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             query: `
-              query GetOffices {
-                officesSection {
+              query GetContactForm {
+                contactForm {
                   eyebrow
                   title
                   gradientText
                   intro
-                  findLabel
-                  touchLabel
+                  links { icon label value href }
+                  hours
+                  formTitle
+                  requiredNote
+                  services
                   buttonText
-                }
-                offices(
-                  first: 20
-                  where: {
-                    orderby: [
-                      { field: MENU_ORDER, order: ASC }
-                      { field: DATE, order: ASC }
-                    ]
-                  }
-                ) {
-                  nodes {
-                    id
-                    title
-                    tagline
-                    region
-                    greeting
-                    address
-                    phone
-                    hours
-                    mapUrl
-                    directionsUrl
-                    isDefault
-                  }
+                  privacyLines
+                  successTitle
+                  successText
+                  sfUrl
+                  sfOid
+                  leadSource
                 }
               }
             `,
@@ -131,17 +148,10 @@ export default function GlobalFootprint() {
         }
 
         if (!cancelled) {
-          const nodes: Office[] = result.data?.offices?.nodes ?? [];
-          setSettings(result.data?.officesSection ?? null);
-          setOffices(nodes);
-          setActiveId((nodes.find((o) => o.isDefault) ?? nodes[0])?.id ?? null);
+          setContent(result.data?.contactForm ?? null);
         }
       } catch (error) {
-        console.error("Failed to load offices:", error);
-      } finally {
-        if (!cancelled) {
-          setLoaded(true);
-        }
+        console.error("Failed to load contact form:", error);
       }
     }
 
@@ -152,204 +162,398 @@ export default function GlobalFootprint() {
     };
   }, []);
 
-  if (!loaded || offices.length === 0) {
+  if (!content) {
     return null;
   }
 
-  const active = offices.find((o) => o.id === activeId) ?? offices[0];
-  const introLines = splitLines(settings?.intro);
-  const addressLines = splitLines(active.address);
-  const hasContact = Boolean(active.phone || active.hours);
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!content?.sfUrl || !content?.sfOid) {
+      setStatus("error");
+      return;
+    }
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+
+    /* spam trap: real visitors never fill this hidden field */
+    if (String(data.get("website") ?? "").trim() !== "") {
+      setStatus("sent");
+      return;
+    }
+
+    const interested = String(data.get("interest") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    const body = new URLSearchParams({
+      oid: content.sfOid,
+      retURL: window.location.href,
+      lead_source: content.leadSource || "Web",
+      first_name: String(data.get("first_name") ?? "").trim(),
+      last_name: String(data.get("last_name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
+      /* Salesforce requires a Company on every lead */
+      company:
+        String(data.get("company") ?? "").trim() || "[Not provided]",
+      description: interested
+        ? `Interested in: ${interested}\n\n${message}`
+        : message,
+    });
+
+    try {
+      setStatus("sending");
+
+      /* Salesforce doesn't allow cross-site reads, so the reply is
+         opaque (no-cors). If the request leaves, we treat it as sent. */
+      await fetch(content.sfUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+
+      form.reset();
+      setStatus("sent");
+    } catch (error) {
+      console.error("Contact form failed:", error);
+      setStatus("error");
+    }
+  }
+
+  const links = (content.links ?? []).filter((l) => l.value);
+
+  const services = (content.services ?? []).filter(Boolean);
 
   return (
     <section
-      id="global-footprint"
+      id="contact-form"
       className="relative overflow-hidden bg-[var(--background)] px-5 py-16 transition-colors duration-500 sm:px-8 md:py-24"
     >
       <div className="relative mx-auto max-w-[1250px]">
-        {/* HEADING + intro */}
         {/* =================================================
-    CENTERED SECTION HEADING
-================================================= */}
+            CENTRED SECTION HEADING (same as the other sections)
+            ================================================= */}
+        <Reveal distance={20}>
+          <div className="mx-auto max-w-[1100px] text-center">
+            <SectionHeading
+              eyebrow={content.eyebrow ?? ""}
+              title={content.title ?? ""}
+              gradientText={content.gradientText ?? ""}
+              description={content.intro ?? undefined}
+            />
+          </div>
+        </Reveal>
 
-<Reveal distance={20}>
-  <div className="mx-auto max-w-[1100px] text-center">
-    <SectionHeading
-      eyebrow={settings?.eyebrow ?? "Direct Connections"}
-      title={settings?.title ?? "A human connection."}
-      gradientText={settings?.gradientText ?? "However you reach us."}
-      description={settings?.intro ?? ""}
-    />
-  </div>
-</Reveal>
+      <div className="mt-12 grid gap-14 md:mt-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+        {/* =================================================
+            LEFT: contact rows, hours
+            ================================================= */}
+        <Reveal distance={24}>
+          <div>
+            {links.length > 0 && (
+              <ul className="border-t border-[var(--border)]">
+                {links.map((row, i) => {
+                  const inner = (
+                    <>
+                      <RowIcon name={row.icon} />
 
-        {/* LIST + DETAIL */}
-        <Reveal distance={24} duration={0.7}>
-          <div className="mt-12 grid border-y border-[var(--border)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,2.1fr)]">
-            {/* office list */}
-            <ul
-              role="tablist"
-              aria-label="Offices"
-              className="divide-y divide-[var(--border)] border-b border-[var(--border)] lg:border-b-0 lg:border-r"
-            >
-              {offices.map((office, index) => {
-                const isActive = office.id === active.id;
+                      <span className="min-w-0 flex-1">
+                        {row.label && (
+                          <span className="block text-[13px] text-[var(--muted)]">
+                            {row.label}
+                          </span>
+                        )}
 
-                return (
-                  <li key={office.id}>
-                    <button
-                      type="button"
-                      role="tab"
-                      aria-selected={isActive}
-                      onClick={() => setActiveId(office.id)}
-                      className={
-                        "group relative flex w-full items-center gap-5 px-5 py-6 text-left transition-colors duration-300 sm:px-7 " +
-                        (isActive
-                          ? "bg-[var(--surface)]"
-                          : "hover:bg-[var(--surface)]/60")
-                      }
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={
-                          "absolute inset-y-0 left-0 w-[3px] bg-[#6D4AFF] transition-opacity duration-300 " +
-                          (isActive ? "opacity-100" : "opacity-0")
-                        }
-                      />
-
-                      <span className="w-6 shrink-0 self-start pt-[7px] text-[12px] tabular-nums text-[var(--muted)]">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-
-                      <span className="flex-1">
-                        <span
-                          className={
-                            "block text-[22px] font-normal leading-tight tracking-[-0.02em] transition-colors duration-300 " +
-                            (isActive
-                              ? "text-[var(--foreground)]"
-                              : "text-[var(--muted)] group-hover:text-[var(--foreground)]")
-                          }
-                        >
-                          {office.title}
+                        <span className="mt-1 block text-[17px] text-[var(--foreground)]">
+                          {row.value}
                         </span>
-
-                        {office.tagline && (
-                          <span className="mt-2 block text-[13px] text-[var(--muted)]">
-                            {office.tagline}
-                          </span>
-                        )}
                       </span>
 
-                      <Arrow
-                        className={
-                          "shrink-0 transition-all duration-300 " +
-                          (isActive
-                            ? "text-[#6D4AFF]"
-                            : "text-[var(--muted)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5")
-                        }
-                      />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+                      {row.href && (
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          aria-hidden="true"
+                          className="shrink-0 text-[var(--muted)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#6D4AFF]"
+                        >
+                          <path
+                            d="M4.5 11.5l7-7M5.5 4.5h6v6"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </>
+                  );
 
-            {/* detail panel */}
-            <div
-              key={active.id}
-              role="tabpanel"
-              className="grid gap-8 p-6 sm:p-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] xl:gap-10"
-              style={{ animation: "fp-fade 0.45s ease both" }}
-            >
-              <div className="flex flex-col">
-                {active.region && (
-                  <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted)]">
-                    {active.region}
-                  </p>
-                )}
+                  const rowClass =
+                    "group flex items-center gap-5 border-b border-[var(--border)] py-6";
 
-                <h3 className="mt-5 text-[34px] font-normal leading-[1.1] tracking-[-0.03em] text-[var(--foreground)] sm:text-[40px]">
-                  {active.greeting || `Hello from ${active.title}.`}
+                  return (
+                    <li key={i}>
+                      {row.href ? (
+                        <a
+                          href={row.href}
+                          {...(isExternal(row.href)
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                          className={rowClass}
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        <div className={rowClass}>{inner}</div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {content.hours && (
+              <p className="mt-6 flex items-center gap-3 text-[14px] text-[var(--muted)]">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 2" />
+                </svg>
+                {content.hours}
+              </p>
+            )}
+          </div>
+        </Reveal>
+
+        {/* =================================================
+            RIGHT: form
+            ================================================= */}
+        <Reveal distance={30} duration={0.8}>
+          <div>
+            <div className="flex items-start justify-between gap-4">
+              {content.formTitle && (
+                <h3 className="text-[28px] font-normal leading-tight tracking-[-0.02em] text-[var(--foreground)] md:text-[32px]">
+                  {content.formTitle}
                 </h3>
+              )}
 
-                <div className="mt-10 grid gap-8 sm:grid-cols-2 xl:grid-cols-1">
-                  {addressLines.length > 0 && (
-                    <div>
-                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted)]">
-                        {settings?.findLabel}
-                      </p>
-                      <address className="mt-3 text-[15px] not-italic leading-7 text-[var(--muted)]">
-                        {addressLines.map((line) => (
-                          <span key={line} className="block">
-                            {line}
-                          </span>
-                        ))}
-                      </address>
-                    </div>
-                  )}
-
-                  {hasContact && (
-                    <div>
-                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted)]">
-                        {settings?.touchLabel}
-                      </p>
-                      <div className="mt-3 text-[15px] leading-7">
-                        {active.phone && (
-                          <a
-                            href={`tel:${active.phone.replace(/[^0-9+]/g, "")}`}
-                            className="block font-medium text-[var(--foreground)] transition-colors duration-300 hover:text-[#6D4AFF]"
-                          >
-                            {active.phone}
-                          </a>
-                        )}
-                        {active.hours && (
-                          <span className="block text-[var(--muted)]">
-                            {active.hours}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {active.directionsUrl && (
-                  <a
-                    href={active.directionsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-10 inline-flex w-fit items-center gap-3 rounded-full border border-[var(--foreground)]/80 px-6 py-3 text-[15px] font-medium text-[var(--foreground)] transition-all duration-300 hover:border-[#6D4AFF] hover:bg-[#6D4AFF] hover:text-white xl:mt-auto"
-                  >
-                    {settings?.buttonText || "Get directions"}
-                    <Arrow />
-                  </a>
-                )}
-              </div>
-
-              {/* map */}
-              {active.mapUrl && (
-                <div className="min-h-[300px] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] xl:min-h-[420px]">
-                  <iframe
-                    key={active.mapUrl}
-                    src={active.mapUrl}
-                    title={`Map of our ${active.title} office`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
-                    className="h-full min-h-[300px] w-full border-0 xl:min-h-[420px]"
-                  />
-                </div>
+              {content.requiredNote && (
+                <span className="shrink-0 pt-2 text-[12px] text-[var(--muted)]">
+                  {content.requiredNote}
+                </span>
               )}
             </div>
+
+            {status === "sent" ? (
+              <div
+                role="status"
+                className="mt-12 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-10 text-center"
+              >
+                <h4 className="text-2xl font-normal text-[var(--foreground)]">
+                  {content.successTitle || "Thank you."}
+                </h4>
+
+                {content.successText && (
+                  <p className="mx-auto mt-3 max-w-[420px] text-[15px] leading-7 text-[var(--muted)]">
+                    {content.successText}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-10" noValidate={false}>
+                <div className="grid gap-x-9 gap-y-8 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="cf-first" className={labelClass}>
+                      First name
+                      <Req />
+                    </label>
+                    <input
+                      id="cf-first"
+                      name="first_name"
+                      type="text"
+                      required
+                      maxLength={40}
+                      placeholder="Jane"
+                      autoComplete="given-name"
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="cf-last" className={labelClass}>
+                      Last name
+                      <Req />
+                    </label>
+                    <input
+                      id="cf-last"
+                      name="last_name"
+                      type="text"
+                      required
+                      maxLength={80}
+                      placeholder="Smith"
+                      autoComplete="family-name"
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="cf-email" className={labelClass}>
+                      Work email
+                      <Req />
+                    </label>
+                    <input
+                      id="cf-email"
+                      name="email"
+                      type="email"
+                      required
+                      maxLength={80}
+                      placeholder="jane@company.com"
+                      autoComplete="email"
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="cf-phone" className={labelClass}>
+                      Phone number
+                    </label>
+                    <input
+                      id="cf-phone"
+                      name="phone"
+                      type="tel"
+                      maxLength={40}
+                      placeholder="+44"
+                      autoComplete="tel"
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="cf-company" className={labelClass}>
+                      Company
+                    </label>
+                    <input
+                      id="cf-company"
+                      name="company"
+                      type="text"
+                      maxLength={40}
+                      placeholder="Your company"
+                      autoComplete="organization"
+                      className={fieldClass}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="cf-interest" className={labelClass}>
+                      I’m interested in
+                    </label>
+                    <select
+                      id="cf-interest"
+                      name="interest"
+                      defaultValue=""
+                      className={fieldClass + " cursor-pointer"}
+                    >
+                      <option value="">Select a service</option>
+                      {services.map((service) => (
+                        <option key={service} value={service}>
+                          {service}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label htmlFor="cf-message" className={labelClass}>
+                      Tell us about your project
+                      <Req />
+                    </label>
+                    <textarea
+                      id="cf-message"
+                      name="message"
+                      required
+                      rows={5}
+                      maxLength={3000}
+                      placeholder="Your goals, your challenges, or simply where you’d like to start…"
+                      className={fieldClass + " resize-y"}
+                    />
+                  </div>
+                </div>
+
+                {/* spam trap: hidden from people */}
+                <div
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px" }}
+                >
+                  <label htmlFor="cf-website">Website</label>
+                  <input
+                    id="cf-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="inline-flex w-fit items-center gap-10 bg-[#6D4AFF] px-8 py-5 text-[15px] font-medium text-white transition duration-300 hover:bg-[#5a3be0] hover:shadow-[0_14px_34px_rgba(99,79,240,0.32)] disabled:opacity-60"
+                  >
+                    {status === "sending"
+                      ? "Sending…"
+                      : content.buttonText || "Send"}
+
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M4.5 11.5l7-7M5.5 4.5h6v6"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  {(content.privacyLines ?? []).length > 0 && (
+                    <div className="text-[12px] leading-6 text-[var(--muted)] sm:text-right">
+                      {(content.privacyLines ?? []).map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {status === "error" && (
+                  <p role="alert" className="mt-5 text-sm text-red-500">
+                    Sorry, something went wrong sending your message. Please try
+                    again or email us directly.
+                  </p>
+                )}
+              </form>
+            )}
           </div>
         </Reveal>
       </div>
-
-      <style>{`
-        @keyframes fp-fade {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+      </div>
     </section>
   );
 }
