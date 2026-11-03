@@ -168,24 +168,20 @@ export default function GlobalFootprint() {
     >
       <div className="relative mx-auto max-w-[1250px]">
         {/* HEADING + intro */}
-        <Reveal distance={20}>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading
-              align="left"
-              eyebrow={settings?.eyebrow ?? ""}
-              title={settings?.title ?? ""}
-              gradientText={settings?.gradientText ?? ""}
-            />
+        {/* =================================================
+    CENTERED SECTION HEADING
+================================================= */}
 
-            {introLines.length > 0 && (
-              <div className="max-w-[360px] text-[15px] leading-7 text-[var(--muted)] md:pb-2 md:text-base">
-                {introLines.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
-              </div>
-            )}
-          </div>
-        </Reveal>
+<Reveal distance={20}>
+  <div className="mx-auto max-w-[1100px] text-center">
+    <SectionHeading
+      eyebrow={settings?.eyebrow ?? "Direct Connections"}
+      title={settings?.title ?? "A human connection."}
+      gradientText={settings?.gradientText ?? "However you reach us."}
+      description={settings?.intro ?? ""}
+    />
+  </div>
+</Reveal>
 
         {/* LIST + DETAIL */}
         <Reveal distance={24} duration={0.7}>
