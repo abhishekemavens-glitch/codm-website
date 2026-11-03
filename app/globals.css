@@ -14038,7 +14038,12 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 #trusted-by {
 	padding: 70px 0px;
 }
-
+.button-bor {
+	border-radius: 99px;
+	height: auto;
+	font-size: 18px;
+	padding: 15px 30px;
+}
 
 
 @media (max-width: 767px) {
