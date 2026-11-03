@@ -1235,6 +1235,13 @@ const showCTA =
   </>
 )}
 
+{/* Service Process */}
+{servicePage?.processEnabled && (
+  <section className="relative z-10">
+    <ServiceProcess serviceSlug={serviceSlug} />
+  </section>
+)}
+
 
 
        
