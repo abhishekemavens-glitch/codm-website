@@ -1226,6 +1226,13 @@ const showCTA =
   <div className="relative z-10">
     <IndustryExpertise />
   </div>
+
+  {/* What We Do — Same as About Us */}
+    <div className="relative z-10">
+      <ServicesSection />
+    </div>
+
+   
 )}
 
        
