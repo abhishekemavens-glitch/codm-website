@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import {
   useInViewOnce,
@@ -29,6 +29,9 @@ type CapabilityItem = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
+/** Time (ms) between automatic capability changes. 7000 = 7 seconds. */
+const AUTO_ROTATE_MS = 7000;
+
 type KeyCapabilitiesProps = {
   serviceSlug?: string;
 };
@@ -39,6 +42,9 @@ export default function KeyCapabilities({
   const [items, setItems] = useState<CapabilityItem[]>([]);
   const [activeItem, setActiveItem] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // bumped on every manual selection so the auto-rotate timer restarts
+  const [resetTick, setResetTick] = useState(0);
 
   const active = items[activeItem];
 
@@ -103,6 +109,9 @@ export default function KeyCapabilities({
     });
   };
 
+  /* ---------------------------------------------------------
+     LOAD CAPABILITIES
+     --------------------------------------------------------- */
   useEffect(() => {
     async function loadCapabilities() {
       setLoading(true);
@@ -162,30 +171,27 @@ export default function KeyCapabilities({
         }
 
         const allItems: CapabilityItem[] =
-  result?.data?.capabilities?.nodes ?? [];
+          result?.data?.capabilities?.nodes ?? [];
 
-const normalizedServiceSlug =
-  serviceSlug?.toLowerCase().trim();
+        const normalizedServiceSlug =
+          serviceSlug?.toLowerCase().trim();
 
-const filteredItems = normalizedServiceSlug
-  ? allItems.filter(
-      (item) =>
-        item.serviceSlug?.toLowerCase().trim() ===
-        normalizedServiceSlug
-    )
-  : allItems;
+        const filteredItems = normalizedServiceSlug
+          ? allItems.filter(
+              (item) =>
+                item.serviceSlug?.toLowerCase().trim() ===
+                normalizedServiceSlug
+            )
+          : allItems;
 
-setItems(filteredItems);
-setActiveItem(0);
+        setItems(filteredItems);
+        setActiveItem(0);
 
-        console.log(
-          "KEY CAPABILITIES:",
-          {
-            serviceSlug,
-            total: allItems.length,
-            items: allItems,
-          }
-        );
+        console.log("KEY CAPABILITIES:", {
+          serviceSlug,
+          total: allItems.length,
+          items: allItems,
+        });
       } catch (error) {
         console.error(
           "Failed to load Key Capabilities:",
@@ -201,15 +207,90 @@ setActiveItem(0);
     loadCapabilities();
   }, [serviceSlug]);
 
+  /* ---------------------------------------------------------
+     MANUAL SELECTION (tab click / arrows) — restarts the timer
+     --------------------------------------------------------- */
+  const selectItem = useCallback((index: number) => {
+    setActiveItem(index);
+    setResetTick((t) => t + 1);
+  }, []);
+
+  /* ---------------------------------------------------------
+     AUTO ROTATION
+     The timer restarts whenever activeItem or resetTick
+     changes, so after a manual click the next automatic change
+     happens a full interval later.
+     --------------------------------------------------------- */
+  useEffect(() => {
+    if (items.length < 2) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduceMotion) return;
+
+    const id = window.setInterval(() => {
+      if (document.hidden) return;
+      setActiveItem((i) => (i + 1) % items.length);
+    }, AUTO_ROTATE_MS);
+
+    return () => window.clearInterval(id);
+  }, [items.length, activeItem, resetTick]);
+
+  /* ---------------------------------------------------------
+     TABS SLIDER (single row, arrows, swipe)
+     --------------------------------------------------------- */
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pillRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateArrows = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    updateArrows();
+    el.addEventListener("scroll", updateArrows, { passive: true });
+
+    const ro = new ResizeObserver(updateArrows);
+    ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
+
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      ro.disconnect();
+    };
+  }, [items.length, updateArrows]);
+
+  // keep the active tab centred inside the slider (only the slider
+  // scrolls, never the page)
+  useEffect(() => {
+    const track = trackRef.current;
+    const pill = pillRefs.current[activeItem];
+    if (!track || !pill) return;
+
+    const left = pill.offsetLeft - (track.clientWidth - pill.offsetWidth) / 2;
+    track.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+  }, [activeItem, items.length]);
+
+  const scrollTabs = (direction: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: direction * el.clientWidth * 0.7, behavior: "smooth" });
+  };
+
   const cardStyle: React.CSSProperties & {
     "--spot-x"?: string;
     "--spot-y"?: string;
   } = {
-    transform: `
-      perspective(1200px)
-      rotateX(${tilt.x}deg)
-      rotateY(${tilt.y}deg)
-    `,
+    transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
     "--spot-x": `${spotlight.x}%`,
     "--spot-y": `${spotlight.y}%`,
   };
@@ -268,11 +349,10 @@ setActiveItem(0);
           </div>
 
           {/* =================================================
-              CAPABILITY PILLS
+              CAPABILITY TABS: one row, slider arrows, swipe
           ================================================= */}
 
-          <div className="codm-capabilities-pills codm-stagger-grid mx-auto mt-9 flex max-w-[1150px] flex-wrap gap-2.5">
-
+          <div className="codm-capabilities-tabs relative mx-auto mt-9 max-w-[1150px]">
             {loading ? (
               <div className="text-sm text-[var(--muted)]">
                 Loading capabilities...
@@ -282,36 +362,67 @@ setActiveItem(0);
                 No capabilities found.
               </div>
             ) : (
-              items.map((item, index) => {
-                const isActive =
-                  index === activeItem;
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Previous capabilities"
+                  onClick={() => scrollTabs(-1)}
+                  disabled={!canScrollLeft}
+                  className="codm-cap-arrow hidden md:flex"
+                >
+                  {"←"}
+                </button>
 
-                const pillStyle: React.CSSProperties & {
-                  "--pill-delay"?: string;
-                } = {
-                  "--pill-delay":
-                    `${index * 70}ms`,
-                };
+                <div
+                  ref={trackRef}
+                  className="codm-cap-track relative min-w-0 flex-1 overflow-x-auto"
+                >
+                  {/* w-max: the row is exactly as wide as its tabs and
+                      scrolls sideways when they don't all fit */}
+                  <div className="codm-capabilities-pills codm-stagger-grid flex w-max flex-nowrap gap-2.5 px-1 py-1">
+                    {items.map((item, index) => {
+                      const isActive = index === activeItem;
 
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() =>
-                      setActiveItem(index)
-                    }
-                    style={pillStyle}
-                    className={
-                      "codm-capability-pill codm-stagger-item rounded-full border px-4 py-2.5 text-xs font-medium " +
-                      (isActive
-                        ? "codm-capability-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
-                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]")
-                    }
-                  >
-                    {item.title}
-                  </button>
-                );
-              })
+                      const pillStyle: React.CSSProperties & {
+                        "--pill-delay"?: string;
+                      } = {
+                        "--pill-delay": `${index * 70}ms`,
+                      };
+
+                      return (
+                        <button
+                          key={item.id}
+                          ref={(el) => {
+                            pillRefs.current[index] = el;
+                          }}
+                          type="button"
+                          onClick={() => selectItem(index)}
+                          style={pillStyle}
+                          aria-pressed={isActive}
+                          className={
+                            "codm-capability-pill codm-stagger-item shrink-0 whitespace-nowrap rounded-full border px-4 py-2.5 text-xs font-medium " +
+                            (isActive
+                              ? "codm-capability-pill-active border-[var(--accent)] bg-[var(--accent)] text-white"
+                              : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--foreground)]")
+                          }
+                        >
+                          {item.title}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  aria-label="Next capabilities"
+                  onClick={() => scrollTabs(1)}
+                  disabled={!canScrollRight}
+                  className="codm-cap-arrow hidden md:flex"
+                >
+                  {"→"}
+                </button>
+              </div>
             )}
           </div>
 
@@ -325,7 +436,7 @@ setActiveItem(0);
               onMouseMove={handleCardMouseMove}
               onMouseLeave={handleCardMouseLeave}
               style={cardStyle}
-              className="codm-capability-card mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
+              className="codm-capability-card codm-cap-swap mt-9 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:mt-12"
             >
               <div
                 aria-hidden="true"
@@ -460,6 +571,7 @@ setActiveItem(0);
                     {active.featuredImage?.node
                       ?.sourceUrl && (
                       <img
+                        key={active.id}
                         src={
                           active.featuredImage
                             .node.sourceUrl
@@ -469,7 +581,7 @@ setActiveItem(0);
                             .node.altText ||
                           active.title
                         }
-                        className="codm-capability-image relative h-full w-full object-contain p-5 md:p-8"
+                        className="codm-capability-image codm-cap-image-swap relative h-full w-full object-contain p-5 md:p-8"
                       />
                     )}
                   </div>
@@ -485,6 +597,93 @@ setActiveItem(0);
       ================================================= */}
 
       <style jsx>{`
+        /* =====================================================
+           TABS SLIDER
+           ===================================================== */
+
+        .codm-cap-track {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+          scroll-snap-type: x proximity;
+          overscroll-behavior-x: contain;
+        }
+
+        .codm-cap-track::-webkit-scrollbar {
+          display: none;
+        }
+
+        .codm-cap-track .codm-capability-pill {
+          scroll-snap-align: center;
+        }
+
+        .codm-cap-arrow {
+          flex: none;
+          width: 38px;
+          height: 38px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--foreground);
+          font-size: 15px;
+          cursor: pointer;
+          transition:
+            border-color 250ms ease,
+            color 250ms ease,
+            opacity 250ms ease,
+            transform 250ms ease;
+        }
+
+        .codm-cap-arrow:hover:not(:disabled) {
+          border-color: var(--accent);
+          color: var(--accent);
+          transform: scale(1.06);
+        }
+
+        .codm-cap-arrow:disabled {
+          opacity: 0.35;
+          cursor: default;
+        }
+
+        /* =====================================================
+           SWITCH ANIMATION: replays every time the capability
+           changes (the card and the image are re-mounted by key)
+           ===================================================== */
+
+        .codm-cap-swap {
+          animation: codmCapSwapIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .codm-cap-image-swap {
+          animation: codmCapImageIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes codmCapSwapIn {
+          from {
+            opacity: 0.35;
+            translate: 24px 0;
+          }
+          to {
+            opacity: 1;
+            translate: 0 0;
+          }
+        }
+
+        @keyframes codmCapImageIn {
+          from {
+            opacity: 0;
+            transform: scale(0.92);
+            filter: blur(6px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+          }
+        }
+
         .codm-section-heading-reveal {
           opacity: 0;
           transform: translateY(35px);
@@ -568,16 +767,14 @@ setActiveItem(0);
           z-index: 1;
           opacity: 0;
           background: radial-gradient(
-            380px circle at var(--spot-x, 50%)
-              var(--spot-y, 50%),
+            380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
             rgba(145, 135, 251, 0.14),
             transparent 60%
           );
           transition: opacity 400ms ease;
         }
 
-        .codm-capability-card:hover
-          .codm-capability-spotlight {
+        .codm-capability-card:hover .codm-capability-spotlight {
           opacity: 1;
         }
 
@@ -587,8 +784,7 @@ setActiveItem(0);
           transition:
             transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 500ms ease;
-          animation:
-            codmCapIdleFloat 6s ease-in-out infinite;
+          animation: codmCapIdleFloat 6s ease-in-out infinite;
         }
 
         .codm-capability-image-container::after {
@@ -607,19 +803,12 @@ setActiveItem(0);
           transform: skewX(-20deg);
           pointer-events: none;
           z-index: 3;
-          transition:
-            left 700ms cubic-bezier(
-              0.22,
-              1,
-              0.36,
-              1
-            );
+          transition: left 700ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .codm-capability-image-container:hover {
           transform: scale(0.985);
-          box-shadow:
-            0 25px 60px rgba(114, 92, 255, 0.18);
+          box-shadow: 0 25px 60px rgba(114, 92, 255, 0.18);
           animation-play-state: paused;
         }
 
@@ -627,23 +816,13 @@ setActiveItem(0);
           left: 130%;
         }
 
-        .codm-capability-image-container:hover
-          .codm-capability-image-glow {
+        .codm-capability-image-container:hover .codm-capability-image-glow {
           animation-play-state: paused;
         }
 
-        .codm-capability-image {
-          transition:
-            transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
-            filter 700ms ease;
-        }
-
-        .codm-capability-image-container:hover
-          .codm-capability-image {
+        .codm-capability-image-container:hover .codm-capability-image {
           transform: scale(1.06);
-          filter:
-            brightness(1.03)
-            saturate(1.06);
+          filter: brightness(1.03) saturate(1.06);
         }
 
         .codm-capability-image-glow {
@@ -654,8 +833,7 @@ setActiveItem(0);
           );
           filter: blur(55px);
           opacity: 0.8;
-          animation:
-            codmCapImageGlow 7s ease-in-out infinite;
+          animation: codmCapImageGlow 7s ease-in-out infinite;
         }
 
         .codm-capabilities-glow {
@@ -666,8 +844,7 @@ setActiveItem(0);
           );
           filter: blur(120px);
           opacity: 0.8;
-          animation:
-            codmCapMainGlow 12s ease-in-out infinite;
+          animation: codmCapMainGlow 12s ease-in-out infinite;
         }
 
         .codm-capabilities-glow-secondary {
@@ -677,41 +854,17 @@ setActiveItem(0);
             transparent 70%
           );
           filter: blur(100px);
-          animation:
-            codmCapSecondaryGlow 10s ease-in-out infinite;
+          animation: codmCapSecondaryGlow 10s ease-in-out infinite;
         }
 
         .codm-capability-view-link {
           position: relative;
           transition:
             color 300ms ease,
-            transform 400ms cubic-bezier(
-              0.22,
-              1,
-              0.36,
-              1
-            ),
-            opacity 0.7s
-              cubic-bezier(
-                0.22,
-                1,
-                0.36,
-                1
-              ) 0.45s,
-            filter 0.7s
-              cubic-bezier(
-                0.22,
-                1,
-                0.36,
-                1
-              ) 0.45s,
-            translate 0.7s
-              cubic-bezier(
-                0.22,
-                1,
-                0.36,
-                1
-              ) 0.45s;
+            transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
+            filter 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s,
+            translate 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
         }
 
         .codm-capability-view-link:hover {
@@ -721,34 +874,21 @@ setActiveItem(0);
 
         .codm-capability-arrow {
           display: inline-block;
-          transition:
-            transform 400ms
-              cubic-bezier(
-                0.22,
-                1,
-                0.36,
-                1
-              );
+          transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .codm-capability-view-link:hover
-          .codm-capability-arrow {
+        .codm-capability-view-link:hover .codm-capability-arrow {
           transform: translateX(5px);
         }
 
         @keyframes codmCapImageGlow {
           0%,
           100% {
-            transform:
-              translate(-50%, -50%)
-              scale(0.9);
+            transform: translate(-50%, -50%) scale(0.9);
             opacity: 0.55;
           }
-
           50% {
-            transform:
-              translate(-50%, -50%)
-              scale(1.08);
+            transform: translate(-50%, -50%) scale(1.08);
             opacity: 0.85;
           }
         }
@@ -756,16 +896,11 @@ setActiveItem(0);
         @keyframes codmCapMainGlow {
           0%,
           100% {
-            transform:
-              translateX(-50%)
-              scale(0.95);
+            transform: translateX(-50%) scale(0.95);
             opacity: 0.6;
           }
-
           50% {
-            transform:
-              translateX(-50%)
-              scale(1.08);
+            transform: translateX(-50%) scale(1.08);
             opacity: 1;
           }
         }
@@ -773,26 +908,20 @@ setActiveItem(0);
         @keyframes codmCapSecondaryGlow {
           0%,
           100% {
-            transform:
-              translate(0, 0);
+            transform: translate(0, 0);
           }
-
           50% {
-            transform:
-              translate(50px, -30px);
+            transform: translate(50px, -30px);
           }
         }
 
         @keyframes codmCapIdleFloat {
           0%,
           100% {
-            transform:
-              translateY(0);
+            transform: translateY(0);
           }
-
           50% {
-            transform:
-              translateY(-8px);
+            transform: translateY(-8px);
           }
         }
 
@@ -815,8 +944,7 @@ setActiveItem(0);
             left: -60%;
           }
 
-          .codm-capability-image-container:hover
-            .codm-capability-image {
+          .codm-capability-image-container:hover .codm-capability-image {
             transform: scale(1);
             filter: none;
           }
@@ -840,6 +968,8 @@ setActiveItem(0);
           .codm-capability-link-reveal,
           .codm-capability-view-link,
           .codm-capability-card,
+          .codm-cap-swap,
+          .codm-cap-image-swap,
           .codm-capability-image-container,
           .codm-capability-image {
             transition: none !important;
