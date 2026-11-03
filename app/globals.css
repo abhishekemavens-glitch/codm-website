@@ -13980,6 +13980,47 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   color: #8565FF !important;
 }
 
+/* ==========================================
+   CODM DIFFERENCE – DARK MODE TEXT FIX
+========================================== */
+
+[data-theme="dark"] .codm-process-section-wrap
+.codm-process-step {
+  background: #0D1022 !important;
+  border-color: #252A42 !important;
+}
+
+/* Step numbers: 01, 02, 03, 04 */
+[data-theme="dark"] .codm-process-section-wrap
+.codm-process-step-number {
+  color: #454D6B !important;
+}
+
+/* Step headings */
+[data-theme="dark"] .codm-process-section-wrap
+.codm-process-step-title {
+  color: #F1F3FC !important;
+}
+
+/* Step descriptions */
+[data-theme="dark"] .codm-process-section-wrap
+.codm-process-step-description {
+  color: #AEB6CC !important;
+}
+
+/* Card hover */
+[data-theme="dark"] .codm-process-section-wrap
+.codm-process-step:hover {
+  background: #13172D !important;
+}
+
+/* CTA button text */
+[data-theme="dark"] .codm-process-section-wrap
+.contact-cta-button {
+  color: #FFFFFF !important;
+}
+
+
 
 @media (max-width: 767px) {
 
@@ -14008,6 +14049,24 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	font-size: 18px !important;
 	min-width: auto !important;
 }
-	
 
+.codm-story-section {
+	padding: 50px 20px 30px;
+}
+.codm-alt-section {
+	padding: 50px 20px 30px;
+}
+.codm-alt-section img {
+	height: auto !important;
+}	
+.codm-lb-controls {
+	margin-top: 0px;
+}
+.latest-blogs {
+	padding: 0px 20px 30px;
+}
+
+
+
+	
 }
