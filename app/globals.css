@@ -13919,3 +13919,18 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 [data-theme="dark"] .codm-experience-visible {
 	background: #0D1023;
 }
+
+.codm-story-badge-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.codm-story-badge-icon img {
+  object-fit: contain;
+}
+
+hugeicons_id-verified
