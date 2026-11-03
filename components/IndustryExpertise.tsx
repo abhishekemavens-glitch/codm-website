@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import SectionSpinner from "@/components/SectionSpinner";
 import { Reveal } from "@/components/Reveal";
 
 /* =========================================================
@@ -267,8 +266,11 @@ export default function IndustryExpertise() {
 
   if (!loaded) {
     return (
-      <section className="bg-[var(--background)] px-5 py-14 sm:px-8 md:py-20">
-        <SectionSpinner minHeight={420} />
+      <section
+        aria-hidden="true"
+        className="bg-[var(--background)] px-5 py-14 sm:px-8 md:py-20"
+      >
+        <div className="min-h-[420px]" />
       </section>
     );
   }
