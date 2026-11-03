@@ -13783,3 +13783,22 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	[data-theme="dark"] .pis-eyebrow {
 	color: #D8DBE9;
 }
+
+
+/* Light mode */
+.codm-orbit-light {
+  display: block;
+}
+
+.codm-orbit-dark {
+  display: none;
+}
+
+/* Dark mode */
+[data-theme="dark"] .codm-orbit-light {
+  display: none;
+}
+
+[data-theme="dark"] .codm-orbit-dark {
+  display: block;
+}
