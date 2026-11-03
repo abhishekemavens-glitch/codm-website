@@ -995,7 +995,7 @@ console.log("SERVICE DEBUG:", {
 
    
 const isCareersPage =
-  currentSlug === "careers" ||
+  currentSlug === "career" ||
   currentSlug === "carrers";
 
 
@@ -1174,7 +1174,7 @@ const showCTA =
           CAREERS PAGE — CAREER HIGHLIGHTS
       ================================================= */}
  
-     {isCareersPage && (
+     {isCareerPage && (
   <>
     <div className="relative z-10">
       <CareerHighlights />
