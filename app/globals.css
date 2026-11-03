@@ -626,7 +626,7 @@ span {
 .codm-testimonials {
   position: relative;
   width: 100%;
-  padding: 88px 20px 78px;
+  padding: 70px 20px 70px;
   background: var(--background);
   color: var(--foreground);
   overflow: hidden;
@@ -929,7 +929,7 @@ span {
 	color: #101424;
 	background: #f1f5f9;
 	width: 100%;
-	padding: 50px 7% 30px;
+	padding: 70px 7% 70px;
 	transition: background-color .35s,color .35s;
 }
 
@@ -14023,6 +14023,19 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	--tw-grayscale: grayscale(0%);
 	filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
 }
+.codm-industries-section {
+	padding: 70px 0px;
+}
+.why-codm-section {
+	padding: 70px 0px;
+}
+#services {
+	padding: 70px 0px;
+}
+#trusted-by {
+	padding: 70px 0px;
+}
+
 
 
 @media (max-width: 767px) {
