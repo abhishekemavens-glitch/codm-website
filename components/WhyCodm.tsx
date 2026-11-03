@@ -498,7 +498,7 @@ export default function WhyCodm() {
                       ref={(el) => {
                         slideRefs.current[index] = el;
                       }}
-                      className="h-auto w-[84%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:h-full lg:w-auto"
+                      className="h-auto w-[100%] shrink-0 snap-start sm:w-[calc(50%-8px)] lg:h-full lg:w-auto"
                       variants={boxVariants}
                       custom={getOffset(index)}
                       initial={
