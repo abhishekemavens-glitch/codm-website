@@ -54,7 +54,6 @@ import IndustryExpertise from "@/components/IndustryExpertise";
 const PAGES_WITH_TESTIMONIALS = [
   "about",
   "services",
-  "industries",
   "partner",
 ];
 
