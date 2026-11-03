@@ -7056,7 +7056,7 @@ img.codm-footer-logo {
 
 
 .codm-story-section {
-  padding: 80px 20px;
+	padding: 70px 20px 0;
 }
 .codm-story-grid {
   display: grid;
@@ -7265,7 +7265,8 @@ img.codm-footer-logo {
 ========================================================= */
 
 .codm-alt-section {
-  background: #f7f8fb;
+	background: #f7f8fb;
+	padding: 70px 0px;
 }
 
 .codm-alt-card {
