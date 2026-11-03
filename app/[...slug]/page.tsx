@@ -1232,15 +1232,15 @@ const showCTA =
     <div className="relative z-10">
       <ServicesSection />
     </div>
+
+ <div className="relative z-10">
+      <PartnersInSuccess />
+    </div>
+     
   </>
 )}
 
-{/* Service Process */}
-{servicePage?.processEnabled && (
-  <section className="relative z-10">
-    <ServiceProcess serviceSlug={serviceSlug} />
-  </section>
-)}
+
 
 
 
