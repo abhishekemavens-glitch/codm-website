@@ -1232,12 +1232,9 @@ const showCTA =
             <PurposeSection />
           </div>
 
-          <div
-            id="services"
-            className="relative z-10 scroll-mt-24"
-          >
-            <ServicesSection />
-          </div>
+         <div className="relative z-10">
+  <ServicesSection />
+</div>
 
           <div className="relative z-10">
             <ExcellenceSection />
