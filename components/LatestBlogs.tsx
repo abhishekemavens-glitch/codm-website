@@ -381,7 +381,7 @@ export default function LatestBlogs() {
           border: 1px solid var(--border);
           background: var(--surface);
           color: var(--foreground);
-          font-size: 13px;
+          font-size: 18px;
           font-weight: 500;
           text-decoration: none;
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
