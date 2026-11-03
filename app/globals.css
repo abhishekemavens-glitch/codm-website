@@ -927,11 +927,10 @@ span {
 
 .latest-blogs {
 	color: #101424;
-	/* background: #edf3f9; */
+	background: #f1f5f9;
 	width: 100%;
-	padding: 78px 7% 82px;
+	padding: 50px 7% 30px;
 	transition: background-color .35s,color .35s;
-	background: #F1F5F9;
 }
 
 .latest-blogs-header {
@@ -2442,11 +2441,11 @@ html.dark .codm-announcement-link {
 }
 [data-theme="light"] #hero {
 	background: radial-gradient(70% 45% at 50% 100%,#f5eaff 0%,#eee5ff 25%,#e5defb 45%,#0000 75%),linear-gradient(#eef1fb 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%);
-	margin: 8% 0 0;
+	margin: 0% 0 0;
 }
 
 #hero {
-	margin: 8% 0 0;
+	margin: 0% 0 0;
 }
 #hero .md\:text-\[64px\] {
 	font-size: 72px;
