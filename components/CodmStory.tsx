@@ -36,8 +36,8 @@ function SalesforceIcon() {
     <img
       src="https://lightyellow-echidna-411021.hostingersite.com/wp-content/uploads/2026/08/image-257.png"
       alt="Salesforce"
-      width={42}
-      height={42}
+      width={56}
+      height={56}
       style={{ display: "block", objectFit: "contain" }}
     />
   );
@@ -95,21 +95,20 @@ function GlobeIcon() {
 
 function CertifiedIcon() {
   return (
-    <svg
-      width="42"
-      height="42"
-      viewBox="0 0 42 42"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Shield */}
-      <path
-        d="M21 3.5L35 9V19.5C35 28.2 29.4 35.1 21 38.5C12.6 35.1 7 28.2 7 19.5V9L21 3.5Z"
-        stroke="#8B7CFF"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
+    <img
+      src="/images/hugeicons_id-verified.png"
+      alt="Certified Experts"
+      width={42}
+      height={42}
+      style={{
+        display: "block",
+        width: "42px",
+        height: "42px",
+        objectFit: "contain",
+      }}
+    />
+  );
+}
 
       {/* Person */}
       <circle
