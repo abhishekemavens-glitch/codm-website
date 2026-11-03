@@ -14001,6 +14001,13 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	font-size: 35px;
 	line-height: 45px;
 }
+
+#hero .codm-hero-primary-button, #hero .codm-hero-secondary-button {
+	width: auto !important;
+	padding: 10px 10px !important;
+	font-size: 18px !important;
+	min-width: auto !important;
+}
 	
 
 }
