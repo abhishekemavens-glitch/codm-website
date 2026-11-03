@@ -14019,7 +14019,11 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 .contact-cta-button {
   color: #FFFFFF !important;
 }
-
+#trusted-by .codm-tb-track img:hover {
+	opacity: 1;
+	--tw-grayscale: grayscale(0%);
+	filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+}
 
 
 @media (max-width: 767px) {
