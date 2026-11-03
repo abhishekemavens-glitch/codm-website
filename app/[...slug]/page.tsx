@@ -42,7 +42,7 @@ import ContactForm from "@/components/ContactForm";
 import NextSteps from "@/components/NextSteps";
 import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
-
+import IndustryExpertise from "@/components/IndustryExpertise";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -984,6 +984,9 @@ console.log("SERVICE DEBUG:", {
   const isInsightsPage =
     currentSlug === "insights";
 
+   const isIndustriesPage =
+  currentSlug === "industries";
+
   const isPartnerPage =
     currentSlug === "partner";
 
@@ -1213,6 +1216,19 @@ const showCTA =
         </article>
       )}
 
+
+{/* =================================================
+    INDUSTRIES PAGE
+    INDUSTRY EXPERTISE
+================================================= */}
+
+{isIndustriesPage && (
+  <div className="relative z-10">
+    <IndustryExpertise />
+  </div>
+)}
+
+       
       {/* =================================================
           ABOUT PAGE
 
