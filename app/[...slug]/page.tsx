@@ -1233,6 +1233,10 @@ const showCTA =
       <ServicesSection />
     </div>
 
+     <div className="relative z-10">
+      <ServiceProcess />
+    </div>
+
  <div className="relative z-10">
       <PartnersInSuccess />
     </div>
