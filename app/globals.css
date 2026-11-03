@@ -13990,5 +13990,10 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 .codm-story-section .codm-story-badge {
 	padding: 15px 0;
 }
+.codm-hero-section .mx-auto.grid.max-w-\[1240px\].items-center.gap-12.px-6.pb-20.pt-\[150px\].min-h-\[620px\].lg\:grid-cols-2 a {
+	font-size: 18px;
+	padding: 10px 10px;
+}
+	
 
 }
