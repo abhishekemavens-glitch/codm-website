@@ -60,8 +60,8 @@ const FOOTER_URLS: Record<string, string> = {
   About: "/about",
   "Products": "/products",
   "Case Studies": "/case-studies",
-  Career: "/careers",
-  Careers: "/careers",
+  Career: "/career",
+  Careers: "/career",
   Contact: "/contact-us",
   Blogs: "/insights",
   Blog: "/insights",
@@ -292,15 +292,15 @@ export default function Footer() {
   // Use fixed links here so the AI & LLM column never falls back to "#".
   const aiLlm: FooterLink[] = [
     { label: "Marketing Cloud", url: "/services/marketing-cloud" },
-    { label: "Health & Insurance Cloud", url: "/services/healthcare-insurance" },
-    { label: "Energy & Utilities Cloud", url: "/services/energy-utilities" },
+    { label: "Health & Insurance Cloud", url: "/services/health-cloud" },
+    { label: "Energy & Utilities Cloud", url: "/services/energy-utilities-cloud" },
     { label: "Nonprofit Cloud", url: "/services/non-profit-cloud" },
   ];
 
   // Exact Industries list shown in the user's reference screenshot.
   const industries: FooterLink[] = [
     { label: "Sales Cloud", url: "/services/sales-cloud" },
-    { label: "Manufacturing Cloud", url: "/industries/manufacturing-cloud" },
+    { label: "Manufacturing Cloud", url: "/services/manufacturing-cloud" },
     { label: "CRM Development", url: "/services/salesforce-crm" },
     { label: "Technical Support", url: "/services/technical-support" },
     { label: "Deployment Support", url: "/services/deployment-support" },
