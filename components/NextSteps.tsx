@@ -108,19 +108,20 @@ export default function NextSteps() {
       id="next-steps"
       className="relative overflow-hidden bg-[var(--surface)]/50 px-5 py-14 transition-colors duration-500 sm:px-8 md:py-20"
     >
-      <div className="relative mx-auto grid max-w-[1250px] gap-12 lg:grid-cols-[0.8fr_2.2fr] lg:gap-16">
-        {/* HEADING */}
+      <div className="relative mx-auto max-w-[1250px]">
+        {/* HEADING (centred, same as the other sections) */}
         <Reveal distance={20}>
-          <SectionHeading
-            align="left"
-            eyebrow={settings?.eyebrow ?? ""}
-            title={settings?.title ?? ""}
-            gradientText={settings?.gradientText ?? ""}
-          />
+          <div className="mx-auto max-w-[1100px] text-center">
+            <SectionHeading
+              eyebrow={settings?.eyebrow ?? ""}
+              title={settings?.title ?? ""}
+              gradientText={settings?.gradientText ?? ""}
+            />
+          </div>
         </Reveal>
 
         {/* STEPS */}
-        <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12">
+        <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 md:mt-16 lg:grid-cols-3 lg:gap-x-12">
           {steps.map((step, index) => (
             <Reveal key={step.id} distance={24} duration={0.7}>
               <article className="h-full border-t border-[var(--border)] pt-8">
