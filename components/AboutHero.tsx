@@ -125,7 +125,7 @@ export default function AboutHero({
 
     {/* Light mode */}
     <img
-      src="/images/codm-orbit-light.png"
+      src="/codm-orbit-light.png"
       alt="CODM Technology Ecosystem"
       className="codm-orbit-image codm-orbit-light"
       draggable={false}
@@ -133,7 +133,7 @@ export default function AboutHero({
 
     {/* Dark mode */}
     <img
-      src="/images/codm-orbit-dark.png"
+      src="/codm-orbit-dark.png"
       alt="CODM Technology Ecosystem"
       className="codm-orbit-image codm-orbit-dark"
       draggable={false}
