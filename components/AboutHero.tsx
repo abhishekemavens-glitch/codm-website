@@ -120,17 +120,27 @@ export default function AboutHero({
                  ABOUT PAGE ONLY
                  Rotating technology ecosystem
                  ================================================= */
-         <div className="codm-about-orbit-wrapper">
+        <div className="codm-about-orbit-wrapper">
   <div className="codm-about-visual">
+
+    {/* Light mode */}
     <img
-      src="/codm-orbit.png"
+      src="/images/codm-orbit-light.png"
       alt="CODM Technology Ecosystem"
-      className="codm-orbit-image"
+      className="codm-orbit-image codm-orbit-light"
       draggable={false}
     />
+
+    {/* Dark mode */}
+    <img
+      src="/images/codm-orbit-dark.png"
+      alt="CODM Technology Ecosystem"
+      className="codm-orbit-image codm-orbit-dark"
+      draggable={false}
+    />
+
   </div>
 </div>
-
             ) : (
               /* =================================================
                  ALL OTHER PAGES
