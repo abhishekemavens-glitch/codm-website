@@ -1089,7 +1089,9 @@ span {
   background: #070918;
   color: #ffffff;
 }
-
+.latest-blogs.codm-lb-wrap {
+	padding: 0px 0 !important;
+}
 [data-theme="dark"] .latest-blogs-header h2 {
   color: #f5f6fb;
 }
