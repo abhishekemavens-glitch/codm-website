@@ -231,22 +231,29 @@ export default function ContactForm() {
       id="contact-form"
       className="relative overflow-hidden bg-[var(--background)] px-5 py-16 transition-colors duration-500 sm:px-8 md:py-24"
     >
-      <div className="relative mx-auto grid max-w-[1250px] gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+      <div className="relative mx-auto max-w-[1250px]">
         {/* =================================================
-            LEFT: heading, intro, contact rows, hours
+            CENTRED SECTION HEADING (same as the other sections)
             ================================================= */}
-        <Reveal distance={24}>
-          <div>
+        <Reveal distance={20}>
+          <div className="mx-auto max-w-[1100px] text-center">
             <SectionHeading
-              align="left"
               eyebrow={content.eyebrow ?? ""}
               title={content.title ?? ""}
               gradientText={content.gradientText ?? ""}
               description={content.intro ?? undefined}
             />
+          </div>
+        </Reveal>
 
+      <div className="mt-12 grid gap-14 md:mt-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+        {/* =================================================
+            LEFT: contact rows, hours
+            ================================================= */}
+        <Reveal distance={24}>
+          <div>
             {links.length > 0 && (
-              <ul className="mt-12 border-t border-[var(--border)]">
+              <ul className="border-t border-[var(--border)]">
                 {links.map((row, i) => {
                   const inner = (
                     <>
@@ -545,6 +552,7 @@ export default function ContactForm() {
             )}
           </div>
         </Reveal>
+      </div>
       </div>
     </section>
   );
