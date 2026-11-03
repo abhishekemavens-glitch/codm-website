@@ -13994,6 +13994,8 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	font-size: 18px;
 	padding: 10px 10px;
 }
-	
+.codm-story-section .codm-story-badge::after {
+	content: none;
+}	
 
 }
