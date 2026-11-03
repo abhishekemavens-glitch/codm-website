@@ -758,8 +758,8 @@ export default function Industries() {
 
         @media (max-width: 767px) {
           .codm-industries-section {
-            padding-top: 80px;
-            padding-bottom: 80px;
+            padding-top: 30px;
+            padding-bottom: 30px;
           }
 
           .codm-industry-card:hover {
