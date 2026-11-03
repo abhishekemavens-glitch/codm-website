@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal";
 
 type TrustedLogo = {
   id: string;
@@ -184,7 +184,7 @@ export default function TrustedBy() {
             </p>
           </div>
                ) : (
-          <>
+          <Reveal distance={20}>
           <div
             ref={trackRef}
             className="
@@ -200,7 +200,7 @@ export default function TrustedBy() {
               lg:pb-0
             "
           >
-          <Stagger
+          <div
             className="
               mx-auto
               flex
@@ -217,8 +217,8 @@ export default function TrustedBy() {
             "
           >
             {logos.map((logo) => (
-                <StaggerItem key={logo.id}>
               <div
+                key={logo.id}
                 className="
                   snap-start
                   flex
@@ -267,9 +267,8 @@ export default function TrustedBy() {
                   </span>
                 )}
               </div>
-                   </StaggerItem>
             ))}
-               </Stagger>
+          </div>
           </div>
 
           {/* Slider controls: tablet + mobile only */}
@@ -314,7 +313,7 @@ export default function TrustedBy() {
               </button>
             </div>
           )}
-          </>
+          </Reveal>
         )}
 
       </div>
