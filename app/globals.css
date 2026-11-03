@@ -13933,3 +13933,49 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
   object-fit: contain;
 }
 
+/* ==========================================
+   MEGA MENU – DARK MODE ONLY
+========================================== */
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-column-title {
+  color: #F1F3FF !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-column-description {
+  color: #AEB6CC !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link-text {
+  color: #D5D9E8 !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link-arrow {
+  color: #AEB6CC !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link:hover,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link:hover .codm-megamenu-link-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-link-dot {
+  background: #7557FF !important;
+  box-shadow: 0 0 9px rgba(117, 87, 255, 0.65);
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-banner-title,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-banner-label,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-banner-button,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-all-services {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-banner-description,
+[data-theme="dark"] .codm-megamenu .codm-megamenu-banner-label em {
+  color: #B9BFD2 !important;
+}
+
+[data-theme="dark"] .codm-megamenu .codm-megamenu-icon {
+  color: #8565FF !important;
+}
