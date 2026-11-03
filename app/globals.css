@@ -13825,3 +13825,30 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
     max-width: 340px;
   }
 }
+
+
+
+.codm-orbit-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+
+  animation: codmImageRotate 30s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes codmImageRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-orbit-image {
+    animation: none;
+  }
+}
