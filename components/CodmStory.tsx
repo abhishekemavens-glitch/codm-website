@@ -73,7 +73,7 @@ function GlobeIcon() {
 function CertifiedIcon() {
   return (
     <img
-      src="/images/hugeicons_id-verified.png"
+      src="/hugeicons_id-verified.png"
       alt="Certified Experts"
       width={42}
       height={42}
