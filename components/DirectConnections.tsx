@@ -196,28 +196,21 @@ export default function DirectConnections() {
             HEADING (shared SectionHeading) + intro on the right
             ================================================= */}
         <Reveal distance={20}>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionHeading
-              align="left"
-              eyebrow={settings?.eyebrow ?? ""}
-              title={settings?.title ?? ""}
-              gradientText={settings?.gradientText ?? ""}
-            />
-
-            {introLines.length > 0 && (
-              <div className="max-w-[420px] text-[15px] leading-7 text-[var(--muted)] md:pb-2 md:text-base">
-                {introLines.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
-              </div>
-            )}
-          </div>
-        </Reveal>
+  <div className="mx-auto max-w-[900px] text-center">
+    <SectionHeading
+      align="center"
+      eyebrow={settings?.eyebrow ?? ""}
+      title={settings?.title ?? ""}
+      gradientText={settings?.gradientText ?? ""}
+      description={settings?.intro ?? ""}
+    />
+  </div>
+</Reveal>
 
         {/* =================================================
             COLUMNS
             ================================================= */}
-        <div className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card, index) => {
             const entries = (card.entries ?? []).filter((e) => e.value);
 
