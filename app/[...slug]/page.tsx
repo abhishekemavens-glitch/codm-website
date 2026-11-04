@@ -985,7 +985,10 @@ console.log("SERVICE DEBUG:", {
     currentSlug === "insights";
 
    const isIndustriesPage =
-  currentSlug === "industries";
+  currentSlug === "industries" ||
+  currentSlug === "test-industries";
+
+   
 
   const isPartnerPage =
     currentSlug === "partner";
@@ -1223,27 +1226,22 @@ const showCTA =
 
 {isIndustriesPage && (
   <>
-    {/* Industry Expertise */}
     <div className="relative z-10">
       <IndustryExpertise />
     </div>
 
-    {/* What We Do */}
     <div className="relative z-10">
       <ServicesSection />
     </div>
 
-    {/* Industry Cards */}
     <div className="relative z-10">
       <IndustryCards />
     </div>
 
-    {/* CODM Difference */}
     <div className="relative z-10">
       <ServiceProcess />
     </div>
 
-    {/* Partners in Success */}
     <div className="relative z-10">
       <PartnersInSuccess />
     </div>
