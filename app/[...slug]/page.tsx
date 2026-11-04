@@ -44,6 +44,7 @@ import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
 import IndustryExpertise from "@/components/IndustryExpertise";
 import IndustryCards from "@/components/IndustryCards";
+import IndustriesHowWeWork from "@/components/IndustriesHowWeWork";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -1224,6 +1225,7 @@ const showCTA =
     INDUSTRIES PAGE
 ================================================= */}
 
+{/* INDUSTRIES PAGE */}
 {isIndustriesPage && (
   <>
     <div className="relative z-10">
@@ -1238,8 +1240,9 @@ const showCTA =
       <IndustryCards />
     </div>
 
+    {/* Industries How We Work */}
     <div className="relative z-10">
-      <ServiceProcess />
+      <IndustriesHowWeWork />
     </div>
 
     <div className="relative z-10">
