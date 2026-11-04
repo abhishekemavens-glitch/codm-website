@@ -21,6 +21,7 @@ import ProductPage, { type ProductPageData } from "@/components/ProductPage";
 import IndustryCards from "@/components/IndustryCards";
 import LatestBlogs from "@/components/LatestBlogs";
 import ContactCTA from "@/components/ContactCTA";
+import BuiltForEveryIndustry from "@/components/BuiltForEveryIndustry";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -148,6 +149,7 @@ export async function generateMetadata({
   return { title: `${productPage.title} | CODM` };
 }
 
+
 /* =========================================================
    PAGE
 ========================================================= */
@@ -169,7 +171,13 @@ export default async function ProductDetailPage({
 
   return (
     <PageShell>
-      <ProductPage title={productPage.title} data={productPage.data} />
+      <ProductPage
+        title={productPage.title}
+        data={productPage.data}
+      />
+
+      {/* New WordPress-managed Built for Every Industry section */}
+      <BuiltForEveryIndustry />
 
       {shared?.showIndustries && (
         <div className="relative z-10">
