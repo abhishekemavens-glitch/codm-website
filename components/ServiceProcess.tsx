@@ -1,3 +1,4 @@
+
 /*
  * Save as:
  * components/ServiceProcess.tsx
@@ -55,52 +56,30 @@ export default function ServiceProcess({
   const [data, setData] =
     useState<CodmDifferenceData | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadCodmDifference() {
-
-      /*
-       * We need a service slug to find
-       * the correct CODM Difference entry.
-       */
-      if (!serviceSlug) {
-        console.log(
-          "CODM DIFFERENCE: No serviceSlug provided"
-        );
-
-        setLoading(false);
-        setData(null);
-
-        return;
-      }
-
       try {
         setLoading(true);
+        setData(null);
 
         const response = await fetch(
           WORDPRESS_GRAPHQL_URL,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json",
             },
-
             body: JSON.stringify({
               query: `
                 query GetCodmDifference {
-
                   codmDifferences(first: 50) {
-
                     nodes {
-
                       databaseId
                       title
 
                       differenceFields {
-
                         serviceSlug
 
                         eyebrow
@@ -141,12 +120,8 @@ export default function ServiceProcess({
           return;
         }
 
-        const result =
-          await response.json();
+        const result = await response.json();
 
-        /*
-         * GraphQL errors
-         */
         if (result.errors) {
           console.error(
             "GraphQL Error (CODM Difference):",
@@ -157,81 +132,70 @@ export default function ServiceProcess({
           return;
         }
 
-        /*
-         * Get all CODM Difference entries
-         */
         const nodes: CodmDifferenceData[] =
           result?.data?.codmDifferences?.nodes ?? [];
 
-        console.log(
-          "CODM DIFFERENCE DEBUG:",
-          {
-            requestedSlug: serviceSlug,
-
-            availableDifferences:
-              nodes.map(
-                (node) => ({
-                  title: node.title,
-                  serviceSlug:
-                    node.differenceFields
-                      ?.serviceSlug ?? null,
-                })
-              ),
-          }
-        );
+        console.log("CODM DIFFERENCE DEBUG:", {
+          requestedSlug: serviceSlug ?? "industries",
+          availableDifferences: nodes.map((node) => ({
+            title: node.title,
+            serviceSlug:
+              node.differenceFields?.serviceSlug ?? null,
+          })),
+        });
 
         /*
-         * Normalize requested service slug
+         * MATCH CONTENT
          */
-        const requestedSlug =
-          serviceSlug
-            .trim()
-            .toLowerCase();
 
-        /*
-         * Find the CODM Difference
-         * using differenceFields.serviceSlug
-         */
-        const matchedDifference =
-          nodes.find(
-            (node) => {
+        let matchedDifference: CodmDifferenceData | null = null;
 
-              const nodeSlug =
-                node.differenceFields
-                  ?.serviceSlug
-                  ?.trim()
-                  .toLowerCase();
+        if (serviceSlug) {
+          // Individual service page
+          const requestedSlug =
+            serviceSlug.trim().toLowerCase();
+
+          matchedDifference =
+            nodes.find((node) => {
+              const nodeSlug = node.differenceFields
+                ?.serviceSlug
+                ?.trim()
+                .toLowerCase();
+
+              return nodeSlug === requestedSlug;
+            }) ?? null;
+        } else {
+          // Industries page
+          matchedDifference =
+            nodes.find((node) => {
+              const nodeSlug = node.differenceFields
+                ?.serviceSlug
+                ?.trim()
+                .toLowerCase();
 
               return (
-                nodeSlug ===
-                requestedSlug
+                !nodeSlug ||
+                nodeSlug === "industries"
               );
-            }
-          ) ?? null;
+            }) ?? null;
+        }
 
-        console.log(
-          "CODM DIFFERENCE MATCH:",
-          {
-            requestedSlug,
+        console.log("CODM DIFFERENCE MATCH:", {
+          requestedSlug: serviceSlug
+            ? serviceSlug.trim().toLowerCase()
+            : "industries",
 
-            matchedDifference:
-              matchedDifference?.title ??
-              null,
+          matchedDifference:
+            matchedDifference?.title ?? null,
 
-            matchedServiceSlug:
-              matchedDifference
-                ?.differenceFields
-                ?.serviceSlug ??
-              null,
-          }
-        );
+          matchedServiceSlug:
+            matchedDifference?.differenceFields?.serviceSlug ??
+            null,
+        });
 
-        setData(
-          matchedDifference
-        );
+        setData(matchedDifference);
 
       } catch (error) {
-
         console.error(
           "Failed to load CODM Difference:",
           error
@@ -240,9 +204,7 @@ export default function ServiceProcess({
         setData(null);
 
       } finally {
-
         setLoading(false);
-
       }
     }
 
@@ -250,230 +212,142 @@ export default function ServiceProcess({
 
   }, [serviceSlug]);
 
-
   /*
-   * Don't render while loading.
+   * LOADING
    */
+
   if (loading) {
     return null;
   }
 
-
   /*
-   * No matching CODM Difference.
+   * NO MATCHING ENTRY
    */
-  if (!data) {
+
+  if (!data || !data.differenceFields) {
     return null;
   }
 
+  const fields = data.differenceFields;
 
   /*
-   * Get fields from WordPress.
+   * HEADING
    */
-  const fields =
-    data.differenceFields;
 
-
-  if (!fields) {
-    return null;
-  }
-
-
-  /*
-   * Heading
-   */
-  const eyebrow =
-    fields.eyebrow ?? "";
-
-  const heading =
-    fields.heading ?? "";
-
-  const highlight =
-    fields.highlight ?? "";
-
-  const description =
-    fields.description ?? "";
-
+  const eyebrow = fields.eyebrow ?? "";
+  const heading = fields.heading ?? "";
+  const highlight = fields.highlight ?? "";
+  const description = fields.description ?? "";
 
   /*
    * CTA
    */
-  const ctaText =
-    fields.ctaText ?? "";
 
-  const ctaUrl =
-    fields.ctaUrl ?? "/contact";
-
+  const ctaText = fields.ctaText ?? "";
+  const ctaUrl = fields.ctaUrl ?? "/contact";
 
   /*
-   * Process steps
+   * PROCESS STEPS
    */
+
   const steps = [
-
     {
-      title:
-        fields.step1Title ?? "",
-
-      description:
-        fields.step1Description ?? "",
+      title: fields.step1Title ?? "",
+      description: fields.step1Description ?? "",
     },
-
     {
-      title:
-        fields.step2Title ?? "",
-
-      description:
-        fields.step2Description ?? "",
+      title: fields.step2Title ?? "",
+      description: fields.step2Description ?? "",
     },
-
     {
-      title:
-        fields.step3Title ?? "",
-
-      description:
-        fields.step3Description ?? "",
+      title: fields.step3Title ?? "",
+      description: fields.step3Description ?? "",
     },
-
     {
-      title:
-        fields.step4Title ?? "",
-
-      description:
-        fields.step4Description ?? "",
+      title: fields.step4Title ?? "",
+      description: fields.step4Description ?? "",
     },
-
-  ].filter(
-    (step) =>
-      step.title.trim() !== ""
-  );
-
+  ].filter((step) => step.title.trim() !== "");
 
   /*
-   * Don't render empty section.
+   * DON'T RENDER EMPTY SECTION
    */
-  if (
-    heading.trim() === "" &&
-    steps.length === 0
-  ) {
+
+  if (heading.trim() === "" && steps.length === 0) {
     return null;
   }
 
-
   return (
-    <section
-      className="codm-process-section-wrap"
-    >
+    <section className="codm-process-section-wrap">
 
-      <div
-        className="codm-process-inner"
-      >
+      <div className="codm-process-inner">
 
-        {/* =========================================
-            SECTION HEADING
-        ========================================= */}
+        {/* SECTION HEADING */}
 
         {heading.trim() !== "" && (
-
           <SectionHeading
-
             eyebrow={eyebrow}
-
             title={heading}
-
             gradientText={highlight}
-
             description={description}
-
           />
-
         )}
 
-
-        {/* =========================================
-            PROCESS STEPS
-        ========================================= */}
+        {/* PROCESS STEPS */}
 
         {steps.length > 0 && (
+          <div className="codm-process-steps">
 
-          <div
-            className="codm-process-steps"
-          >
+            {steps.map((step, index) => (
+              <div
+                key={`${data.databaseId}-${index}`}
+                className="codm-process-step"
+              >
 
-            {steps.map(
-              (step, index) => (
-
-                <div
-                  key={`${data.databaseId}-${index}`}
-                  className="codm-process-step"
-                >
-
-                  <div
-                    className="codm-process-step-number"
-                  >
-                    {String(
-                      index + 1
-                    ).padStart(2, "0")}
-                  </div>
-
-
-                  <div
-                    className="codm-process-step-title"
-                  >
-                    {step.title}
-                  </div>
-
-
-                  {step.description.trim() !== "" && (
-
-                    <div
-                      className="codm-process-step-description"
-                    >
-                      {step.description}
-                    </div>
-
-                  )}
-
+                <div className="codm-process-step-number">
+                  {String(index + 1).padStart(2, "0")}
                 </div>
 
-              )
-            )}
+                <div className="codm-process-step-title">
+                  {step.title}
+                </div>
+
+                {step.description.trim() !== "" && (
+                  <div className="codm-process-step-description">
+                    {step.description}
+                  </div>
+                )}
+
+              </div>
+            ))}
 
           </div>
-
         )}
 
-
-        {/* =========================================
-            CTA
-        ========================================= */}
+        {/* CTA */}
 
         {ctaText.trim() !== "" && (
-
           <a
             href={
               ctaUrl.trim() !== ""
                 ? ctaUrl
                 : "/contact"
             }
-
             className="contact-cta-button"
           >
 
             {ctaText}
 
-
             <span
               className="codm-header-cta-arrow"
               aria-hidden="true"
             >
-
               <svg
                 width="14"
                 height="14"
                 viewBox="0 0 14 14"
                 fill="none"
               >
-
                 <path
                   d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
                   stroke="currentColor"
@@ -481,13 +355,10 @@ export default function ServiceProcess({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-
               </svg>
-
             </span>
 
           </a>
-
         )}
 
       </div>
