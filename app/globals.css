@@ -14045,6 +14045,246 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 	padding: 15px 30px;
 }
 
+/* =====================================================
+   INDUSTRY CARDS - "Built for Every Industry"
+   Add to globals.css.
+   Light mode is the default; dark mode switches on with
+   [data-theme="dark"] (or a "dark" class) on <html>/<body>.
+   ===================================================== */
+
+.codm-ic-section {
+  background: var(--background);
+  padding: 80px 24px;
+}
+
+.codm-ic-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.codm-ic-placeholder {
+  min-height: 480px;
+}
+
+.codm-ic-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 56px;
+}
+
+@media (min-width: 640px) {
+  .codm-ic-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .codm-ic-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- card (light mode defaults) ---------- */
+
+.codm-ic-card {
+  --ic-fade: 255, 255, 255;
+  --ic-text: var(--foreground);
+  --ic-muted: var(--muted);
+  --ic-border: var(--border);
+  --ic-chip-bg: rgba(108, 92, 231, 0.1);
+  --ic-chip-text: #4f46e5;
+  --ic-shadow: 0 18px 50px rgba(79, 70, 229, 0.12);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  border: 1px solid var(--ic-border);
+  border-radius: 20px;
+  background-color: rgb(var(--ic-fade));
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms ease,
+    border-color 300ms ease;
+}
+
+a.codm-ic-card {
+  cursor: pointer;
+}
+
+.codm-ic-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--ic-shadow);
+}
+
+/* ---------- card (dark mode) ---------- */
+
+[data-theme="dark"] .codm-ic-card,
+.dark .codm-ic-card {
+  --ic-fade: 12, 16, 48;
+  --ic-text: #ffffff;
+  --ic-muted: rgba(255, 255, 255, 0.78);
+  --ic-border: rgba(129, 112, 255, 0.38);
+  --ic-chip-bg: rgba(120, 110, 255, 0.18);
+  --ic-chip-text: #dcd8ff;
+  --ic-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- photo + fade ---------- */
+
+.codm-ic-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.codm-ic-card:hover .codm-ic-photo {
+  transform: scale(1.04);
+}
+
+.codm-ic-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--ic-fade), 0) 0%,
+    rgba(var(--ic-fade), 0) 22%,
+    rgba(var(--ic-fade), 0.72) 52%,
+    rgba(var(--ic-fade), 0.96) 72%,
+    rgb(var(--ic-fade)) 100%
+  );
+}
+
+/* ---------- text block ---------- */
+
+.codm-ic-content {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+}
+
+.codm-ic-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 78px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(11, 16, 48, 0.88);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.codm-ic-badge img {
+  display: block;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+/* when a light-mode icon exists, the badge turns light in light mode */
+.codm-ic-badge-themed {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.14);
+}
+
+[data-theme="dark"] .codm-ic-badge-themed,
+.dark .codm-ic-badge-themed {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(11, 16, 48, 0.88);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.codm-ic-title {
+  margin: 18px 0 10px;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ic-text);
+}
+
+.codm-ic-desc {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ic-muted);
+}
+
+.codm-ic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.codm-ic-tags li {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  background: var(--ic-chip-bg);
+  color: var(--ic-chip-text);
+}
+
+/* ---------- light / dark image switching ---------- */
+/* Only drawn when a card has a separate light-mode image or icon. */
+
+.codm-ic-theme-dark {
+  display: none;
+}
+
+.codm-ic-badge img.codm-ic-theme-dark {
+  display: none;
+}
+
+[data-theme="dark"] .codm-ic-theme-light,
+.dark .codm-ic-theme-light {
+  display: none;
+}
+
+[data-theme="dark"] .codm-ic-theme-dark,
+.dark .codm-ic-theme-dark {
+  display: block;
+}
+
+/* ---------- motion ---------- */
+
+@media (hover: none) {
+  .codm-ic-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-ic-card,
+  .codm-ic-photo {
+    transition: none;
+  }
+
+  .codm-ic-card:hover,
+  .codm-ic-card:hover .codm-ic-photo {
+    transform: none;
+  }
+}
+
 
 @media (max-width: 767px) {
 
@@ -14094,3 +14334,7 @@ html[data-theme="light"] .codm-header-nav-link.codm-header-nav-link-active::afte
 
 	
 }
+
+
+
+
