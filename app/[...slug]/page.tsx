@@ -44,7 +44,7 @@ import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
 import IndustryExpertise from "@/components/IndustryExpertise";
 import IndustryCards from "@/components/IndustryCards";
-import IndustriesHowWeWork from "@/components/IndustriesHowWeWork";
+import HowWeWork from "@/components/HowWeWork";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -1242,7 +1242,7 @@ const showCTA =
 
     {/* Industries How We Work */}
     <div className="relative z-10">
-      <IndustriesHowWeWork />
+      <HowWeWork />
     </div>
 
     <div className="relative z-10">
