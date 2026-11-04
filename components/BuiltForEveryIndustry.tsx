@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
@@ -111,18 +112,12 @@ export default function BuiltForEveryIndustry() {
       <div className="bie-container">
 
         <div className="bie-heading">
-          {section.eyebrow && (
-            <p className="bie-eyebrow">{section.eyebrow}</p>
-          )}
-
-          <h2>{section.title}</h2>
-
-          {section.description && (
-            <p className="bie-description">
-              {section.description}
-            </p>
-          )}
-        </div>
+  <SectionHeading
+    eyebrow={section.eyebrow || "EXPLORE OUR SOLUTIONS"}
+    title={section.title || "Built for Every Industry"}
+    description={section.description}
+  />
+</div>
 
         <div className="bie-grid">
           {cards.map((card) => {
@@ -179,8 +174,8 @@ export default function BuiltForEveryIndustry() {
         .bie-section {
           width: 100%;
           padding: 76px 24px 84px;
-          background: #101328;
-          color: #fff;
+          background: var(--background);
+          color: var(--foreground);
         }
 
         .bie-container {
