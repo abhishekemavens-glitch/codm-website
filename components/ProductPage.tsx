@@ -635,78 +635,114 @@ export default function ProductPage({
     <div className="codm-pp">
       <style>{CSS}</style>
 
-      {/* =============== HERO =============== */}
-      {hero?.enabled && (
-        <section className="codm-pp-hero">
-          <div className="codm-pp-hero-glow" aria-hidden="true" />
+{/* =============== HERO =============== */}
+{hero?.enabled && (
+  <section className="codm-hero-section relative overflow-hidden">
+    <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 pb-20 pt-[150px] min-h-[620px] lg:grid-cols-2">
 
-          <div className="codm-pp-wrap relative">
-            <nav aria-label="Breadcrumb">
-              <ol className="codm-pp-crumbs">
-                <li><Link href="/">Home</Link></li>
-                <li><Link href="/products">Products</Link></li>
-                <li aria-current="page">{title}</li>
-              </ol>
-            </nav>
+      {/* LEFT: BREADCRUMB + CONTENT */}
+      <div>
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[16px]">
+          <Link href="/" className="codm-hero-breadcrumb-link transition-colors">
+            Home
+          </Link>
 
-            <div className="codm-pp-split codm-pp-split-hero">
-              <Reveal distance={20}>
-                <div>
-                  <h1 className="codm-pp-h1">
-                    {hero.title}
-                    {hero.gradientText && (
-                      <>
-                        {" "}
-                        <span className="codm-pp-grad">{hero.gradientText}</span>
-                      </>
-                    )}
-                  </h1>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="codm-hero-chevron"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
 
-                  {hero.description && (
-                    <p className="codm-pp-desc">{hero.description}</p>
-                  )}
+          <Link href="/products" className="codm-hero-breadcrumb-link transition-colors">
+            Products
+          </Link>
 
-                  <Buttons
-                    primaryLabel={hero.primaryLabel}
-                    primaryUrl={hero.primaryUrl}
-                    secondaryLabel={hero.secondaryLabel}
-                    secondaryUrl={hero.secondaryUrl}
-                  />
-                </div>
-              </Reveal>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="codm-hero-chevron"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
 
-              {(hero.image?.light || hero.image?.dark) && (
-                <Reveal distance={30} duration={0.8}>
-                  <div className="codm-pp-media">
-                    <ThemedImg pair={hero.image} />
-                  </div>
-                </Reveal>
-              )}
-            </div>
+          <span aria-current="page" className="text-[#8b6cf6]">
+            {title}
+          </span>
+        </nav>
 
-            {/* QUICK FACTS */}
-            {facts?.enabled && factItems.length > 0 && (
-              <Reveal distance={20}>
-                <div className="codm-pp-facts" data-count={factItems.length}>
-                  {factItems.map((fact, i) => (
-                    <div key={`${fact.label}-${i}`} className="codm-pp-fact">
-                      <IconBox
-                        icon={fact.icon}
-                        image={fact.iconImage}
-                        className="codm-pp-fact-icon"
-                      />
-                      <div>
-                        <span className="codm-pp-fact-label">{fact.label}</span>
-                        <span className="codm-pp-fact-value">{fact.value}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            )}
+        <h1 className="mt-6 max-w-[640px] text-[clamp(40px,5.2vw,68px)] font-normal leading-[1.05] tracking-[-0.035em] text-[var(--foreground)] [text-wrap:balance]">
+          {hero.title}
+          {hero.gradientText && (
+            <>
+              {" "}
+              <span className="codm-pp-grad">{hero.gradientText}</span>
+            </>
+          )}
+        </h1>
+
+        {hero.description && (
+          <p className="codm-hero-body mt-6 max-w-[560px] text-[clamp(16px,1.4vw,19px)] leading-[1.65]">
+            {hero.description}
+          </p>
+        )}
+
+        <Buttons
+          primaryLabel={hero.primaryLabel}
+          primaryUrl={hero.primaryUrl}
+          secondaryLabel={hero.secondaryLabel}
+          secondaryUrl={hero.secondaryUrl}
+        />
+      </div>
+
+      {/* RIGHT: PRODUCT IMAGE */}
+      {(hero.image?.light || hero.image?.dark) && (
+        <div className="flex justify-center lg:justify-end">
+          <div className="w-full max-w-[560px]">
+            <ThemedImg pair={hero.image} />
           </div>
-        </section>
+        </div>
       )}
+
+      {/* QUICK FACTS */}
+      {facts?.enabled && factItems.length > 0 && (
+        <div className="col-span-full">
+          <Reveal distance={20}>
+            <div className="codm-pp-facts" data-count={factItems.length}>
+              {factItems.map((fact, i) => (
+                <div key={`${fact.label}-${i}`} className="codm-pp-fact">
+                  <IconBox
+                    icon={fact.icon}
+                    image={fact.iconImage}
+                    className="codm-pp-fact-icon"
+                  />
+                  <div>
+                    <span className="codm-pp-fact-label">{fact.label}</span>
+                    <span className="codm-pp-fact-value">{fact.value}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      )}
+
+    </div>
+  </section>
+)}
 
       {/* =============== INTRO =============== */}
       {intro?.enabled && (
