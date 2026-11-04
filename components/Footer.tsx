@@ -437,7 +437,6 @@ export default function Footer() {
   <>
     <div className="codm-footer-subheading">
       <span>Custom Development</span>
-      <span>⌄</span>
     </div>
 
     <ul className="codm-footer-links">
