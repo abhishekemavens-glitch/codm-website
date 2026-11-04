@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
-import { Reveal } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal"; 
 
 /* =========================================================
    HOW WE WORK
