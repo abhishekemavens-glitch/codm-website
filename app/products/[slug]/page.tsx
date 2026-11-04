@@ -43,8 +43,9 @@ import NextSteps from "@/components/NextSteps";
 import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
 import ProductPage, { type ProductPageData } from "@/components/ProductPage";
+import IndustryExpertise from "@/components/IndustryExpertise";
 import IndustryCards from "@/components/IndustryCards";
-
+import HowWeWork from "@/components/HowWeWork";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -56,7 +57,6 @@ import IndustryCards from "@/components/IndustryCards";
 const PAGES_WITH_TESTIMONIALS = [
   "about",
   "services",
-  "industries",
   "partner",
 ];
 
@@ -523,7 +523,7 @@ async function getPost(
 
 /* =========================================================
    GET WORDPRESS CASE STUDY
-   /case-studies/<slug>
+   /<slug>
 ========================================================= */
 
 type WpCaseStudy = {
@@ -1077,6 +1077,12 @@ console.log("SERVICE DEBUG:", {
   const isInsightsPage =
     currentSlug === "insights";
 
+   const isIndustriesPage =
+  currentSlug === "industries" ||
+  currentSlug === "test-industries";
+
+   
+
   const isPartnerPage =
     currentSlug === "partner";
 
@@ -1088,7 +1094,7 @@ console.log("SERVICE DEBUG:", {
 
    
 const isCareersPage =
-  currentSlug === "careers" ||
+  currentSlug === "career" ||
   currentSlug === "carrers";
 
 
@@ -1306,6 +1312,41 @@ const showCTA =
         </article>
       )}
 
+
+{/* =================================================
+    INDUSTRIES PAGE
+================================================= */}
+
+{/* INDUSTRIES PAGE */}
+{isIndustriesPage && (
+  <>
+    <div className="relative z-10">
+      <IndustryExpertise />
+    </div>
+
+    <div className="relative z-10">
+      <ServicesSection />
+    </div>
+
+    <div className="relative z-10">
+      <IndustryCards />
+    </div>
+
+    {/* Industries How We Work */}
+    <div className="relative z-10">
+      <HowWeWork />
+    </div>
+
+    <div className="relative z-10">
+      <PartnersInSuccess />
+    </div>
+  </>
+)}
+
+
+
+
+       
       {/* =================================================
           ABOUT PAGE
 
@@ -1325,12 +1366,9 @@ const showCTA =
             <PurposeSection />
           </div>
 
-          <div
-            id="services"
-            className="relative z-10 scroll-mt-24"
-          >
-            <ServicesSection />
-          </div>
+         <div className="relative z-10">
+  <ServicesSection />
+</div>
 
           <div className="relative z-10">
             <ExcellenceSection />
