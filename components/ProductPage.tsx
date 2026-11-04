@@ -816,11 +816,13 @@ export default function ProductPage({
             <div className="codm-pp-split">
               <Reveal distance={20}>
                 <div>
-                  <Heading
-                    title={intro.title}
-                    gradientText={intro.gradientText}
-                    description={intro.description}
-                  />
+                <Heading
+  eyebrow="SALES CLOUD OVERVIEW"
+  title={intro.title}
+  gradientText={intro.gradientText}
+  description={intro.description}
+  align="left"
+/>
                   <Buttons
                     primaryLabel={intro.primaryLabel}
                     primaryUrl={intro.primaryUrl}
