@@ -43,6 +43,7 @@ import NextSteps from "@/components/NextSteps";
 import GlobalFootprint from "@/components/GlobalFootprint";
 import CaseStudyDetail from "@/components/CaseStudyDetail";
 import IndustryExpertise from "@/components/IndustryExpertise";
+import IndustryCards from "@/components/IndustryCards";
 
 /* =========================================================
    PAGE CONFIGURATION
@@ -1218,31 +1219,36 @@ const showCTA =
 
 {/* =================================================
     INDUSTRIES PAGE
-    INDUSTRY EXPERTISE
 ================================================= */}
 
-{/* What We Do */}
 {isIndustriesPage && (
   <>
+    {/* Industry Expertise */}
     <div className="relative z-10">
       <IndustryExpertise />
     </div>
 
+    {/* What We Do */}
     <div className="relative z-10">
       <ServicesSection />
     </div>
 
-     <div className="relative z-10">
+    {/* Industry Cards */}
+    <div className="relative z-10">
+      <IndustryCards />
+    </div>
+
+    {/* CODM Difference */}
+    <div className="relative z-10">
       <ServiceProcess />
     </div>
 
- <div className="relative z-10">
+    {/* Partners in Success */}
+    <div className="relative z-10">
       <PartnersInSuccess />
     </div>
-     
   </>
 )}
-
 
 
 
