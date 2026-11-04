@@ -364,14 +364,79 @@ const CSS = `
 .codm-pp-crumbs li + li::before { content: "\\203A"; margin-right: 8px; opacity: 0.6; }
 
 /* buttons */
-.codm-pp-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-.codm-pp-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 9999px; font-size: 14px; font-weight: 500; line-height: 1; text-decoration: none; cursor: pointer; transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease, background 250ms ease; }
-.codm-pp-btn:hover { transform: translateY(-2px); }
-.codm-pp-btn-primary { color: #fff; background: linear-gradient(135deg, #6d4aff, #8b6dff); box-shadow: 0 10px 28px rgba(109, 74, 255, 0.32); }
-.codm-pp-btn-primary:hover { box-shadow: 0 14px 34px rgba(109, 74, 255, 0.45); }
-.codm-pp-btn-ghost { color: var(--foreground); border: 1px solid var(--border); background: transparent; }
-.codm-pp-btn-ghost:hover { border-color: var(--accent); }
-.codm-pp-btn svg { width: 15px; height: 15px; }
+/* PRODUCT PAGE BUTTONS — MATCH INDUSTRIES */
+
+.codm-pp-btns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.codm-pp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 15px 31px;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 250ms ease,
+    box-shadow 250ms ease,
+    border-color 250ms ease,
+    background 250ms ease;
+}
+
+.codm-pp-btn:hover {
+  transform: translateY(-2px);
+}
+
+.codm-pp-btn-primary {
+  color: #fff;
+  background: linear-gradient(110deg, #8957f5, #5145e8);
+  box-shadow: 0 12px 26px rgba(109, 74, 255, 0.28);
+}
+
+.codm-pp-btn-primary:hover {
+  box-shadow: 0 15px 32px rgba(109, 74, 255, 0.4);
+}
+
+.codm-pp-btn-ghost {
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(8px);
+}
+
+.codm-pp-btn-ghost:hover {
+  border-color: #8b6cf6;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.codm-pp-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .codm-pp-btns {
+    gap: 10px;
+  }
+
+  .codm-pp-btn {
+    min-height: 46px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
 
 /* two-column rows (hero / intro / ecosystem / process) */
 .codm-pp-split { display: grid; gap: 40px; align-items: center; grid-template-columns: minmax(0, 1fr); }
