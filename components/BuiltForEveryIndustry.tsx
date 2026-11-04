@@ -113,10 +113,11 @@ export default function BuiltForEveryIndustry() {
 
         <div className="bie-heading">
   <SectionHeading
-    eyebrow={section.eyebrow || "EXPLORE OUR SOLUTIONS"}
-    title={section.title || "Built for Every Industry"}
-    description={section.description}
-  />
+  eyebrow={section.eyebrow || "EXPLORE OUR SOLUTIONS"}
+  title={section.title || "Built for Every Industry"}
+  gradientText=""
+  description={section.description}
+/>
 </div>
 
         <div className="bie-grid">
