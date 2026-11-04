@@ -1,34 +1,15 @@
-/*
- * Save as: app/products/[slug]/page.tsx
- *
- * Dedicated route for product detail pages:
- *
- *   /products/sales-cloud
- *   /products/<any Product Page slug from WordPress>
- *
- * This is a [slug] route (ONE segment), so generateStaticParams must
- * return plain strings: { slug: "sales-cloud" }, not arrays.
- *
- * /products itself (the WordPress "Products" page) is still served by
- * app/[...slug]/page.tsx.
- */
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import PageShell from "@/components/PageShell";
 import ProductPage, { type ProductPageData } from "@/components/ProductPage";
-import IndustryCards from "@/components/IndustryCards";
 import LatestBlogs from "@/components/LatestBlogs";
 import ContactCTA from "@/components/ContactCTA";
 import BuiltForEveryIndustry from "@/components/BuiltForEveryIndustry";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
-
-/* =========================================================
-   WORDPRESS FETCH
-========================================================= */
 
 async function wpFetch<T>(
   query: string,
@@ -42,22 +23,21 @@ async function wpFetch<T>(
       next: { revalidate: 60 },
     });
 
-    if (!response.ok) {
-      return null;
-    }
+    if (!response.ok) return null;
 
     const result = await response.json();
 
+    if (result.errors) {
+      console.error("WordPress GraphQL error:", result.errors);
+      return null;
+    }
+
     return result?.data ?? null;
-  } catch {
+  } catch (error) {
+    console.error("WordPress request failed:", error);
     return null;
   }
 }
-
-/* =========================================================
-   GET PRODUCT PAGE  (/products/<slug>)
-   WordPress: Product Pages (one entry per product)
-========================================================= */
 
 async function getProductPage(
   slug: string
@@ -82,9 +62,7 @@ async function getProductPage(
 
     const node = data?.productPage;
 
-    if (!node?.productPageData) {
-      return null;
-    }
+    if (!node?.productPageData) return null;
 
     return {
       title: node.title.replace(/&amp;/g, "&"),
@@ -95,13 +73,6 @@ async function getProductPage(
     return null;
   }
 }
-
-/* =========================================================
-   STATIC PARAMS
-
-   Must be plain strings for a [slug] route:
-     [{ slug: "sales-cloud" }, { slug: "service-cloud" }]
-========================================================= */
 
 export async function generateStaticParams() {
   const data = await wpFetch<{
@@ -129,17 +100,12 @@ export async function generateStaticParams() {
     .map((slug) => ({ slug }));
 }
 
-/* =========================================================
-   METADATA
-========================================================= */
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-
   const productPage = await getProductPage(slug);
 
   if (!productPage) {
@@ -149,23 +115,15 @@ export async function generateMetadata({
   return { title: `${productPage.title} | CODM` };
 }
 
-
-/* =========================================================
-   PAGE
-========================================================= */
-
 export default async function ProductDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const productPage = await getProductPage(slug);
 
-  if (!productPage) {
-    notFound();
-  }
+  if (!productPage) notFound();
 
   const shared = productPage.data.shared;
 
@@ -176,14 +134,8 @@ export default async function ProductDetailPage({
         data={productPage.data}
       />
 
-      {/* New WordPress-managed Built for Every Industry section */}
+      {/* New WordPress-managed section */}
       <BuiltForEveryIndustry />
-
-      {shared?.showIndustries && (
-        <div className="relative z-10">
-          <IndustryCards />
-        </div>
-      )}
 
       {shared?.showBlogs && (
         <div className="relative z-10">
