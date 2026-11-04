@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound } from "next/navigation"; 
 
 import PageShell from "@/components/PageShell";
 import ProductPage, { type ProductPageData } from "@/components/ProductPage";
