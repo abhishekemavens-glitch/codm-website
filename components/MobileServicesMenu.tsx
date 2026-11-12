@@ -7,6 +7,7 @@ type Props = {
   groups: ServiceGroup[];
   label?: string;
   servicesHref?: string;
+  allLabel?: string;
   onNavigate?: () => void;
 };
 
@@ -14,6 +15,7 @@ export default function MobileServicesMenu({
   groups,
   label = "Services",
   servicesHref = "/services",
+  allLabel = "All services",
   onNavigate,
 }: Props) {
   return (
@@ -28,7 +30,7 @@ export default function MobileServicesMenu({
           className="codm-mobile-services-all"
           onClick={onNavigate}
         >
-          All services
+          {allLabel}
         </Link>
 
         {groups.map((group) => (
