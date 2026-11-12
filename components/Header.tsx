@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
 import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
+import ProductsMegaMenu, {
+  parseProductLinks,
+  type ProductsMenuData,
+} from "./ProductsMegaMenu";
 import { useStickyNavState } from "@/lib/codm-animations";
 
 type HeaderData = {
@@ -38,6 +42,14 @@ type HeaderData = {
   megaMenuBannerDescription: string;
   megaMenuBannerButtonText: string;
   megaMenuBannerButtonUrl: string;
+};
+
+/* One item of the main menu (managed in WordPress: Header > Main Menu).
+   menu: "none" = plain link, "services" / "products" = opens that mega menu. */
+type MenuItem = {
+  label: string;
+  url: string;
+  menu: string;
 };
 
 type AnnouncementData = {
@@ -122,29 +134,106 @@ export default function Header() {
       announcementButtonUrl: "#",
     });
 
-  const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  /* Which mega menu is open on desktop: "services", "products" or none */
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
-  const servicesMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const menuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-const openServicesMenu = () => {
-  if (servicesMenuCloseTimer.current) {
-    clearTimeout(servicesMenuCloseTimer.current);
-    servicesMenuCloseTimer.current = null;
-  }
+  const openMenuFor = (key: string) => {
+    if (menuCloseTimer.current) {
+      clearTimeout(menuCloseTimer.current);
+      menuCloseTimer.current = null;
+    }
 
-  setServicesMenuOpen(true);
-};
+    setOpenMenu(key);
+  };
 
-const closeServicesMenu = () => {
-  if (servicesMenuCloseTimer.current) {
-    clearTimeout(servicesMenuCloseTimer.current);
-  }
+  const closeMenu = () => {
+    if (menuCloseTimer.current) {
+      clearTimeout(menuCloseTimer.current);
+    }
 
-  servicesMenuCloseTimer.current = setTimeout(() => {
-    setServicesMenuOpen(false);
-    servicesMenuCloseTimer.current = null;
-  }, 400);
-};
+    menuCloseTimer.current = setTimeout(() => {
+      setOpenMenu(null);
+      menuCloseTimer.current = null;
+    }, 400);
+  };
+
+  /* Menu items + Products mega menu come from WordPress (Header settings).
+     Loaded separately so the header still works if these fields are missing. */
+  const [menuItems, setMenuItems] = useState<MenuItem[] | null>(null);
+  const [productsMenu, setProductsMenu] = useState<ProductsMenuData | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadMenu() {
+      try {
+        const response = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `
+              query HeaderMenu {
+                codmHeaders {
+                  nodes {
+                    menuItems {
+                      label
+                      url
+                      menu
+                    }
+                    productsMenuData
+                  }
+                }
+              }
+            `,
+          }),
+        });
+
+        if (!response.ok) return;
+
+        const result = await response.json();
+
+        if (result.errors) {
+          console.warn(
+            "Menu items are not available in WordPress GraphQL yet:",
+            result.errors
+          );
+          return;
+        }
+
+        const node = result?.data?.codmHeaders?.nodes?.[0];
+
+        if (!node || !mounted) return;
+
+        if (Array.isArray(node.menuItems)) {
+          setMenuItems(
+            node.menuItems.map((item: Partial<MenuItem>) => ({
+              label: item.label || "",
+              url: item.url || "#",
+              menu: item.menu || "none",
+            }))
+          );
+        }
+
+        if (node.productsMenuData) {
+          try {
+            setProductsMenu(JSON.parse(node.productsMenuData));
+          } catch {
+            /* ignore invalid JSON */
+          }
+        }
+      } catch (error) {
+        console.warn("Menu could not be loaded:", error);
+      }
+    }
+
+    loadMenu();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -390,20 +479,18 @@ const closeServicesMenu = () => {
     return null;
   }
 
-  const services =
-    parseLink(header.services);
+  /* The old 5 fixed items, used until the new Main Menu list is available */
+  const legacyItems: MenuItem[] = [
+    { ...parseLink(header.services), menu: header.megaMenuEnabled ? "services" : "none" },
+    { ...parseLink(header.industries), menu: "none" },
+    { ...parseLink(header.caseStudies), menu: "none" },
+    { ...parseLink(header.about), menu: "none" },
+    { ...parseLink(header.insights), menu: "none" },
+  ];
 
-  const industries =
-    parseLink(header.industries);
-
-  const caseStudies =
-    parseLink(header.caseStudies);
-
-  const about =
-    parseLink(header.about);
-
-  const insights =
-    parseLink(header.insights);
+  const items: MenuItem[] = (
+    menuItems && menuItems.length > 0 ? menuItems : legacyItems
+  ).filter((item) => item.label);
 
   const toServiceLinks = (raw: string) =>
     parseMegaMenuLinks(raw).map((link) => ({
@@ -425,6 +512,20 @@ const closeServicesMenu = () => {
       links: toServiceLinks(header.megaMenuCol3Links),
     },
   ].filter((group) => group.title && group.links.length > 0);
+
+  const productsEnabled = Boolean(
+    productsMenu?.enabled && (productsMenu.columns?.length ?? 0) > 0
+  );
+
+  const productGroups: ServiceGroup[] = (productsMenu?.columns ?? [])
+    .map((col) => ({
+      title: col.title,
+      links: parseProductLinks(col.links).map((link) => ({
+        label: link.label,
+        href: link.url,
+      })),
+    }))
+    .filter((group) => group.title && group.links.length > 0);
 
   return (
     <>
@@ -510,102 +611,78 @@ const closeServicesMenu = () => {
       aria-label="Main navigation"
     >
 
-     {services.label && (
-  <div
-    className="codm-header-nav-item-wrap codm-services-menu-trigger"
-    onMouseEnter={openServicesMenu}
-    onMouseLeave={closeServicesMenu}
-  >
-    <div
-      className={`codm-header-nav-link ${
-        isActiveLink(services.url)
-          ? "codm-header-nav-link-active"
-          : ""
-      }`}
-      onFocus={openServicesMenu}
-      aria-haspopup={header.megaMenuEnabled ? "true" : undefined}
-      aria-expanded={
-        header.megaMenuEnabled ? servicesMenuOpen : undefined
-      }
-      tabIndex={0}
-      role="button"
-    >
-      {services.label}
+      {items.map((item, index) => {
+        const megaKey =
+          item.menu === "services" && header.megaMenuEnabled
+            ? "services"
+            : item.menu === "products" && productsEnabled
+              ? "products"
+              : null;
 
-      {header.megaMenuEnabled && (
-        <svg
-          className={`codm-nav-dropdown-icon ${
-            servicesMenuOpen ? "codm-nav-dropdown-icon-open" : ""
-          }`}
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M1 1L5 5L9 1"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
-    </div>
-  </div>
-)}
+        if (megaKey) {
+          const isOpen = openMenu === megaKey;
 
-      {industries.label && (
-        <a
-          href={industries.url}
-          className={`codm-header-nav-link ${
-            isActiveLink(industries.url) ? "codm-header-nav-link-active" : ""
-          }`}
-        >
-          {industries.label}
-        </a>
-      )}
+          return (
+            <div
+              key={`${item.label}-${index}`}
+              className={`codm-header-nav-item-wrap codm-${megaKey}-menu-trigger`}
+              onMouseEnter={() => openMenuFor(megaKey)}
+              onMouseLeave={closeMenu}
+            >
+              <div
+                className={`codm-header-nav-link ${
+                  isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
+                }`}
+                onFocus={() => openMenuFor(megaKey)}
+                aria-haspopup="true"
+                aria-expanded={isOpen}
+                tabIndex={0}
+                role="button"
+              >
+                {item.label}
 
-      {caseStudies.label && (
-        <a
-          href={caseStudies.url}
-          className={`codm-header-nav-link ${
-            isActiveLink(caseStudies.url) ? "codm-header-nav-link-active" : ""
-          }`}
-        >
-          {caseStudies.label}
-        </a>
-      )}
+                <svg
+                  className={`codm-nav-dropdown-icon ${
+                    isOpen ? "codm-nav-dropdown-icon-open" : ""
+                  }`}
+                  width="10"
+                  height="6"
+                  viewBox="0 0 10 6"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 1L5 5L9 1"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          );
+        }
 
-      {about.label && (
-        <a
-          href={about.url}
-          className={`codm-header-nav-link ${
-            isActiveLink(about.url) ? "codm-header-nav-link-active" : ""
-          }`}
-        >
-          {about.label}
-        </a>
-      )}
-
-      {insights.label && (
-        <a
-          href={insights.url}
-          className={`codm-header-nav-link ${
-            isActiveLink(insights.url) ? "codm-header-nav-link-active" : ""
-          }`}
-        >
-          {insights.label}
-        </a>
-      )}
+        return (
+          <a
+            key={`${item.label}-${index}`}
+            href={item.url}
+            className={`codm-header-nav-link ${
+              isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
+            }`}
+          >
+            {item.label}
+          </a>
+        );
+      })}
 
     </nav>
 
-    {header.megaMenuEnabled && servicesMenuOpen && (
+    {header.megaMenuEnabled && openMenu === "services" && (
       <MegaMenu
-  onMouseEnter={openServicesMenu}
-  onMouseLeave={closeServicesMenu}
+  onMouseEnter={() => openMenuFor("services")}
+  onMouseLeave={closeMenu}
   data={{
           enabled: true,
 
@@ -653,90 +730,91 @@ const closeServicesMenu = () => {
       />
     )}
 
+    {productsEnabled && productsMenu && openMenu === "products" && (
+      <ProductsMegaMenu
+        data={productsMenu}
+        onMouseEnter={() => openMenuFor("products")}
+        onMouseLeave={closeMenu}
+      />
+    )}
+
     {mobileMenuOpen && (
       <div className="codm-mobile-menu">
 
-        {services.label &&
-          (
+        {items.map((item, index) => {
+          const key = `${item.label}-${index}`;
+
+          if (
+            item.menu === "services" &&
             header.megaMenuEnabled &&
             serviceGroups.length > 0
-          ) ? (
-            <MobileServicesMenu
-              groups={serviceGroups}
-              label={services.label}
-              servicesHref={services.url}
-              onNavigate={() =>
-                setMobileMenuOpen(false)
-              }
-            />
-          ) : (
+          ) {
+            return (
+              <MobileServicesMenu
+                key={key}
+                groups={serviceGroups}
+                label={item.label}
+                servicesHref={item.url}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
+            );
+          }
+
+          if (
+            item.menu === "products" &&
+            productsEnabled &&
+            productGroups.length > 0
+          ) {
+            return (
+              <MobileServicesMenu
+                key={key}
+                groups={productGroups}
+                label={item.label}
+                servicesHref={item.url}
+                allLabel={`All ${item.label.toLowerCase()}`}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
+            );
+          }
+
+          return (
             <a
-              href={services.url}
+              key={key}
+              href={item.url}
               className={`codm-mobile-menu-link ${
-                isActiveLink(services.url) ? "codm-mobile-menu-link-active" : ""
+                isActiveLink(item.url) ? "codm-mobile-menu-link-active" : ""
               }`}
-              onClick={() =>
-                setMobileMenuOpen(false)
-              }
+              onClick={() => setMobileMenuOpen(false)}
             >
-              {services.label}
+              {item.label}
             </a>
-          )
-        }
+          );
+        })}
 
-        {industries.label && (
+        {/* Get in touch: the header button is hidden on tablet + mobile,
+            so it appears here at the bottom of the menu instead. */}
+        {header.buttonText && (
           <a
-            href={industries.url}
-            className={`codm-mobile-menu-link ${
-              isActiveLink(industries.url) ? "codm-mobile-menu-link-active" : ""
-            }`}
-            onClick={() =>
-              setMobileMenuOpen(false)
-            }
+            href="/contact-us"
+            className="codm-mobile-menu-cta"
+            onClick={() => setMobileMenuOpen(false)}
           >
-            {industries.label}
-          </a>
-        )}
-
-        {caseStudies.label && (
-          <a
-            href={caseStudies.url}
-            className={`codm-mobile-menu-link ${
-              isActiveLink(caseStudies.url) ? "codm-mobile-menu-link-active" : ""
-            }`}
-            onClick={() =>
-              setMobileMenuOpen(false)
-            }
-          >
-            {caseStudies.label}
-          </a>
-        )}
-
-        {about.label && (
-          <a
-            href={about.url}
-            className={`codm-mobile-menu-link ${
-              isActiveLink(about.url) ? "codm-mobile-menu-link-active" : ""
-            }`}
-            onClick={() =>
-              setMobileMenuOpen(false)
-            }
-          >
-            {about.label}
-          </a>
-        )}
-
-        {insights.label && (
-          <a
-            href={insights.url}
-            className={`codm-mobile-menu-link ${
-              isActiveLink(insights.url) ? "codm-mobile-menu-link-active" : ""
-            }`}
-            onClick={() =>
-              setMobileMenuOpen(false)
-            }
-          >
-            {insights.label}
+            <span>{header.buttonText}</span>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </a>
         )}
 
@@ -805,6 +883,32 @@ const closeServicesMenu = () => {
 
 
       <style>{`
+        /* Get in touch button inside the mobile / tablet menu */
+        .codm-mobile-menu-cta {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          margin: 18px 0 6px;
+          padding: 14px 22px;
+          border-radius: 9999px;
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1;
+          color: #ffffff !important;
+          text-decoration: none;
+          background: linear-gradient(135deg, #6d4aff, #8b6dff);
+          box-shadow: 0 10px 28px rgba(109, 74, 255, 0.3);
+          transition: transform 250ms ease, box-shadow 250ms ease;
+        }
+        .codm-mobile-menu-cta:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 14px 34px rgba(109, 74, 255, 0.42);
+        }
+        @media (min-width: 1024px) {
+          .codm-mobile-menu-cta { display: none; }
+        }
+
         /* Announcement close button */
         .codm-announcement-close {
           flex: none;
