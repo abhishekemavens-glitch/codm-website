@@ -2577,38 +2577,25 @@ html[data-theme="light"] .codm-hero-description,
    ========================================================= */
 
 #hero .codm-hero-secondary-button {
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  box-sizing: border-box !important;
-
-  padding: 14px 20px !important;
-
-  gap: 6px !important;
-
-  border-radius: 30px !important;
-  border: 1px solid #E8EDF2 !important;
-
-  background: transparent !important;
-
-  color: #475569 !important;
-
-  font-family: "Google Sans Flex", sans-serif !important;
-  font-weight: 500 !important;
-  font-style: normal !important;
-  font-size: 18px !important;
-  line-height: 100% !important;
-  letter-spacing: 0 !important;
-
-  text-align: center !important;
-
-  text-decoration: none !important;
-
-  transition:
-    border-color 0.3s ease,
-    opacity 0.3s ease !important;
+	box-sizing: border-box !important;
+	color: #475569 !important;
+	letter-spacing: 0 !important;
+	text-align: center !important;
+	background: 0 0 !important;
+	border: 1px solid #d9e1ea !important;
+	border-radius: 30px !important;
+	justify-content: center !important;
+	align-items: center !important;
+	gap: 6px !important;
+	padding: 14px 20px !important;
+	font-family: Google Sans Flex,sans-serif !important;
+	font-size: 18px !important;
+	font-style: normal !important;
+	font-weight: 500 !important;
+	line-height: 100% !important;
+	text-decoration: none !important;
+	transition: border-color .3s,opacity .3s !important;
+	display: inline-flex !important;
 }
 
 /* =========================================================
@@ -14387,3 +14374,6 @@ a.codm-ic-card {
 
 
 
+
+
+	
