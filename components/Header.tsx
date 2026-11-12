@@ -629,37 +629,38 @@ export default function Header() {
               onMouseEnter={() => openMenuFor(megaKey)}
               onMouseLeave={closeMenu}
             >
-              <div
-                className={`codm-header-nav-link ${
-                  isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
-                }`}
-                onFocus={() => openMenuFor(megaKey)}
-                aria-haspopup="true"
-                aria-expanded={isOpen}
-                tabIndex={0}
-                role="button"
-              >
-                {item.label}
+             
+<a
+  href={item.url}
+  className={`codm-header-nav-link ${
+    isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
+  }`}
+  aria-haspopup="true"
+  aria-expanded={isOpen}
+  onFocus={() => openMenuFor(megaKey)}
+>
+  {item.label}
 
-                <svg
-                  className={`codm-nav-dropdown-icon ${
-                    isOpen ? "codm-nav-dropdown-icon-open" : ""
-                  }`}
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 1L5 5L9 1"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
+  <svg
+    className={`codm-nav-dropdown-icon ${
+      isOpen ? "codm-nav-dropdown-icon-open" : ""
+    }`}
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M1 1L5 5L9 1"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</a>
+
             </div>
           );
         }
