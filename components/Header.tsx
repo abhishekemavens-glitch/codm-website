@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"; 
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
