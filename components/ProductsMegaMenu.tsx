@@ -106,11 +106,26 @@ export default function ProductsMegaMenu({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <style>{`
-        .codm-megamenu.codm-megamenu-products .codm-megamenu-columns {
-          grid-template-columns: repeat(var(--codm-mm-cols, 3), minmax(0, 1fr)) !important;
-        }
-      `}</style>
+      
+<style>{`
+  .codm-megamenu.codm-megamenu-products {
+    width: 415px !important;
+    max-width: calc(100vw - 32px) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .codm-megamenu.codm-megamenu-products .codm-megamenu-columns {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .codm-megamenu.codm-megamenu-products .codm-megamenu-column {
+    width: 100%;
+  }
+`}</style>
+
 
       <div
         className="codm-megamenu-columns"
