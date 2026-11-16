@@ -14382,3 +14382,22 @@ a.codm-ic-card {
 #hero {
 	padding: 5% 0 5%;
 }
+/* Blog Card Heading - Single Line with Ellipsis */
+.case-study-card h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+}
+
+/* Blog Card Description - Single Line with Ellipsis */
+.case-study-card .case-study-excerpt p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+}
+
+	
