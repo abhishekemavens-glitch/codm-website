@@ -630,37 +630,58 @@ export default function Header() {
               onMouseLeave={closeMenu}
             >
              
-<button
-  type="button"
-  className={`codm-header-nav-link ${
-    isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
-  }`}
-  aria-haspopup="true"
-  aria-expanded={isOpen}
-  onClick={() => setOpenMenu(isOpen ? null : megaKey)}
-  onFocus={() => openMenuFor(megaKey)}
->
-  {item.label}
-
-  <svg
-    className={`codm-nav-dropdown-icon ${
-      isOpen ? "codm-nav-dropdown-icon-open" : ""
-    }`}
-    width="10"
-    height="6"
-    viewBox="0 0 10 6"
-    fill="none"
-    aria-hidden="true"
+{megaKey === "services" ? (
+  <button
+    type="button"
+    className="codm-header-nav-link"
+    aria-haspopup="true"
+    aria-expanded={isOpen}
+    onClick={() => setOpenMenu(isOpen ? null : megaKey)}
+    onFocus={() => openMenuFor(megaKey)}
   >
-    <path
-      d="M1 1L5 5L9 1"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-</button>
+    {item.label}
+    <svg
+      className={`codm-nav-dropdown-icon ${
+        isOpen ? "codm-nav-dropdown-icon-open" : ""
+      }`}
+      width="10"
+      height="6"
+      viewBox="0 0 10 6"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M1 1L5 5L9 1" stroke="currentColor"
+        strokeWidth="1.5" strokeLinecap="round"
+        strokeLinejoin="round" />
+    </svg>
+  </button>
+) : (
+  <a
+    href={item.url}
+    className={`codm-header-nav-link ${
+      isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
+    }`}
+    aria-haspopup="true"
+    aria-expanded={isOpen}
+    onFocus={() => openMenuFor(megaKey)}
+  >
+    {item.label}
+    <svg
+      className={`codm-nav-dropdown-icon ${
+        isOpen ? "codm-nav-dropdown-icon-open" : ""
+      }`}
+      width="10"
+      height="6"
+      viewBox="0 0 10 6"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M1 1L5 5L9 1" stroke="currentColor"
+        strokeWidth="1.5" strokeLinecap="round"
+        strokeLinejoin="round" />
+    </svg>
+  </a>
+)}
 
             </div>
           );
