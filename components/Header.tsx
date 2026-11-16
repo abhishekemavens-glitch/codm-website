@@ -630,13 +630,14 @@ export default function Header() {
               onMouseLeave={closeMenu}
             >
              
-<a
-  href={item.url}
+<button
+  type="button"
   className={`codm-header-nav-link ${
     isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
   }`}
   aria-haspopup="true"
   aria-expanded={isOpen}
+  onClick={() => setOpenMenu(isOpen ? null : megaKey)}
   onFocus={() => openMenuFor(megaKey)}
 >
   {item.label}
@@ -659,7 +660,7 @@ export default function Header() {
       strokeLinejoin="round"
     />
   </svg>
-</a>
+</button>
 
             </div>
           );
