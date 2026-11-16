@@ -14382,7 +14382,6 @@ a.codm-ic-card {
 #hero {
 	padding: 5% 0 5%;
 }
-/* Blog Card Heading - Single Line with Ellipsis */
 .case-study-card h3 {
     white-space: nowrap;
     overflow: hidden;
@@ -14391,13 +14390,15 @@ a.codm-ic-card {
     display: block;
 }
 
-/* Blog Card Description - Single Line with Ellipsis */
 .case-study-card .case-study-excerpt p {
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
+    white-space: normal;
     text-overflow: ellipsis;
-    width: 100%;
-    display: block;
+    line-height: 1.6;
+    max-height: 3.2em;
 }
 
 	
