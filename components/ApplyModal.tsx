@@ -3,19 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-/* =========================================================
-   ApplyModal — popup application form.
-
-   Opened from CareersSection ("View role" / "Send us your profile").
-   Posts to WordPress: /wp-json/codm/v1/apply  (see codm-applications.php)
-   All texts come from WordPress: Applications > Form settings.
-
-   Place at: components/ApplyModal.tsx
-   ========================================================= */
+/*
+ * ApplyModal — premium CODM careers application popup.
+ * Keeps the existing WordPress REST endpoint and payload contract.
+ * Notification recipients are configured in WordPress:
+ * Applications > Form settings > Send applications to (email).
+ */
 
 const APPLY_ENDPOINT =
   "https://lightyellow-echidna-411021.hostingersite.com/wp-json/codm/v1/apply";
-
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 
 export type ApplyFormSettings = {
@@ -38,17 +34,37 @@ type ApplyRole = {
 type Props = {
   open: boolean;
   onClose: () => void;
-  /** the role that was clicked; null = "Send us your profile" */
   role: ApplyRole | null;
-  /** role titles offered when no specific role is chosen */
   roleOptions: string[];
   settings: ApplyFormSettings | null;
 };
 
-const inputClass =
-  "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[14px] text-[var(--foreground)] outline-none transition-colors duration-200 placeholder:text-[var(--muted)] focus:border-[#6D4AFF]";
+const fieldClass =
+  "mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-[14px] text-slate-900 outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10";
+const labelClass =
+  "block text-[12px] font-semibold tracking-[0.01em] text-slate-600";
 
-const labelClass = "mb-1.5 block text-[12px] font-medium text-[var(--muted)]";
+function FieldIcon({ type }: { type: "user" | "mail" | "phone" | "link" | "file" }) {
+  const common = {
+    width: 17,
+    height: 17,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.7,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true as const,
+  };
+  const paths = {
+    user: <><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.7-3.2 3-5 7-5s6.3 1.8 7 5" /></>,
+    mail: <><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m4 7 8 6 8-6" /></>,
+    phone: <path d="M7 3h3l1.5 4-2 1.5a15 15 0 0 0 6 6l1.5-2 4 1.5v3c0 1.1-.9 2-2 2C10.7 19.5 4.5 13.3 4.5 5c0-1.1.9-2 2.5-2Z" />,
+    link: <><path d="M10 13.5a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.7 1.7" /><path d="M14 10.5a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 19.2l1.7-1.7" /></>,
+    file: <><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10Z" /><path d="M13 3v7h7M8 15h8M8 18h6" /></>,
+  };
+  return <svg {...common}>{paths[type]}</svg>;
+}
 
 export default function ApplyModal({
   open,
@@ -63,337 +79,227 @@ export default function ApplyModal({
   const formRef = useRef<HTMLFormElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
 
-  // reset every time the popup opens
-  useEffect(() => {
-    if (open) {
-      setStatus("idle");
-      setError("");
-      setFileName("");
-      const t = window.setTimeout(() => firstFieldRef.current?.focus(), 50);
-      return () => window.clearTimeout(t);
-    }
-  }, [open, role?.title]);
-
-  // Esc to close + lock page scroll
   useEffect(() => {
     if (!open) return;
+    setStatus("idle");
+    setError("");
+    setFileName("");
+    const timer = window.setTimeout(() => firstFieldRef.current?.focus(), 120);
+    return () => window.clearTimeout(timer);
+  }, [open, role?.title]);
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && status !== "sending") onClose();
     };
-
-    const previous = document.body.style.overflow;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
-
+    window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = previous;
-      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, onClose]);
+  }, [open, onClose, status]);
 
-  if (!open || typeof document === "undefined") {
-    return null;
-  }
+  if (!open || typeof document === "undefined") return null;
 
   const title = role
     ? settings?.roleTitle || "Apply for this role"
     : settings?.profileTitle || "Send us your profile";
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     if (status === "sending") return;
 
-    const form = e.currentTarget;
+    const form = event.currentTarget;
     const data = new FormData(form);
-
     const file = data.get("cv");
+
     if (file instanceof File && file.size > MAX_FILE_BYTES) {
-      setError("Please upload a file smaller than 5 MB.");
+      setError("Your CV must be smaller than 5 MB. Please choose another file.");
       return;
     }
-    if (file instanceof File && file.size === 0) {
-      data.delete("cv");
-    }
-
-    if (role) {
-      data.set("role", role.title);
-    }
+    if (file instanceof File && file.size === 0) data.delete("cv");
+    if (role) data.set("role", role.title);
 
     setError("");
     setStatus("sending");
 
     try {
-      const response = await fetch(APPLY_ENDPOINT, {
-        method: "POST",
-        body: data,
-      });
+      const response = await fetch(APPLY_ENDPOINT, { method: "POST", body: data });
       const result = await response.json().catch(() => ({}));
-
       if (!response.ok || result?.ok !== true) {
-        setError(
-          result?.message || "Something went wrong. Please try again."
-        );
+        setError(result?.message || "We couldn't submit your application. Please try again.");
         setStatus("idle");
         return;
       }
-
       form.reset();
       setFileName("");
       setStatus("done");
     } catch {
-      setError("We couldn’t send your application. Please check your connection and try again.");
+      setError("We couldn't connect to the application service. Please check your connection and try again.");
       setStatus("idle");
     }
   }
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[10000] flex items-end justify-center overflow-y-auto bg-black/55 p-0 backdrop-blur-sm sm:items-center sm:p-6"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+      className="fixed inset-0 z-[10000] flex items-end justify-center overflow-y-auto bg-slate-950/60 p-0 backdrop-blur-md sm:items-center sm:p-5 md:p-8"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget && status !== "sending") onClose();
       }}
-      style={{ animation: "apply-fade 0.25s ease both" }}
+      style={{ animation: "codm-apply-fade .22s ease both" }}
     >
-      <div
+      <section
         role="dialog"
         aria-modal="true"
-        aria-label={title}
-        className="relative my-auto w-full max-w-[560px] rounded-t-3xl border border-[var(--border)] bg-[var(--background)] p-6 shadow-[0_30px_90px_rgba(40,24,120,0.35)] sm:rounded-3xl sm:p-9"
-        style={{ animation: "apply-pop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both" }}
+        aria-labelledby="codm-apply-title"
+        className="relative my-auto w-full max-w-[690px] overflow-hidden rounded-t-[28px] bg-[#fbfbfe] shadow-[0_32px_100px_rgba(15,12,45,.35)] sm:rounded-[28px]"
+        style={{ animation: "codm-apply-rise .28s cubic-bezier(.2,.8,.2,1) both" }}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-[var(--muted)] transition-colors duration-200 hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
-            <path d="m3.5 3.5 9 9M12.5 3.5l-9 9" />
-          </svg>
-        </button>
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#5146e5] via-[#7657f5] to-[#b49aff]" />
 
-        {status === "done" ? (
-          <div className="py-10 text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#6D4AFF] to-[#8B5CF6] text-white">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="m5 12.5 4.5 4.5L19 7.5" />
-              </svg>
-            </span>
+        <div className="max-h-[calc(100dvh-16px)] overflow-y-auto px-5 pb-7 pt-6 sm:max-h-[calc(100dvh-64px)] sm:px-9 sm:pb-9 sm:pt-8">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={status === "sending"}
+            aria-label="Close application form"
+            className="absolute right-4 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700 disabled:opacity-40 sm:right-7 sm:top-7"
+          >
+            <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
+              <path d="m4.5 4.5 11 11m0-11-11 11" />
+            </svg>
+          </button>
 
-            <h3 className="mt-6 text-[28px] font-medium tracking-[-0.02em] text-[var(--foreground)]">
-              {settings?.successTitle || "Thank you."}
-            </h3>
-            <p className="mx-auto mt-3 max-w-[360px] text-[15px] leading-7 text-[var(--muted)]">
-              {settings?.successText ||
-                "We’ve received your application and will be in touch soon."}
-            </p>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="mt-8 inline-flex rounded-full border border-[#6D4AFF]/60 px-7 py-2.5 text-[14px] font-medium text-[#6D4AFF] transition-all duration-300 hover:border-transparent hover:bg-gradient-to-r hover:from-[#6D4AFF] hover:to-[#8B5CF6] hover:text-white"
-            >
-              Close
-            </button>
-          </div>
-        ) : (
-          <>
-            <h3 className="pr-10 text-[26px] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--foreground)] sm:text-[30px]">
-              {title}
-            </h3>
-
-            {role && (
-              <p className="mt-3 inline-flex flex-wrap items-center gap-x-2 rounded-lg bg-[var(--accent)]/[0.08] px-3 py-1.5 text-[13px] text-[var(--foreground)]">
-                <span className="font-medium">{role.title}</span>
-                {[role.department, role.location, role.jobType]
-                  .filter(Boolean)
-                  .map((item) => (
-                    <span key={item} className="text-[var(--muted)]">
-                      · {item}
-                    </span>
-                  ))}
+          {status === "done" ? (
+            <div className="px-2 py-10 text-center sm:px-8 sm:py-14">
+              <div className="mx-auto flex h-[68px] w-[68px] items-center justify-center rounded-[22px] bg-gradient-to-br from-[#5548e8] to-[#9875ff] text-white shadow-[0_14px_35px_rgba(109,74,255,.28)]">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+              </div>
+              <p className="mt-7 text-[11px] font-bold uppercase tracking-[.2em] text-violet-600">Application received</p>
+              <h3 id="codm-apply-title" className="mt-3 text-[29px] font-semibold tracking-[-.04em] text-slate-950 sm:text-[34px]">
+                {settings?.successTitle || "Thank you for applying."}
+              </h3>
+              <p className="mx-auto mt-3 max-w-[390px] text-[14px] leading-7 text-slate-500">
+                {settings?.successText || "We've received your application and our team will be in touch soon."}
               </p>
-            )}
-
-            {settings?.intro && (
-              <p className="mt-4 text-[14px] leading-6 text-[var(--muted)]">
-                {settings.intro}
-              </p>
-            )}
-
-            <form ref={formRef} onSubmit={handleSubmit} className="mt-6 grid gap-4" noValidate={false}>
-              {/* honeypot - hidden from people */}
-              <input
-                type="text"
-                name="website"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                className="absolute left-[-9999px] h-0 w-0 opacity-0"
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="apply-name" className={labelClass}>
-                    Full name *
-                  </label>
-                  <input
-                    ref={firstFieldRef}
-                    id="apply-name"
-                    name="name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Your name"
-                    className={inputClass}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="apply-email" className={labelClass}>
-                    Email *
-                  </label>
-                  <input
-                    id="apply-email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="you@example.com"
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="apply-phone" className={labelClass}>
-                    Phone
-                  </label>
-                  <input
-                    id="apply-phone"
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder="+91 …"
-                    className={inputClass}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="apply-linkedin" className={labelClass}>
-                    LinkedIn / portfolio
-                  </label>
-                  <input
-                    id="apply-linkedin"
-                    name="linkedin"
-                    type="url"
-                    placeholder="https://"
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              {!role && (
-                <div>
-                  <label htmlFor="apply-role" className={labelClass}>
-                    Role you’re interested in
-                  </label>
-                  <select
-                    id="apply-role"
-                    name="role"
-                    defaultValue=""
-                    className={inputClass}
-                  >
-                    <option value="">General application</option>
-                    {roleOptions.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="apply-message" className={labelClass}>
-                  Message
-                </label>
-                <textarea
-                  id="apply-message"
-                  name="message"
-                  rows={4}
-                  placeholder="Tell us about your experience and what you’re looking for."
-                  className={inputClass + " resize-y"}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="apply-cv" className={labelClass}>
-                  CV / resume (PDF, DOC, DOCX — max 5 MB)
-                </label>
-                <label
-                  htmlFor="apply-cv"
-                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[14px] text-[var(--muted)] transition-colors duration-200 hover:border-[#6D4AFF]"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D4AFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
-                  </svg>
-                  <span className="truncate">
-                    {fileName || "Choose a file"}
-                  </span>
-                </label>
-                <input
-                  id="apply-cv"
-                  name="cv"
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  className="sr-only"
-                  onChange={(e) => setFileName(e.target.files?.[0]?.name ?? "")}
-                />
-              </div>
-
-              {error && (
-                <p role="alert" className="rounded-xl bg-red-500/10 px-4 py-3 text-[13px] text-red-600 dark:text-red-400">
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="mt-1 inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] px-7 py-3.5 text-[14px] font-medium text-white shadow-[0_14px_34px_rgba(99,79,240,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(99,79,240,0.42)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
-              >
-                {status === "sending" ? (
-                  <>
-                    <span
-                      aria-hidden="true"
-                      className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
-                    />
-                    Sending…
-                  </>
-                ) : (
-                  settings?.submitText || "Submit application"
-                )}
+              <button type="button" onClick={onClose} className="mt-8 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#5146e5] to-[#8b5cf6] px-8 py-3.5 text-[14px] font-semibold text-white shadow-lg shadow-violet-500/20 transition hover:-translate-y-0.5 hover:shadow-xl">
+                Back to careers
               </button>
-
-              {settings?.privacyText && (
-                <p className="text-center text-[12px] text-[var(--muted)]">
-                  {settings.privacyText}
+            </div>
+          ) : (
+            <>
+              <div className="pr-10 sm:pr-14">
+                <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.17em] text-violet-700">
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet-500" /> CODM Careers
                 </p>
+                <h3 id="codm-apply-title" className="text-[29px] font-semibold leading-[1.12] tracking-[-.045em] text-slate-950 sm:text-[36px]">
+                  {title}
+                </h3>
+                <p className="mt-3 max-w-[520px] text-[13px] leading-6 text-slate-500 sm:text-[14px]">
+                  {settings?.intro || "Tell us a little about yourself. Share your experience and our team will be in touch."}
+                </p>
+              </div>
+
+              {role && (
+                <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-violet-100 bg-gradient-to-r from-violet-50 to-indigo-50/70 px-4 py-3">
+                  <span className="mr-1 flex h-8 w-8 items-center justify-center rounded-xl bg-white text-violet-600 shadow-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5V3h8v2M3 10h18"/></svg>
+                  </span>
+                  <span className="text-[13px] font-semibold text-slate-800">{role.title}</span>
+                  {[role.department, role.location, role.jobType].filter(Boolean).map((item) => (
+                    <span key={item} className="text-[12px] text-slate-500">· {item}</span>
+                  ))}
+                </div>
               )}
-            </form>
-          </>
-        )}
-      </div>
+
+              <form ref={formRef} onSubmit={handleSubmit} className="mt-7 space-y-5">
+                {/* Honeypot field for basic spam protection. */}
+                <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="apply-name" className={labelClass}>Full name <span className="text-violet-600">*</span></label>
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-[26px] -translate-y-1/2 text-slate-400"><FieldIcon type="user" /></span>
+                      <input ref={firstFieldRef} id="apply-name" name="name" type="text" required autoComplete="name" placeholder="Your full name" className={`${fieldClass} pl-11`} />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="apply-email" className={labelClass}>Email address <span className="text-violet-600">*</span></label>
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-[26px] -translate-y-1/2 text-slate-400"><FieldIcon type="mail" /></span>
+                      <input id="apply-email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" className={`${fieldClass} pl-11`} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="apply-phone" className={labelClass}>Phone number</label>
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-[26px] -translate-y-1/2 text-slate-400"><FieldIcon type="phone" /></span>
+                      <input id="apply-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91 …" className={`${fieldClass} pl-11`} />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="apply-linkedin" className={labelClass}>LinkedIn / portfolio</label>
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-[26px] -translate-y-1/2 text-slate-400"><FieldIcon type="link" /></span>
+                      <input id="apply-linkedin" name="linkedin" type="url" placeholder="https://" className={`${fieldClass} pl-11`} />
+                    </div>
+                  </div>
+                </div>
+
+                {!role && (
+                  <div>
+                    <label htmlFor="apply-role" className={labelClass}>Role you’re interested in</label>
+                    <select id="apply-role" name="role" defaultValue="" className={fieldClass}>
+                      <option value="">General application</option>
+                      {roleOptions.map((item) => <option key={item} value={item}>{item}</option>)}
+                    </select>
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="apply-message" className={labelClass}>A little about you <span className="font-normal text-slate-400">(optional)</span></label>
+                  <textarea id="apply-message" name="message" rows={4} placeholder="Tell us about your experience, skills and what you’re looking for…" className={`${fieldClass} min-h-[118px] resize-y leading-6`} />
+                </div>
+
+                <div>
+                  <label htmlFor="apply-cv" className={labelClass}>CV / resume <span className="font-normal text-slate-400">(PDF, DOC or DOCX · max 5 MB)</span></label>
+                  <label htmlFor="apply-cv" className="group mt-2 flex cursor-pointer items-center gap-4 rounded-2xl border border-dashed border-violet-200 bg-gradient-to-r from-violet-50/70 to-indigo-50/50 px-4 py-4 transition duration-200 hover:border-violet-400 hover:bg-violet-50 sm:px-5">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-violet-600 shadow-sm ring-1 ring-violet-100 transition group-hover:scale-105">
+                      <FieldIcon type="file" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[13px] font-semibold text-slate-800">{fileName || "Choose your resume"}</span>
+                      <span className="mt-1 block text-[11px] text-slate-500">{fileName ? "File selected · click to replace" : "Select a file from your device"}</span>
+                    </span>
+                    <span className="shrink-0 rounded-full border border-violet-200 bg-white px-3.5 py-2 text-[11px] font-semibold text-violet-700 transition group-hover:border-violet-400">Browse</span>
+                  </label>
+                  <input id="apply-cv" name="cv" type="file" accept=".pdf,.doc,.docx" className="sr-only" onChange={(event) => setFileName(event.target.files?.[0]?.name ?? "")} />
+                </div>
+
+                {error && <p role="alert" className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-[12px] leading-5 text-red-700">{error}</p>}
+
+                <div className="border-t border-slate-100 pt-5">
+                  <button type="submit" disabled={status === "sending"} className="inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#5146e5] via-[#7051ef] to-[#8b5cf6] px-7 py-4 text-[14px] font-semibold text-white shadow-[0_12px_28px_rgba(99,79,240,.25)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(99,79,240,.34)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0">
+                    {status === "sending" ? <><span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" /> Sending your application…</> : <>{settings?.submitText || "Submit application"}<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg></>}
+                  </button>
+                  <p className="mt-3 text-center text-[11px] leading-5 text-slate-400">{settings?.privacyText || "Your details will only be used to review your application."}</p>
+                </div>
+              </form>
+            </>
+          )}
+        </div>
+      </section>
 
       <style>{`
-        @keyframes apply-fade { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes apply-pop {
-          from { opacity: 0; transform: translateY(16px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes codm-apply-fade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes codm-apply-rise { from { opacity: 0; transform: translateY(14px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
       `}</style>
     </div>,
     document.body
