@@ -223,11 +223,11 @@ export default function ServicesSection() {
                 services(
                   first: 20
                   where: {
-                    orderby: {
-                      field: DATE
-                      order: ASC
-                    }
-                  }
+  orderby: {
+    field: MENU_ORDER
+    order: ASC
+  }
+}
                 ) {
                   nodes {
                     id
