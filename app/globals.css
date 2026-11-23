@@ -14415,3 +14415,39 @@ a.codm-ic-card {
 
 
 
+footer .codm-footer-left-logos {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 500px !important;
+}
+
+footer .codm-footer-logo-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+footer .codm-footer-left-logo {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  transform: scale(1.35) !important;
+  transform-origin: center;
+}
+
+footer .codm-footer-left-logo:hover {
+  transform: scale(1.35) translateY(-2px) !important;
+}
+
+/* per-logo balance: 1 Salesforce, 2 G-Cloud, 3 Google Cloud, 4 ISO */
+footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo { transform: scale(1.2) !important; }
+footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo { transform: scale(1.5) !important; }
+footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo { transform: scale(1.5) !important; }
+footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: scale(1.2) !important; }
