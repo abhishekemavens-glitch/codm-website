@@ -7,9 +7,9 @@ import { Reveal } from "@/components/Reveal";
 /* =========================================================
    CONTACT FORM — "Ambition meets possibility."
 
-   Content comes from WordPress (codm-headless.php):
-   Contact Cards > Contact Form. The form posts straight to
-   Salesforce Web-to-Lead (URL + org ID are set in WordPress).
+   Content comes from WordPress (codm-headless.php).
+   The form does a normal POST to Salesforce Web-to-Lead, which
+   then redirects the visitor back to this page (retURL).
 
    Usage:  <ContactForm />
    Place at: components/ContactForm.tsx
@@ -17,6 +17,12 @@ import { Reveal } from "@/components/Reveal";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
+
+/* Salesforce Web-to-Lead (from the generated form) */
+const SF_ORG_ID = "00DAe000009CRc3";
+const SF_ACTION = `https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=${SF_ORG_ID}`;
+/* must exactly match a value in the Lead Source picklist */
+const SF_LEAD_SOURCE = "Website";
 
 type LinkRow = {
   icon: string | null;
@@ -39,12 +45,9 @@ type Content = {
   privacyLines: string[] | null;
   successTitle: string | null;
   successText: string | null;
-  sfUrl: string | null;
-  sfOid: string | null;
-  leadSource: string | null;
 };
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "sent";
 
 const isExternal = (href: string) => /^(https?:)?\/\//i.test(href);
 
@@ -106,6 +109,7 @@ export default function ContactForm() {
   const [content, setContent] = useState<Content | null>(null);
   const [status, setStatus] = useState<Status>("idle");
 
+  /* Load content from WordPress */
   useEffect(() => {
     let cancelled = false;
 
@@ -131,9 +135,6 @@ export default function ContactForm() {
                   privacyLines
                   successTitle
                   successText
-                  sfUrl
-                  sfOid
-                  leadSource
                 }
               }
             `,
@@ -162,64 +163,59 @@ export default function ContactForm() {
     };
   }, []);
 
+  /* Salesforce sends the visitor back here with ?contact=sent */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("contact") === "sent") {
+      setStatus("sent");
+    }
+  }, []);
+
+  /* Bring the success message into view once content has rendered */
+  useEffect(() => {
+    if (content && status === "sent") {
+      document
+        .getElementById("contact-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [content, status]);
+
   if (!content) {
     return null;
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!content?.sfUrl || !content?.sfOid) {
-      setStatus("error");
-      return;
-    }
-
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     const form = event.currentTarget;
     const data = new FormData(form);
 
     /* spam trap: real visitors never fill this hidden field */
     if (String(data.get("website") ?? "").trim() !== "") {
+      event.preventDefault();
       setStatus("sent");
       return;
     }
 
+    const field = (name: string) =>
+      form.elements.namedItem(name) as HTMLInputElement;
+
+    /* Salesforce requires a Company on every lead */
+    const company = field("company");
+    if (!company.value.trim()) {
+      company.value = "[Not provided]";
+    }
+
+    /* combine "interested in" + message into the Lead description */
     const interested = String(data.get("interest") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
+    field("description").value = interested
+      ? `Interested in: ${interested}\n\n${message}`
+      : message;
 
-    const body = new URLSearchParams({
-      oid: content.sfOid,
-      retURL: window.location.href,
-      lead_source: content.leadSource || "Web",
-      first_name: String(data.get("first_name") ?? "").trim(),
-      last_name: String(data.get("last_name") ?? "").trim(),
-      email: String(data.get("email") ?? "").trim(),
-      phone: String(data.get("phone") ?? "").trim(),
-      /* Salesforce requires a Company on every lead */
-      company:
-        String(data.get("company") ?? "").trim() || "[Not provided]",
-      description: interested
-        ? `Interested in: ${interested}\n\n${message}`
-        : message,
-    });
+    /* where Salesforce sends the visitor afterwards (this website) */
+    field("retURL").value = `${window.location.origin}${window.location.pathname}?contact=sent#contact-form`;
 
-    try {
-      setStatus("sending");
-
-      /* Salesforce doesn't allow cross-site reads, so the reply is
-         opaque (no-cors). If the request leaves, we treat it as sent. */
-      await fetch(content.sfUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
-      });
-
-      form.reset();
-      setStatus("sent");
-    } catch (error) {
-      console.error("Contact form failed:", error);
-      setStatus("error");
-    }
+    /* don't preventDefault: the browser posts the form to Salesforce */
+    setStatus("sending");
   }
 
   const links = (content.links ?? []).filter((l) => l.value);
@@ -232,9 +228,6 @@ export default function ContactForm() {
       className="relative overflow-hidden bg-[var(--background)] px-5 py-16 transition-colors duration-500 sm:px-8 md:py-24"
     >
       <div className="relative mx-auto max-w-[1250px]">
-        {/* =================================================
-            CENTRED SECTION HEADING (same as the other sections)
-            ================================================= */}
         <Reveal distance={20}>
           <div className="mx-auto max-w-[1100px] text-center">
             <SectionHeading
@@ -246,313 +239,318 @@ export default function ContactForm() {
           </div>
         </Reveal>
 
-      <div className="mt-12 grid gap-14 md:mt-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-        {/* =================================================
-            LEFT: contact rows, hours
-            ================================================= */}
-        <Reveal distance={24}>
-          <div>
-            {links.length > 0 && (
-              <ul className="border-t border-[var(--border)]">
-                {links.map((row, i) => {
-                  const inner = (
-                    <>
-                      <RowIcon name={row.icon} />
+        <div className="mt-12 grid gap-14 md:mt-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+          {/* LEFT: contact rows, hours */}
+          <Reveal distance={24}>
+            <div>
+              {links.length > 0 && (
+                <ul className="border-t border-[var(--border)]">
+                  {links.map((row, i) => {
+                    const inner = (
+                      <>
+                        <RowIcon name={row.icon} />
 
-                      <span className="min-w-0 flex-1">
-                        {row.label && (
-                          <span className="block text-[13px] text-[var(--muted)]">
-                            {row.label}
+                        <span className="min-w-0 flex-1">
+                          {row.label && (
+                            <span className="block text-[13px] text-[var(--muted)]">
+                              {row.label}
+                            </span>
+                          )}
+
+                          <span className="mt-1 block text-[17px] text-[var(--foreground)]">
+                            {row.value}
                           </span>
-                        )}
-
-                        <span className="mt-1 block text-[17px] text-[var(--foreground)]">
-                          {row.value}
                         </span>
-                      </span>
 
-                      {row.href && (
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          aria-hidden="true"
-                          className="shrink-0 text-[var(--muted)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#6D4AFF]"
-                        >
-                          <path
-                            d="M4.5 11.5l7-7M5.5 4.5h6v6"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </>
-                  );
+                        {row.href && (
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            aria-hidden="true"
+                            className="shrink-0 text-[var(--muted)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#6D4AFF]"
+                          >
+                            <path
+                              d="M4.5 11.5l7-7M5.5 4.5h6v6"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </>
+                    );
 
-                  const rowClass =
-                    "group flex items-center gap-5 border-b border-[var(--border)] py-6";
+                    const rowClass =
+                      "group flex items-center gap-5 border-b border-[var(--border)] py-6";
 
-                  return (
-                    <li key={i}>
-                      {row.href ? (
-                        <a
-                          href={row.href}
-                          {...(isExternal(row.href)
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                          className={rowClass}
-                        >
-                          {inner}
-                        </a>
-                      ) : (
-                        <div className={rowClass}>{inner}</div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            {content.hours && (
-              <p className="mt-6 flex items-center gap-3 text-[14px] text-[var(--muted)]">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 7v5l3 2" />
-                </svg>
-                {content.hours}
-              </p>
-            )}
-          </div>
-        </Reveal>
-
-        {/* =================================================
-            RIGHT: form
-            ================================================= */}
-        <Reveal distance={30} duration={0.8}>
-          <div>
-            <div className="flex items-start justify-between gap-4">
-              {content.formTitle && (
-                <h3 className="text-[28px] font-normal leading-tight tracking-[-0.02em] text-[var(--foreground)] md:text-[32px]">
-                  {content.formTitle}
-                </h3>
+                    return (
+                      <li key={i}>
+                        {row.href ? (
+                          <a
+                            href={row.href}
+                            {...(isExternal(row.href)
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                            className={rowClass}
+                          >
+                            {inner}
+                          </a>
+                        ) : (
+                          <div className={rowClass}>{inner}</div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
               )}
 
-              {content.requiredNote && (
-                <span className="shrink-0 pt-2 text-[12px] text-[var(--muted)]">
-                  {content.requiredNote}
-                </span>
+              {content.hours && (
+                <p className="mt-6 flex items-center gap-3 text-[14px] text-[var(--muted)]">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 2" />
+                  </svg>
+                  {content.hours}
+                </p>
               )}
             </div>
+          </Reveal>
 
-            {status === "sent" ? (
-              <div
-                role="status"
-                className="mt-12 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-10 text-center"
-              >
-                <h4 className="text-2xl font-normal text-[var(--foreground)]">
-                  {content.successTitle || "Thank you."}
-                </h4>
+          {/* RIGHT: form */}
+          <Reveal distance={30} duration={0.8}>
+            <div>
+              <div className="flex items-start justify-between gap-4">
+                {content.formTitle && (
+                  <h3 className="text-[28px] font-normal leading-tight tracking-[-0.02em] text-[var(--foreground)] md:text-[32px]">
+                    {content.formTitle}
+                  </h3>
+                )}
 
-                {content.successText && (
-                  <p className="mx-auto mt-3 max-w-[420px] text-[15px] leading-7 text-[var(--muted)]">
-                    {content.successText}
-                  </p>
+                {content.requiredNote && (
+                  <span className="shrink-0 pt-2 text-[12px] text-[var(--muted)]">
+                    {content.requiredNote}
+                  </span>
                 )}
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="mt-10" noValidate={false}>
-                <div className="grid gap-x-9 gap-y-8 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="cf-first" className={labelClass}>
-                      First name
-                      <Req />
-                    </label>
-                    <input
-                      id="cf-first"
-                      name="first_name"
-                      type="text"
-                      required
-                      maxLength={40}
-                      placeholder="Jane"
-                      autoComplete="given-name"
-                      className={fieldClass}
-                    />
-                  </div>
 
-                  <div>
-                    <label htmlFor="cf-last" className={labelClass}>
-                      Last name
-                      <Req />
-                    </label>
-                    <input
-                      id="cf-last"
-                      name="last_name"
-                      type="text"
-                      required
-                      maxLength={80}
-                      placeholder="Smith"
-                      autoComplete="family-name"
-                      className={fieldClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="cf-email" className={labelClass}>
-                      Work email
-                      <Req />
-                    </label>
-                    <input
-                      id="cf-email"
-                      name="email"
-                      type="email"
-                      required
-                      maxLength={80}
-                      placeholder="jane@company.com"
-                      autoComplete="email"
-                      className={fieldClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="cf-phone" className={labelClass}>
-                      Phone number
-                    </label>
-                    <input
-                      id="cf-phone"
-                      name="phone"
-                      type="tel"
-                      maxLength={40}
-                      placeholder="+44"
-                      autoComplete="tel"
-                      className={fieldClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="cf-company" className={labelClass}>
-                      Company
-                    </label>
-                    <input
-                      id="cf-company"
-                      name="company"
-                      type="text"
-                      maxLength={40}
-                      placeholder="Your company"
-                      autoComplete="organization"
-                      className={fieldClass}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="cf-interest" className={labelClass}>
-                      I’m interested in
-                    </label>
-                    <select
-                      id="cf-interest"
-                      name="interest"
-                      defaultValue=""
-                      className={fieldClass + " cursor-pointer"}
-                    >
-                      <option value="">Select a service</option>
-                      {services.map((service) => (
-                        <option key={service} value={service}>
-                          {service}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label htmlFor="cf-message" className={labelClass}>
-                      Tell us about your project
-                      <Req />
-                    </label>
-                    <textarea
-                      id="cf-message"
-                      name="message"
-                      required
-                      rows={5}
-                      maxLength={3000}
-                      placeholder="Your goals, your challenges, or simply where you’d like to start…"
-                      className={fieldClass + " resize-y"}
-                    />
-                  </div>
-                </div>
-
-                {/* spam trap: hidden from people */}
+              {status === "sent" ? (
                 <div
-                  aria-hidden="true"
-                  style={{ position: "absolute", left: "-9999px" }}
+                  role="status"
+                  className="mt-12 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-10 text-center"
                 >
-                  <label htmlFor="cf-website">Website</label>
-                  <input
-                    id="cf-website"
-                    name="website"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-                </div>
+                  <h4 className="text-2xl font-normal text-[var(--foreground)]">
+                    {content.successTitle || "Thank you."}
+                  </h4>
 
-                <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                  <button
-                    type="submit"
-                    disabled={status === "sending"}
-                    className="button-bor inline-flex w-fit items-center gap-10 bg-[#6D4AFF] px-8 py-5 text-[15px] font-medium text-white transition duration-300 hover:bg-[#5a3be0] hover:shadow-[0_14px_34px_rgba(99,79,240,0.32)] disabled:opacity-60"
-                  >
-                    {status === "sending"
-                      ? "Sending…"
-                      : content.buttonText || "Send"}
-
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M4.5 11.5l7-7M5.5 4.5h6v6"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-
-                  {(content.privacyLines ?? []).length > 0 && (
-                    <div className="text-[12px] leading-6 text-[var(--muted)] sm:text-right">
-                      {(content.privacyLines ?? []).map((line) => (
-                        <p key={line}>{line}</p>
-                      ))}
-                    </div>
+                  {content.successText && (
+                    <p className="mx-auto mt-3 max-w-[420px] text-[15px] leading-7 text-[var(--muted)]">
+                      {content.successText}
+                    </p>
                   )}
                 </div>
+              ) : (
+                <form
+                  action={SF_ACTION}
+                  method="POST"
+                  acceptCharset="UTF-8"
+                  onSubmit={handleSubmit}
+                  className="relative mt-10"
+                >
+                  {/* Salesforce hidden fields */}
+                  <input type="hidden" name="oid" value={SF_ORG_ID} />
+                  <input type="hidden" name="retURL" defaultValue="" />
+                  <input
+                    type="hidden"
+                    name="lead_source"
+                    value={SF_LEAD_SOURCE}
+                  />
+                  <input type="hidden" name="description" defaultValue="" />
 
-                {status === "error" && (
-                  <p role="alert" className="mt-5 text-sm text-red-500">
-                    Sorry, something went wrong sending your message. Please try
-                    again or email us directly.
-                  </p>
-                )}
-              </form>
-            )}
-          </div>
-        </Reveal>
-      </div>
+                  <div className="grid gap-x-9 gap-y-8 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="first_name" className={labelClass}>
+                        First name
+                        <Req />
+                      </label>
+                      <input
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        required
+                        maxLength={40}
+                        placeholder="Jane"
+                        autoComplete="given-name"
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="last_name" className={labelClass}>
+                        Last name
+                        <Req />
+                      </label>
+                      <input
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        required
+                        maxLength={80}
+                        placeholder="Smith"
+                        autoComplete="family-name"
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className={labelClass}>
+                        Work email
+                        <Req />
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        maxLength={80}
+                        placeholder="jane@company.com"
+                        autoComplete="email"
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="phone" className={labelClass}>
+                        Phone number
+                      </label>
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        maxLength={40}
+                        placeholder="+44"
+                        autoComplete="tel"
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="company" className={labelClass}>
+                        Company
+                      </label>
+                      <input
+                        id="company"
+                        name="company"
+                        type="text"
+                        maxLength={40}
+                        placeholder="Your company"
+                        autoComplete="organization"
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="interest" className={labelClass}>
+                        I’m interested in
+                      </label>
+                      <select
+                        id="interest"
+                        name="interest"
+                        defaultValue=""
+                        className={fieldClass + " cursor-pointer"}
+                      >
+                        <option value="">Select a service</option>
+                        {services.map((service) => (
+                          <option key={service} value={service}>
+                            {service}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label htmlFor="message" className={labelClass}>
+                        Tell us about your project
+                        <Req />
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        required
+                        rows={5}
+                        maxLength={3000}
+                        placeholder="Your goals, your challenges, or simply where you’d like to start…"
+                        className={fieldClass + " resize-y"}
+                      />
+                    </div>
+                  </div>
+
+                  {/* spam trap: hidden from people */}
+                  <div
+                    aria-hidden="true"
+                    style={{ position: "absolute", left: "-9999px" }}
+                  >
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                      type="submit"
+                      disabled={status === "sending"}
+                      className="button-bor inline-flex w-fit items-center gap-10 bg-[#6D4AFF] px-8 py-5 text-[15px] font-medium text-white transition duration-300 hover:bg-[#5a3be0] hover:shadow-[0_14px_34px_rgba(99,79,240,0.32)] disabled:opacity-60"
+                    >
+                      {status === "sending"
+                        ? "Sending…"
+                        : content.buttonText || "Send"}
+
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M4.5 11.5l7-7M5.5 4.5h6v6"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    {(content.privacyLines ?? []).length > 0 && (
+                      <div className="text-[12px] leading-6 text-[var(--muted)] sm:text-right">
+                        {(content.privacyLines ?? []).map((line) => (
+                          <p key={line}>{line}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </form>
+              )}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
