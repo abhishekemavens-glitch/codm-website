@@ -14414,3 +14414,33 @@ a.codm-ic-card {
 }	
 
 
+
+footer .codm-footer-left-logos {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  max-width: 520px !important;
+}
+
+footer .codm-footer-logo-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 110px !important;
+  padding: 0 10px !important;
+}
+
+footer .codm-footer-left-logo {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  transform: scale(1.6);
+  transform-origin: center;
+}
+
+footer .codm-footer-left-logo:hover {
+  transform: scale(1.6) translateY(-2px);
+}
