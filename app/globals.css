@@ -14442,9 +14442,3 @@ footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo:hover { transf
 footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo:hover { transform: scale(1.25) translateY(-2px) !important; }
 footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo:hover { transform: scale(1.0) translateY(-2px) !important; }
 
-footer .codm-footer-logo-item,
-footer .codm-footer-logo-item::before,
-footer .codm-footer-logo-item::after {
-  border: 0 !important;
-  background-image: none !important;
-}
