@@ -14409,3 +14409,27 @@ a.codm-ic-card {
   cursor: pointer;
 }	
 
+
+
+.codm-footer-left-logos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  max-width: 460px;          /* wider row gives the logos room */
+}
+
+.codm-footer-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90px;              /* was roughly 80px: raise for taller cells */
+  padding: 0 12px;
+}
+
+.codm-footer-left-logo {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 56px !important;   /* main size control */
+  object-fit: contain;
+}
