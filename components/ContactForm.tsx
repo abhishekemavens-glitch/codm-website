@@ -7,9 +7,11 @@ import { Reveal } from "@/components/Reveal";
 /* =========================================================
    CONTACT FORM — "Ambition meets possibility."
 
-   Content comes from WordPress (codm-headless.php).
-   The form does a normal POST to Salesforce Web-to-Lead, which
-   then redirects the visitor back to this page (retURL).
+   Content comes from WordPress (codm-headless.php):
+   Contact Cards > Contact Form. The form does a normal POST
+   to Salesforce Web-to-Lead (URL, org ID and lead source are
+   set in WordPress). Salesforce then redirects the visitor
+   back to this page (retURL).
 
    Usage:  <ContactForm />
    Place at: components/ContactForm.tsx
@@ -17,12 +19,6 @@ import { Reveal } from "@/components/Reveal";
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
-
-/* Salesforce Web-to-Lead (from the generated form) */
-const SF_ORG_ID = "00DAe000009CRc3";
-const SF_ACTION = `https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=${SF_ORG_ID}`;
-/* must exactly match a value in the Lead Source picklist */
-const SF_LEAD_SOURCE = "Website";
 
 type LinkRow = {
   icon: string | null;
@@ -45,6 +41,9 @@ type Content = {
   privacyLines: string[] | null;
   successTitle: string | null;
   successText: string | null;
+  sfUrl: string | null;
+  sfOid: string | null;
+  leadSource: string | null;
 };
 
 type Status = "idle" | "sending" | "sent";
@@ -135,6 +134,9 @@ export default function ContactForm() {
                   privacyLines
                   successTitle
                   successText
+                  sfUrl
+                  sfOid
+                  leadSource
                 }
               }
             `,
@@ -185,6 +187,13 @@ export default function ContactForm() {
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    /* settings missing in WordPress: don't post to nowhere */
+    if (!content?.sfUrl || !content?.sfOid) {
+      event.preventDefault();
+      console.error("Salesforce URL / org ID missing in WordPress.");
+      return;
+    }
+
     const form = event.currentTarget;
     const data = new FormData(form);
 
@@ -362,19 +371,19 @@ export default function ContactForm() {
                 </div>
               ) : (
                 <form
-                  action={SF_ACTION}
+                  action={content.sfUrl ?? ""}
                   method="POST"
                   acceptCharset="UTF-8"
                   onSubmit={handleSubmit}
                   className="relative mt-10"
                 >
                   {/* Salesforce hidden fields */}
-                  <input type="hidden" name="oid" value={SF_ORG_ID} />
+                  <input type="hidden" name="oid" value={content.sfOid ?? ""} />
                   <input type="hidden" name="retURL" defaultValue="" />
                   <input
                     type="hidden"
                     name="lead_source"
-                    value={SF_LEAD_SOURCE}
+                    value={content.leadSource || "Website"}
                   />
                   <input type="hidden" name="description" defaultValue="" />
 
