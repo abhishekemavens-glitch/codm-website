@@ -14437,8 +14437,3 @@ footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo { transform: s
 footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo { transform: scale(1.7) !important; }
 footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: scale(1.0) !important; }
 
-footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo:hover { transform: scale(1.0) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo:hover { transform: scale(1.2) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo:hover { transform: scale(1.25) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo:hover { transform: scale(1.0) translateY(-2px) !important; }
-
