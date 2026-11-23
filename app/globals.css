@@ -14417,9 +14417,9 @@ a.codm-ic-card {
 footer .codm-footer-left-logos {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
-  gap: 22px !important;
+  gap: 0 !important;                 /* dividers now sit evenly between cells */
   width: 100% !important;
-  max-width: 500px !important;
+  max-width: 560px !important;       /* wider cells = room for bigger logos */
 }
 
 footer .codm-footer-logo-item {
@@ -14427,29 +14427,24 @@ footer .codm-footer-logo-item {
   align-items: center !important;
   justify-content: center !important;
   height: 100px !important;
-  padding: 0 !important;
+  padding: 0 14px !important;        /* keeps logos away from the dividers */
   overflow: visible !important;
 }
 
-footer .codm-footer-left-logo {
-  width: 100% !important;
-  height: auto !important;
-  max-width: none !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  transform-origin: center;
-  opacity: 1 !important;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
 /* order: 1 Salesforce, 2 G-Cloud, 3 Google Cloud, 4 ISO */
-footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo { transform: scale(1.1) !important; }
-footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo { transform: scale(1.4) !important; }
-footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo { transform: scale(1.55) !important; }
-footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: scale(1.1) !important; }
+footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo { transform: scale(1.0) !important; }
+footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo { transform: scale(1.2) !important; }
+footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo { transform: scale(1.25) !important; }
+footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: scale(1.0) !important; }
 
-footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo:hover { transform: scale(1.1) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo:hover { transform: scale(1.4) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo:hover { transform: scale(1.55) translateY(-2px) !important; }
-footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo:hover { transform: scale(1.1) translateY(-2px) !important; }
-	  
+footer .codm-footer-logo-item:nth-child(1) .codm-footer-left-logo:hover { transform: scale(1.0) translateY(-2px) !important; }
+footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo:hover { transform: scale(1.2) translateY(-2px) !important; }
+footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo:hover { transform: scale(1.25) translateY(-2px) !important; }
+footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo:hover { transform: scale(1.0) translateY(-2px) !important; }
+
+footer .codm-footer-logo-item,
+footer .codm-footer-logo-item::before,
+footer .codm-footer-logo-item::after {
+  border: 0 !important;
+  background-image: none !important;
+}
