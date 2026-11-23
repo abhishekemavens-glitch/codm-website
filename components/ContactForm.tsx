@@ -8,10 +8,8 @@ import { Reveal } from "@/components/Reveal";
    CONTACT FORM — "Ambition meets possibility."
 
    Content comes from WordPress (codm-headless.php):
-   Contact Cards > Contact Form. The form does a normal POST
-   to Salesforce Web-to-Lead (URL, org ID and lead source are
-   set in WordPress). Salesforce then redirects the visitor
-   back to this page (retURL).
+   Contact Cards > Contact Form. The form posts straight to
+   Salesforce Web-to-Lead (URL + org ID are set in WordPress).
 
    Usage:  <ContactForm />
    Place at: components/ContactForm.tsx
@@ -46,7 +44,7 @@ type Content = {
   leadSource: string | null;
 };
 
-type Status = "idle" | "sending" | "sent";
+type Status = "idle" | "sending" | "sent" | "error";
 
 const isExternal = (href: string) => /^(https?:)?\/\//i.test(href);
 
@@ -108,7 +106,6 @@ export default function ContactForm() {
   const [content, setContent] = useState<Content | null>(null);
   const [status, setStatus] = useState<Status>("idle");
 
-  /* Load content from WordPress */
   useEffect(() => {
     let cancelled = false;
 
@@ -165,32 +162,15 @@ export default function ContactForm() {
     };
   }, []);
 
-  /* Salesforce sends the visitor back here with ?contact=sent */
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("contact") === "sent") {
-      setStatus("sent");
-    }
-  }, []);
-
-  /* Bring the success message into view once content has rendered */
-  useEffect(() => {
-    if (content && status === "sent") {
-      document
-        .getElementById("contact-form")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [content, status]);
-
   if (!content) {
     return null;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    /* settings missing in WordPress: don't post to nowhere */
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     if (!content?.sfUrl || !content?.sfOid) {
-      event.preventDefault();
-      console.error("Salesforce URL / org ID missing in WordPress.");
+      setStatus("error");
       return;
     }
 
@@ -199,32 +179,48 @@ export default function ContactForm() {
 
     /* spam trap: real visitors never fill this hidden field */
     if (String(data.get("website") ?? "").trim() !== "") {
-      event.preventDefault();
       setStatus("sent");
       return;
     }
 
-    const field = (name: string) =>
-      form.elements.namedItem(name) as HTMLInputElement;
-
-    /* Salesforce requires a Company on every lead */
-    const company = field("company");
-    if (!company.value.trim()) {
-      company.value = "[Not provided]";
-    }
-
-    /* combine "interested in" + message into the Lead description */
     const interested = String(data.get("interest") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
-    field("description").value = interested
-      ? `Interested in: ${interested}\n\n${message}`
-      : message;
 
-    /* where Salesforce sends the visitor afterwards (this website) */
-    field("retURL").value = `${window.location.origin}${window.location.pathname}?contact=sent#contact-form`;
+    const body = new URLSearchParams({
+      oid: content.sfOid,
+      retURL: window.location.href,
+      /* must exactly match a value in the Salesforce Lead Source picklist */
+      lead_source: content.leadSource || "Website",
+      first_name: String(data.get("first_name") ?? "").trim(),
+      last_name: String(data.get("last_name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
+      /* Salesforce requires a Company on every lead */
+      company:
+        String(data.get("company") ?? "").trim() || "[Not provided]",
+      description: interested
+        ? `Interested in: ${interested}\n\n${message}`
+        : message,
+    });
 
-    /* don't preventDefault: the browser posts the form to Salesforce */
-    setStatus("sending");
+    try {
+      setStatus("sending");
+
+      /* Salesforce doesn't allow cross-site reads, so the reply is
+         opaque (no-cors). If the request leaves, we treat it as sent. */
+      await fetch(content.sfUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+
+      form.reset();
+      setStatus("sent");
+    } catch (error) {
+      console.error("Contact form failed:", error);
+      setStatus("error");
+    }
   }
 
   const links = (content.links ?? []).filter((l) => l.value);
@@ -371,30 +367,18 @@ export default function ContactForm() {
                 </div>
               ) : (
                 <form
-                  action={content.sfUrl ?? ""}
-                  method="POST"
-                  acceptCharset="UTF-8"
                   onSubmit={handleSubmit}
                   className="relative mt-10"
+                  noValidate={false}
                 >
-                  {/* Salesforce hidden fields */}
-                  <input type="hidden" name="oid" value={content.sfOid ?? ""} />
-                  <input type="hidden" name="retURL" defaultValue="" />
-                  <input
-                    type="hidden"
-                    name="lead_source"
-                    value={content.leadSource || "Website"}
-                  />
-                  <input type="hidden" name="description" defaultValue="" />
-
                   <div className="grid gap-x-9 gap-y-8 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="first_name" className={labelClass}>
+                      <label htmlFor="cf-first" className={labelClass}>
                         First name
                         <Req />
                       </label>
                       <input
-                        id="first_name"
+                        id="cf-first"
                         name="first_name"
                         type="text"
                         required
@@ -406,12 +390,12 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="last_name" className={labelClass}>
+                      <label htmlFor="cf-last" className={labelClass}>
                         Last name
                         <Req />
                       </label>
                       <input
-                        id="last_name"
+                        id="cf-last"
                         name="last_name"
                         type="text"
                         required
@@ -423,12 +407,12 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="email" className={labelClass}>
+                      <label htmlFor="cf-email" className={labelClass}>
                         Work email
                         <Req />
                       </label>
                       <input
-                        id="email"
+                        id="cf-email"
                         name="email"
                         type="email"
                         required
@@ -440,11 +424,11 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="phone" className={labelClass}>
+                      <label htmlFor="cf-phone" className={labelClass}>
                         Phone number
                       </label>
                       <input
-                        id="phone"
+                        id="cf-phone"
                         name="phone"
                         type="tel"
                         maxLength={40}
@@ -455,11 +439,11 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="company" className={labelClass}>
+                      <label htmlFor="cf-company" className={labelClass}>
                         Company
                       </label>
                       <input
-                        id="company"
+                        id="cf-company"
                         name="company"
                         type="text"
                         maxLength={40}
@@ -470,11 +454,11 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="interest" className={labelClass}>
+                      <label htmlFor="cf-interest" className={labelClass}>
                         I’m interested in
                       </label>
                       <select
-                        id="interest"
+                        id="cf-interest"
                         name="interest"
                         defaultValue=""
                         className={fieldClass + " cursor-pointer"}
@@ -489,12 +473,12 @@ export default function ContactForm() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label htmlFor="message" className={labelClass}>
+                      <label htmlFor="cf-message" className={labelClass}>
                         Tell us about your project
                         <Req />
                       </label>
                       <textarea
-                        id="message"
+                        id="cf-message"
                         name="message"
                         required
                         rows={5}
@@ -510,9 +494,9 @@ export default function ContactForm() {
                     aria-hidden="true"
                     style={{ position: "absolute", left: "-9999px" }}
                   >
-                    <label htmlFor="website">Website</label>
+                    <label htmlFor="cf-website">Website</label>
                     <input
-                      id="website"
+                      id="cf-website"
                       name="website"
                       type="text"
                       tabIndex={-1}
@@ -555,6 +539,13 @@ export default function ContactForm() {
                       </div>
                     )}
                   </div>
+
+                  {status === "error" && (
+                    <p role="alert" className="mt-5 text-sm text-red-500">
+                      Sorry, something went wrong sending your message. Please
+                      try again or email us directly.
+                    </p>
+                  )}
                 </form>
               )}
             </div>
