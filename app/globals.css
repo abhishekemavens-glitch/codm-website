@@ -1354,12 +1354,12 @@ header a {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 24px;
 }
 
 .codm-footer-left-logo {
-  max-width: 125px;
-  max-height: 45px;
+  max-width: 170px;
+  max-height: 64px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -1371,6 +1371,10 @@ header a {
 .codm-footer-left-logo:hover {
   opacity: 1;
   transform: translateY(-2px);
+}
+
+.codm-footer-column {
+  min-width: 0;
 }
 
 .codm-footer-column {
