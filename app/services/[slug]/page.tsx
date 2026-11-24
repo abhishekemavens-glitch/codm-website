@@ -340,15 +340,9 @@ export default async function ServicePage({
               <path d="m9 18 6-6-6-6" />
             </svg>
 
-            <a
-              href="/services"
-              className="
-                codm-hero-breadcrumb-link
-                transition-colors
-              "
-            >
-              Services
-            </a>
+           <span className="text-[var(--foreground)]">
+  Services
+</span>
 
             <svg
               width="14"
