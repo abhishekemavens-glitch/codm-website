@@ -726,9 +726,9 @@ export default function ProductPage({
             <path d="m9 18 6-6-6-6" />
           </svg>
 
-          <Link href="/products" className="codm-hero-breadcrumb-link transition-colors">
-            Products
-          </Link>
+          <span className="codm-hero-breadcrumb-link">
+  Products
+</span>
 
           <svg
             width="14"
