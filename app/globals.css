@@ -1289,12 +1289,12 @@ header a {
 }
 
 .codm-footer-main {
-  width: min(1240px, 100%);
-  margin: 0 auto;
-  padding: 70px 40px 55px;
-  display: grid;
-  grid-template-columns: minmax(280px, 1.35fr) repeat(3, minmax(160px, 1fr)) minmax(150px, 0.9fr);
-  gap: 55px;
+	grid-template-columns: minmax(280px,1.35fr) repeat(3,minmax(160px,1fr)) minmax(150px,.9fr);
+	gap: 55px;
+	/* width: min(1240px,100%); */
+	margin: 0 auto;
+	padding: 70px 40px 55px;
+	display: grid;
 }
 
 .codm-footer-brand {
@@ -6857,10 +6857,10 @@ img.codm-footer-logo {
 @media (min-width: 1101px) {
 
   .codm-footer-main {
-    grid-template-columns: 443fr 215fr 221fr 215fr 156fr;
-    gap: 0;
-    padding: 40px 5px 32px;
-  }
+	grid-template-columns: 443fr 215fr 221fr 215fr 156fr;
+	gap: 0;
+	/* padding: 40px 5px 32px; */
+}
 
   /* right padding makes long links wrap like the design */
   .codm-footer-column:not(:last-child) {
