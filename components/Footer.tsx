@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
@@ -23,49 +24,40 @@ type FooterData = {
   copyright: string;
 };
 
-type FooterLink = { label: string; url: string };
+type FooterLink = {
+  label: string;
+  url: string;
+};
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-/*
- * Fallback routes for WordPress footer labels.
- * Explicit URLs supplied in WordPress are used only when no mapped route exists.
- * Adjust any route here if your published Next.js slug differs.
- */
-const FOOTER_URLS: Record<string, string> = {
-  // Services
-  "Education Cloud": "/services/education-cloud",
-  "Financial Services": "/services/sales-force-financial-services-cloud",
-  "API Integration": "/services/api-integration",
-  "Data Integration": "/services/data-integration-migration",
-  "Data Migration": "/services/data-integration-migration",
-  "Building LLM": "/services/building-llm", 
+function parseLinks(value: string = ""): FooterLink[] {
+  if (!value) return [];
 
-  // Industries 
-  "Healthcare & Insurance": "/industries/healthcare-insurance",
-  Manufacturing: "/industries/manufacturing-cloud",
-  "Higher Education": "/industries/education-cloud",
-  Education: "/industries/higher-education",
-  "Energy & Utilities": "/industries/energy-utilities",
-  "Energy and Utilities": "/industries/energy-utilities",
-  Government: "/industries/government",
-  "Public Sector": "/industries/government",
-  "Healthcare & Insurance Cloud": "/industries/healthcare-insurance",
-  "Manufacturing Cloud": "/industries/manufacturing",
-  Nonprofit: "/services/non-profit-cloud",
-  "Nonprofit Cloud": "/industries/non-profit",
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const separatorIndex = line.indexOf("|");
 
-  // Company
-  About: "/about",
-  "Products": "/products",
-  "Case Studies": "/case-studies",
-  Career: "/career",
-  Careers: "/career",
-  Contact: "/contact-us",
-  Blogs: "/insights",
-  Blog: "/insights",
-};
+      const label =
+        separatorIndex === -1
+          ? line.trim()
+          : line.substring(0, separatorIndex).trim();
+
+      const suppliedUrl =
+        separatorIndex === -1
+          ? ""
+          : line.substring(separatorIndex + 1).trim();
+
+      return {
+        label,
+        url: normalizeUrl(suppliedUrl || "#"),
+      };
+    });
+}
 
 function normalizeUrl(url: string) {
   const trimmed = url.trim();
@@ -80,84 +72,6 @@ function normalizeUrl(url: string) {
   }
 
   return `/${trimmed.replace(/^\/+/, "")}`;
-}
-
-/*
- * WordPress sometimes stores "Development" on its own line right after
- * ".NET Application" / "Python Application" / "React Application".
- * Join those lines so each one reads as a single item, e.g.
- * ".NET Application Development", keeping the link of the line it joins.
- */
-function mergeContinuationLines(lines: string[]): string[] {
-  const merged: string[] = [];
-
-  for (const line of lines) {
-    const isStrayDevelopment = /^development$/i.test(line);
-
-    if (isStrayDevelopment && merged.length > 0) {
-      const previous = merged[merged.length - 1];
-      const pipeIndex = previous.indexOf("|");
-      const previousLabel = (
-        pipeIndex === -1 ? previous : previous.substring(0, pipeIndex)
-      ).trim();
-
-      // Already ends with "Development" (e.g. "Custom Development"):
-      // the extra line is a duplicate, so drop it.
-      if (/development$/i.test(previousLabel)) {
-        continue;
-      }
-
-      merged[merged.length - 1] =
-        pipeIndex === -1
-          ? `${previousLabel} Development`
-          : `${previousLabel} Development|${previous.substring(pipeIndex + 1)}`;
-
-      continue;
-    }
-
-    merged.push(line);
-  }
-
-  return merged;
-}
-
-function parseLinks(value: string = ""): FooterLink[] {
-  if (!value) return [];
-
-  const lines = mergeContinuationLines(
-    value
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean)
-  );
-
-  return lines.map((line) => {
-    const separatorIndex = line.indexOf("|");
-    const label =
-      separatorIndex === -1
-        ? line.trim()
-        : line.substring(0, separatorIndex).trim();
-    const suppliedUrl =
-      separatorIndex === -1
-        ? ""
-        : line.substring(separatorIndex + 1).trim();
-
-    // Replace retired/renamed footer labels.
-    const displayLabel = /^white\s*label\s*programme$/i.test(label)
-      ? "Products"
-      : /^ai\s*&\s*llm\s*overview$/i.test(label)
-        ? "Building LLM"
-        : label;
-
-    const mappedUrl =
-      FOOTER_URLS[displayLabel] ||
-      FOOTER_URLS[displayLabel.replace(/\s+/g, " ").trim()];
-
-    return {
-      label: displayLabel,
-      url: normalizeUrl(mappedUrl || suppliedUrl || "#"),
-    };
-  });
 }
 
 function FooterAccordion({
@@ -188,10 +102,17 @@ function FooterAccordion({
           onClick={onToggle}
         >
           <span>{title}</span>
-          <span className="codm-footer-accordion-chevron" aria-hidden="true" />
+          <span
+            className="codm-footer-accordion-chevron"
+            aria-hidden="true"
+          />
         </button>
       </h3>
-      <div id={`footer-panel-${id}`} className="codm-footer-accordion-panel">
+
+      <div
+        id={`footer-panel-${id}`}
+        className="codm-footer-accordion-panel"
+      >
         {children}
       </div>
     </div>
@@ -209,7 +130,9 @@ export default function Footer() {
       try {
         const response = await fetch(WORDPRESS_GRAPHQL_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             query: `
               query Footer {
@@ -254,7 +177,10 @@ export default function Footer() {
         }
 
         const data = result?.data?.codmFooters?.nodes?.[0];
-        if (data && !cancelled) setFooter(data);
+
+        if (data && !cancelled) {
+          setFooter(data);
+        }
       } catch (error) {
         console.error("Failed to load Footer:", error);
       }
@@ -275,36 +201,76 @@ export default function Footer() {
         ? current.filter((item) => item !== id)
         : [...current, id]
     );
- 
-  // Match the requested footer: Services shows "Building LLM";
-  // the AI & LLM Overview column keeps its original WordPress links.
-  const services = parseLinks(footer.services)
-  .filter((item) => {
-    const label = item.label.trim().toLowerCase();
-    return label !== "react application" && label !== "technical support";
-  })
-  .map((item) =>
-    item.label.trim().toLowerCase() === "ai & llm overview"
-      ? { label: "Building LLM", url: "/services/building-llm" }
-      : item
-  );
 
-  // Use fixed links here so the AI & LLM column never falls back to "#".
+  // 1. AI & LLM Overview
   const aiLlm: FooterLink[] = [
-    { label: "Marketing Cloud", url: "/services/marketing-cloud" },
-    { label: "Health & Insurance Cloud", url: "/services/health-cloud" },
-    { label: "Energy & Utilities Cloud", url: "/services/energy-utilities-cloud" },
-    { label: "Nonprofit Cloud", url: "/services/non-profit-cloud" },
+    {
+      label: "API Integration",
+      url: "/services/api-integration",
+    },
+    {
+      label: "Data Integration",
+      url: "/services/data-integration-migration",
+    },
+    {
+      label: "Building LLM",
+      url: "/services/building-llm",
+    },
+    {
+      label: "Data Migration",
+      url: "/services/data-integration-migration",
+    },
   ];
 
-  // Exact Industries list shown in the user's reference screenshot.
-  const industries: FooterLink[] = [
-    { label: "Sales Cloud", url: "/services/sales-cloud" },
-    { label: "Manufacturing Cloud", url: "/services/manufacturing-cloud" },
-    { label: "CRM Development", url: "/services/salesforce-crm" },
-    { label: "Technical Support", url: "/services/technical-support" },
-    { label: "Deployment Support", url: "/services/deployment-support" },
+  // 2. Cloud
+  const cloud: FooterLink[] = [
+    {
+      label: "Sales Cloud",
+      url: "/services/sales-cloud",
+    },
+    {
+      label: "Manufacturing Cloud",
+      url: "/services/manufacturing-cloud",
+    },
+    {
+      label: "Health & Insurance Cloud",
+      url: "/services/health-cloud",
+    },
+    {
+      label: "Energy & Utilities Cloud",
+      url: "/services/energy-utilities-cloud",
+    },
+    {
+      label: "NonProfit Cloud",
+      url: "/services/non-profit-cloud",
+    },
+    {
+      label: "Education Cloud",
+      url: "/services/education-cloud",
+    },
   ];
+
+  // 3. Custom Development
+  const customDevelopment: FooterLink[] = [
+    {
+      label: "CRM Development",
+      url: "/services/salesforce-crm",
+    },
+  ];
+
+  // 4. Services
+  const services: FooterLink[] = [
+    {
+      label: "Deployment-support",
+      url: "/services/deployment-support",
+    },
+    {
+      label: "Technical-support",
+      url: "/services/technical-support",
+    },
+  ];
+
+  // Company links continue to come from WordPress.
   const company = parseLinks(footer.company);
 
   const leftLogos = [
@@ -321,15 +287,18 @@ export default function Footer() {
     footer.certificationLogo4,
   ].filter(Boolean);
 
-  // Hardcoded destinations: WordPress values cannot override these links.
-  const linkedinUrl = "https://www.linkedin.com/company/codm-software-limited/";
+  const linkedinUrl =
+    "https://www.linkedin.com/company/codm-software-limited/";
+
   const twitterUrl = "https://x.com/";
+
   const youtubeUrl =
     "https://www.youtube.com/channel/UC7fU84Na9QuC7dPDVMpuGVQ";
 
   return (
     <footer className="codm-footer">
       <div className="codm-footer-main">
+
         {/* BRAND */}
         <div className="codm-footer-brand">
           <div className="codm-footer-logo">
@@ -351,7 +320,11 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="LinkedIn"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z" />
               </svg>
             </a>
@@ -362,7 +335,11 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="X"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </a>
@@ -373,51 +350,39 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="YouTube"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
               </svg>
             </a>
           </div>
 
-          <p className="codm-footer-description">{footer.description}</p>
+          <p className="codm-footer-description">
+            {footer.description}
+          </p>
 
-          
-{leftLogos.length > 0 && (
-  <div className="codm-footer-left-logos">
-    {leftLogos.map((logo, index) => (
-      <div
-        key={`${logo}-${index}`}
-        className="codm-footer-logo-item"
-      >
-        <img
-          src={logo}
-          alt=""
-          className="codm-footer-left-logo"
-        />
-      </div>
-    ))}
-  </div>
-)}
-
+          {leftLogos.length > 0 && (
+            <div className="codm-footer-left-logos">
+              {leftLogos.map((logo, index) => (
+                <div
+                  key={`${logo}-${index}`}
+                  className="codm-footer-logo-item"
+                >
+                  <img
+                    src={logo}
+                    alt=""
+                    className="codm-footer-left-logo"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* SERVICES */}
-        <FooterAccordion
-          id="services"
-          title="Services"
-          isOpen={openSections.includes("services")}
-          onToggle={() => toggleSection("services")}
-        >
-          <ul className="codm-footer-links">
-            {services.map((item, index) => (
-              <li key={`${item.label}-${index}`}>
-                <a href={item.url}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </FooterAccordion>
-
-        {/* AI & LLM */}
+        {/* 1. AI & LLM OVERVIEW */}
         <FooterAccordion
           id="ai-llm"
           title="AI & LLM Overview"
@@ -431,45 +396,49 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-
-
- {aiLlm.length > 2 && (
-  <>
-    <div className="codm-footer-subheading">
-      <span>Custom Development</span>
-    </div>
-
-    <ul className="codm-footer-links">
-      <li>
-        <a href="/services/net-application">
-          .NET Application Development
-        </a>
-      </li>
-      <li>
-        <a href="/services/python-application">
-          Python Application Development
-        </a>
-      </li>
-      <li>
-        <a href="/services/react-application">
-          React Application Development
-        </a>
-      </li>
-    </ul>
-  </>
-)}
-          
         </FooterAccordion>
 
-       {/* INDUSTRIES */}
+        {/* 2. CLOUD */}
         <FooterAccordion
-          id="industries"
-          title="Industries"
-          isOpen={openSections.includes("industries")}
-          onToggle={() => toggleSection("industries")}
+          id="cloud"
+          title="Cloud"
+          isOpen={openSections.includes("cloud")}
+          onToggle={() => toggleSection("cloud")}
         >
           <ul className="codm-footer-links">
-            {industries.map((item, index) => (
+            {cloud.map((item, index) => (
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </FooterAccordion>
+
+        {/* 3. CUSTOM DEVELOPMENT */}
+        <FooterAccordion
+          id="custom-development"
+          title="Custom Development"
+          isOpen={openSections.includes("custom-development")}
+          onToggle={() => toggleSection("custom-development")}
+        >
+          <ul className="codm-footer-links">
+            {customDevelopment.map((item, index) => (
+              <li key={`${item.label}-${index}`}>
+                <a href={item.url}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </FooterAccordion>
+
+        {/* 4. SERVICES */}
+        <FooterAccordion
+          id="services"
+          title="Services"
+          isOpen={openSections.includes("services")}
+          onToggle={() => toggleSection("services")}
+        >
+          <ul className="codm-footer-links">
+            {services.map((item, index) => (
               <li key={`${item.label}-${index}`}>
                 <a href={item.url}>{item.label}</a>
               </li>
@@ -492,6 +461,7 @@ export default function Footer() {
             ))}
           </ul>
         </FooterAccordion>
+
       </div>
 
       {/* CERTIFICATIONS */}
