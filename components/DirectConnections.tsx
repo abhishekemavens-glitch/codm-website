@@ -43,16 +43,15 @@ type Settings = {
 
 function Icon({ name }: { name: string | null }) {
   const common = {
-    width: 32,
-    height: 32,
+    width: 26,
+    height: 26,
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 1.5,
+    strokeWidth: 1.6,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
     "aria-hidden": true,
-    className: "text-[#6D4AFF]",
   };
 
   switch (name) {
@@ -181,96 +180,122 @@ export default function DirectConnections() {
     return null;
   }
 
-  const introLines = (settings?.intro ?? "")
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean);
-
   return (
     <section
       id="direct-connections"
       className="relative overflow-hidden bg-[var(--background)] px-5 py-16 transition-colors duration-500 sm:px-8 md:py-24"
     >
+      {/* soft purple glow behind the section */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[#6D4AFF]/10 blur-[120px]"
+      />
+
       <div className="relative mx-auto max-w-[1250px]">
         {/* =================================================
-            HEADING (shared SectionHeading) + intro on the right
+            HEADING
             ================================================= */}
         <Reveal distance={20}>
-  <div className="mx-auto max-w-[900px] text-center">
-    <SectionHeading
-      align="center"
-      eyebrow={settings?.eyebrow ?? ""}
-      title={settings?.title ?? ""}
-      gradientText={settings?.gradientText ?? ""}
-      description={settings?.intro ?? ""}
-    />
-  </div>
-</Reveal>
+          <div className="mx-auto max-w-[900px] text-center">
+            <SectionHeading
+              align="center"
+              eyebrow={settings?.eyebrow ?? ""}
+              title={settings?.title ?? ""}
+              gradientText={settings?.gradientText ?? ""}
+              description={settings?.intro ?? ""}
+            />
+          </div>
+        </Reveal>
 
         {/* =================================================
-            COLUMNS
+            CARDS
+            [&>*]:h-full + [&>*>*]:h-full make every card the
+            same height so the footnotes line up in one row.
             ================================================= */}
-        <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 [&>*]:h-full [&>*>*]:h-full">
           {cards.map((card, index) => {
             const entries = (card.entries ?? []).filter((e) => e.value);
 
             return (
               <Reveal key={card.id} distance={24} duration={0.7}>
-                <article className="flex h-full flex-col border-t border-[var(--foreground)]/80 pt-6">
-                  <div className="flex items-start justify-between">
-                    <Icon name={card.icon} />
+                <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--foreground)]/[0.03] p-7 transition-all duration-500 hover:-translate-y-1.5 hover:border-[#6D4AFF]/40 hover:shadow-[0_24px_60px_-20px_rgba(109,74,255,0.35)]">
+                  {/* top accent line, grows on hover */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[#6D4AFF] to-[#8B6DFF] transition-transform duration-500 group-hover:scale-x-100"
+                  />
 
-                    <span className="text-[13px] tabular-nums text-[var(--muted)]">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                  {/* big faint number */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-5 top-3 select-none text-[64px] font-semibold leading-none tracking-tight tabular-nums text-[var(--foreground)]/[0.05] transition-colors duration-500 group-hover:text-[#6D4AFF]/15"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* icon tile */}
+                  <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[#6D4AFF]/10 text-[#6D4AFF] transition-all duration-500 group-hover:bg-gradient-to-br group-hover:from-[#6D4AFF] group-hover:to-[#8B6DFF] group-hover:text-white">
+                    <Icon name={card.icon} />
                   </div>
 
-                  <h3 className="mt-10 text-[26px] font-normal leading-tight tracking-[-0.02em] text-[var(--foreground)]">
+                  <h3 className="mt-8 text-[24px] font-medium leading-tight tracking-[-0.02em] text-[var(--foreground)]">
                     {card.title}
                   </h3>
 
                   {card.description && (
-                    <p className="mt-4 text-[15px] leading-7 text-[var(--muted)]">
+                    <p className="mt-3 text-[15px] leading-7 text-[var(--muted)]">
                       {card.description}
                     </p>
                   )}
 
-                  {entries.length > 0 && (
-                    <ul className="mt-6 flex-1 space-y-4">
-                      {entries.map((entry, i) => (
-                        <li
-                          key={i}
-                          className="flex items-baseline gap-3 text-[15px] leading-6 text-[var(--foreground)]"
-                        >
-                          {entry.tag && (
-                            <span className="w-5 shrink-0 text-[11px] font-medium uppercase text-[#6D4AFF]">
-                              {entry.tag}
-                            </span>
-                          )}
+                  {/* entries grow to fill space, pushing the footnote to the bottom */}
+                  <div className="mt-6 flex-1">
+                    {entries.length > 0 && (
+                      <ul className="space-y-4">
+                        {entries.map((entry, i) => {
+                          const isEmail = entry.href?.startsWith("mailto:");
 
-                          {entry.href ? (
-                            <a
-                              href={entry.href}
-                              className={
-                                "transition-colors duration-300 hover:text-[#6D4AFF] " +
-                                (entry.href.startsWith("mailto:")
-                                  ? "font-medium text-[#6D4AFF]"
-                                  : "")
-                              }
+                          return (
+                            <li
+                              key={i}
+                              className="flex items-start gap-3 text-[15px] leading-6 text-[var(--foreground)]"
                             >
-                              {entry.value}
-                            </a>
-                          ) : (
-                            <span>{entry.value}</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                              {entry.tag && (
+                                <span className="mt-0.5 inline-flex h-6 min-w-[30px] shrink-0 items-center justify-center rounded-full bg-[#6D4AFF]/10 px-2 text-[10.5px] font-semibold uppercase tracking-wide text-[#6D4AFF]">
+                                  {entry.tag}
+                                </span>
+                              )}
 
+                              {entry.href ? (
+                                <a
+                                  href={entry.href}
+                                  className={
+                                    "break-words transition-colors duration-300 hover:text-[#6D4AFF] " +
+                                    (isEmail ? "font-medium text-[#6D4AFF]" : "")
+                                  }
+                                >
+                                  {entry.value}
+                                </a>
+                              ) : (
+                                <span className="break-words">
+                                  {entry.value}
+                                </span>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
+
+                  {/* footnote, always at the same height across cards */}
                   {card.footnote && (
-                    <p className="mt-8 border-t border-[var(--border)] pt-5 text-[13px] text-[var(--muted)]">
-                      {card.footnote}
+                    <p className="mt-7 flex items-start gap-2 border-t border-[var(--border)] pt-5 text-[13px] leading-5 text-[var(--muted)]">
+                      <span
+                        aria-hidden="true"
+                        className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#6D4AFF]"
+                      />
+                      <span>{card.footnote}</span>
                     </p>
                   )}
                 </article>
