@@ -511,7 +511,7 @@ export default function ServicesSection() {
               bg-[var(--surface)]
               px-5
               py-[9px]
-              text-[10px]
+              text-[14px]
               font-medium
               text-[var(--foreground)]
               shadow-sm
