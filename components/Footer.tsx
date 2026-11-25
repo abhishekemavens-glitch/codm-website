@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
@@ -12,7 +11,6 @@ type FooterData = {
   services: string;
   aiLlm: string;
   industries: string;
-  company: string;
   leftLogo1: string;
   leftLogo2: string;
   leftLogo3: string;
@@ -31,48 +29,6 @@ type FooterLink = {
 
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
-
-function parseLinks(value: string = ""): FooterLink[] {
-  if (!value) return [];
-
-  return value
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const separatorIndex = line.indexOf("|");
-
-      const label =
-        separatorIndex === -1
-          ? line.trim()
-          : line.substring(0, separatorIndex).trim();
-
-      const suppliedUrl =
-        separatorIndex === -1
-          ? ""
-          : line.substring(separatorIndex + 1).trim();
-
-      return {
-        label,
-        url: normalizeUrl(suppliedUrl || "#"),
-      };
-    });
-}
-
-function normalizeUrl(url: string) {
-  const trimmed = url.trim();
-
-  if (!trimmed || trimmed === "#") return "#";
-
-  if (
-    /^(https?:\/\/|mailto:|tel:|#)/i.test(trimmed) ||
-    trimmed.startsWith("//")
-  ) {
-    return trimmed;
-  }
-
-  return `/${trimmed.replace(/^\/+/, "")}`;
-}
 
 function FooterAccordion({
   id,
@@ -148,7 +104,6 @@ export default function Footer() {
                     services
                     aiLlm
                     industries
-                    company
                     leftLogo1
                     leftLogo2
                     leftLogo3
@@ -270,8 +225,14 @@ export default function Footer() {
     },
   ];
 
-  // Company links continue to come from WordPress.
-  const company = parseLinks(footer.company);
+  // 5. Company
+  const company: FooterLink[] = [
+    { label: "About", url: "/about" },
+    { label: "Case Studies", url: "/case-studies" },
+    { label: "Career", url: "/career" },
+    { label: "Contact", url: "/contact-us" },
+    { label: "Insights", url: "/insights" },
+  ];
 
   const leftLogos = [
     footer.leftLogo1,
@@ -414,21 +375,38 @@ export default function Footer() {
           </ul>
         </FooterAccordion>
 
-        {/* 3. CUSTOM DEVELOPMENT */}
-        <FooterAccordion
-          id="custom-development"
-          title="Custom Development"
-          isOpen={openSections.includes("custom-development")}
-          onToggle={() => toggleSection("custom-development")}
-        >
-          <ul className="codm-footer-links">
-            {customDevelopment.map((item, index) => (
-              <li key={`${item.label}-${index}`}>
-                <a href={item.url}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </FooterAccordion>
+        {/* 3 + 5. CUSTOM DEVELOPMENT & COMPANY (stacked) */}
+        <div className="codm-footer-stack">
+          <FooterAccordion
+            id="custom-development"
+            title="Custom Development"
+            isOpen={openSections.includes("custom-development")}
+            onToggle={() => toggleSection("custom-development")}
+          >
+            <ul className="codm-footer-links">
+              {customDevelopment.map((item, index) => (
+                <li key={`${item.label}-${index}`}>
+                  <a href={item.url}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </FooterAccordion>
+
+          <FooterAccordion
+            id="company"
+            title="Company"
+            isOpen={openSections.includes("company")}
+            onToggle={() => toggleSection("company")}
+          >
+            <ul className="codm-footer-links">
+              {company.map((item, index) => (
+                <li key={`${item.label}-${index}`}>
+                  <a href={item.url}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </FooterAccordion>
+        </div>
 
         {/* 4. SERVICES */}
         <FooterAccordion
@@ -439,22 +417,6 @@ export default function Footer() {
         >
           <ul className="codm-footer-links">
             {services.map((item, index) => (
-              <li key={`${item.label}-${index}`}>
-                <a href={item.url}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </FooterAccordion>
-
-        {/* COMPANY */}
-        <FooterAccordion
-          id="company"
-          title="Company"
-          isOpen={openSections.includes("company")}
-          onToggle={() => toggleSection("company")}
-        >
-          <ul className="codm-footer-links">
-            {company.map((item, index) => (
               <li key={`${item.label}-${index}`}>
                 <a href={item.url}>{item.label}</a>
               </li>
