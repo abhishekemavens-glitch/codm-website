@@ -500,7 +500,7 @@ export default function ServicesSection() {
         {/* CTA */}
         <div className="mt-7 flex justify-center">
           <a
-            href="/contact"
+            href="/contact-us"
             className="
               inline-flex
               items-center
