@@ -14642,3 +14642,24 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 .codm-footer-stack > .codm-footer-column + .codm-footer-column {
   margin-top: 40px;
 }
+
+
+.codm-mega-banner-button {
+  transition: background 250ms ease, color 250ms ease,
+    border-color 250ms ease, box-shadow 250ms ease, transform 250ms ease;
+}
+
+.codm-mega-banner-button:hover,
+.codm-mega-banner-button:focus-visible {
+  background: linear-gradient(135deg, #6d4aff, #8b6dff);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(109, 74, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* make the arrow/text inside follow the white color */
+.codm-mega-banner-button:hover *,
+.codm-mega-banner-button:focus-visible * {
+  color: #ffffff;
+}
