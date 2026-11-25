@@ -14631,3 +14631,19 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
     }
 }
 
+
+
+	  .view-all-services:hover {
+    background: linear-gradient(135deg, #8955f7, #6545ed);
+    color: #ffffff !important;
+    border-color: #7650f5;
+    box-shadow: 0 8px 22px rgba(112, 76, 245, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Arrow animation */
+.view-all-services:hover svg,
+.view-all-services:hover i {
+    transform: translateX(4px);
+    transition: transform 0.3s ease;
+}
