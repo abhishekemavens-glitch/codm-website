@@ -14632,3 +14632,13 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 }
 
 
+.codm-footer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* fallback in case gap is overridden or the column has margin: 0 !important */
+.codm-footer-stack > .codm-footer-column + .codm-footer-column {
+  margin-top: 40px;
+}
