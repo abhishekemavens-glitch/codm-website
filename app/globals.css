@@ -14437,3 +14437,197 @@ footer .codm-footer-logo-item:nth-child(2) .codm-footer-left-logo { transform: s
 footer .codm-footer-logo-item:nth-child(3) .codm-footer-left-logo { transform: scale(1.7) !important; }
 footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: scale(1.0) !important; }
 
+
+
+/* =========================================
+   PHARMACEUTICAL DASHBOARD PAGE FIX
+   ========================================= */
+
+/* Main content */
+.codm-post-content {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.codm-post-content *,
+.codm-post-content *::before,
+.codm-post-content *::after {
+    box-sizing: border-box;
+}
+
+/* Headings */
+.codm-post-content h2,
+.codm-post-content h3 {
+    max-width: 100%;
+    line-height: 1.4;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    overflow-wrap: break-word;
+}
+
+.codm-post-content h2 {
+    font-size: clamp(24px, 3vw, 34px);
+}
+
+.codm-post-content h3 {
+    font-size: clamp(20px, 2.5vw, 26px);
+}
+
+/* Paragraphs */
+.codm-post-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+/* Images */
+.codm-post-content img {
+    display: block;
+    max-width: 100% !important;
+    width: auto;
+    height: auto !important;
+    margin: 20px auto;
+    object-fit: contain;
+}
+
+/* WordPress figures */
+.codm-post-content figure,
+.codm-post-content .wp-caption {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 24px auto;
+    padding: 0;
+}
+
+.codm-post-content figure img {
+    width: 100%;
+    height: auto;
+}
+
+/* Video responsive fix */
+.codm-post-content .wp-video,
+.codm-post-content video,
+.codm-post-content .wp-video-shortcode {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+}
+
+/* Feature sections */
+.codm-post-content .integration-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.codm-post-content .integration-benefits__column {
+    margin: 0;
+    padding: 20px;
+    list-style: none;
+    background: #f5f8fc;
+    border-radius: 10px;
+}
+
+.codm-post-content .integration-benefits__column li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+/* Integration feature blocks */
+.codm-post-content .integration-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.codm-post-content .integration-feature__icon {
+    flex: 0 0 56px;
+    max-width: 56px;
+}
+
+.codm-post-content .integration-feature__icon img {
+    width: 56px !important;
+    height: 56px !important;
+    margin: 0;
+}
+
+.codm-post-content .integration-feature__content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Lists */
+.codm-post-content ul,
+.codm-post-content ol {
+    padding-left: 24px;
+    margin-bottom: 20px;
+}
+
+/* Horizontal divider */
+.codm-post-content .border-bottom {
+    width: 100%;
+    border-bottom: 1px solid #e5e9ef;
+    margin: 30px 0;
+}
+
+/* Remove unwanted overflow */
+.codm-post-content table {
+    max-width: 100%;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.codm-post-content iframe {
+    max-width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+    .codm-post-content .integration-benefits {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .codm-post-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .codm-post-content .integration-benefits {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .codm-post-content h2 {
+        font-size: 25px;
+    }
+
+    .codm-post-content h3 {
+        font-size: 21px;
+    }
+
+    .codm-post-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .codm-post-content .integration-feature {
+        gap: 12px;
+    }
+
+    .codm-post-content figure {
+        margin: 18px 0;
+    }
+}
+
