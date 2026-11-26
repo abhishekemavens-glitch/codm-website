@@ -1,10 +1,19 @@
-
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import AnimateOnScroll from "@/components/AnimateOnScroll"; 
+
+/* Optional heading text from WordPress > Homepage Manager.
+   When a field is empty (or the prop is not passed, e.g. on other pages),
+   the section keeps its own built-in text. */
+type SectionHeadingOverride = {
+  eyebrow?: string;
+  title?: string;
+  highlight?: string;
+  description?: string;
+};
 
 type Service = {
   id: string;
@@ -136,7 +145,11 @@ function ServiceIcon({ type }: { type: string }) {
    Antigravity background animation removed.
 ========================================================= */
 
-export default function ServicesSection() {
+export default function ServicesSection({
+  heading,
+}: {
+  heading?: SectionHeadingOverride;
+}) {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -294,10 +307,13 @@ export default function ServicesSection() {
         {/* SECTION HEADING */}
         <Reveal distance={20}>
           <SectionHeading
-            eyebrow="What We Do"
-            title="Engineering the systems that run"
-            gradientText="modern enterprises."
-            description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+            eyebrow={heading?.eyebrow || "What We Do"}
+            title={heading?.title || "Engineering the systems that run"}
+            gradientText={heading?.highlight || "modern enterprises."}
+            description={
+              heading?.description ||
+              "We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+            }
           />
         </Reveal>
 
