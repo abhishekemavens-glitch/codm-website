@@ -8,12 +8,18 @@ import { Reveal } from "@/components/Reveal";
    EXECUTIVE GUIDE — "Sales Cloud vs Others"
 
    All copy comes from WordPress (Executive Guides, defined in
-   codm-headless.php). The `slug` prop picks which entry to show:
+   codm-headless.php). Every service page has its OWN guide:
 
-     <ExecutiveGuideSalesCloud />                      // sales-cloud-vs-others
-     <ExecutiveGuideSalesCloud slug="another-guide" /> // any other entry
+     <ExecutiveGuideSalesCloud serviceSlug="education-cloud" />
 
-   If the entry is missing / unpublished the section is hidden.
+   shows the guide whose "Service page slug" field (in WordPress,
+   Executive Guides) is "education-cloud". A guide can list several
+   slugs separated by commas.
+
+   Still supported: <ExecutiveGuideSalesCloud slug="some-entry" />
+   shows one specific entry (by the entry's own URL slug).
+
+   If no guide belongs to the page, the section is hidden.
    Place at: components/ExecutiveGuideSalesCloud.tsx
    ========================================================= */
 
@@ -21,6 +27,7 @@ const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
 type ExecutiveGuide = {
+  serviceSlug?: string | null;
   eyebrow: string | null;
   headingLine1: string | null;
   headingLine2: string | null;
@@ -60,9 +67,41 @@ function DownloadIcon() {
   );
 }
 
+const GUIDE_FIELDS = `
+  serviceSlug
+  eyebrow
+  headingLine1
+  headingLine2
+  intro
+  question
+  questionBody
+  ctaText
+  ctaLink
+  microcopy
+  cardBrand
+  cardCategory
+  cardTitle
+  cardSubtitle
+  stat1Label
+  stat1Value
+  stat2Label
+  stat2Value
+`;
+
+/** "sales-cloud, salesforce-crm" -> ["sales-cloud", "salesforce-crm"] */
+const splitSlugs = (value: string | null | undefined) =>
+  (value ?? "")
+    .split(",")
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean);
+
 export default function ExecutiveGuideSalesCloud({
-  slug = "sales-cloud-vs-others",
+  serviceSlug,
+  slug,
 }: {
+  /** Service page this guide belongs to, e.g. "education-cloud" */
+  serviceSlug?: string;
+  /** Or: one specific guide entry by its own URL slug */
   slug?: string;
 }) {
   const [guide, setGuide] = useState<ExecutiveGuide | null>(null);
@@ -75,32 +114,38 @@ export default function ExecutiveGuideSalesCloud({
         const response = await fetch(WORDPRESS_GRAPHQL_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: `
-              query GetExecutiveGuide($slug: ID!) {
-                executiveGuide(id: $slug, idType: SLUG) {
-                  eyebrow
-                  headingLine1
-                  headingLine2
-                  intro
-                  question
-                  questionBody
-                  ctaText
-                  ctaLink
-                  microcopy
-                  cardBrand
-                  cardCategory
-                  cardTitle
-                  cardSubtitle
-                  stat1Label
-                  stat1Value
-                  stat2Label
-                  stat2Value
+          body: JSON.stringify(
+            slug
+              ? {
+                  query: `
+                    query GetExecutiveGuide($slug: ID!) {
+                      executiveGuide(id: $slug, idType: SLUG) {
+                        ${GUIDE_FIELDS}
+                      }
+                    }
+                  `,
+                  variables: { slug },
                 }
-              }
-            `,
-            variables: { slug },
-          }),
+              : {
+                  query: `
+                    query GetExecutiveGuides {
+                      executiveGuides(
+                        first: 100
+                        where: {
+                          orderby: [
+                            { field: MENU_ORDER, order: ASC }
+                            { field: DATE, order: ASC }
+                          ]
+                        }
+                      ) {
+                        nodes {
+                          ${GUIDE_FIELDS}
+                        }
+                      }
+                    }
+                  `,
+                }
+          ),
         });
 
         const result = await response.json();
@@ -111,7 +156,21 @@ export default function ExecutiveGuideSalesCloud({
         }
 
         if (!cancelled) {
-          setGuide(result.data?.executiveGuide ?? null);
+          if (slug) {
+            setGuide(result.data?.executiveGuide ?? null);
+          } else {
+            const wanted = (serviceSlug ?? "").trim().toLowerCase();
+            const nodes: ExecutiveGuide[] =
+              result.data?.executiveGuides?.nodes ?? [];
+
+            setGuide(
+              wanted
+                ? nodes.find((node) =>
+                    splitSlugs(node.serviceSlug).includes(wanted)
+                  ) ?? null
+                : null
+            );
+          }
         }
       } catch (error) {
         console.error("Failed to load executive guide:", error);
@@ -123,7 +182,7 @@ export default function ExecutiveGuideSalesCloud({
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [slug, serviceSlug]);
 
   /* nothing published (or still loading): render nothing */
   if (!guide) {
@@ -137,7 +196,7 @@ export default function ExecutiveGuideSalesCloud({
 
   return (
     <section
-      id={slug}
+      id="guide"
       className="relative overflow-hidden bg-[var(--background)] py-20 transition-colors duration-500 md:py-28"
     >
       <div
