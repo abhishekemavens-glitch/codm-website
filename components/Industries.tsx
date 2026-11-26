@@ -4,6 +4,16 @@ import SectionHeading from "@/components/SectionHeading";
 import { useInViewOnce, useParallax, splitWords } from "@/lib/codm-animations";
 import { Reveal } from "@/components/Reveal";
 
+/* Optional heading text from WordPress > Homepage Manager.
+   When a field is empty (or the prop is not passed, e.g. on other pages),
+   the section keeps its own built-in text. */
+type SectionHeadingOverride = {
+  eyebrow?: string;
+  title?: string;
+  highlight?: string;
+  description?: string;
+};
+
 type Industry = {
   id: string;
   databaseId: number;
@@ -25,7 +35,11 @@ const WORDPRESS_GRAPHQL_URL =
 /** Time (ms) between automatic industry changes. 7000 = 7 seconds. */
 const AUTO_ROTATE_MS = 7000;
 
-export default function Industries() {
+export default function Industries({
+  heading,
+}: {
+  heading?: SectionHeadingOverride;
+}) {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [activeIndustry, setActiveIndustry] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -249,10 +263,13 @@ export default function Industries() {
             }
           >
             <SectionHeading
-              eyebrow="Industries We Serve"
-              title="Engineering the systems that run"
-              gradientText="Modern enterprises."
-              description="We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+              eyebrow={heading?.eyebrow || "Industries We Serve"}
+              title={heading?.title || "Engineering the systems that run"}
+              gradientText={heading?.highlight || "Modern enterprises."}
+              description={
+                heading?.description ||
+                "We combine Salesforce depth with product-grade engineering, so transformation lands as working software not slideware."
+              }
             />
           </div>
 
