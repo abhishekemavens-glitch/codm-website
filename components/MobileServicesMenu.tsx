@@ -1,13 +1,19 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 export type ServiceLink = { label: string; href: string };
-export type ServiceGroup = { title: string; links: ServiceLink[] };
+export type ServiceGroup = {
+  title: string;
+  description?: string;
+  links: ServiceLink[];
+};
 
 type Props = {
   groups: ServiceGroup[];
   label?: string;
   servicesHref?: string;
   allLabel?: string;
+  footer?: ReactNode; // e.g. the G-Cloud banner
   onNavigate?: () => void;
 };
 
@@ -16,6 +22,7 @@ export default function MobileServicesMenu({
   label = "Services",
   servicesHref = "/services",
   allLabel = "All services",
+  footer,
   onNavigate,
 }: Props) {
   return (
@@ -42,6 +49,12 @@ export default function MobileServicesMenu({
               <p className="codm-mobile-services-group-title">{group.title}</p>
             )}
 
+            {group.description && (
+              <p className="codm-mobile-services-group-desc">
+                {group.description}
+              </p>
+            )}
+
             <ul className="codm-mobile-services-links">
               {group.links.map((link, linkIndex) => (
                 <li key={`${groupIndex}-${link.label}-${linkIndex}`}>
@@ -57,6 +70,8 @@ export default function MobileServicesMenu({
             </ul>
           </section>
         ))}
+
+        {footer}
       </div>
     </details>
   );
