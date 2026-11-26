@@ -785,38 +785,40 @@ export default async function BlogPostDetail({
 
             <div className="codm-post-share">
 
-              <span>
-                Share:
-              </span>
+  <span>
+    Share:
+  </span>
 
-              <a
-                href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on X"
-              >
-                <XIcon />
-              </a>
+  <a
+    href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on X"
+  >
+    <XIcon />
+  </a>
 
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on LinkedIn"
-              >
-                <LinkedInIcon />
-              </a>
+  <a
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on LinkedIn"
+  >
+    <LinkedInIcon />
+  </a>
 
-              <a
-                href={YOUTUBE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="CODM on YouTube"
-              >
-                <YouTubeIcon />
-              </a>
+  {/*
+  <a
+    href={YOUTUBE_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="CODM on YouTube"
+  >
+    <YouTubeIcon />
+  </a>
+  */}
 
-            </div>
+</div>
 
           </div>
 
