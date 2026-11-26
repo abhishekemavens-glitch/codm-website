@@ -1,13 +1,13 @@
 "use client";
 
-type MegaMenuColumn = {
+export type MegaMenuColumn = {
   icon: string;
   title: string;
   description: string;
   links: string;
 };
 
-type MegaMenuData = {
+export type MegaMenuData = {
   enabled: boolean;
   columns: MegaMenuColumn[];
   bannerLabel: string;
@@ -17,86 +17,71 @@ type MegaMenuData = {
   bannerButtonUrl: string;
 };
 
-type MegaMenuLink = {
+export type MegaMenuLink = {
   label: string;
   url: string;
 };
 
-const BASE_URL = "https://codm-frontend.vercel.app";
+export const BASE_URL = "https://codm-frontend.vercel.app";
 
 const URLS: Record<string, string> = {
   // Salesforce CRM
   "Salesforce CRM": `${BASE_URL}/services/salesforce-crm`,
-
   "Salesforce Education Cloud": `${BASE_URL}/services/education-cloud`,
-
   "Salesforce Financial Services": `${BASE_URL}/services/sales-force-financial-services-cloud`,
-
   "Salesforce Financial Services Cloud": `${BASE_URL}/services/sales-force-financial-services-cloud`,
-
   "Salesforce Health & Insurance Cloud": `${BASE_URL}/services/health-cloud`,
-
   "Health Cloud": `${BASE_URL}/services/health-cloud`,
-
   "Salesforce Data Cloud": `${BASE_URL}/services/data-cloud`,
-
   "Data Cloud": `${BASE_URL}/services/data-cloud`,
-
   "Salesforce Marketing Cloud": `${BASE_URL}/services/marketing-cloud`,
-
   "Marketing Cloud": `${BASE_URL}/services/marketing-cloud`,
-
   "Salesforce Sales Cloud": `${BASE_URL}/services/sales-cloud`,
-
   "Sales Cloud": `${BASE_URL}/services/sales-cloud`,
-
   "Salesforce Service Cloud": `${BASE_URL}/services/service-cloud`,
-
   "Service Cloud": `${BASE_URL}/services/service-cloud`,
-
   "Salesforce Energy and Utilities Cloud": `${BASE_URL}/services/energy-utilities-cloud`,
-
   "Energy Utilities & Cloud": `${BASE_URL}/services/energy-utilities-cloud`,
-
   "Salesforce Manufacturing Cloud": `${BASE_URL}/services/manufacturing-cloud`,
-
   "Manufacturing Cloud": `${BASE_URL}/services/manufacturing-cloud`,
-
   "Salesforce Nonprofit Cloud": `${BASE_URL}/services/non-profit-cloud`,
-
   "Non Profit Cloud": `${BASE_URL}/services/non-profit-cloud`,
 
   // Data and Integration
   "API Integration": `${BASE_URL}/services/api-integration`,
-
   "Data Integration": `${BASE_URL}/services/data-integration-migration`,
-
   "Data Migration": `${BASE_URL}/services/data-integration-migration`,
-
   "Data Integration/Migration": `${BASE_URL}/services/data-integration-migration`,
-
   "Data Integration and Migration": `${BASE_URL}/services/data-integration-migration`,
 
   // Development
   "CRM Development": `${BASE_URL}/services/salesforce-crm`,
-
   "Building LLM": `${BASE_URL}/services/building-llm`,
-
   ".NET Application": `${BASE_URL}/services/net-application`,
-
   ".Net Application": `${BASE_URL}/services/net-application`,
-
   "React Application": `${BASE_URL}/services/react-application`,
-
   "Python Application": `${BASE_URL}/services/python-application`,
 
   // Support
   "Technical Support": `${BASE_URL}/services/technical-support`,
-
   "Deployment Support": `${BASE_URL}/services/deployment-support`,
 };
 
-const MENU_COLUMNS: {
+/**
+ * Products shown in the Products menu (desktop dropdown + mobile accordion).
+ * TODO: replace the URLs with your real product routes.
+ */
+export const PRODUCT_LINKS: MegaMenuLink[] = [
+  { label: "Zero Click", url: `${BASE_URL}/products/zero-click` },
+  { label: "Smart Portal", url: `${BASE_URL}/products/smart-portal` },
+  { label: "Futura", url: `${BASE_URL}/products/futura` },
+  { label: "PrasarOne", url: `${BASE_URL}/products/prasarone` },
+  { label: "CM Helpline", url: `${BASE_URL}/products/cm-helpline` },
+  { label: "LeadPulse", url: `${BASE_URL}/products/leadpulse` },
+  { label: "Democast", url: `${BASE_URL}/products/democast` },
+];
+
+export const MENU_COLUMNS: {
   icon: string;
   title: string;
   description: string;
@@ -110,46 +95,16 @@ const MENU_COLUMNS: {
       "End-to-end Salesforce solutions to transform and grow your business.",
     split: true,
     links: [
-      {
-        label: "Salesforce Education Cloud",
-        url: URLS["Salesforce Education Cloud"],
-      },
-      {
-        label: "Salesforce Financial Services",
-        url: URLS["Salesforce Financial Services"],
-      },
-      {
-        label: "Salesforce Health & Insurance Cloud",
-        url: URLS["Salesforce Health & Insurance Cloud"],
-      },
-      {
-        label: "Salesforce Data Cloud",
-        url: URLS["Salesforce Data Cloud"],
-      },
-      {
-        label: "Salesforce Marketing Cloud",
-        url: URLS["Salesforce Marketing Cloud"],
-      },
-      {
-        label: "Salesforce Sales Cloud",
-        url: URLS["Salesforce Sales Cloud"],
-      },
-      {
-        label: "Salesforce Service Cloud",
-        url: URLS["Salesforce Service Cloud"],
-      },
-      {
-        label: "Salesforce Energy and Utilities Cloud",
-        url: URLS["Salesforce Energy and Utilities Cloud"],
-      },
-      {
-        label: "Salesforce Manufacturing Cloud",
-        url: URLS["Salesforce Manufacturing Cloud"],
-      },
-      {
-        label: "Salesforce Nonprofit Cloud",
-        url: URLS["Salesforce Nonprofit Cloud"],
-      },
+      { label: "Salesforce Education Cloud", url: URLS["Salesforce Education Cloud"] },
+      { label: "Salesforce Financial Services", url: URLS["Salesforce Financial Services"] },
+      { label: "Salesforce Health & Insurance Cloud", url: URLS["Salesforce Health & Insurance Cloud"] },
+      { label: "Salesforce Data Cloud", url: URLS["Salesforce Data Cloud"] },
+      { label: "Salesforce Marketing Cloud", url: URLS["Salesforce Marketing Cloud"] },
+      { label: "Salesforce Sales Cloud", url: URLS["Salesforce Sales Cloud"] },
+      { label: "Salesforce Service Cloud", url: URLS["Salesforce Service Cloud"] },
+      { label: "Salesforce Energy and Utilities Cloud", url: URLS["Salesforce Energy and Utilities Cloud"] },
+      { label: "Salesforce Manufacturing Cloud", url: URLS["Salesforce Manufacturing Cloud"] },
+      { label: "Salesforce Nonprofit Cloud", url: URLS["Salesforce Nonprofit Cloud"] },
     ],
   },
   {
@@ -157,18 +112,9 @@ const MENU_COLUMNS: {
     title: "Data",
     description: "Connect, integrate and migrate your data with confidence.",
     links: [
-      {
-        label: "API Integration",
-        url: URLS["API Integration"],
-      },
-      {
-        label: "Data Integration",
-        url: URLS["Data Integration"],
-      },
-      {
-        label: "Data Migration",
-        url: URLS["Data Migration"],
-      },
+      { label: "API Integration", url: URLS["API Integration"] },
+      { label: "Data Integration", url: URLS["Data Integration"] },
+      { label: "Data Migration", url: URLS["Data Migration"] },
     ],
   },
   {
@@ -176,26 +122,11 @@ const MENU_COLUMNS: {
     title: "Development",
     description: "Scalable and secure custom solutions built for your needs.",
     links: [
-      {
-        label: "CRM Development",
-        url: URLS["CRM Development"],
-      },
-      {
-        label: "Building LLM",
-        url: URLS["Building LLM"],
-      },
-      {
-        label: ".NET Application",
-        url: URLS[".NET Application"],
-      },
-      {
-        label: "React Application",
-        url: URLS["React Application"],
-      },
-      {
-        label: "Python Application",
-        url: URLS["Python Application"],
-      },
+      { label: "CRM Development", url: URLS["CRM Development"] },
+      { label: "Building LLM", url: URLS["Building LLM"] },
+      { label: ".NET Application", url: URLS[".NET Application"] },
+      { label: "React Application", url: URLS["React Application"] },
+      { label: "Python Application", url: URLS["Python Application"] },
     ],
   },
   {
@@ -203,14 +134,8 @@ const MENU_COLUMNS: {
     title: "Support",
     description: "Reliable run, release and technical support services.",
     links: [
-      {
-        label: "Technical Support",
-        url: URLS["Technical Support"],
-      },
-      {
-        label: "Deployment Support",
-        url: URLS["Deployment Support"],
-      },
+      { label: "Technical Support", url: URLS["Technical Support"] },
+      { label: "Deployment Support", url: URLS["Deployment Support"] },
     ],
   },
 ];
@@ -233,19 +158,13 @@ export function parseMegaMenuLinks(value: string = "") {
       const pipeIndex = line.indexOf("|");
 
       if (pipeIndex === -1) {
-        return {
-          label: line,
-          url: URLS[line] || "#",
-        };
+        return { label: line, url: URLS[line] || "#" };
       }
 
       const label = line.substring(0, pipeIndex).trim();
       const suppliedUrl = line.substring(pipeIndex + 1).trim();
 
-      return {
-        label,
-        url: URLS[label] || suppliedUrl || "#",
-      };
+      return { label, url: URLS[label] || suppliedUrl || "#" };
     });
 }
 
@@ -254,9 +173,7 @@ function LinkItem({ link }: { link: MegaMenuLink }) {
     <li>
       <a href={link.url} className="codm-megamenu-link">
         <span className="codm-megamenu-link-dot" aria-hidden="true" />
-
         <span className="codm-megamenu-link-text">{link.label}</span>
-
         <span className="codm-megamenu-link-arrow" aria-hidden="true">
           ›
         </span>
@@ -265,6 +182,9 @@ function LinkItem({ link }: { link: MegaMenuLink }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Desktop mega menu (unchanged)                                       */
+/* ------------------------------------------------------------------ */
 export default function MegaMenu({
   data,
   onMouseEnter,
@@ -304,9 +224,7 @@ export default function MegaMenu({
                 </span>
 
                 <div className="codm-megamenu-column-heading">
-                  <div className="codm-megamenu-column-title">
-                    {col.title}
-                  </div>
+                  <div className="codm-megamenu-column-title">{col.title}</div>
 
                   {col.description && (
                     <div className="codm-megamenu-column-description">
@@ -372,6 +290,52 @@ export default function MegaMenu({
             <span aria-hidden="true">→</span>
           </a>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Mobile accordion panels (Services + Products)                       */
+/* ------------------------------------------------------------------ */
+export function MobileMegaMenu({
+  type,
+  open,
+  onNavigate,
+}: {
+  type: "services" | "products";
+  open: boolean;
+  onNavigate?: () => void;
+}) {
+  const renderLinks = (links: MegaMenuLink[]) => (
+    <ul className="codm-m-links">
+      {links.map((link) => (
+        <li key={link.label}>
+          <a
+            href={link.url}
+            className="codm-m-link"
+            onClick={onNavigate}
+            tabIndex={open ? 0 : -1}
+          >
+            <span className="codm-megamenu-link-dot" aria-hidden="true" />
+            <span>{link.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+
+  return (
+    <div className={`codm-m-panel ${open ? "is-open" : ""}`} aria-hidden={!open}>
+      <div className="codm-m-panel-inner">
+        {type === "services"
+          ? MENU_COLUMNS.map((col) => (
+              <div key={col.title} className="codm-m-group">
+                <div className="codm-m-group-title">{col.title}</div>
+                {renderLinks(col.links)}
+              </div>
+            ))
+          : renderLinks(PRODUCT_LINKS)}
       </div>
     </div>
   );
