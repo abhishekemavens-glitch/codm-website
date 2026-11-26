@@ -38,10 +38,10 @@ type HomepageSettingsResponse = {
 const WORDPRESS_GRAPHQL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-const sectionComponents: Record<
-  string,
-  React.ComponentType<{ heading?: SectionHeading }>
-> = {
+/* Sections have different props (e.g. LatestBlogs takes "limit"),
+   so the registry is loosely typed. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const sectionComponents: Record<string, React.ComponentType<any>> = {
   hero: Hero,
   industries: Industries,
   whyCodm: WhyCodm,
