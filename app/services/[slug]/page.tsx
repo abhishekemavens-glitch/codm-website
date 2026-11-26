@@ -617,7 +617,7 @@ export default async function ServicePage({
     ================================================= */}
 
 <section>
-  <ExecutiveGuideSalesCloud />
+  <ExecutiveGuideSalesCloud serviceSlug={serviceSlug} />
 </section>
     
     {/* =================================================
