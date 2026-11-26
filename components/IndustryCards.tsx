@@ -308,6 +308,94 @@ const SLIDER_CSS = `
   .codm-ic-wrap .codm-ic-grid { margin-left: -32px; margin-right: -32px; padding-left: 32px; padding-right: 32px; }
   .codm-ic-wrap .codm-ic-grid > * { flex-basis: 46%; }
 }
+
+/* ---- Mobile + tablet card readability fix ---- */
+@media (max-width: 1023px) {
+  /* equal-height cards */
+  .codm-ic-wrap .codm-ic-grid { align-items: stretch; }
+  .codm-ic-wrap .codm-ic-grid > * { height: auto !important; }
+  .codm-ic-wrap .codm-ic-grid > * > .codm-ic-card {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .codm-ic-wrap .codm-ic-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  /* photo becomes a banner at the top, fading into the card */
+  .codm-ic-wrap .codm-ic-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    object-position: center 25%;
+  }
+  .codm-ic-wrap .codm-ic-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: 150px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.06) 0%,
+      var(--surface) 100%
+    );
+  }
+
+  /* icon sits on the photo, text starts below it */
+  .codm-ic-wrap .codm-ic-badge {
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    width: 52px;
+    height: 52px;
+    margin: 0;
+  }
+  .codm-ic-wrap .codm-ic-content {
+    position: relative;
+    padding: 138px 18px 20px;
+  }
+
+  .codm-ic-wrap .codm-ic-title {
+    margin: 0 0 8px;
+    font-size: 21px;
+    line-height: 1.2;
+    color: var(--foreground);
+  }
+  .codm-ic-wrap .codm-ic-desc {
+    margin: 0 0 14px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--foreground);
+    opacity: 0.75;
+  }
+
+  /* tags wrap in a row instead of one per line */
+  .codm-ic-wrap .codm-ic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .codm-ic-wrap .codm-ic-tags li {
+    font-size: 12.5px;
+    line-height: 1.2;
+    padding: 7px 12px;
+    white-space: normal;
+  }
+}
 `;
 
 function SliderNav({
