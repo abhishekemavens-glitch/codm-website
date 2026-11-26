@@ -98,12 +98,62 @@ html[data-theme="dark"] {
   padding: 10px 40px;
 }
 
-html[data-theme="light"] .codm-header-scrolled, [data-theme="light"] .codm-header-scrolled .codm-header-inner {
-    background: radial-gradient(75% 40% at 50% 100%,#fff 0%,#f5eaff 20%,#e4dcfa 50%,#e1daf800 80%),linear-gradient(#edf0fa 0%,#f8f8fc 45%,#f4f1fc 75%,#e5ddfa 100%) !important;
+
+/* OLD CSS - COMMENTED OUT
+
+html[data-theme="light"] .codm-header-scrolled,
+[data-theme="light"] .codm-header-scrolled .codm-header-inner {
+    background: radial-gradient(
+        75% 40% at 50% 100%,
+        #fff 0%,
+        #f5eaff 20%,
+        #e4dcfa 50%,
+        #e1daf800 80%
+    ),
+    linear-gradient(
+        #edf0fa 0%,
+        #f8f8fc 45%,
+        #f4f1fc 75%,
+        #e5ddfa 100%
+    ) !important;
+
     border: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
 }
+
+*/
+
+
+/* NEW CSS - LIGHTER BOTTOM GRADIENT */
+
+html[data-theme="light"] .codm-header-scrolled,
+html[data-theme="light"] .codm-header-scrolled .codm-header-inner,
+[data-theme="light"] .codm-header-scrolled,
+[data-theme="light"] .codm-header-scrolled .codm-header-inner {
+    background:
+        radial-gradient(
+            75% 40% at 50% 100%,
+            #ffffff 0%,
+            #fdfaff 20%,
+            #f7f3ff 50%,
+            #f4f0fc00 80%
+        ),
+        linear-gradient(
+            #edf0fa 0%,
+            #f8f8fc 45%,
+            #faf8ff 75%,
+            #f7f4fc 100%
+        ) !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+
+
+
 [data-theme="light"] .codm-header-cta {
   background: #101424;
   color: #ffffff;
@@ -14681,3 +14731,5 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 .codm-orbit-logo-light { display: block; left: 32.00%; top: 47.21%; width: 26.68%; }
 [data-theme="dark"] .codm-orbit-logo-light { display: none; }
 [data-theme="dark"] .codm-orbit-logo-dark { display: block; left: 32.63%; top: 47.34%; width: 26.00%; }
+
+
