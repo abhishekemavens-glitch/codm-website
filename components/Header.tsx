@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"; 
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
-import MegaMenu, { parseMegaMenuLinks } from "./MegaMenu";
+import MegaMenu, { MENU_COLUMNS, BASE_URL } from "./MegaMenu";
 import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
 import ProductsMegaMenu, {
   parseProductLinks,
