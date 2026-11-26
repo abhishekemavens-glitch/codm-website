@@ -5,6 +5,16 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import SectionHeading from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 
+/* Optional heading text from WordPress > Homepage Manager.
+   When a field is empty (or the prop is not passed, e.g. on other pages),
+   the section keeps its own built-in text. */
+type SectionHeadingOverride = {
+  eyebrow?: string;
+  title?: string;
+  highlight?: string;
+  description?: string;
+};
+
 type WhyCodmItem = {
   id: string;
   databaseId: number;
@@ -251,7 +261,11 @@ function AnimatedBackground({ reduceMotion }: { reduceMotion: boolean }) {
    1 card + a peek of the next on mobile) with arrows + dots.
    ========================================================= */
 
-export default function WhyCodm() {
+export default function WhyCodm({
+  heading,
+}: {
+  heading?: SectionHeadingOverride;
+}) {
   const [items, setItems] = useState<WhyCodmItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -436,9 +450,10 @@ export default function WhyCodm() {
           <div className="codm-why-heading-in">
             <Reveal distance={20}>
               <SectionHeading
-                eyebrow="Why CODM"
-                title="A partner enterprise boards are"
-                gradientText="Comfortable signing off."
+                eyebrow={heading?.eyebrow || "Why CODM"}
+                title={heading?.title || "A partner enterprise boards are"}
+                gradientText={heading?.highlight || "Comfortable signing off."}
+                description={heading?.description || undefined}
               />
             </Reveal>
           </div>
