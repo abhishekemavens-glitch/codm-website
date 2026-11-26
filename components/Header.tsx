@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react"; 
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import MegaMenu, { MENU_COLUMNS, BASE_URL } from "./MegaMenu";
-import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu"; // CHANGE 1 of 3
+import MobileServicesMenu, { type ServiceGroup } from "./MobileServicesMenu";
 import ProductsMegaMenu, {
   parseProductLinks,
   type ProductsMenuData,
@@ -63,17 +63,13 @@ const WORDPRESS_GRAPHQL_URL =
 
 function parseLink(value: string = "") {
   if (!value) {
-    return {
-      label: "",
-      url: "#",
-    };
+    return { label: "", url: "#" };
   }
 
   /* Supports:
      Services|/services
      Services/services
   */
-
   const pipeIndex = value.indexOf("|");
 
   if (pipeIndex !== -1) {
@@ -83,11 +79,7 @@ function parseLink(value: string = "") {
     };
   }
 
-  /*
-   * Don't treat the "/" at the beginning of
-   * an actual URL as the separator.
-   */
-
+  /* Don't treat the "/" at the beginning of an actual URL as the separator. */
   if (!value.startsWith("/")) {
     const slashIndex = value.indexOf("/");
 
@@ -99,10 +91,7 @@ function parseLink(value: string = "") {
     }
   }
 
-  return {
-    label: value.trim(),
-    url: "#",
-  };
+  return { label: value.trim(), url: "#" };
 }
 
 export default function Header() {
@@ -124,15 +113,13 @@ export default function Header() {
     return current === clean || current.startsWith(clean + "/");
   }
 
-  const [header, setHeader] =
-    useState<HeaderData | null>(null);
+  const [header, setHeader] = useState<HeaderData | null>(null);
 
-  const [announcement, setAnnouncement] =
-    useState<AnnouncementData>({
-      announcementText: "",
-      announcementButtonText: "",
-      announcementButtonUrl: "#",
-    });
+  const [announcement, setAnnouncement] = useState<AnnouncementData>({
+    announcementText: "",
+    announcementButtonText: "",
+    announcementButtonUrl: "#",
+  });
 
   /* Which mega menu is open on desktop: "services", "products" or none */
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -162,7 +149,9 @@ export default function Header() {
   /* Menu items + Products mega menu come from WordPress (Header settings).
      Loaded separately so the header still works if these fields are missing. */
   const [menuItems, setMenuItems] = useState<MenuItem[] | null>(null);
-  const [productsMenu, setProductsMenu] = useState<ProductsMenuData | null>(null);
+  const [productsMenu, setProductsMenu] = useState<ProductsMenuData | null>(
+    null
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -235,7 +224,6 @@ export default function Header() {
     };
   }, []);
 
- 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   /* Announcement bar: can be closed with the X button.
@@ -284,60 +272,53 @@ export default function Header() {
 
     async function loadHeader() {
       try {
-        const headerResponse = await fetch(
-          WORDPRESS_GRAPHQL_URL,
-          {
-            method: "POST",
+        const headerResponse = await fetch(WORDPRESS_GRAPHQL_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `
+              query Header {
+                codmHeaders {
+                  nodes {
+                    id
+                    title
 
-            headers: {
-              "Content-Type": "application/json",
-            },
+                    mainLogoLight
+                    mainLogoDark
 
-            body: JSON.stringify({
-  query: `
-    query Header {
-      codmHeaders {
-        nodes {
-          id
-          title
+                    services
+                    industries
+                    caseStudies
+                    about
+                    insights
 
-          mainLogoLight
-          mainLogoDark
+                    buttonText
+                    buttonUrl
 
-          services
-          industries
-          caseStudies
-          about
-          insights
-
-          buttonText
-          buttonUrl
-
-          megaMenuEnabled
-          megaMenuCol1Icon
-          megaMenuCol1Title
-          megaMenuCol1Description
-          megaMenuCol1Links
-          megaMenuCol2Icon
-          megaMenuCol2Title
-          megaMenuCol2Description
-          megaMenuCol2Links
-          megaMenuCol3Icon
-          megaMenuCol3Title
-          megaMenuCol3Description
-          megaMenuCol3Links
-          megaMenuBannerLabel
-          megaMenuBannerTitle
-          megaMenuBannerDescription
-          megaMenuBannerButtonText
-          megaMenuBannerButtonUrl
-        }
-      }
-    }
-  `,
-}),
-          }
-        );
+                    megaMenuEnabled
+                    megaMenuCol1Icon
+                    megaMenuCol1Title
+                    megaMenuCol1Description
+                    megaMenuCol1Links
+                    megaMenuCol2Icon
+                    megaMenuCol2Title
+                    megaMenuCol2Description
+                    megaMenuCol2Links
+                    megaMenuCol3Icon
+                    megaMenuCol3Title
+                    megaMenuCol3Description
+                    megaMenuCol3Links
+                    megaMenuBannerLabel
+                    megaMenuBannerTitle
+                    megaMenuBannerDescription
+                    megaMenuBannerButtonText
+                    megaMenuBannerButtonUrl
+                  }
+                }
+              }
+            `,
+          }),
+        });
 
         if (!headerResponse.ok) {
           throw new Error(
@@ -345,31 +326,19 @@ export default function Header() {
           );
         }
 
-        const headerResult =
-          await headerResponse.json();
+        const headerResult = await headerResponse.json();
 
-        console.log(
-          "CODM HEADER DATA:",
-          headerResult
-        );
+        console.log("CODM HEADER DATA:", headerResult);
 
         if (headerResult.errors) {
-          console.error(
-            "CODM HEADER GRAPHQL ERROR:",
-            headerResult.errors
-          );
-
+          console.error("CODM HEADER GRAPHQL ERROR:", headerResult.errors);
           return;
         }
 
-        const headerData =
-          headerResult?.data?.codmHeaders?.nodes?.[0];
+        const headerData = headerResult?.data?.codmHeaders?.nodes?.[0];
 
         if (!headerData) {
-          console.error(
-            "CODM HEADER: No header data found."
-          );
-
+          console.error("CODM HEADER: No header data found.");
           return;
         }
 
@@ -378,93 +347,61 @@ export default function Header() {
         }
 
         try {
-          const announcementResponse =
-            await fetch(
-              WORDPRESS_GRAPHQL_URL,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type": "application/json",
-                },
-
-                body: JSON.stringify({
-                  query: `
-                    query Announcement {
-                      codmHeaders {
-                        nodes {
-                          announcementText
-                          announcementButtonText
-                          announcementButtonUrl
-                        }
-                      }
+          const announcementResponse = await fetch(WORDPRESS_GRAPHQL_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              query: `
+                query Announcement {
+                  codmHeaders {
+                    nodes {
+                      announcementText
+                      announcementButtonText
+                      announcementButtonUrl
                     }
-                  `,
-                }),
-              }
-            );
+                  }
+                }
+              `,
+            }),
+          });
 
           if (!announcementResponse.ok) {
             console.warn(
               "Announcement request failed:",
               announcementResponse.status
             );
-
             return;
           }
 
-          const announcementResult =
-            await announcementResponse.json();
+          const announcementResult = await announcementResponse.json();
 
-          console.log(
-            "CODM ANNOUNCEMENT DATA:",
-            announcementResult
-          );
+          console.log("CODM ANNOUNCEMENT DATA:", announcementResult);
 
           if (announcementResult.errors) {
             console.warn(
               "Announcement fields are not available in WordPress GraphQL yet:",
               announcementResult.errors
             );
-
             return;
           }
 
           const announcementData =
-            announcementResult
-              ?.data
-              ?.codmHeaders
-              ?.nodes?.[0];
+            announcementResult?.data?.codmHeaders?.nodes?.[0];
 
-          if (
-            announcementData &&
-            mounted
-          ) {
+          if (announcementData && mounted) {
             setAnnouncement({
-              announcementText:
-                announcementData.announcementText ||
-                "",
+              announcementText: announcementData.announcementText || "",
               announcementButtonText:
-                announcementData.announcementButtonText ||
-                "",
+                announcementData.announcementButtonText || "",
               announcementButtonUrl:
-                announcementData.announcementButtonUrl ||
-                "#",
+                announcementData.announcementButtonUrl || "#",
             });
           }
-
         } catch (announcementError) {
-          console.warn(
-            "Announcement could not be loaded:",
-            announcementError
-          );
+          console.warn("Announcement could not be loaded:", announcementError);
         }
-
       } catch (error) {
-        console.error(
-          "CODM HEADER LOAD FAILED:",
-          error
-        );
+        console.error("CODM HEADER LOAD FAILED:", error);
       }
     }
 
@@ -481,7 +418,10 @@ export default function Header() {
 
   /* The old 5 fixed items, used until the new Main Menu list is available */
   const legacyItems: MenuItem[] = [
-    { ...parseLink(header.services), menu: header.megaMenuEnabled ? "services" : "none" },
+    {
+      ...parseLink(header.services),
+      menu: header.megaMenuEnabled ? "services" : "none",
+    },
     { ...parseLink(header.industries), menu: "none" },
     { ...parseLink(header.caseStudies), menu: "none" },
     { ...parseLink(header.about), menu: "none" },
@@ -492,418 +432,377 @@ export default function Header() {
     menuItems && menuItems.length > 0 ? menuItems : legacyItems
   ).filter((item) => item.label);
 
-  const toServiceLinks = (raw: string) =>
-    parseMegaMenuLinks(raw).map((link) => ({
+  /* Mobile Services menu uses the SAME data as the desktop mega menu */
+  const serviceGroups: ServiceGroup[] = MENU_COLUMNS.map((col) => ({
+    title: col.title,
+    description: col.description,
+    links: col.links.map((link) => ({
       label: link.label,
       href: link.url,
-    }));
-
-  const serviceGroups: ServiceGroup[] = [
-    {
-      title: header.megaMenuCol1Title,
-      links: toServiceLinks(header.megaMenuCol1Links),
-    },
-    {
-      title: header.megaMenuCol2Title,
-      links: toServiceLinks(header.megaMenuCol2Links),
-    },
-    {
-      title: header.megaMenuCol3Title,
-      links: toServiceLinks(header.megaMenuCol3Links),
-    },
-  ].filter((group) => group.title && group.links.length > 0);
+    })),
+  }));
 
   const productsEnabled = Boolean(
     productsMenu?.enabled && (productsMenu.columns?.length ?? 0) > 0
   );
 
+  /* Groups only need links; a title is optional */
   const productGroups: ServiceGroup[] = (productsMenu?.columns ?? [])
-  .map((col) => ({
-    title: col.title || "",
-    links: parseProductLinks(col.links).map((link) => ({
-      label: link.label,
-      href: link.url,
-    })),
-  }))
-  .filter((group) => group.links.length > 0);
+    .map((col) => ({
+      title: col.title || "",
+      links: parseProductLinks(col.links).map((link) => ({
+        label: link.label,
+        href: link.url,
+      })),
+    }))
+    .filter((group) => group.links.length > 0);
+
+  const chevron = (isOpen: boolean) => (
+    <svg
+      className={`codm-nav-dropdown-icon ${
+        isOpen ? "codm-nav-dropdown-icon-open" : ""
+      }`}
+      width="10"
+      height="6"
+      viewBox="0 0 10 6"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M1 1L5 5L9 1"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 
   return (
     <>
-
       {announcement.announcementText &&
         dismissedText !== announcement.announcementText && (
-        <div className="codm-announcement-bar">
+          <div className="codm-announcement-bar">
+            <div className="codm-announcement-inner">
+              <span className="codm-announcement-text">
+                {announcement.announcementText}
+              </span>
 
-          <div className="codm-announcement-inner">
+              {announcement.announcementButtonText && (
+                <a
+                  href={announcement.announcementButtonUrl || "#"}
+                  className="codm-announcement-link"
+                >
+                  <span>{announcement.announcementButtonText}</span>
+                </a>
+              )}
 
-            <span className="codm-announcement-text">
-              {announcement.announcementText}
-            </span>
-
-            {announcement.announcementButtonText && (
-              <a
-                href={
-                  announcement.announcementButtonUrl ||
-                  "#"
-                }
-                className="codm-announcement-link"
+              <button
+                type="button"
+                className="codm-announcement-close"
+                onClick={dismissAnnouncement}
+                aria-label="Close announcement"
               >
-
-                <span>
-                  {announcement.announcementButtonText}
-                </span>
-
-              </a>
-            )}
-
-            <button
-              type="button"
-              className="codm-announcement-close"
-              onClick={dismissAnnouncement}
-              aria-label="Close announcement"
-            >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                <path
-                  d="M1 1l8 8M9 1L1 9"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-
-          </div>
-
-        </div>
-      )}
-
- <header
-  className={`codm-header codm-site-header codm-header-sticky ${
-    scrolled ? "codm-header-scrolled" : ""
-  }`}
->
-  <div className="codm-header-inner">
-
-    <a
-      href="/"
-      className="codm-header-logo-link codm-header-logo"
-      aria-label="CODM Home"
-    >
-      {header.mainLogoLight && (
-        <img
-          src={header.mainLogoLight}
-          alt="CODM"
-          className="codm-header-logo codm-logo-light"
-        />
-      )}
-
-      {header.mainLogoDark && (
-        <img
-          src={header.mainLogoDark}
-          alt="CODM"
-          className="codm-header-logo codm-logo-dark"
-        />
-      )}
-    </a>
-
-    <nav
-      className="codm-header-nav"
-      aria-label="Main navigation"
-    >
-
-      {items.map((item, index) => {
-        const megaKey =
-          item.menu === "services" && header.megaMenuEnabled
-            ? "services"
-            : item.menu === "products" && productsEnabled
-              ? "products"
-              : null;
-
-        if (megaKey) {
-          const isOpen = openMenu === megaKey;
-
-          return (
-            <div
-              key={`${item.label}-${index}`}
-              className={`codm-header-nav-item-wrap codm-${megaKey}-menu-trigger`}
-              onMouseEnter={() => openMenuFor(megaKey)}
-              onMouseLeave={closeMenu}
-            >
-             
-{megaKey === "services" ? (
-  <button
-    type="button"
-    className="codm-header-nav-link"
-    aria-haspopup="true"
-    aria-expanded={isOpen}
-    onClick={() => setOpenMenu(isOpen ? null : megaKey)}
-    onFocus={() => openMenuFor(megaKey)}
-  >
-    {item.label}
-    <svg
-      className={`codm-nav-dropdown-icon ${
-        isOpen ? "codm-nav-dropdown-icon-open" : ""
-      }`}
-      width="10"
-      height="6"
-      viewBox="0 0 10 6"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path d="M1 1L5 5L9 1" stroke="currentColor"
-        strokeWidth="1.5" strokeLinecap="round"
-        strokeLinejoin="round" />
-    </svg>
-  </button>
-) : (
-  <a
-    href={item.url}
-    className={`codm-header-nav-link ${
-      isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
-    }`}
-    aria-haspopup="true"
-    aria-expanded={isOpen}
-    onFocus={() => openMenuFor(megaKey)}
-  >
-    {item.label}
-    <svg
-      className={`codm-nav-dropdown-icon ${
-        isOpen ? "codm-nav-dropdown-icon-open" : ""
-      }`}
-      width="10"
-      height="6"
-      viewBox="0 0 10 6"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path d="M1 1L5 5L9 1" stroke="currentColor"
-        strokeWidth="1.5" strokeLinecap="round"
-        strokeLinejoin="round" />
-    </svg>
-  </a>
-)}
-
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 1l8 8M9 1L1 9"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
             </div>
-          );
-        }
-
-        return (
-          <a
-            key={`${item.label}-${index}`}
-            href={item.url}
-            className={`codm-header-nav-link ${
-              isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
-            }`}
-          >
-            {item.label}
-          </a>
-        );
-      })}
-
-    </nav>
-
-    {header.megaMenuEnabled && openMenu === "services" && (
-      <MegaMenu
-  onMouseEnter={() => openMenuFor("services")}
-  onMouseLeave={closeMenu}
-  data={{
-          enabled: true,
-
-          columns: [
-            {
-              icon: header.megaMenuCol1Icon,
-              title: header.megaMenuCol1Title,
-              description:
-                header.megaMenuCol1Description,
-              links: header.megaMenuCol1Links,
-            },
-
-            {
-              icon: header.megaMenuCol2Icon,
-              title: header.megaMenuCol2Title,
-              description:
-                header.megaMenuCol2Description,
-              links: header.megaMenuCol2Links,
-            },
-
-            {
-              icon: header.megaMenuCol3Icon,
-              title: header.megaMenuCol3Title,
-              description:
-                header.megaMenuCol3Description,
-              links: header.megaMenuCol3Links,
-            },
-          ],
-
-          bannerLabel:
-            header.megaMenuBannerLabel,
-
-          bannerTitle:
-            header.megaMenuBannerTitle,
-
-          bannerDescription:
-            header.megaMenuBannerDescription,
-
-          bannerButtonText:
-            header.megaMenuBannerButtonText,
-
-          bannerButtonUrl:
-            header.megaMenuBannerButtonUrl,
-        }}
-      />
-    )}
-
-    {productsEnabled && productsMenu && openMenu === "products" && (
-      <ProductsMegaMenu
-        data={productsMenu}
-        onMouseEnter={() => openMenuFor("products")}
-        onMouseLeave={closeMenu}
-      />
-    )}
-
-    {mobileMenuOpen && (
-      <div className="codm-mobile-menu">
-
-        {items.map((item, index) => {
-          const key = `${item.label}-${index}`;
-
-          if (
-            item.menu === "services" &&
-            header.megaMenuEnabled &&
-            serviceGroups.length > 0
-          ) {
-            return (
-              <MobileServicesMenu
-                key={key}
-                groups={serviceGroups}
-                label={item.label}
-                servicesHref={item.url}
-                onNavigate={() => setMobileMenuOpen(false)}
-              />
-            );
-          }
-
-          if (
-            item.menu === "products" &&
-            productsEnabled &&
-            productGroups.length > 0
-          ) {
-            return (
-              <MobileServicesMenu
-                key={key}
-                groups={productGroups}
-                label={item.label}
-                servicesHref={item.url}
-                allLabel={`All ${item.label.toLowerCase()}`}
-                onNavigate={() => setMobileMenuOpen(false)}
-              />
-            );
-          }
-
-          return (
-            <a
-              key={key}
-              href={item.url}
-              className={`codm-mobile-menu-link ${
-                isActiveLink(item.url) ? "codm-mobile-menu-link-active" : ""
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </a>
-          );
-        })}
-
-        {/* Get in touch: the header button is hidden on tablet + mobile,
-            so it appears here at the bottom of the menu instead. */}
-        {header.buttonText && (
-          <a
-            href="/contact-us"
-            className="codm-mobile-menu-cta"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span>{header.buttonText}</span>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </a>
+          </div>
         )}
 
-      </div>
-    )}
-
-    <div className="codm-header-right">
-
-      <button
-        type="button"
-        className={`codm-mobile-toggle ${
-          mobileMenuOpen
-            ? "codm-mobile-toggle-open"
-            : ""
+      <header
+        className={`codm-header codm-site-header codm-header-sticky ${
+          scrolled ? "codm-header-scrolled" : ""
         }`}
-        onClick={() =>
-          setMobileMenuOpen(
-            (open) => !open
-          )
-        }
-        aria-label="Toggle menu"
-        aria-expanded={mobileMenuOpen}
       >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <div className="codm-header-inner">
+          <a
+            href="/"
+            className="codm-header-logo-link codm-header-logo"
+            aria-label="CODM Home"
+          >
+            {header.mainLogoLight && (
+              <img
+                src={header.mainLogoLight}
+                alt="CODM"
+                className="codm-header-logo codm-logo-light"
+              />
+            )}
 
-      <div className="codm-header-theme-toggle">
-        <ThemeToggle />
-      </div>
+            {header.mainLogoDark && (
+              <img
+                src={header.mainLogoDark}
+                alt="CODM"
+                className="codm-header-logo codm-logo-dark"
+              />
+            )}
+          </a>
 
-    {header.buttonText && (
-  <a
-    href="/contact-us"
-    className="codm-header-cta"
-  >
-    <span>{header.buttonText}</span>
+          <nav className="codm-header-nav" aria-label="Main navigation">
+            {items.map((item, index) => {
+              const megaKey =
+                item.menu === "services" && header.megaMenuEnabled
+                  ? "services"
+                  : item.menu === "products" && productsEnabled
+                    ? "products"
+                    : null;
 
-    <span
-      className="codm-header-cta-arrow"
-      aria-hidden="true"
-    >
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-      >
-        <path
-          d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  </a>
-)}
+              if (megaKey) {
+                const isOpen = openMenu === megaKey;
 
-    </div>
+                return (
+                  <div
+                    key={`${item.label}-${index}`}
+                    className={`codm-header-nav-item-wrap codm-${megaKey}-menu-trigger`}
+                    onMouseEnter={() => openMenuFor(megaKey)}
+                    onMouseLeave={closeMenu}
+                  >
+                    {megaKey === "services" ? (
+                      <button
+                        type="button"
+                        className="codm-header-nav-link"
+                        aria-haspopup="true"
+                        aria-expanded={isOpen}
+                        onClick={() => setOpenMenu(isOpen ? null : megaKey)}
+                        onFocus={() => openMenuFor(megaKey)}
+                      >
+                        {item.label}
+                        {chevron(isOpen)}
+                      </button>
+                    ) : (
+                      <a
+                        href={item.url}
+                        className={`codm-header-nav-link ${
+                          isActiveLink(item.url)
+                            ? "codm-header-nav-link-active"
+                            : ""
+                        }`}
+                        aria-haspopup="true"
+                        aria-expanded={isOpen}
+                        onFocus={() => openMenuFor(megaKey)}
+                      >
+                        {item.label}
+                        {chevron(isOpen)}
+                      </a>
+                    )}
+                  </div>
+                );
+              }
 
-  </div>
-</header>
+              return (
+                <a
+                  key={`${item.label}-${index}`}
+                  href={item.url}
+                  className={`codm-header-nav-link ${
+                    isActiveLink(item.url) ? "codm-header-nav-link-active" : ""
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
 
+          {header.megaMenuEnabled && openMenu === "services" && (
+            <MegaMenu
+              onMouseEnter={() => openMenuFor("services")}
+              onMouseLeave={closeMenu}
+              data={{
+                enabled: true,
+
+                columns: [
+                  {
+                    icon: header.megaMenuCol1Icon,
+                    title: header.megaMenuCol1Title,
+                    description: header.megaMenuCol1Description,
+                    links: header.megaMenuCol1Links,
+                  },
+                  {
+                    icon: header.megaMenuCol2Icon,
+                    title: header.megaMenuCol2Title,
+                    description: header.megaMenuCol2Description,
+                    links: header.megaMenuCol2Links,
+                  },
+                  {
+                    icon: header.megaMenuCol3Icon,
+                    title: header.megaMenuCol3Title,
+                    description: header.megaMenuCol3Description,
+                    links: header.megaMenuCol3Links,
+                  },
+                ],
+
+                bannerLabel: header.megaMenuBannerLabel,
+                bannerTitle: header.megaMenuBannerTitle,
+                bannerDescription: header.megaMenuBannerDescription,
+                bannerButtonText: header.megaMenuBannerButtonText,
+                bannerButtonUrl: header.megaMenuBannerButtonUrl,
+              }}
+            />
+          )}
+
+          {productsEnabled && productsMenu && openMenu === "products" && (
+            <ProductsMegaMenu
+              data={productsMenu}
+              onMouseEnter={() => openMenuFor("products")}
+              onMouseLeave={closeMenu}
+            />
+          )}
+
+          {mobileMenuOpen && (
+            <div className="codm-mobile-menu">
+              {items.map((item, index) => {
+                const key = `${item.label}-${index}`;
+
+                if (
+                  item.menu === "services" &&
+                  header.megaMenuEnabled &&
+                  serviceGroups.length > 0
+                ) {
+                  return (
+                    <MobileServicesMenu
+                      key={key}
+                      groups={serviceGroups}
+                      label={item.label}
+                      servicesHref={item.url}
+                      onNavigate={() => setMobileMenuOpen(false)}
+                      footer={
+                        <div className="codm-mobile-services-banner">
+                          <p className="codm-mobile-services-banner-label">
+                            Government Commercial Agency <em>Supplier</em>
+                          </p>
+                          <p className="codm-mobile-services-banner-title">
+                            G-Cloud 15 • Lot 3: Cloud Support
+                          </p>
+                          <p className="codm-mobile-services-group-desc">
+                            Salesforce, AI, integration, data and cloud
+                            application services for the public sector
+                          </p>
+                          <a
+                            href={`${BASE_URL}/services/technical-support`}
+                            className="codm-mobile-services-banner-btn"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Explore G-Cloud 15 →
+                          </a>
+                        </div>
+                      }
+                    />
+                  );
+                }
+
+                if (
+                  item.menu === "products" &&
+                  productsEnabled &&
+                  productGroups.length > 0
+                ) {
+                  return (
+                    <MobileServicesMenu
+                      key={key}
+                      groups={productGroups}
+                      label={item.label}
+                      servicesHref={item.url}
+                      allLabel={`All ${item.label.toLowerCase()}`}
+                      onNavigate={() => setMobileMenuOpen(false)}
+                    />
+                  );
+                }
+
+                return (
+                  <a
+                    key={key}
+                    href={item.url}
+                    className={`codm-mobile-menu-link ${
+                      isActiveLink(item.url)
+                        ? "codm-mobile-menu-link-active"
+                        : ""
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+
+              {/* Get in touch: the header button is hidden on tablet + mobile,
+                  so it appears here at the bottom of the menu instead. */}
+              {header.buttonText && (
+                <a
+                  href="/contact-us"
+                  className="codm-mobile-menu-cta"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span>{header.buttonText}</span>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
+              )}
+            </div>
+          )}
+
+          <div className="codm-header-right">
+            <button
+              type="button"
+              className={`codm-mobile-toggle ${
+                mobileMenuOpen ? "codm-mobile-toggle-open" : ""
+              }`}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+
+            <div className="codm-header-theme-toggle">
+              <ThemeToggle />
+            </div>
+
+            {header.buttonText && (
+              <a href="/contact-us" className="codm-header-cta">
+                <span>{header.buttonText}</span>
+
+                <span className="codm-header-cta-arrow" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path
+                      d="M3.5 10.5L10.5 3.5M4.5 3.5h6v6"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </a>
+            )}
+          </div>
+        </div>
+      </header>
 
       <style>{`
         /* Get in touch button inside the mobile / tablet menu */
@@ -930,6 +829,43 @@ export default function Header() {
         }
         @media (min-width: 1024px) {
           .codm-mobile-menu-cta { display: none; }
+        }
+
+        /* Mobile Services: group descriptions + G-Cloud banner */
+        .codm-mobile-services-group-desc {
+          margin: 2px 0 8px;
+          font-size: 12.5px;
+          line-height: 1.45;
+          opacity: 0.7;
+        }
+        .codm-mobile-services-banner {
+          margin-top: 16px;
+          padding: 14px;
+          border: 1px solid rgba(109, 74, 255, 0.25);
+          border-radius: 14px;
+        }
+        .codm-mobile-services-banner-label {
+          margin: 0 0 6px;
+          font-size: 12.5px;
+          padding-left: 8px;
+          border-left: 2px solid #6d4aff;
+        }
+        .codm-mobile-services-banner-label em {
+          display: block;
+          color: #6d4aff;
+        }
+        .codm-mobile-services-banner-title {
+          margin: 0 0 4px;
+          font-size: 15px;
+          font-weight: 600;
+        }
+        .codm-mobile-services-banner-btn {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #6d4aff;
+          text-decoration: none;
         }
 
         /* Announcement close button */
