@@ -518,14 +518,14 @@ export default function Header() {
   );
 
   const productGroups: ServiceGroup[] = (productsMenu?.columns ?? [])
-    .map((col) => ({
-      title: col.title,
-      links: parseProductLinks(col.links).map((link) => ({
-        label: link.label,
-        href: link.url,
-      })),
-    }))
-    .filter((group) => group.title && group.links.length > 0);
+  .map((col) => ({
+    title: col.title || "",
+    links: parseProductLinks(col.links).map((link) => ({
+      label: link.label,
+      href: link.url,
+    })),
+  }))
+  .filter((group) => group.links.length > 0);
 
   return (
     <>
