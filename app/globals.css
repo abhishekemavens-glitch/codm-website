@@ -14733,3 +14733,106 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 [data-theme="dark"] .codm-orbit-logo-dark { display: block; left: 32.63%; top: 47.34%; width: 26.00%; }
 
 
+
+
+
+/* Paste into your global stylesheet */
+
+.codm-m-nav {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow-y: auto; /* keeps the CTA reachable when a panel is open */
+  -webkit-overflow-scrolling: touch;
+}
+
+.codm-m-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 10px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font: inherit;
+  font-size: 16px;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.codm-m-row[aria-expanded="true"] {
+  color: #6b5cff;
+}
+
+/* Smooth expand/collapse without measuring height */
+.codm-m-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.codm-m-panel.is-open {
+  grid-template-rows: 1fr;
+}
+.codm-m-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.codm-m-group-title {
+  padding: 14px 10px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b5cff;
+}
+
+.codm-m-links {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 8px;
+}
+.codm-m-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  font-size: 15px;
+  color: inherit;
+  text-decoration: none;
+}
+.codm-m-link:active {
+  background: rgba(108, 92, 255, 0.08);
+}
+.codm-m-link:focus-visible,
+.codm-m-row:focus-visible {
+  outline: 2px solid #6b5cff;
+  outline-offset: -2px;
+}
+
+.codm-m-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 10px 8px;
+  padding: 14px 20px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6b4dff, #8b6dff);
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+/* Dark mode: adjust to your theme class/attribute if you don't use prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  .codm-m-row {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codm-m-panel {
+    transition: none;
+  }
+}
