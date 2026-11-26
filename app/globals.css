@@ -14663,3 +14663,21 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 .codm-megamenu-all-services:focus-visible span {
   color: #ffffff !important;
 }
+
+/* ===== About orbit: rings rotate, CODM logo stays fixed ===== */
+.codm-about-visual { position: relative; }
+
+/* rotate around the real centre of the orbit (not the image box centre) */
+.codm-orbit-image { transform-origin: 44.61% 52.36%; }
+
+.codm-orbit-logo {
+  position: absolute;
+  height: auto;
+  display: none;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+.codm-orbit-logo-light { display: block; left: 32.00%; top: 47.21%; width: 26.68%; }
+[data-theme="dark"] .codm-orbit-logo-light { display: none; }
+[data-theme="dark"] .codm-orbit-logo-dark { display: block; left: 32.63%; top: 47.34%; width: 26.00%; }
