@@ -3,6 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 
+/* Optional heading text from WordPress > Homepage Manager.
+   Trusted By only shows an eyebrow line, so only "eyebrow" is used. */
+type SectionHeadingOverride = {
+  eyebrow?: string;
+  title?: string;
+  highlight?: string;
+  description?: string;
+};
+
 type TrustedLogo = {
   id: string;
   databaseId: number;
@@ -18,7 +27,11 @@ type TrustedLogo = {
 const WORDPRESS_GRAPHQL_URL =
   "https://lightyellow-echidna-411021.hostingersite.com/graphql/";
 
-export default function TrustedBy() {
+export default function TrustedBy({
+  heading,
+}: {
+  heading?: SectionHeadingOverride;
+}) {
   const [logos, setLogos] = useState<TrustedLogo[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -164,7 +177,7 @@ export default function TrustedBy() {
   <div className="heading-codm-eyebrow-wrap">
     <span aria-hidden="true" className="heading-codm-eyebrow-line" />
     <span className="heading-codm-eyebrow">
-      Trusted by world best
+      {heading?.eyebrow || "Trusted by world best"}
     </span>
     <span aria-hidden="true" className="heading-codm-eyebrow-line" />
   </div>
