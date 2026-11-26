@@ -14871,6 +14871,10 @@ html.codm-announcement-closed .codm-header, html.codm-announcement-closed .codm-
 .codm-header-scrolled .codm-header-inner {
 	padding: 10px 20px !important;
 }
+.codm-post {
+	margin: 75px 0 0;
+}
+
 	
 
 }
