@@ -139,6 +139,22 @@ export default function AboutHero({
       draggable={false}
     />
 
+    {/* CODM logo: stays fixed while the rings rotate */}
+    <img
+      src="/codm-center-light.png"
+      alt=""
+      aria-hidden="true"
+      className="codm-orbit-logo codm-orbit-logo-light"
+      draggable={false}
+    />
+    <img
+      src="/codm-center-dark.png"
+      alt=""
+      aria-hidden="true"
+      className="codm-orbit-logo codm-orbit-logo-dark"
+      draggable={false}
+    />
+
   </div>
 </div>
             ) : (
