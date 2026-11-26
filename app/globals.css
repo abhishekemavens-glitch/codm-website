@@ -14842,8 +14842,8 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 @media (max-width: 767px) {
 
 
-.codm-header .codm-header-inner {
-	margin: 10px 0px !important;
+[data-theme="light"] .codm-header .codm-header-inner {
+	margin: 10px 0 !important;
 }
 #hero {
 	margin: 10% 0 0;
@@ -14854,7 +14854,13 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 .codm-footer-stack > .codm-footer-column + .codm-footer-column {
 	margin-top: 0px !important;
 }
-
+[data-theme="dark"] .codm-header {
+	margin: 0 !important;
+	border: none !important;
+}
+[data-theme="dark"] .codm-header .codm-header-inner {
+	height: auto !important;
+}
 
 
 }
