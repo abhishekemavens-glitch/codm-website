@@ -4956,9 +4956,7 @@ html[data-theme="dark"] .codm-logo-dark {
 	padding: 10px 10px;
 	border: none !important;
 }
-[data-theme="light"] #hero {
-	margin: 5% 0 0;
-}
+
 
 #hero .codm-hero-title {
 	font-size: 30px !important;
@@ -14835,4 +14833,28 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
   .codm-m-panel {
     transition: none;
   }
+}
+
+
+
+
+
+@media (max-width: 767px) {
+
+
+.codm-header .codm-header-inner {
+	margin: 10px 0px !important;
+}
+#hero {
+	margin: 10% 0 0;
+}
+.codm-footer-stack {
+	gap: 0px !important;
+}
+.codm-footer-stack > .codm-footer-column + .codm-footer-column {
+	margin-top: 0px !important;
+}
+
+
+
 }
