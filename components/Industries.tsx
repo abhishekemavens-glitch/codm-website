@@ -373,19 +373,20 @@ export default function Industries() {
                         }}
                       />
 
-                      <a
-                        href={"/industries/" + active.slug}
-                        className={
-                          "codm-industry-view-link codm-industry-link-reveal mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] " +
-                          (isVisible && contentVisible
-                            ? "codm-industry-link-reveal-in"
-                            : "")
-                        }
-                      >
-                        <span>View all</span>
-
-                        <span className="codm-industry-arrow">{"→"}</span>
-                      </a>
+                     {/*
+<a
+  href={"/industries/" + active.slug}
+  className={
+    "codm-industry-view-link codm-industry-link-reveal mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground)] " +
+    (isVisible && contentVisible
+      ? "codm-industry-link-reveal-in"
+      : "")
+  }
+>
+  <span>View all</span>
+  <span className="codm-industry-arrow">{"→"}</span>
+</a>
+*/}
                     </div>
                   </div>
 
