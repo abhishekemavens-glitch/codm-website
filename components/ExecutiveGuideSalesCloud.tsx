@@ -36,6 +36,7 @@ type ExecutiveGuide = {
   questionBody: string | null;
   ctaText: string | null;
   ctaLink: string | null;
+  pdfUrl: string | null;
   microcopy: string | null;
   cardBrand: string | null;
   cardCategory: string | null;
@@ -77,6 +78,7 @@ const GUIDE_FIELDS = `
   questionBody
   ctaText
   ctaLink
+  pdfUrl
   microcopy
   cardBrand
   cardCategory
@@ -234,7 +236,10 @@ export default function ExecutiveGuideSalesCloud({
 
             {guide.ctaText && (
               <a
-                href={guide.ctaLink || "#"}
+                href={guide.pdfUrl || guide.ctaLink || "#"}
+                {...(guide.pdfUrl
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="mt-9 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#4F46E5] to-[#8B5CF6] px-8 py-4 text-sm font-medium uppercase tracking-[0.1em] text-white shadow-[0_14px_34px_rgba(99,79,240,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(99,79,240,0.42)]"
               >
                 <DownloadIcon />
