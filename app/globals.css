@@ -14860,7 +14860,20 @@ footer .codm-footer-logo-item:nth-child(4) .codm-footer-left-logo { transform: s
 }
 [data-theme="dark"] .codm-header .codm-header-inner {
 	height: auto !important;
+	margin: 10px 0 !important;
+}
+.codm-header-scrolled {
+	position: fixed !important;
+	padding: 10px 0px;
+	top: 30px !important;
+	border: 0px solid !important;
+	background: #0000 !important;
+}
+html.codm-announcement-closed .codm-header, html.codm-announcement-closed .codm-site-header, html.codm-announcement-closed .codm-header-sticky, html.codm-announcement-closed .codm-header-scrolled {
+	top: 0 !important;
 }
 
+	
 
 }
+
