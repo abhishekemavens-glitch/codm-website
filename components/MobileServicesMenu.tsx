@@ -33,13 +33,18 @@ export default function MobileServicesMenu({
           {allLabel}
         </Link>
 
-        {groups.map((group) => (
-          <section key={group.title} className="codm-mobile-services-group">
-            <p className="codm-mobile-services-group-title">{group.title}</p>
+        {groups.map((group, groupIndex) => (
+          <section
+            key={`${group.title}-${groupIndex}`}
+            className="codm-mobile-services-group"
+          >
+            {group.title && (
+              <p className="codm-mobile-services-group-title">{group.title}</p>
+            )}
 
             <ul className="codm-mobile-services-links">
-              {group.links.map((link) => (
-                <li key={`${group.title}-${link.label}`}>
+              {group.links.map((link, linkIndex) => (
+                <li key={`${groupIndex}-${link.label}-${linkIndex}`}>
                   <Link
                     href={link.href}
                     className="codm-mobile-services-link"
